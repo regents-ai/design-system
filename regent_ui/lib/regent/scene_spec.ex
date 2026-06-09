@@ -41,44 +41,12 @@ defmodule Regent.SceneSpec do
     command("box", "remove", id, Keyword.merge([position: position, size: size], opts))
   end
 
-  def style_box(id, position, size, style) do
-    command("box", "style", id, position: position, size: size, style: style)
-  end
-
   def add_sphere(id, center, radius, opts \\ []) do
     command("sphere", "add", id, Keyword.merge([center: center, radius: radius], opts))
   end
 
-  def remove_sphere(id, center, radius, opts \\ []) do
-    command("sphere", "remove", id, Keyword.merge([center: center, radius: radius], opts))
-  end
-
-  def style_sphere(id, center, radius, style) do
-    command("sphere", "style", id, center: center, radius: radius, style: style)
-  end
-
   def add_line(id, from, to, opts \\ []) do
     command("line", "add", id, Keyword.merge([from: from, to: to], opts))
-  end
-
-  def remove_line(id, from, to, opts \\ []) do
-    command("line", "remove", id, Keyword.merge([from: from, to: to], opts))
-  end
-
-  def style_line(id, from, to, style, opts \\ []) do
-    command("line", "style", id, Keyword.merge([from: from, to: to, style: style], opts))
-  end
-
-  def add_fill(id, bounds, opts \\ []) do
-    command("fill", "add", id, Keyword.merge([bounds: bounds], opts))
-  end
-
-  def remove_fill(id, bounds, opts \\ []) do
-    command("fill", "remove", id, Keyword.merge([bounds: bounds], opts))
-  end
-
-  def style_fill(id, bounds, style, opts \\ []) do
-    command("fill", "style", id, Keyword.merge([bounds: bounds, style: style], opts))
   end
 
   def marker(id, opts \\ []) do
@@ -176,6 +144,9 @@ defmodule Regent.SceneSpec do
     %{"default" => %{"fill" => fill, "stroke" => stroke, "opacity" => 0.82}}
   end
 
+  @doc """
+  Dashed, transparent style used to render a target as a ghost/preview outline.
+  """
   def ghost_style do
     %{
       "default" => %{
@@ -283,6 +254,11 @@ defmodule Regent.SceneSpec do
 
   def anchor(position, size), do: center_from_box(position, size)
 
+  @doc """
+  Returns the grid-aligned center point of a box given its position and size.
+
+  `size` may be a `[w, h, d]` list or a single number applied to all axes.
+  """
   def center_from_box([x, y, z], [w, h, d]) do
     [x + div(max(w - 1, 0), 2), y + div(max(h - 1, 0), 2), z + max(d - 1, 0)]
   end

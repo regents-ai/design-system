@@ -5,6 +5,9 @@ defmodule Regent.BackgroundGrid do
   attr :class, :any, default: nil
   attr :rest, :global
 
+  @doc """
+  Renders a decorative grid backdrop (hidden from assistive technology).
+  """
   def background_grid(assigns) do
     ~H"""
     <div id={@id} class={["rg-background-grid", @class]} aria-hidden="true" {@rest} />

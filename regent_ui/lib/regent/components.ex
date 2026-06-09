@@ -26,6 +26,36 @@ defmodule Regent.Components do
   slot :chamber
   slot :ledger
 
+  @doc """
+  Renders a Regent spatial surface: a scene container driven by the `RegentScene`
+  hook, framed by optional layout slots.
+
+  The scene itself is rendered client-side from `scene` (a `Regent.SceneSpec` map)
+  or a pre-encoded `scene_json` string. The slots compose the chrome around it:
+  `header_strip` across the top, `left_rail`/`right_rail` down the sides, and
+  `chamber`/`ledger` panels below the scene.
+
+  ## Example
+
+      <.surface id="home-surface" scene={@scene} active_face={@active_face}>
+        <:header_strip>
+          <h1>Launch console</h1>
+        </:header_strip>
+        <:left_rail>
+          <nav>Section links</nav>
+        </:left_rail>
+        <:chamber>
+          <.chamber id="home-chamber" title="Current step">
+            Step details go here.
+          </.chamber>
+        </:chamber>
+        <:ledger>
+          <.ledger id="home-ledger" title="Summary">
+            Reference table goes here.
+          </.ledger>
+        </:ledger>
+      </.surface>
+  """
   def surface(assigns) do
     assigns =
       assign(

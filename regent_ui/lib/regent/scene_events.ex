@@ -1,6 +1,30 @@
 defmodule Regent.SceneEvents do
   @moduledoc """
   Centralizes LiveView <-> hook event names and push helpers for Regent surfaces.
+
+  ## Server -> client events
+
+  Pushed with the `push_scene_*` helpers and handled by the `RegentScene` hook
+  (`assets/js/hooks/regent_scene.ts`):
+
+  | Event | Payload | Hook behaviour |
+  | ----- | ------- | -------------- |
+  | `regent:scene_replace` | `%{scene: scene}` (full `Regent.SceneSpec` map) | Re-renders the scene, then pushes `regent:surface_ready` |
+  | `regent:scene_patch` | map with optional `activeFace`, `selectedTargetId`, `sceneVersion` | Updates dataset attrs and re-renders from the DOM |
+  | `regent:scene_focus` | `%{target_id: id_or_nil}` | Focuses (or clears focus on) the target |
+  | `regent:scene_pulse` | `%{target_id: id, state: state}` | Plays a pulse animation on the target |
+  | `regent:scene_ghost` | `%{target_id: id, diff: map}` | Renders a ghost/preview diff on the target |
+
+  ## Client -> server events
+
+  Pushed by the hook; handle them in your LiveView's `handle_event/3`:
+
+  | Event | Payload |
+  | ----- | ------- |
+  | `regent:surface_ready` | `scene_version`, `active_face`, `rendered_targets` |
+  | `regent:surface_error` | `phase` (`"parse"`, `"render"`, or `"interact"`), `message` |
+  | `regent:node_select` | `target_id`, `face_id`, `kind`, `sigil`, `status`, `intent`, `action_label`, `back_target_id`, `history_key`, `group_role`, `click_tone`, `meta` |
+  | `regent:node_hover` | same shape as `regent:node_select` |
   """
 
   import Phoenix.LiveView, only: [push_event: 3]

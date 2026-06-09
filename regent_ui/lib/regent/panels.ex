@@ -9,12 +9,20 @@ defmodule Regent.Panels do
   attr :title, :string, required: true
   attr :subtitle, :string, default: nil
   attr :summary, :string, default: nil
-  attr :class, :any, default: nil
+  attr :class, :string, default: nil
   attr :rest, :global
   slot :actions
   slot :inner_block, required: true
   slot :footer
 
+  @doc """
+  Renders a chamber: the primary narrative panel for a surface.
+
+  Use a chamber for the main, prose-like content the user is currently working
+  through — a step in a guide, the detail view for a selected scene node. It
+  supports a `summary` line in addition to `subtitle`. For compact reference
+  material that sits alongside the main content, use `ledger/1` instead.
+  """
   def chamber(assigns) do
     ~H"""
     <section id={@id} class={["rg-chamber", @class]} {@rest}>
@@ -42,12 +50,20 @@ defmodule Regent.Panels do
   attr :title, :string, required: true
   attr :subtitle, :string, default: nil
   attr :kind, :string, default: "panel"
-  attr :class, :any, default: nil
+  attr :class, :string, default: nil
   attr :rest, :global
   slot :actions
   slot :inner_block, required: true
   slot :footer
 
+  @doc """
+  Renders a ledger: a secondary reference panel for a surface.
+
+  Use a ledger for dense, glanceable supporting material — summary tables,
+  stats, quick facts — that the user keeps in view while acting in the main
+  content. The `kind` attr adds a `rg-ledger-<kind>` class for styling
+  variants. For the primary narrative content itself, use `chamber/1` instead.
+  """
   def ledger(assigns) do
     ~H"""
     <section id={@id} class={["rg-ledger", @class, "rg-ledger-#{@kind}"]} {@rest}>
