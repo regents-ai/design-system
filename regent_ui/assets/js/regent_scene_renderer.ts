@@ -545,7 +545,8 @@ function faceAttributes(face: HeerichFace): Record<string, string> {
   }
   if (meta.regentHoverKey) attrs["data-regent-hover-key"] = String(meta.regentHoverKey)
   if (meta.regentHoverKind) attrs["data-regent-hover-kind"] = String(meta.regentHoverKind)
-  if (face.type) attrs["data-face"] = face.type
+  // Heerich emits data-face (and all voxel meta) natively; re-adding it here
+  // produces a duplicate attribute and breaks SVG parsing.
   attrs["class"] = classes.join(" ")
 
   return attrs

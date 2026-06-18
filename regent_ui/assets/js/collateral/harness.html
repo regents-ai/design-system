@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-brand="platform" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <title>Collateral Harness</title>
+    <style>
+      :root {
+        --brand-charcoal: #315569;
+        --brand-ink: #034568;
+        --brand-paper: #fbf4de;
+        --brand-gold: #d4a756;
+        --brand-olive: #848078;
+        --positive: #2f7d4f;
+      }
+      body {
+        margin: 0;
+        padding: 1.5rem;
+        background: #f6f1e2;
+        font-family: monospace;
+        color: var(--brand-ink);
+      }
+      #summary { font-size: 1rem; margin-bottom: 1rem; }
+      #summary.ok { color: #2f7d4f; }
+      #summary.bad { color: #b03030; }
+      #grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+      }
+      .card {
+        border: 1px solid rgba(3, 69, 104, 0.2);
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+      }
+      .card.failed { border-color: #b03030; border-width: 2px; }
+      .stage { position: relative; aspect-ratio: 16 / 10; }
+      .stage svg { width: 100%; height: 100%; display: block; }
+      .card p { font-size: 11px; padding: 0 10px 10px; margin: 6px 0 0; }
+      .rg-collateral-host {
+        position: relative; display: flex; align-items: center; justify-content: center;
+        width: 100%; height: 100%; overflow: hidden; contain: layout paint;
+      }
+      .rg-collateral-host svg polygon, .rg-collateral-host svg path {
+        transform-box: fill-box; transform-origin: center;
+      }
+      .rg-collateral-drift-frame {
+        width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+        will-change: transform;
+      }
+      .rg-collateral-beam { position: absolute; inset: 0; pointer-events: none; }
+      .rg-collateral-hoverable, .rg-collateral-replayable { cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <p id="summary">Mounting…</p>
+    <div id="grid"></div>
+    <script type="module" src="./harness.js?v=1781200835"></script>
+  </body>
+</html>

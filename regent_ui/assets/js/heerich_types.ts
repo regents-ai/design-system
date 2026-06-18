@@ -72,6 +72,8 @@ export type HeerichStyleInput = Record<string, unknown> & {
 
 export interface HeerichInstance {
   clear(): void
+  batch(fn: () => void): void
+  readonly epoch: number
   addGeometry(input: HeerichGeometryInput): void
   applyGeometry(input: HeerichGeometryInput): void
   removeGeometry(input: HeerichGeometryInput): void

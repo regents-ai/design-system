@@ -1,0 +1,244 @@
+{
+  "experiments": [
+    {
+      "id": "chamber-drift",
+      "name": "Chamber Drift",
+      "class": "ambient",
+      "tags": ["background", "hero", "depth"],
+      "productUse": "Page hero backdrop with slow parallax depth, like the entrance hall of the product.",
+      "budget": { "maxFaces": 2500, "maxMountMs": 50, "idleLoop": "css" }
+    },
+    {
+      "id": "lattice-weave",
+      "name": "Lattice Weave",
+      "class": "ambient",
+      "tags": ["background", "section", "ripple"],
+      "productUse": "Section background; a flat voxel lattice that ripples gently to signal a live surface.",
+      "budget": { "maxFaces": 2500, "maxMountMs": 50, "idleLoop": "css" }
+    },
+    {
+      "id": "haze-columns",
+      "name": "Haze Columns",
+      "class": "ambient",
+      "tags": ["background", "ceremonial", "glow"],
+      "productUse": "Backdrop for sign-in and ceremonial pages; a colonnade with drifting light beams.",
+      "budget": { "maxFaces": 2500, "maxMountMs": 50, "idleLoop": "css" }
+    },
+    {
+      "id": "ink-tide",
+      "name": "Ink Tide",
+      "class": "ambient",
+      "tags": ["footer", "wave", "procedural"],
+      "productUse": "Footer ambient strip; a low voxel tide that slowly swells and recedes.",
+      "budget": { "maxFaces": 2500, "maxMountMs": 50, "idleLoop": "raf" }
+    },
+    {
+      "id": "starfield-depth",
+      "name": "Starfield Depth",
+      "class": "ambient",
+      "tags": ["background", "parallax", "pointer"],
+      "productUse": "Empty-page backdrop (404, maintenance); sparse voxel stars with pointer parallax.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "tilt-parallax-card",
+      "name": "Tilt Parallax Card",
+      "class": "micro",
+      "tags": ["card", "hover", "depth"],
+      "productUse": "Product and agent cards; a voxel stack that tilts with the pointer to give cards physical depth.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "hover-assemble-logo",
+      "name": "Hover Assemble",
+      "class": "micro",
+      "tags": ["logo", "hover", "assembly"],
+      "productUse": "Nav logos and link hovers; scattered voxels snap together into the mark on hover.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "button-press-pad",
+      "name": "Press Pad",
+      "class": "micro",
+      "tags": ["button", "press", "feedback"],
+      "productUse": "Primary call-to-action feedback; a voxel key that physically depresses on press.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "toggle-flip-cube",
+      "name": "Flip Cube",
+      "class": "micro",
+      "tags": ["toggle", "state", "rotate"],
+      "productUse": "Two-state toggles (theme, view mode); a cube that rolls between two styled faces.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "checkbox-stack-tick",
+      "name": "Stack Tick",
+      "class": "micro",
+      "tags": ["form", "success", "checkmark"],
+      "productUse": "Form confirmation; a voxel checkmark that builds in when a step completes.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "input-focus-frame",
+      "name": "Focus Frame",
+      "class": "micro",
+      "tags": ["form", "focus", "frame"],
+      "productUse": "Input focus affordance; a thin voxel frame that lights up around the active field.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" }
+    },
+    {
+      "id": "voxel-bar-relay",
+      "name": "Voxel Bar Relay",
+      "class": "data",
+      "tags": ["chart", "dashboard", "bars"],
+      "productUse": "Dashboard stats; a 3D bar chart whose columns grow and reorder as numbers change.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 50, "idleLoop": "none" },
+      "demoData": { "values": [4, 9, 6, 12, 7, 10, 5], "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] }
+    },
+    {
+      "id": "terrain-heightmap",
+      "name": "Terrain Heightmap",
+      "class": "data",
+      "tags": ["chart", "surface", "analytics"],
+      "productUse": "Activity and network visualizations; a voxel terrain whose elevation is the data.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 60, "idleLoop": "none" },
+      "demoData": {
+        "grid": [
+          [1, 2, 2, 3, 2, 1],
+          [2, 3, 4, 4, 3, 2],
+          [2, 4, 6, 5, 4, 2],
+          [3, 4, 5, 6, 4, 3],
+          [2, 3, 4, 4, 3, 2],
+          [1, 2, 2, 3, 2, 1]
+        ]
+      }
+    },
+    {
+      "id": "stake-vault-fill",
+      "name": "Vault Fill",
+      "class": "data",
+      "tags": ["staking", "progress", "vault"],
+      "productUse": "Staking progress; a glass vault that fills with gold voxels as the staked share grows.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 50, "idleLoop": "none" },
+      "demoData": { "ratio": 0.62 }
+    },
+    {
+      "id": "launch-pipeline-track",
+      "name": "Pipeline Track",
+      "class": "data",
+      "tags": ["progress", "stages", "launch"],
+      "productUse": "Multi-stage progress; a token advances along an isometric track, one station per stage.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 50, "idleLoop": "none" },
+      "demoData": { "stage": 3, "stages": 5, "labels": ["Configure", "Fund", "Open", "Clear", "Graduate"] }
+    },
+    {
+      "id": "techtree-growth",
+      "name": "Tree Growth",
+      "class": "data",
+      "tags": ["tree", "progress", "research"],
+      "productUse": "Research-tree progress; branches assemble voxel by voxel as nodes unlock.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 60, "idleLoop": "none" },
+      "demoData": { "unlocked": 9, "total": 16 }
+    },
+    {
+      "id": "podium-bids",
+      "name": "Podium Bids",
+      "class": "data",
+      "tags": ["leaderboard", "auction", "ranking"],
+      "productUse": "Live leaderboards; podium columns that grow and swap places as rankings change.",
+      "budget": { "maxFaces": 1200, "maxMountMs": 50, "idleLoop": "none" },
+      "demoData": {
+        "entries": [
+          { "label": "AURA", "value": 86 },
+          { "label": "MINT", "value": 64 },
+          { "label": "PLEX", "value": 51 },
+          { "label": "NOVA", "value": 38 },
+          { "label": "HALO", "value": 22 }
+        ]
+      }
+    },
+    {
+      "id": "dissolve-rebuild",
+      "name": "Dissolve and Rebuild",
+      "class": "transition",
+      "tags": ["navigation", "page", "morph"],
+      "productUse": "Page-to-page handoff; the current scene dissolves into voxels that reassemble as the next motif.",
+      "budget": { "maxFaces": 1500, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "tunnel-warp",
+      "name": "Tunnel Warp",
+      "class": "transition",
+      "tags": ["entrance", "camera", "depth"],
+      "productUse": "Entering the app; a fast camera push through a voxel chamber, under 600 ms.",
+      "budget": { "maxFaces": 1500, "maxMountMs": 60, "idleLoop": "none" }
+    },
+    {
+      "id": "curtain-slats",
+      "name": "Curtain Slats",
+      "class": "transition",
+      "tags": ["modal", "reveal", "drawer"],
+      "productUse": "Modal and drawer reveals; vertical voxel slats rotate open in sequence.",
+      "budget": { "maxFaces": 1500, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "logo-scatter-handoff",
+      "name": "Scatter Handoff",
+      "class": "transition",
+      "tags": ["hero", "scroll", "logo"],
+      "productUse": "Hero-to-content handoff; the mark scatters into depth and regroups as the next section's sigil.",
+      "budget": { "maxFaces": 1500, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "confetti-voxelburst",
+      "name": "Voxel Burst",
+      "class": "celebration",
+      "tags": ["success", "confetti", "one-shot"],
+      "productUse": "Success moments (claimed, minted, launched); a one-shot burst of brand-colored voxels.",
+      "budget": { "maxFaces": 1000, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "gavel-strike",
+      "name": "Gavel Strike",
+      "class": "celebration",
+      "tags": ["auction", "won", "impact"],
+      "productUse": "Auction won; a voxel gavel strikes and a shockwave ring ripples out.",
+      "budget": { "maxFaces": 1000, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "crown-coronation",
+      "name": "Coronation",
+      "class": "celebration",
+      "tags": ["onboarding", "complete", "crown"],
+      "productUse": "Onboarding and formation complete; a crown assembles from falling voxels with a gold sheen.",
+      "budget": { "maxFaces": 1000, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "vault-jackpot",
+      "name": "Vault Jackpot",
+      "class": "celebration",
+      "tags": ["rewards", "claim", "payout"],
+      "productUse": "Rewards claimed; vault doors swing open and gold voxels spill out.",
+      "budget": { "maxFaces": 1000, "maxMountMs": 50, "idleLoop": "none" }
+    },
+    {
+      "id": "stack-build-loader",
+      "name": "Stack Build Loader",
+      "class": "loading",
+      "tags": ["loading", "indeterminate", "loop"],
+      "productUse": "Indeterminate loading; a small voxel column builds and unbuilds in a calm loop.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "raf" }
+    },
+    {
+      "id": "progress-ring",
+      "name": "Progress Ring",
+      "class": "loading",
+      "tags": ["loading", "determinate", "ring"],
+      "productUse": "Determinate progress; a ring of voxels fills clockwise toward completion.",
+      "budget": { "maxFaces": 400, "maxMountMs": 40, "idleLoop": "none" },
+      "demoData": { "progress": 0.7 }
+    }
+  ]
+}
