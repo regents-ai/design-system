@@ -1,3 +1,15 @@
+<!-- BEGIN REGENT META GENERATED -->
+## Repo Contract
+
+Generated from `meta/stack.yaml` and repo `repo.yaml` files. Local notes may live outside this block.
+
+- Repo contract: `design-system/repo.yaml`
+- Owner: `design-system`
+- Release group: `ops_preview`
+- Owned areas: `shared_visual_language`, `tokens`, `money_action_risk_panels`, `status_badges`.
+- Change API or CLI behavior in the owning YAML contract before changing code.
+- Use `bd` only for execution state: tickets, claims, blockers, dependencies, and closure evidence.
+<!-- END REGENT META GENERATED -->
 # Regent Design System Agent Guide
 
 This repo owns shared Regent visual assets, tokens, and Phoenix component primitives.

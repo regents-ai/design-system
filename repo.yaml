@@ -1,0 +1,25 @@
+version: 1
+repo: design-system
+owner: design-system
+path: design-system
+release_group: ops_preview
+stack_contract: ../meta/stack.yaml
+owns:
+  - shared_visual_language
+  - tokens
+  - money_action_risk_panels
+  - status_badges
+source_of_truth:
+  repo_contract: repo.yaml
+  http_contracts: []
+  cli_contracts: []
+  shared_contracts: []
+  runtime_contracts: []
+  chain_contracts: []
+code_map:
+  - path: regent_ui
+    owns: regent_ui
+local_path_dependencies: []
+acceptance_commands:
+  - cwd: design-system/regent_ui
+    command: mix test
