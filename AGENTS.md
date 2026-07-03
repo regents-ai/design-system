@@ -32,6 +32,7 @@ The Regent dependency skills are installed in `/Users/sean/Documents/regent/.age
 
 ## Start Here
 
+- Read `STYLE.md` first: the canonical Regent visual language (neutrals, product identity accents, typography, motion, glass, artwork, logos).
 - Use this repo for shared visual assets, tokens, and Phoenix component primitives.
 - Read `/Users/sean/Documents/regent/docs/shared-agent-dependency-map.md` only when a shared UI change crosses into product docs, contracts, diagnostics, or operator help.
 - Do not add product-specific business rules to shared UI. Put product state and product permission in the owning product.

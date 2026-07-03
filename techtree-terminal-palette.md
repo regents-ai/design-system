@@ -5,17 +5,21 @@ The shared token files in this directory are the source of truth:
 - `design_system_tokens.css`
 - `design_system_tokens.json`
 
+See `STYLE.md` for the full visual language.
+
 ## Direction
 
-Use paper-like neutrals for most surfaces and moss as the single product accent.
-Reserve semantic green, red, amber, and blue for status only.
+Use the shared hueless neutral scale for all surfaces and beaker blue as the product accent,
+with biology green (`--color-accent-secondary`) as a sparing secondary note for living/organic
+signals. Reserve semantic green, red, amber, and blue for status only.
 
 ## Core Values
 
-- Background: `oklch(97.5% 0.010 92)` light, `oklch(17% 0.015 110)` dark
-- Surface: `oklch(95.8% 0.012 92)` light, `oklch(22% 0.018 110)` dark
-- Text: `oklch(24% 0.020 105)` light, `oklch(91% 0.010 95)` dark
-- Accent: `oklch(40% 0.07 135)` light, `oklch(74% 0.08 135)` dark
+- Background: `oklch(98.5% 0 0)` light, `oklch(14.5% 0 0)` dark
+- Surface: `oklch(97% 0 0)` light, `oklch(17.5% 0 0)` dark
+- Text: `oklch(22% 0 0)` light, `oklch(97% 0 0)` dark
+- Accent: `oklch(45% 0.11 250)` light, `oklch(72% 0.11 250)` dark
+- Secondary (biology): `oklch(52% 0.1 160)` light, `oklch(76% 0.11 160)` dark
 
 ## Usage
 

@@ -70,9 +70,14 @@
   --radius-lg: 12px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 8%, transparent);
-  --shadow-md: 0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 24%, transparent);
-  --shadow-lg: 0 28px 64px -48px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 32%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);
+  --shadow-md: 0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 24%, transparent);
+  --shadow-lg: 0 28px 64px -48px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 32%, transparent);
+
+  --hairline: color-mix(in oklch, var(--color-fg) 14%, transparent);
+  --hairline-strong: color-mix(in oklch, var(--color-fg) 26%, transparent);
+
+  --glass-blur: 9px;
 
   --duration-fast: 140ms;
   --duration-base: 200ms;
@@ -109,10 +114,52 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
+
+  --product-formation: oklch(52% 0.16 42);
+  --product-formation-soft: color-mix(in oklch, var(--product-formation) 12%, transparent);
+  --product-autolaunch: oklch(50% 0.15 155);
+  --product-autolaunch-soft: color-mix(in oklch, var(--product-autolaunch) 12%, transparent);
+  --product-techtree: oklch(45% 0.11 250);
+  --product-techtree-soft: color-mix(in oklch, var(--product-techtree) 12%, transparent);
+  --product-techtree-bio: oklch(52% 0.1 160);
+
+  --glass-frost: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.35) 32%,
+    rgba(255, 255, 255, 0.18) 58%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
+  --glass-shine: radial-gradient(
+    24rem circle at var(--shine-x, 50%) var(--shine-y, 35%),
+    rgba(255, 255, 255, 0.35),
+    transparent 64%
+  );
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
+
+  --product-formation: oklch(68% 0.16 45);
+  --product-formation-soft: color-mix(in oklch, var(--product-formation) 14%, transparent);
+  --product-autolaunch: oklch(78% 0.17 155);
+  --product-autolaunch-soft: color-mix(in oklch, var(--product-autolaunch) 14%, transparent);
+  --product-techtree: oklch(72% 0.11 250);
+  --product-techtree-soft: color-mix(in oklch, var(--product-techtree) 14%, transparent);
+  --product-techtree-bio: oklch(76% 0.11 160);
+
+  --glass-frost: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.04) 32%,
+    rgba(10, 10, 10, 0.18) 55%,
+    rgba(10, 10, 10, 0.78) 100%
+  );
+  --glass-shine: radial-gradient(
+    24rem circle at var(--shine-x, 50%) var(--shine-y, 35%),
+    rgba(255, 255, 255, 0.09),
+    transparent 64%
+  );
 }
 
 :root[data-brand="platform"][data-theme="light"] {
@@ -120,18 +167,18 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(98.5% 0.012 238);
-  --color-surface: oklch(97% 0.015 238);
-  --color-surface-elevated: oklch(99.5% 0.008 238);
-  --color-border: oklch(63% 0.024 238);
-  --color-fg: oklch(25% 0.035 238);
-  --color-fg-muted: oklch(45% 0.025 238);
-  --color-accent: oklch(45% 0.10 238);
-  --color-fg-on-accent: oklch(98.5% 0.012 238);
+  --color-bg: oklch(98.5% 0 0);
+  --color-surface: oklch(97% 0 0);
+  --color-surface-elevated: oklch(99.5% 0 0);
+  --color-border: oklch(86% 0 0);
+  --color-fg: oklch(22% 0 0);
+  --color-fg-muted: oklch(46% 0 0);
+  --color-accent: oklch(46% 0.12 238);
+  --color-fg-on-accent: oklch(98.5% 0 0);
   --color-success: oklch(42% 0.12 150);
   --color-error: oklch(46% 0.16 28);
   --color-warning: oklch(50% 0.12 75);
-  --color-info: oklch(45% 0.10 238);
+  --color-info: oklch(46% 0.12 238);
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -141,7 +188,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -173,14 +220,14 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(18% 0.025 238);
-  --color-surface: oklch(22% 0.025 238);
-  --color-surface-elevated: oklch(27% 0.025 238);
-  --color-border: oklch(52% 0.03 238);
-  --color-fg: oklch(92% 0.014 238);
-  --color-fg-muted: oklch(72% 0.02 238);
+  --color-bg: oklch(14.5% 0 0);
+  --color-surface: oklch(17.5% 0 0);
+  --color-surface-elevated: oklch(20.5% 0 0);
+  --color-border: oklch(32% 0 0);
+  --color-fg: oklch(97% 0 0);
+  --color-fg-muted: oklch(70.8% 0 0);
   --color-accent: oklch(70% 0.12 238);
-  --color-fg-on-accent: oklch(16% 0.025 238);
+  --color-fg-on-accent: oklch(14.5% 0 0);
   --color-success: oklch(72% 0.12 150);
   --color-error: oklch(74% 0.13 28);
   --color-warning: oklch(80% 0.12 75);
@@ -194,9 +241,9 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-fg);
+  --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
@@ -226,14 +273,14 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(98.5% 0.012 100);
-  --color-surface: oklch(97% 0.015 100);
-  --color-surface-elevated: oklch(99.5% 0.008 100);
-  --color-border: oklch(63% 0.024 155);
-  --color-fg: oklch(24% 0.035 155);
-  --color-fg-muted: oklch(45% 0.025 155);
-  --color-accent: oklch(43% 0.11 155);
-  --color-fg-on-accent: oklch(98.5% 0.012 100);
+  --color-bg: oklch(98.5% 0 0);
+  --color-surface: oklch(97% 0 0);
+  --color-surface-elevated: oklch(99.5% 0 0);
+  --color-border: oklch(86% 0 0);
+  --color-fg: oklch(22% 0 0);
+  --color-fg-muted: oklch(46% 0 0);
+  --color-accent: var(--product-autolaunch);
+  --color-fg-on-accent: oklch(98.5% 0 0);
   --color-success: oklch(42% 0.12 150);
   --color-error: oklch(46% 0.16 28);
   --color-warning: oklch(50% 0.12 75);
@@ -247,7 +294,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -279,14 +326,14 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(17% 0.025 155);
-  --color-surface: oklch(22% 0.025 155);
-  --color-surface-elevated: oklch(27% 0.025 155);
-  --color-border: oklch(52% 0.03 155);
-  --color-fg: oklch(92% 0.014 155);
-  --color-fg-muted: oklch(72% 0.02 155);
-  --color-accent: oklch(72% 0.12 155);
-  --color-fg-on-accent: oklch(15% 0.025 155);
+  --color-bg: oklch(14.5% 0 0);
+  --color-surface: oklch(17.5% 0 0);
+  --color-surface-elevated: oklch(20.5% 0 0);
+  --color-border: oklch(32% 0 0);
+  --color-fg: oklch(97% 0 0);
+  --color-fg-muted: oklch(70.8% 0 0);
+  --color-accent: var(--product-autolaunch);
+  --color-fg-on-accent: oklch(14.5% 0 0);
   --color-success: oklch(72% 0.12 150);
   --color-error: oklch(74% 0.13 28);
   --color-warning: oklch(80% 0.12 75);
@@ -300,9 +347,9 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-fg);
+  --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
@@ -332,14 +379,15 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(97.5% 0.010 92);
-  --color-surface: oklch(95.8% 0.012 92);
-  --color-surface-elevated: oklch(99% 0.006 92);
-  --color-border: oklch(63% 0.024 95);
-  --color-fg: oklch(24% 0.020 105);
-  --color-fg-muted: oklch(44% 0.018 105);
-  --color-accent: oklch(40% 0.07 135);
-  --color-fg-on-accent: oklch(97.5% 0.010 92);
+  --color-bg: oklch(98.5% 0 0);
+  --color-surface: oklch(97% 0 0);
+  --color-surface-elevated: oklch(99.5% 0 0);
+  --color-border: oklch(86% 0 0);
+  --color-fg: oklch(22% 0 0);
+  --color-fg-muted: oklch(46% 0 0);
+  --color-accent: var(--product-techtree);
+  --color-accent-secondary: var(--product-techtree-bio);
+  --color-fg-on-accent: oklch(98.5% 0 0);
   --color-success: oklch(42% 0.12 150);
   --color-error: oklch(46% 0.16 28);
   --color-warning: oklch(50% 0.12 75);
@@ -353,7 +401,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -385,14 +433,15 @@
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
   --brand-accent: var(--color-warning);
-  --color-bg: oklch(17% 0.015 110);
-  --color-surface: oklch(22% 0.018 110);
-  --color-surface-elevated: oklch(27% 0.018 110);
-  --color-border: oklch(52% 0.02 110);
-  --color-fg: oklch(91% 0.010 95);
-  --color-fg-muted: oklch(72% 0.014 95);
-  --color-accent: oklch(74% 0.08 135);
-  --color-fg-on-accent: oklch(15% 0.015 110);
+  --color-bg: oklch(14.5% 0 0);
+  --color-surface: oklch(17.5% 0 0);
+  --color-surface-elevated: oklch(20.5% 0 0);
+  --color-border: oklch(32% 0 0);
+  --color-fg: oklch(97% 0 0);
+  --color-fg-muted: oklch(70.8% 0 0);
+  --color-accent: var(--product-techtree);
+  --color-accent-secondary: var(--product-techtree-bio);
+  --color-fg-on-accent: oklch(14.5% 0 0);
   --color-success: oklch(72% 0.12 150);
   --color-error: oklch(74% 0.13 28);
   --color-warning: oklch(80% 0.12 75);
@@ -406,9 +455,9 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-fg);
+  --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
