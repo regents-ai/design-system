@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 186">
+  <rect width="252" height="186" fill="#FFFFFF"/>
+  <defs>
+    <g id="vcl">
+      <path d="M0,0 L13,-13 L49,-13 L36,0 Z" fill="#3D3D3D" stroke="#4D4D4D" stroke-width="0.8"/>
+      <path d="M36,0 L49,-13 L49,23 L36,36 Z" fill="#050505" stroke="#4D4D4D" stroke-width="0.8"/>
+      <rect width="36" height="36" fill="#1C1C1C" stroke="#4D4D4D" stroke-width="0.8"/>
+    </g>
+  </defs>
+  <use href="#vcl" x="30" y="117"/><use href="#vcl" x="66" y="117"/><use href="#vcl" x="102" y="117"/><use href="#vcl" x="138" y="117"/><use href="#vcl" x="174" y="117"/>
+  <use href="#vcl" x="30" y="81"/><use href="#vcl" x="66" y="81"/><use href="#vcl" x="102" y="81"/><use href="#vcl" x="138" y="81"/><use href="#vcl" x="174" y="81"/>
+  <use href="#vcl" x="30" y="45"/><use href="#vcl" x="102" y="45"/><use href="#vcl" x="174" y="45"/>
+</svg>

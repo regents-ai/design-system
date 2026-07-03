@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 400">
+  <rect width="412" height="400" fill="#0A0A0A"/>
+  <defs>
+    <g id="t">
+      <path d="M0,0 L9,-9 L33,-9 L24,0 Z" fill="#FFFFFF" stroke="#B3B3AC" stroke-width="0.7"/>
+      <path d="M24,0 L33,-9 L33,15 L24,24 Z" fill="#C6C6C0" stroke="#B3B3AC" stroke-width="0.7"/>
+      <rect width="24" height="24" fill="#F2F2EF" stroke="#B3B3AC" stroke-width="0.7"/>
+    </g>
+  </defs>
+  <use href="#t" x="253" y="358"/>
+  <use href="#t" x="253" y="334"/>
+  <use href="#t" x="253" y="310"/>
+  <use href="#t" x="253" y="286"/>
+  <use href="#t" x="229" y="262"/><use href="#t" x="253" y="262"/><use href="#t" x="277" y="262"/>
+  <use href="#t" x="133" y="238"/><use href="#t" x="157" y="238"/><use href="#t" x="181" y="238"/><use href="#t" x="205" y="238"/><use href="#t" x="229" y="238"/><use href="#t" x="253" y="238"/><use href="#t" x="277" y="238"/><use href="#t" x="301" y="238"/><use href="#t" x="325" y="238"/><use href="#t" x="349" y="238"/><use href="#t" x="373" y="238"/>
+  <use href="#t" x="133" y="214"/><use href="#t" x="229" y="214"/><use href="#t" x="253" y="214"/><use href="#t" x="277" y="214"/>
+  <use href="#t" x="133" y="190"/>
+  <use href="#t" x="133" y="166"/>
+  <use href="#t" x="133" y="142"/>
+  <use href="#t" x="133" y="118"/>
+  <use href="#t" x="109" y="94"/><use href="#t" x="133" y="94"/><use href="#t" x="157" y="94"/>
+  <use href="#t" x="13" y="70"/><use href="#t" x="37" y="70"/><use href="#t" x="61" y="70"/><use href="#t" x="85" y="70"/><use href="#t" x="109" y="70"/><use href="#t" x="133" y="70"/><use href="#t" x="157" y="70"/><use href="#t" x="181" y="70"/><use href="#t" x="205" y="70"/><use href="#t" x="229" y="70"/><use href="#t" x="253" y="70"/>
+  <use href="#t" x="109" y="46"/><use href="#t" x="133" y="46"/><use href="#t" x="157" y="46"/>
+</svg>
