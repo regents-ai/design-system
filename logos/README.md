@@ -35,6 +35,15 @@ first `<rect>` and keep the block colors.
 `png/` holds production rasters generated from the flat crown (`make_rasters` supersampled
 render, not a screenshot): icons at 16/32/180/192/512/1024 in both schemes, 1200x630 share
 images, and multi-size `.ico` files (16-256). The platform ships the dark set.
+`<product>-flat-<scheme>-{1024,512}.png` are straight exports of the flat Autolaunch and
+Techtree masters at their native aspect ratios.
+
+## Avatars
+
+`<product>-avatar-dark.svg` are square 1024 compositions of the voxel marks on near-black,
+padded for avatar use and safe under circular crops; all three are sized to the same optical
+weight. `png/<product>-avatar-dark-{1024,512,400}.png` are the upload-ready rasters
+(400 for X, 512 for Discord and most others).
 
 ## Small sizes
 
