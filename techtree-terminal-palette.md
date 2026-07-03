@@ -1,24 +1,22 @@
-# Techtree Brand Palette
+# Techtree Palette
 
-This file is the source of truth for the Techtree brand palette in this folder.
+The shared token files in this directory are the source of truth:
 
-The shared token files in this directory must match this palette:
+- `design_system_tokens.css`
+- `design_system_tokens.json`
 
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.json`
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.css`
+## Direction
 
-## Core Palette
+Use paper-like neutrals for most surfaces and moss as the single product accent.
+Reserve semantic green, red, amber, and blue for status only.
 
-- `#1C1C19` — Charcoal Ink
-- `#F2F0EA` — Paper White
-- `#D8D4CA` — Stone Gray
-- `#55624C` — Moss Ledger
-- `#A88957` — Record Gold
+## Core Values
+
+- Background: `oklch(97.5% 0.010 92)` light, `oklch(17% 0.015 110)` dark
+- Surface: `oklch(95.8% 0.012 92)` light, `oklch(22% 0.018 110)` dark
+- Text: `oklch(24% 0.020 105)` light, `oklch(91% 0.010 95)` dark
+- Accent: `oklch(40% 0.07 135)` light, `oklch(74% 0.08 135)` dark
 
 ## Usage
 
-- Keep the overall look neutral-led in both light and dark themes.
-- Use `Paper White` and `Stone Gray` to carry the light-mode surface language.
-- Use `Charcoal Ink` to carry the dark-mode surface language.
-- Use `Moss Ledger` as the working accent and normal action color.
-- Reserve `Record Gold` for standout proof, record states, and special moments, not normal buttons.
+Neutrals should carry the interface. Use the accent for primary actions, tree state, selected states, and a small number of active highlights.

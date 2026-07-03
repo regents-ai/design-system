@@ -1,24 +1,22 @@
-# Autolaunch Brand Palette
+# Autolaunch Palette
 
-This file is the source of truth for the Autolaunch brand palette in this folder.
+The shared token files in this directory are the source of truth:
 
-The shared token files in this directory must match this palette:
+- `design_system_tokens.css`
+- `design_system_tokens.json`
 
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.json`
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.css`
+## Direction
 
-## Core Palette
+Use warm neutrals for most surfaces and Launch green as the single product accent.
+Reserve semantic green, red, amber, and blue for status only.
 
-- `#183B33` — Deep Pine
-- `#0B7A4B` — Launch Green
-- `#F7F1DE` — Warm Linen
-- `#CFA24F` — Auction Brass
-- `#687264` — Moss Slate
+## Core Values
+
+- Background: `oklch(98.5% 0.012 100)` light, `oklch(17% 0.025 155)` dark
+- Surface: `oklch(97% 0.015 100)` light, `oklch(22% 0.025 155)` dark
+- Text: `oklch(24% 0.035 155)` light, `oklch(92% 0.014 155)` dark
+- Accent: `oklch(43% 0.11 155)` light, `oklch(72% 0.12 155)` dark
 
 ## Usage
 
-- Use `Launch Green` as the main action color.
-- Use `Deep Pine` for strong text, headers, and dark grounding surfaces.
-- Use `Warm Linen` as the main light surface.
-- Use `Auction Brass` as secondary emphasis only.
-- Use `Moss Slate` for supporting structure and muted elements, not the main action color.
+Neutrals should carry the interface. Use the accent for primary actions, launch state, selected states, and a small number of active highlights.

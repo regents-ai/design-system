@@ -1,24 +1,22 @@
-# Regent Brand Palette
+# Platform Palette
 
-This file is the source of truth for Regent brand colors in this folder.
+The shared token files in this directory are the source of truth:
 
-The shared token files in this directory must match this palette:
+- `design_system_tokens.css`
+- `design_system_tokens.json`
 
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.json`
-- `/Users/sean/Documents/regent/brand-regent/design_system_tokens.css`
+## Direction
 
-## Core Palette
+Use cool neutrals for most surfaces and Platform blue as the single product accent.
+Reserve semantic green, red, amber, and blue for status only.
 
-- `#315569` — Charcoal Blue
-- `#034568` — Regent Blue
-- `#FBF4DE` — Ivory Mist
-- `#D4A756` — Sunlit Clay
-- `#848078` — Grey Olive
+## Core Values
+
+- Background: `oklch(98.5% 0.012 238)` light, `oklch(18% 0.025 238)` dark
+- Surface: `oklch(97% 0.015 238)` light, `oklch(22% 0.025 238)` dark
+- Text: `oklch(25% 0.035 238)` light, `oklch(92% 0.014 238)` dark
+- Accent: `oklch(45% 0.10 238)` light, `oklch(70% 0.12 238)` dark
 
 ## Usage
 
-- Use `Regent Blue` as the main action color.
-- Use `Charcoal Blue` for strong text, frames, and dark surfaces.
-- Use `Ivory Mist` as the main light surface.
-- Use `Sunlit Clay` for highlights and warm emphasis only.
-- Use `Grey Olive` as supporting brand color, not the main action color.
+Neutrals should carry the interface. Use the accent for primary actions, links, selected states, and a small number of active highlights.
