@@ -1,78 +1,40 @@
 :root {
-  --rg-font-display: var(--font-family-title, "GeistPixelCircle", serif);
-  --rg-font-body: var(--font-family-ui, "GeistPixelSquare", sans-serif);
-  --rg-bg: #090d15;
-  --rg-panel: rgba(15, 22, 34, 0.84);
-  --rg-panel-border: rgba(160, 181, 224, 0.18);
-  --rg-text: #eff4ff;
-  --rg-muted: #92a5c7;
-  --rg-node-fill: rgba(214, 224, 255, 0.52);
-  --rg-node-stroke: #cad4ef;
-  --rg-node-fill-active: rgba(110, 189, 255, 0.78);
-  --rg-node-stroke-active: #a7d8ff;
-  --rg-node-fill-focused: rgba(147, 114, 255, 0.8);
-  --rg-node-stroke-focused: #d3c1ff;
-  --rg-sigil-color: #0d1524;
-  --rg-sigil-color-active: #08111f;
-  --rg-intent-color-scene-action: #392200;
-  --rg-intent-color-navigate: #08283d;
-  --rg-intent-color-back: #182746;
-  --rg-intent-color-danger: #3e0a10;
-  --rg-intent-stroke-scene-action: #d5a357;
-  --rg-intent-stroke-navigate: #83ccff;
-  --rg-intent-stroke-back: #a6bbdf;
-  --rg-intent-stroke-danger: #ff8f9c;
-  --rg-intent-glow-scene-action: rgba(221, 170, 82, 0.28);
-  --rg-intent-glow-navigate: rgba(104, 199, 255, 0.24);
-  --rg-intent-glow-back: rgba(185, 206, 241, 0.22);
-  --rg-intent-glow-danger: rgba(255, 120, 134, 0.24);
-}
-
-html[data-brand="platform"][data-theme="dark"] {
-  --rg-bg: #034568;
-  --rg-panel: color-mix(in oklch, #034568 74%, #315569 26%);
-  --rg-panel-border: color-mix(in oklch, #fbf4de 16%, #034568 84%);
-  --rg-text: color-mix(in oklch, #fbf4de 92%, #d4a756 8%);
-  --rg-muted: color-mix(in oklch, #fbf4de 66%, #848078 34%);
-  --rg-node-fill: color-mix(in oklch, #fbf4de 26%, transparent);
-  --rg-node-stroke: color-mix(in oklch, #fbf4de 54%, #034568 46%);
-  --rg-node-fill-active: color-mix(in oklch, #fbf4de 34%, #034568 66%);
-  --rg-node-stroke-active: color-mix(in oklch, #fbf4de 62%, #034568 38%);
-  --rg-node-fill-focused: color-mix(in oklch, #d4a756 28%, #034568 72%);
-  --rg-node-stroke-focused: color-mix(in oklch, #fbf4de 42%, #d4a756 58%);
-  --rg-sigil-color: #fbf4de;
-  --rg-sigil-color-active: color-mix(in oklch, #fbf4de 86%, #d4a756 14%);
-}
-
-@font-face {
-  font-family: "GeistPixelCircle";
-  src: url("/fonts/GeistPixel-Circle.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "GeistPixelSquare";
-  src: url("/fonts/GeistPixel-Square.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+  --rg-font-display: var(--font-family-title, "Geist Pixel Circle", ui-sans-serif, system-ui, sans-serif);
+  --rg-font-body: var(--font-family-ui, "Geist Pixel Square", ui-sans-serif, system-ui, sans-serif);
+  --rg-bg: var(--color-bg, oklch(18% 0.025 238));
+  --rg-panel: var(--glass-surface, oklch(22% 0.025 238));
+  --rg-panel-border: var(--glass-border-subtle, oklch(50% 0.03 238));
+  --rg-text: var(--glass-text-primary, oklch(92% 0.014 238));
+  --rg-muted: var(--glass-text-secondary, oklch(72% 0.02 238));
+  --rg-node-fill: color-mix(in oklch, var(--color-accent, oklch(70% 0.12 238)) 14%, transparent);
+  --rg-node-stroke: var(--color-accent, oklch(70% 0.12 238));
+  --rg-node-fill-active: color-mix(in oklch, var(--color-accent, oklch(70% 0.12 238)) 22%, transparent);
+  --rg-node-stroke-active: var(--color-accent, oklch(70% 0.12 238));
+  --rg-node-fill-focused: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 24%, transparent);
+  --rg-node-stroke-focused: var(--color-warning, oklch(80% 0.12 75));
+  --rg-sigil-color: var(--glass-text-primary, oklch(92% 0.014 238));
+  --rg-sigil-color-active: var(--glass-text-accent, oklch(70% 0.12 238));
+  --rg-intent-color-scene-action: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 18%, var(--color-bg, oklch(18% 0.025 238)) 82%);
+  --rg-intent-color-navigate: color-mix(in oklch, var(--color-info, oklch(70% 0.12 238)) 18%, var(--color-bg, oklch(18% 0.025 238)) 82%);
+  --rg-intent-color-back: color-mix(in oklch, var(--color-fg-muted, oklch(72% 0.02 238)) 16%, var(--color-bg, oklch(18% 0.025 238)) 84%);
+  --rg-intent-color-danger: color-mix(in oklch, var(--color-error, oklch(74% 0.13 28)) 18%, var(--color-bg, oklch(18% 0.025 238)) 82%);
+  --rg-intent-stroke-scene-action: var(--color-warning, oklch(80% 0.12 75));
+  --rg-intent-stroke-navigate: var(--color-info, oklch(70% 0.12 238));
+  --rg-intent-stroke-back: var(--color-fg-muted, oklch(72% 0.02 238));
+  --rg-intent-stroke-danger: var(--color-error, oklch(74% 0.13 28));
+  --rg-intent-glow-scene-action: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 28%, transparent);
+  --rg-intent-glow-navigate: color-mix(in oklch, var(--color-info, oklch(70% 0.12 238)) 24%, transparent);
+  --rg-intent-glow-back: color-mix(in oklch, var(--color-fg-muted, oklch(72% 0.02 238)) 22%, transparent);
+  --rg-intent-glow-danger: color-mix(in oklch, var(--color-error, oklch(74% 0.13 28)) 24%, transparent);
 }
 
 html,
 body {
   min-height: 100%;
-  background: radial-gradient(circle at top left, rgba(71, 109, 207, 0.18), transparent 28%), var(--rg-bg);
+  background: var(--rg-bg);
   color: var(--rg-text);
   font-family: var(--rg-font-body);
 }
-
-.rg-cursor-hidden,
-.rg-cursor-hidden * {
-  cursor: none !important;
-}
-
 
 .rg-app-shell {
   position: relative;
@@ -83,45 +45,43 @@ body {
 .rg-surface {
   position: relative;
   display: grid;
-  gap: 0.9rem;
+  gap: var(--space-3, 12px);
   color: var(--rg-text);
   font-family: var(--rg-font-body);
 }
 
 .rg-surface-header {
   position: sticky;
-  top: 0.75rem;
+  top: var(--space-3, 12px);
   z-index: 6;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  min-height: 3.85rem;
-  padding: 0.58rem 0.82rem;
+  gap: var(--space-3, 12px);
+  min-height: 3.75rem;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   border: 1px solid var(--rg-panel-border);
-  border-radius: 1.15rem;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--rg-panel) 92%, rgba(255,255,255,0.04) 8%), color-mix(in srgb, var(--rg-panel) 96%, rgba(0,0,0,0.03) 4%)),
-    radial-gradient(circle at top left, rgba(118, 164, 255, 0.08), transparent 32%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 36px rgba(0,0,0,0.14);
-  backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--rg-panel);
+  box-shadow: var(--shadow-sm, none);
+  backdrop-filter: blur(10px);
 }
 
 .rg-surface-body {
   display: grid;
   grid-template-columns: minmax(4.5rem, 18rem) minmax(0, 1fr) minmax(4.5rem, 18rem);
-  gap: 0.8rem;
+  gap: var(--space-3, 12px);
   align-items: start;
 }
 
 .rg-surface-center,
 .rg-surface-main {
   display: grid;
-  gap: 0.9rem;
+  gap: var(--space-3, 12px);
 }
 
 .rg-surface-side {
   position: sticky;
-  top: 5.6rem;
+  top: 5.5rem;
   z-index: 4;
   min-height: 32rem;
 }
@@ -139,16 +99,14 @@ body {
 }
 
 .rg-surface-scene {
-  min-height: 32rem;
   position: relative;
   z-index: 1;
-  padding: 1rem;
+  min-height: 32rem;
+  padding: var(--space-4, 16px);
   border: 1px solid var(--rg-panel-border);
-  border-radius: 1.25rem;
-  background:
-    radial-gradient(circle at top left, rgba(118, 164, 255, 0.16), transparent 28%),
-    linear-gradient(180deg, rgba(14, 21, 33, 0.96), rgba(8, 11, 18, 0.96));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 30px 80px rgba(0,0,0,0.35);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--rg-panel);
+  box-shadow: var(--shadow-md, none);
   backdrop-filter: blur(4px);
 }
 
@@ -167,82 +125,112 @@ body {
 
 .rg-chamber,
 .rg-ledger {
-  border: 1px solid var(--rg-panel-border);
-  border-radius: 1rem;
-  background: var(--rg-panel);
-  backdrop-filter: blur(14px);
   overflow: clip;
+  border: 1px solid var(--rg-panel-border);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--rg-panel);
+  backdrop-filter: blur(10px);
 }
 
 .rg-chamber {
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-md, none);
 }
 
 .rg-ledger {
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-sm, none);
 }
 
 .rg-panel-header {
   display: flex;
   align-items: start;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 1rem 1rem 0.75rem;
-  border-bottom: 1px solid rgba(160, 181, 224, 0.12);
+  gap: var(--space-3, 12px);
+  padding: var(--space-4, 16px) var(--space-4, 16px) var(--space-3, 12px);
+  border-bottom: 1px solid var(--rg-panel-border);
 }
 
 .rg-panel-title {
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: 0.03em;
   margin: 0;
   font-family: var(--rg-font-display);
+  font-size: var(--type-headline-size, 18px);
+  font-weight: var(--font-weight-regular, 400);
+  letter-spacing: 0;
+  line-height: var(--type-headline-line, 26px);
   text-transform: uppercase;
 }
 
 .rg-panel-subtitle,
 .rg-panel-summary {
   color: var(--rg-muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
   font-family: var(--rg-font-body);
+  font-size: var(--type-label-size, 14px);
+  line-height: var(--type-label-line, 20px);
 }
 
 .rg-panel-body {
-  padding: 1rem;
+  padding: var(--space-4, 16px);
 }
 
 .rg-panel-footer {
-  padding: 0.9rem 1rem 1rem;
-  border-top: 1px solid rgba(160, 181, 224, 0.12);
+  padding: var(--space-3, 12px) var(--space-4, 16px) var(--space-4, 16px);
+  border-top: 1px solid var(--rg-panel-border);
 }
 
 .rg-scene-error {
-  min-height: 10rem;
   display: grid;
+  min-height: 10rem;
   align-content: center;
-  gap: 0.35rem;
+  gap: var(--space-2, 8px);
   color: var(--rg-text);
 }
 
 .rg-icon {
+  display: inline-block;
   width: 1.25rem;
   height: 1.25rem;
-  display: inline-block;
   vertical-align: middle;
+}
+
+.rg-scene-error,
+.rg-panel-body,
+.rg-panel-footer {
+  font-family: var(--rg-font-body);
+}
+
+.rg-regent-theme-platform,
+.rg-regent-theme-autolaunch,
+.rg-regent-theme-techtree {
+  --rg-bg: var(--color-bg);
+  --rg-panel: var(--glass-surface);
+  --rg-panel-border: var(--glass-panel-border);
+  --rg-text: var(--glass-text-primary);
+  --rg-muted: var(--glass-text-secondary);
+  --rg-node-fill: color-mix(in oklch, var(--color-accent) 14%, transparent);
+  --rg-node-stroke: var(--color-accent);
+  --rg-node-fill-active: color-mix(in oklch, var(--color-accent) 22%, transparent);
+  --rg-node-stroke-active: var(--color-accent);
+  --rg-node-fill-focused: color-mix(in oklch, var(--color-warning) 24%, transparent);
+  --rg-node-stroke-focused: var(--color-warning);
+  --rg-sigil-color: var(--glass-text-primary);
+  --rg-sigil-color-active: var(--glass-text-accent);
 }
 
 .rg-sigil-marker,
 .rg-sigil-marker * {
   transition:
-    transform 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 160ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+    opacity var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+    filter var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.rg-sigil-marker {
+  outline: none;
 }
 
 .rg-sigil-marker.is-focused,
-.rg-sigil-marker:focus-visible {
-  filter: drop-shadow(0 0 8px rgba(193, 224, 255, 0.32));
+.rg-sigil-marker:focus-visible,
+.rg-sigil-marker[data-pulse-state="focus"] {
+  filter: drop-shadow(0 0 10px var(--rg-intent-glow-navigate));
 }
 
 .rg-sigil-marker[data-intent="scene_action"] {
@@ -257,16 +245,17 @@ body {
   filter: drop-shadow(0 0 5px var(--rg-intent-glow-back));
 }
 
-.rg-sigil-marker[data-intent="danger"] {
-  filter: drop-shadow(0 0 5px var(--rg-intent-glow-danger));
+.rg-sigil-marker[data-intent="danger"],
+.rg-sigil-marker[data-pulse-state="warning"] {
+  filter: drop-shadow(0 0 10px var(--rg-intent-glow-danger));
 }
 
 .rg-sigil-marker.is-pulsing {
-  filter: drop-shadow(0 0 14px rgba(124, 232, 255, 0.55));
+  animation: rgSigilPulse var(--duration-slow, 280ms) var(--ease-in-out, cubic-bezier(0.77, 0, 0.175, 1)) 1;
 }
 
 .rg-sigil-marker.is-ghosted {
-  opacity: 0.45;
+  opacity: 0.42;
 }
 
 .rg-scene-target.is-dimmed {
@@ -294,141 +283,74 @@ body {
   filter: drop-shadow(0 0 12px var(--rg-intent-glow-danger));
 }
 
-.rg-surface-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 1.9rem;
-  padding: 0.38rem 0.68rem;
-  border: 1px solid color-mix(in srgb, var(--rg-panel-border) 78%, rgba(255,255,255,0.12) 22%);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--rg-panel) 84%, rgba(255,255,255,0.06) 16%);
-  color: var(--rg-text);
-  font-family: var(--rg-font-display);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+.rg-hover-cycle-target {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
 }
 
-.rg-surface-back-icon {
-  font-size: 0.95rem;
-  line-height: 1;
+.rg-hover-cycle-target.is-hover-cycling {
+  pointer-events: auto;
 }
 
-.rg-scene-error,
-.rg-table,
-.rg-panel-body,
-.rg-panel-footer {
-  font-family: var(--rg-font-body);
-}
+@keyframes rgSigilPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
 
-.rg-regent-theme-techtree {
-  --rg-bg: var(--glass-bg-page, #141109);
-  --rg-panel: var(--glass-surface, color-mix(in srgb, #fbf5e3 86%, #1c1409 14%));
-  --rg-panel-border: var(--glass-panel-border, rgba(131, 100, 35, 0.22));
-  --rg-text: var(--glass-text-primary, #14120e);
-  --rg-muted: var(--glass-text-secondary, rgba(48, 39, 24, 0.66));
-  --rg-node-fill: color-mix(in srgb, var(--glass-text-accent, #114ca7) 12%, transparent);
-  --rg-node-stroke: var(--glass-text-accent, #114ca7);
-  --rg-node-fill-active: color-mix(in srgb, var(--glass-text-accent, #114ca7) 20%, transparent);
-  --rg-node-stroke-active: var(--glass-text-primary, #05070d);
-  --rg-node-fill-focused: color-mix(in srgb, var(--brand-accent, #d4b15b) 22%, transparent);
-  --rg-node-stroke-focused: var(--brand-accent, #6f5314);
-  --rg-sigil-color: var(--glass-text-primary, #17130d);
-  --rg-sigil-color-active: var(--glass-text-accent, #0f2349);
-  --rg-intent-color-scene-action: #2f1c03;
-  --rg-intent-color-navigate: #12355f;
-  --rg-intent-color-back: #3b2b11;
-  --rg-intent-stroke-scene-action: #c99541;
-  --rg-intent-stroke-navigate: #3d73c8;
-  --rg-intent-stroke-back: #d2b16c;
-  --rg-intent-glow-scene-action: rgba(214, 162, 72, 0.24);
-  --rg-intent-glow-navigate: rgba(55, 106, 193, 0.22);
-  --rg-intent-glow-back: rgba(210, 177, 108, 0.2);
-}
-
-.rg-regent-theme-platform {
-  --rg-bg: var(--glass-bg-page, #111615);
-  --rg-panel: var(--glass-surface, color-mix(in srgb, #f7f1e1 84%, #121919 16%));
-  --rg-panel-border: var(--glass-panel-border, rgba(73, 82, 78, 0.2));
-  --rg-text: var(--glass-text-primary, #151714);
-  --rg-muted: var(--glass-text-secondary, rgba(33, 40, 39, 0.64));
-  --rg-node-fill: color-mix(in srgb, var(--glass-text-accent, #315569) 14%, transparent);
-  --rg-node-stroke: var(--glass-text-accent, #315569);
-  --rg-node-fill-active: color-mix(in srgb, var(--brand-primary, #034568) 22%, transparent);
-  --rg-node-stroke-active: var(--glass-blue-900, #07273b);
-  --rg-node-fill-focused: color-mix(in srgb, var(--glass-warm-500, #d4a756) 24%, transparent);
-  --rg-node-stroke-focused: var(--glass-warm-500, #7a5e24);
-  --rg-sigil-color: var(--glass-text-primary, #11140f);
-  --rg-sigil-color-active: var(--glass-text-accent, #08283d);
-}
-
-.rg-regent-theme-autolaunch {
-  --rg-bg: var(--glass-bg-page, #0d1718);
-  --rg-panel: var(--glass-surface, rgba(249, 250, 243, 0.82));
-  --rg-panel-border: var(--glass-panel-border, rgba(27, 62, 59, 0.16));
-  --rg-text: var(--glass-text-primary, #0b1516);
-  --rg-muted: var(--glass-text-secondary, rgba(11, 21, 22, 0.62));
-  --rg-node-fill: color-mix(in srgb, var(--glass-text-accent, #0f766e) 10%, transparent);
-  --rg-node-stroke: var(--glass-text-accent, #0f766e);
-  --rg-node-fill-active: color-mix(in srgb, var(--caustic-peach, #b8582b) 20%, transparent);
-  --rg-node-stroke-active: var(--caustic-amber, #8f3d16);
-  --rg-node-fill-focused: color-mix(in srgb, var(--brand-accent, #d97706) 20%, transparent);
-  --rg-node-stroke-focused: var(--brand-accent, #a24d00);
-  --rg-sigil-color: var(--glass-text-primary, #081214);
-  --rg-sigil-color-active: var(--glass-text-accent, #532108);
-  --rg-intent-color-scene-action: #392100;
-  --rg-intent-color-navigate: #0f3028;
-  --rg-intent-color-back: #3f2a13;
-  --rg-intent-stroke-scene-action: #cf7e2e;
-  --rg-intent-stroke-navigate: #2f9d80;
-  --rg-intent-stroke-back: #b69062;
-  --rg-intent-glow-scene-action: rgba(214, 118, 34, 0.24);
-  --rg-intent-glow-navigate: rgba(43, 154, 125, 0.2);
-  --rg-intent-glow-back: rgba(184, 144, 95, 0.2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rg-sigil-marker,
-  .rg-sigil-marker * {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+  50% {
+    transform: scale(1.035);
   }
 }
 
-.rg-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.rg-table th,
-.rg-table td {
-  text-align: left;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid rgba(160, 181, 224, 0.1);
-}
-
-.rg-table th {
-  color: var(--rg-muted);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.rg-pill {
-  display: inline-flex;
+.rg-collateral-host {
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid rgba(160, 181, 224, 0.18);
-  color: var(--rg-text);
-  background: rgba(255, 255, 255, 0.03);
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  contain: layout paint;
 }
 
-.rg-sigil-marker.is-focused {
-  filter: drop-shadow(0 0 10px rgba(179, 221, 255, 0.5));
+.rg-collateral-host svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+.rg-collateral-host svg polygon,
+.rg-collateral-host svg path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.rg-collateral-hoverable,
+.rg-collateral-replayable {
+  cursor: pointer;
+}
+
+.rg-collateral-hoverable:active,
+.rg-collateral-replayable:active {
+  transform: scale(var(--active-scale, 0.97));
+}
+
+.rg-collateral-drift-frame {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.rg-collateral-beam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 @media (max-width: 1180px) {
@@ -454,29 +376,25 @@ body {
   }
 
   .rg-surface-chamber {
-    margin-top: -2rem;
     width: 100%;
+    margin-top: -2rem;
   }
 }
 
 @media (max-width: 720px) {
   .rg-surface {
-    gap: 0.75rem;
+    gap: var(--space-3, 12px);
   }
 
   .rg-surface-header {
-    min-height: 3.6rem;
-    padding: 0.55rem 0.7rem;
-    border-radius: 1rem;
-  }
-
-  .rg-surface-body {
-    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: var(--space-3, 12px);
+    border-radius: var(--radius-md, 8px);
   }
 
   .rg-surface-scene {
     min-height: 24rem;
-    padding: 0.65rem;
+    padding: var(--space-3, 12px);
   }
 
   .rg-surface-side {
@@ -493,97 +411,16 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rg-sigil-marker {
-    transition: none !important;
+  .rg-sigil-marker,
+  .rg-sigil-marker * {
+    animation: none !important;
+    transition-property: opacity, fill, stroke, color;
+    transition-duration: var(--duration-fast, 140ms);
+    transition-timing-function: var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   }
-}
 
-
-.rg-surface-defs {
-  display: none;
-}
-
-.rg-sigil-marker {
-  outline: none;
-}
-
-.rg-hover-cycle-target {
-  transform-box: fill-box;
-  transform-origin: center;
-  will-change: transform, opacity, filter, fill, stroke;
-}
-
-.rg-hover-cycle-target.is-hover-cycling {
-  pointer-events: auto;
-}
-
-.rg-sigil-marker.is-pulsing {
-  animation: rgSigilPulse 1.15s ease-in-out infinite;
-}
-
-.rg-sigil-marker.is-ghosted {
-  opacity: 0.42;
-  filter: drop-shadow(0 0 9px rgba(140, 190, 255, 0.12));
-}
-
-.rg-sigil-marker[data-pulse-state="focus"] {
-  filter: drop-shadow(0 0 12px rgba(175, 219, 255, 0.55));
-}
-
-.rg-sigil-marker[data-pulse-state="warning"] {
-  filter: drop-shadow(0 0 12px rgba(255, 166, 110, 0.55));
-}
-
-@keyframes rgSigilPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
-}
-
-/* Brand collateral experiments (collateral/) */
-
-.rg-collateral-host {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  contain: layout paint;
-}
-
-.rg-collateral-host svg {
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  display: block;
-}
-
-.rg-collateral-host svg polygon,
-.rg-collateral-host svg path {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.rg-collateral-hoverable {
-  cursor: pointer;
-}
-
-.rg-collateral-replayable {
-  cursor: pointer;
-}
-
-.rg-collateral-drift-frame {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform;
-}
-
-.rg-collateral-beam {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  .rg-collateral-hoverable:active,
+  .rg-collateral-replayable:active {
+    transform: none;
+  }
 }

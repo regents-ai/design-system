@@ -1,330 +1,361 @@
 {
-  "themes": {
-    "regent": {
-      "palette": {
-        "ink": "#315569",
-        "primary": "#034568",
-        "paper": "#FBF4DE",
-        "accent": "#D4A756",
-        "support": "#848078"
-      },
-      "light": {
-        "color": {
-          "fg": "#315569",
-          "fgMuted": "#6E6B64",
-          "fgPrimary": "#034568",
-          "fgOnPrimary": "#FBF4DE",
-          "bg": "#FBF4DE",
-          "bgAlt": "#F2E9D0",
-          "bgSecondary": "#E9DFC3",
-          "bgTertiary": "#D7C7A1",
-          "bgPrimary": "#034568",
-          "bgPrimaryWash": "#E7EEF2",
-          "success": "#1F7A57",
-          "danger": "#B54A3E"
-        }
-      },
-      "dark": {
-        "color": {
-          "fg": "#FBF4DE",
-          "fgMuted": "#C6BFAE",
-          "fgPrimary": "#8FB8CC",
-          "fgOnPrimary": "#10222B",
-          "bg": "#14242D",
-          "bgAlt": "#1B303B",
-          "bgSecondary": "#254251",
-          "bgTertiary": "#315569",
-          "bgPrimary": "#8FB8CC",
-          "bgPrimaryWash": "#10222B",
-          "success": "#58B98A",
-          "danger": "#E07B6A"
-        }
-      }
+  "selectors": {
+    ":root": {
+      "--space-0": "0",
+      "--space-1": "4px",
+      "--space-2": "8px",
+      "--space-3": "12px",
+      "--space-4": "16px",
+      "--space-5": "24px",
+      "--space-6": "32px",
+      "--space-7": "48px",
+      "--radius-sm": "4px",
+      "--radius-md": "8px",
+      "--radius-lg": "12px",
+      "--radius-full": "9999px",
+      "--shadow-sm": "0 1px 2px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 8%, transparent)",
+      "--shadow-md": "0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 24%, transparent)",
+      "--shadow-lg": "0 28px 64px -48px color-mix(in oklch, var(--color-fg, oklch(25% 0.035 238)) 32%, transparent)",
+      "--duration-fast": "140ms",
+      "--duration-base": "200ms",
+      "--duration-slow": "280ms",
+      "--ease-out": "cubic-bezier(0.23, 1, 0.32, 1)",
+      "--ease-in-out": "cubic-bezier(0.77, 0, 0.175, 1)",
+      "--active-scale": "0.97",
+      "--font-family-title": "\"Geist Pixel Circle\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "--font-family-ui": "\"Geist UI Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "--font-family-paragraph": "\"Geist UI Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "--font-family-mono": "\"Geist Mono\", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
+      "--type-display-size": "40px",
+      "--type-display-line": "48px",
+      "--type-title-size": "24px",
+      "--type-title-line": "32px",
+      "--type-headline-size": "18px",
+      "--type-headline-line": "26px",
+      "--type-body-size": "16px",
+      "--type-body-line": "24px",
+      "--type-label-size": "14px",
+      "--type-label-line": "20px",
+      "--type-caption-size": "13px",
+      "--type-caption-line": "18px",
+      "--type-code-size": "14px",
+      "--type-code-line": "20px",
+      "--font-weight-regular": "400",
+      "--font-weight-semibold": "600",
+      "--font-family-sans": "\"Geist UI Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "--font-family-pixel": "\"Geist Pixel Square\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     },
-    "autolaunch": {
-      "palette": {
-        "ink": "#183B33",
-        "primary": "#0B7A4B",
-        "paper": "#F7F1DE",
-        "accent": "#CFA24F",
-        "support": "#687264"
-      },
-      "light": {
-        "color": {
-          "fg": "#183B33",
-          "fgMuted": "#657060",
-          "fgPrimary": "#0B7A4B",
-          "fgOnPrimary": "#F7F1DE",
-          "bg": "#F7F1DE",
-          "bgAlt": "#EEE7D1",
-          "bgSecondary": "#E2DAC1",
-          "bgTertiary": "#CFC5AB",
-          "bgPrimary": "#0B7A4B",
-          "bgPrimaryWash": "#E2F0E7",
-          "success": "#0A7447",
-          "danger": "#B54A3E"
-        }
-      },
-      "dark": {
-        "color": {
-          "fg": "#F7F1DE",
-          "fgMuted": "#B7BEAF",
-          "fgPrimary": "#4FC487",
-          "fgOnPrimary": "#071D14",
-          "bg": "#101815",
-          "bgAlt": "#16231E",
-          "bgSecondary": "#1C3129",
-          "bgTertiary": "#275040",
-          "bgPrimary": "#4FC487",
-          "bgPrimaryWash": "#0E2A1C",
-          "success": "#67D49A",
-          "danger": "#E07B6A"
-        }
-      }
+    ":root[data-brand=\"platform\"][data-theme=\"light\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(98.5% 0.012 238)",
+      "--color-surface": "oklch(97% 0.015 238)",
+      "--color-surface-elevated": "oklch(99.5% 0.008 238)",
+      "--color-border": "oklch(63% 0.024 238)",
+      "--color-fg": "oklch(25% 0.035 238)",
+      "--color-fg-muted": "oklch(45% 0.025 238)",
+      "--color-accent": "oklch(45% 0.10 238)",
+      "--color-fg-on-accent": "oklch(98.5% 0.012 238)",
+      "--color-success": "oklch(42% 0.12 150)",
+      "--color-error": "oklch(46% 0.16 28)",
+      "--color-warning": "oklch(50% 0.12 75)",
+      "--color-info": "oklch(45% 0.10 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     },
-    "techtree": {
-      "palette": {
-        "ink": "#1C1C19",
-        "paper": "#F2F0EA",
-        "support": "#D8D4CA",
-        "primary": "#55624C",
-        "accent": "#A88957"
-      },
-      "light": {
-        "color": {
-          "fg": "#1C1C19",
-          "fgMuted": "#6E6B64",
-          "fgPrimary": "#55624C",
-          "fgOnPrimary": "#F2F0EA",
-          "bg": "#F2F0EA",
-          "bgAlt": "#E7E3DA",
-          "bgSecondary": "#D8D4CA",
-          "bgTertiary": "#C6C1B4",
-          "bgPrimary": "#55624C",
-          "bgPrimaryWash": "#E4E8E1",
-          "success": "#4F5C47",
-          "danger": "#B54A3E"
-        }
-      },
-      "dark": {
-        "color": {
-          "fg": "#F2F0EA",
-          "fgMuted": "#B6B0A3",
-          "fgPrimary": "#92A387",
-          "fgOnPrimary": "#161614",
-          "bg": "#161614",
-          "bgAlt": "#1C1C19",
-          "bgSecondary": "#23231F",
-          "bgTertiary": "#2D2D29",
-          "bgPrimary": "#92A387",
-          "bgPrimaryWash": "#232A21",
-          "success": "#7FA272",
-          "danger": "#E07B6A"
-        }
-      }
-    }
-  },
-  "space": {
-    "0": 0,
-    "0.25": 2,
-    "0.5": 4,
-    "1": 8,
-    "1.5": 12,
-    "2": 16,
-    "3": 24,
-    "4": 32,
-    "5": 40,
-    "6": 48
-  },
-  "radius": {
-    "sm": 4,
-    "md": 8,
-    "lg": 12,
-    "xl": 16,
-    "xxl": 24,
-    "full": 9999
-  },
-  "fontFamily": {
-    "title": {
-      "defaultVariant": "circle",
-      "web": [
-        "Geist Pixel Circle",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "ios": [
-        "Geist Pixel Circle",
-        "Geist",
-        "System"
-      ]
+    ":root[data-brand=\"platform\"][data-theme=\"dark\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(18% 0.025 238)",
+      "--color-surface": "oklch(22% 0.025 238)",
+      "--color-surface-elevated": "oklch(27% 0.025 238)",
+      "--color-border": "oklch(52% 0.03 238)",
+      "--color-fg": "oklch(92% 0.014 238)",
+      "--color-fg-muted": "oklch(72% 0.02 238)",
+      "--color-accent": "oklch(70% 0.12 238)",
+      "--color-fg-on-accent": "oklch(16% 0.025 238)",
+      "--color-success": "oklch(72% 0.12 150)",
+      "--color-error": "oklch(74% 0.13 28)",
+      "--color-warning": "oklch(80% 0.12 75)",
+      "--color-info": "oklch(70% 0.12 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     },
-    "ui": {
-      "defaultVariant": "square",
-      "web": [
-        "Geist Pixel Square",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "ios": [
-        "Geist Pixel Square",
-        "Geist",
-        "System"
-      ]
+    ":root[data-brand=\"autolaunch\"][data-theme=\"light\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(98.5% 0.012 100)",
+      "--color-surface": "oklch(97% 0.015 100)",
+      "--color-surface-elevated": "oklch(99.5% 0.008 100)",
+      "--color-border": "oklch(63% 0.024 155)",
+      "--color-fg": "oklch(24% 0.035 155)",
+      "--color-fg-muted": "oklch(45% 0.025 155)",
+      "--color-accent": "oklch(43% 0.11 155)",
+      "--color-fg-on-accent": "oklch(98.5% 0.012 100)",
+      "--color-success": "oklch(42% 0.12 150)",
+      "--color-error": "oklch(46% 0.16 28)",
+      "--color-warning": "oklch(50% 0.12 75)",
+      "--color-info": "oklch(45% 0.10 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     },
-    "paragraph": {
-      "web": [
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "ios": [
-        "System"
-      ]
+    ":root[data-brand=\"autolaunch\"][data-theme=\"dark\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(17% 0.025 155)",
+      "--color-surface": "oklch(22% 0.025 155)",
+      "--color-surface-elevated": "oklch(27% 0.025 155)",
+      "--color-border": "oklch(52% 0.03 155)",
+      "--color-fg": "oklch(92% 0.014 155)",
+      "--color-fg-muted": "oklch(72% 0.02 155)",
+      "--color-accent": "oklch(72% 0.12 155)",
+      "--color-fg-on-accent": "oklch(15% 0.025 155)",
+      "--color-success": "oklch(72% 0.12 150)",
+      "--color-error": "oklch(74% 0.13 28)",
+      "--color-warning": "oklch(80% 0.12 75)",
+      "--color-info": "oklch(70% 0.12 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     },
-    "mono": {
-      "web": [
-        "Geist Mono",
-        "ui-monospace",
-        "monospace"
-      ],
-      "ios": [
-        "Geist Mono",
-        "SF Mono",
-        "Monospaced System"
-      ]
+    ":root[data-brand=\"techtree\"][data-theme=\"light\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(97.5% 0.010 92)",
+      "--color-surface": "oklch(95.8% 0.012 92)",
+      "--color-surface-elevated": "oklch(99% 0.006 92)",
+      "--color-border": "oklch(63% 0.024 95)",
+      "--color-fg": "oklch(24% 0.020 105)",
+      "--color-fg-muted": "oklch(44% 0.018 105)",
+      "--color-accent": "oklch(40% 0.07 135)",
+      "--color-fg-on-accent": "oklch(97.5% 0.010 92)",
+      "--color-success": "oklch(42% 0.12 150)",
+      "--color-error": "oklch(46% 0.16 28)",
+      "--color-warning": "oklch(50% 0.12 75)",
+      "--color-info": "oklch(45% 0.10 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     },
-    "pixelVariants": {
-      "square": [
-        "Geist Pixel Square",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "grid": [
-        "Geist Pixel Grid",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "circle": [
-        "Geist Pixel Circle",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "triangle": [
-        "Geist Pixel Triangle",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ],
-      "line": [
-        "Geist Pixel Line",
-        "Geist UI Sans",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ]
-    }
-  },
-  "fontAssets": {
-    "web": {
-      "uiSans": [
-        "/fonts/geist/Geist-Variable.woff2",
-        "/fonts/geist/Geist[wght].woff2"
-      ],
-      "uiSansItalic": [
-        "/fonts/geist/Geist-Italic[wght].woff2"
-      ],
-      "mono": [
-        "/fonts/geist/GeistMono-Variable.woff2",
-        "/fonts/geist/GeistMono[wght].woff2"
-      ],
-      "pixelSquare": [
-        "/fonts/geist/GeistPixel-Square.woff2"
-      ],
-      "pixelGrid": [
-        "/fonts/geist/GeistPixel-Grid.woff2"
-      ],
-      "pixelCircle": [
-        "/fonts/geist/GeistPixel-Circle.woff2"
-      ],
-      "pixelTriangle": [
-        "/fonts/geist/GeistPixel-Triangle.woff2"
-      ],
-      "pixelLine": [
-        "/fonts/geist/GeistPixel-Line.woff2"
-      ]
-    }
-  },
-  "typography": {
-    "display": {
-      "size": 40,
-      "lineHeight": 48,
-      "weight": 400,
-      "family": "title"
-    },
-    "titleLg": {
-      "size": 28,
-      "lineHeight": 36,
-      "weight": 600,
-      "family": "title"
-    },
-    "title": {
-      "size": 20,
-      "lineHeight": 28,
-      "weight": 600,
-      "family": "title"
-    },
-    "headline": {
-      "size": 16,
-      "lineHeight": 24,
-      "weight": 600,
-      "family": "title"
-    },
-    "body": {
-      "size": 16,
-      "lineHeight": 24,
-      "weight": 400,
-      "family": "ui"
-    },
-    "label": {
-      "size": 14,
-      "lineHeight": 20,
-      "weight": 600,
-      "family": "ui"
-    },
-    "caption": {
-      "size": 13,
-      "lineHeight": 16,
-      "weight": 600,
-      "family": "ui"
-    },
-    "legal": {
-      "size": 13,
-      "lineHeight": 16,
-      "weight": 400,
-      "family": "ui"
-    },
-    "prose": {
-      "size": 16,
-      "lineHeight": 28,
-      "weight": 400,
-      "family": "paragraph"
-    },
-    "code": {
-      "size": 14,
-      "lineHeight": 20,
-      "weight": 400,
-      "family": "mono"
+    ":root[data-brand=\"techtree\"][data-theme=\"dark\"]": {
+      "--brand-ink": "var(--color-accent)",
+      "--brand-primary": "var(--color-accent)",
+      "--brand-paper": "var(--color-bg)",
+      "--brand-accent": "var(--color-warning)",
+      "--color-bg": "oklch(17% 0.015 110)",
+      "--color-surface": "oklch(22% 0.018 110)",
+      "--color-surface-elevated": "oklch(27% 0.018 110)",
+      "--color-border": "oklch(52% 0.02 110)",
+      "--color-fg": "oklch(91% 0.010 95)",
+      "--color-fg-muted": "oklch(72% 0.014 95)",
+      "--color-accent": "oklch(74% 0.08 135)",
+      "--color-fg-on-accent": "oklch(15% 0.015 110)",
+      "--color-success": "oklch(72% 0.12 150)",
+      "--color-error": "oklch(74% 0.13 28)",
+      "--color-warning": "oklch(80% 0.12 75)",
+      "--color-info": "oklch(70% 0.12 238)",
+      "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
+      "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
+      "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
+      "--glass-surface-soft": "color-mix(in oklch, var(--color-surface) 76%, transparent)",
+      "--glass-border-subtle": "color-mix(in oklch, var(--color-border) 55%, transparent)",
+      "--glass-border-soft": "var(--color-border)",
+      "--glass-border-bright": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-text-primary": "var(--color-fg)",
+      "--glass-text-secondary": "var(--color-fg-muted)",
+      "--glass-text-muted": "color-mix(in oklch, var(--color-fg-muted) 78%, var(--color-bg) 22%)",
+      "--glass-text-accent": "var(--color-accent)",
+      "--glass-blue-950": "var(--color-fg)",
+      "--glass-blue-900": "color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%)",
+      "--glass-blue-700": "var(--color-accent)",
+      "--glass-blue-600": "var(--color-accent)",
+      "--glass-blue-500": "color-mix(in oklch, var(--color-accent) 80%, var(--color-fg-on-accent) 20%)",
+      "--glass-ice-500": "var(--color-info)",
+      "--glass-warm-500": "var(--color-warning)",
+      "--glass-shell-bg": "var(--glass-surface-strong)",
+      "--glass-shell-border": "var(--glass-border-soft)",
+      "--glass-shell-shadow": "var(--shadow-lg)",
+      "--glass-panel-bg": "var(--glass-surface)",
+      "--glass-panel-border": "var(--glass-border-subtle)",
+      "--glass-panel-shadow": "var(--shadow-md)",
+      "--glass-caustic-streak": "color-mix(in oklch, var(--color-accent) 12%, transparent)",
+      "--glass-caustic-streak-soft": "color-mix(in oklch, var(--color-accent) 8%, transparent)",
+      "--glass-reflection": "linear-gradient(135deg, transparent 0%, color-mix(in oklch, var(--color-surface-elevated) 42%, transparent) 50%, transparent 100%)",
+      "--glass-reflection-blend": "normal",
+      "--glass-primary-bg": "var(--color-accent)",
+      "--glass-primary-border": "color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%)",
+      "--glass-primary-text": "var(--color-fg-on-accent)",
+      "--glass-secondary-bg": "var(--glass-surface)",
+      "--glass-secondary-border": "var(--glass-border-subtle)",
+      "--glass-secondary-text": "var(--color-accent)"
     }
   }
 }
