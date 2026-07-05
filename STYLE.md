@@ -79,12 +79,21 @@ presented, styled as bordered uppercase micro-labels, never hidden for marketing
 
 Patterns from the landing that generalize:
 
-- Uppercase micro-labels at 0.6–0.7rem with 0.14–0.22em tracking for kickers, figure labels
-  ("FIG.1 — Identity"), column headings, and chips.
+- Uppercase micro-labels at 0.6–0.7rem with 0.14–0.22em tracking (`--tracking-microlabel`)
+  for kickers, figure labels ("FIG.1 — Identity"), column headings, and chips.
 - Mono for anything an operator might copy: commands, slugs, versions, addresses.
 - `font-variant-numeric: tabular-nums` on counters and money figures.
 - Type scale tokens (`--type-*`) govern app surfaces; marketing heroes may clamp beyond the
   scale but stay on the two pixel faces.
+
+## Shape
+
+- Radius scale: `--radius-sm|md|lg|full`. Cards and panels sit on `--color-surface-elevated`
+  at `--radius-lg` with a 1px `--hairline` border and no (or barely-there) shadow.
+- Buttons are pill-shaped via `--radius-button` (points at `--radius-full`); revert that one
+  token to `var(--radius-md)` to restore soft rectangles everywhere.
+- Sidebar and nav active states are soft accent-tinted pills (~8% accent over transparent)
+  with accent text and icon — never inset bars or hard borders.
 
 ## Motion
 
