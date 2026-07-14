@@ -3,7 +3,7 @@ repo: design-system
 owner: design-system
 path: design-system
 release_group: ops_preview
-stack_contract: ../meta/stack.yaml
+stack_contract: ../metaprogramming/stack.yaml
 owns:
   - shared_visual_language
   - tokens
