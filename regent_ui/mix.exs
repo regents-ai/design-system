@@ -12,7 +12,9 @@ defmodule RegentUi.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: @description,
-      package: package()
+      package: package(),
+      aliases: aliases(),
+      cli: cli()
     ]
   end
 
@@ -34,4 +36,18 @@ defmodule RegentUi.MixProject do
       files: ["lib", "assets", "priv", "mix.exs", ".formatter.exs"]
     ]
   end
+
+  defp aliases do
+    [
+      check: [
+        "compile --warnings-as-errors",
+        "deps.unlock --check-unused",
+        "format --check-formatted",
+        "test --warnings-as-errors"
+      ],
+      precommit: ["check"]
+    ]
+  end
+
+  def cli, do: [preferred_envs: [check: :test, precommit: :test]]
 end

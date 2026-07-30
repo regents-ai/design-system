@@ -44,5 +44,5 @@ For `regent_ui` changes:
 
 ```bash
 cd regent_ui
-mix test
+mix check
 ```
