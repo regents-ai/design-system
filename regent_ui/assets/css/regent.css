@@ -1,3 +1,6 @@
+@import "./design_system_tokens.css";
+@import "./design_system_glass.css";
+
 :root {
   --rg-font-display: var(--font-family-title, "Geist Pixel Circle", ui-sans-serif, system-ui, sans-serif);
   --rg-font-body: var(--font-family-ui, "Geist Pixel Square", ui-sans-serif, system-ui, sans-serif);

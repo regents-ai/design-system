@@ -95,9 +95,35 @@ Patterns from the landing that generalize:
 - Sidebar and nav active states are soft accent-tinted pills (~8% accent over transparent)
   with accent text and icon — never inset bars or hard borders.
 
+## Application shell
+
+The product application is one persistent viewport. Document scrolling is disabled inside that
+shell; headers, rails, task panes, and other components own their internal scrolling. Route
+changes preserve a stable routed task context instead of replacing the application frame. A
+long-form reading pane remains a normal `65–80ch` column inside the same viewport rather than
+becoming a separate document-scrolling layout.
+
+Route metadata selects one of three app background families: neutral Regent/Platform, Techtree,
+or Autolaunch. Each family supports both light and dark themes. Background artwork is supplied by
+the consuming application; these families do not imply fallback artwork or component color forks.
+
+The separate `/` marketing landing page is always light. It has no theme control and must render
+without a dark flash. Its composition and copy remain independent from the persistent app shell.
+
+RegentUI is presentation only. It owns no route or LiveView lifecycle, product workflow,
+authentication decision, persistence, or money behavior.
+
 ## Motion
 
-Tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
+General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
+Shell phase tokens: `--shell-duration-interruption` (100ms), `--shell-duration-exit` (180ms),
+`--shell-duration-entrance` (200ms), and `--shell-duration-border-settle` (100ms).
+
+Shell transitions are sequential and non-overlapping. On interruption, fade for 100ms, then
+resolve the newest destination. The outgoing view exits from 0–180ms; only after that exit
+completes does the incoming view enter from 180–380ms. The border shimmer/settle follows for
+100ms and ends at about 480ms. Do not keep an outgoing DOM clone, and do not add a nested
+duplicate slide inside the route transition. Movement is limited to transform and opacity.
 
 - Animate only `transform` and `opacity`. Enters use ease-out; on-screen moves use ease-in-out.
 - Pressables scale to `--active-scale` (0.97) on `:active`; hero-grade cards may add pointer
@@ -105,7 +131,8 @@ Tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-sc
   `@media (hover: hover) and (pointer: fine)`.
 - Content is visible by default. Scroll reveals hide elements only after script takes over
   (the landing's `rl-reveal-pending` pattern) so a page without JS is fully readable.
-- Reduced motion: keep opacity/color transitions, drop movement, set shader speeds to 0.
+- OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a
+  brief color/opacity dissolve. A later Account opt-in cannot override the OS preference.
 - Keyboard-triggered UI never animates.
 
 ## Glass
@@ -148,10 +175,12 @@ the marks; pick the correct scheme instead.
 
 ## Consumption
 
+- RegentUI package consumers import only `assets/css/regent.css`; that package-relative entry
+  imports the generated token and glass layers before its component styles.
 - Set `data-brand` (`platform | autolaunch | techtree`) and `data-theme` (`light | dark`) on
   the root element; every token above resolves from those two attributes.
-- Marketing surfaces may pin themselves dark by re-declaring the dark values under a local
-  scope (the landing's `.rl-root`), leaving the app's theme toggle untouched.
+- The separate `/` landing remains always light and outside the app theme contract. It exposes
+  no theme control and must render without a dark flash.
 - Change tokens here first (`design_system_tokens.css`), regenerate the JSON mirror, then let
   consumers pick the change up. Never fork per-component color values downstream.
 - Acceptance: `cd regent_ui && mix test`, plus the platform stylesheet suite

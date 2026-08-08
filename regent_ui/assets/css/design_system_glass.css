@@ -1,0 +1,6 @@
+/* Import-stable glass layer.
+ *
+ * The live platform still imports this file, but the reusable glass classes and
+ * duplicate glass-only scales were unused. Shared glass values now live in
+ * design_system_tokens.css as canonical tokens consumed by platform styles.
+ */

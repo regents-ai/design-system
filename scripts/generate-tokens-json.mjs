@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Regenerate design_system_tokens.json from design_system_tokens.css.
-// The CSS file is the source of truth; the JSON is a generated mirror of the
-// custom-property declarations in each `:root...` selector block.
+// Regenerate design_system_tokens.json and RegentUI's packaged CSS mirrors.
+// The root CSS files are the sources of truth; every other representation is
+// a generated output checked here.
 //
-// Usage: node design-system/scripts/generate-tokens-json.mjs [--check]
+// Usage: node scripts/generate-tokens-json.mjs [--check]
 //   --check  verify the JSON is in sync without rewriting it (exit 1 on drift)
 
 import { readFileSync, writeFileSync } from "node:fs";
@@ -13,8 +13,12 @@ import { fileURLToPath } from "node:url";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const cssPath = join(root, "design_system_tokens.css");
 const jsonPath = join(root, "design_system_tokens.json");
+const glassPath = join(root, "design_system_glass.css");
+const packagedCssPath = join(root, "regent_ui", "assets", "css", "design_system_tokens.css");
+const packagedGlassPath = join(root, "regent_ui", "assets", "css", "design_system_glass.css");
 
 const css = readFileSync(cssPath, "utf8");
+const glass = readFileSync(glassPath, "utf8");
 
 const selectors = {};
 const blockPattern = /(^|\n)(:root(?:\[[^\]]+\])*)\s*\{([\s\S]*?)\n\}/g;
@@ -36,15 +40,33 @@ for (const match of css.matchAll(blockPattern)) {
 
 const output = `${JSON.stringify({ selectors }, null, 2)}\n`;
 
+const outputs = [
+  [jsonPath, output],
+  [packagedCssPath, css],
+  [packagedGlassPath, glass],
+];
+
 if (process.argv.includes("--check")) {
-  const current = readFileSync(jsonPath, "utf8");
-  if (current !== output) {
-    console.error("design_system_tokens.json is out of sync with the CSS. Run:");
-    console.error("  node design-system/scripts/generate-tokens-json.mjs");
+  const drifted = outputs
+    .filter(([path, expected]) => {
+      try {
+        return readFileSync(path, "utf8") !== expected;
+      } catch (error) {
+        if (error.code === "ENOENT") return true;
+        throw error;
+      }
+    })
+    .map(([path]) => path.slice(root.length + 1));
+
+  if (drifted.length > 0) {
+    console.error(`Generated visual contract is out of sync: ${drifted.join(", ")}. Run:`);
+    console.error("  node scripts/generate-tokens-json.mjs");
     process.exit(1);
   }
-  console.log("design_system_tokens.json is in sync.");
+  console.log("Generated visual contract is in sync.");
 } else {
-  writeFileSync(jsonPath, output);
-  console.log(`Wrote ${jsonPath}`);
+  for (const [path, content] of outputs) {
+    writeFileSync(path, content);
+    console.log(`Wrote ${path}`);
+  }
 }
