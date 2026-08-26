@@ -194,7 +194,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -250,7 +250,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -306,7 +306,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -362,7 +362,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -418,7 +418,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
@@ -474,7 +474,7 @@
   --glass-border-bright: color-mix(in oklch, var(--color-accent) 70%, var(--color-border) 30%);
   --glass-text-primary: var(--color-fg);
   --glass-text-secondary: var(--color-fg-muted);
-  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
+  --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-fg) 16%);
   --glass-text-accent: var(--color-accent);
   --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);

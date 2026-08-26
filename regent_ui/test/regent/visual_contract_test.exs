@@ -63,6 +63,8 @@ defmodule Regent.VisualContractTest do
     }
   }
 
+  @color_schemes %{"platform" => "dark", "autolaunch" => "light", "techtree" => "light"}
+
   # regent.css fallbacks cover the moment before the canonical token layer resolves,
   # so each one must stand in for the Platform token it shadows.
   @package_fallback_sources %{
@@ -110,6 +112,18 @@ defmodule Regent.VisualContractTest do
         {token, value} <- contract do
       assert {brand, theme, token, resolve(selectors, brand, theme, token)} ==
                {brand, theme, token, value}
+    end
+  end
+
+  # The generator carries only custom properties, so color-scheme is asserted at the source.
+  test "each product pins its own color-scheme in both theme selectors" do
+    declared =
+      ~r/:root\[data-brand="(\w+)"\]\[data-theme="(\w+)"\]\s*\{\s*color-scheme:\s*(\w+);/
+      |> Regex.scan(read_repository("design_system_tokens.css"), capture: :all_but_first)
+      |> Map.new(fn [brand, theme, scheme] -> {{brand, theme}, scheme} end)
+
+    for {brand, scheme} <- @color_schemes, theme <- ~w(light dark) do
+      assert {brand, theme, declared[{brand, theme}]} == {brand, theme, scheme}
     end
   end
 
@@ -178,7 +192,8 @@ defmodule Regent.VisualContractTest do
           "internal scrolling",
           "stable routed task context",
           "`65–80ch`",
-          "neutral Regent/Platform, Techtree,\nor Autolaunch",
+          "Charcoal Regent/Platform, Powder Blue\nTechtree, or Tangerine Autolaunch",
+          "keeps its assigned ground in both theme choices",
           "sequential and non-overlapping",
           "outgoing DOM clone",
           "nested\nduplicate slide",

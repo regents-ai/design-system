@@ -98,6 +98,9 @@ Rules:
 
 - One action color per surface. `--color-accent-secondary` (mirrored by `--brand-accent`) carries
   the product's highlight; it is a note, not a second button color.
+- On Autolaunch, `--brand-accent` is Powder Blue and is for non-text highlights only — chips,
+  rules, fills, and marker shapes. Never set it as text color on Tangerine (1.8:1), and keep the
+  text inside any highlighted element black or Charcoal.
 - Formation renders inside the platform brand; use `--product-formation` for
   Formation-specific highlights rather than switching the page action color.
 - Status colors (success, error, warning, info) are for state only, never identity.
@@ -142,9 +145,11 @@ changes preserve a stable routed task context instead of replacing the applicati
 long-form reading pane remains a normal `65–80ch` column inside the same viewport rather than
 becoming a separate document-scrolling layout.
 
-Route metadata selects one of three app background families: neutral Regent/Platform, Techtree,
-or Autolaunch. Each family supports both light and dark themes. Background artwork is supplied by
-the consuming application; these families do not imply fallback artwork or component color forks.
+Route metadata selects one of three app background families: Charcoal Regent/Platform, Powder Blue
+Techtree, or Tangerine Autolaunch. Each product keeps its assigned ground in both theme choices —
+`data-theme` varies the frost and shine treatment of glass, never the product ground, text, action,
+muted, or status values. Background artwork is supplied by the consuming application; these
+families do not imply fallback artwork or component color forks.
 
 The separate `/` marketing landing page is always light. It has no theme control and must render
 without a dark flash. Its composition and copy remain independent from the persistent app shell.
@@ -193,8 +198,8 @@ Generative print artwork, not stock imagery ("Paper Shaders", `@paper-design/sha
 
 - **Halftone CMYK** over generated dark source art: hero and section-band backgrounds.
 - **Mesh gradient** in forge tones: Agent Formation.
-- **God rays** in greens: Autolaunch.
-- **Dot orbit** constellation (blues + biology green): Techtree.
+- **God rays** in Tangerine Tango: Autolaunch.
+- **Dot orbit** constellation (Powder Blue + Tangerine Tango): Techtree.
 
 Static contexts use a CSS halftone dot pattern (radial-gradient grid) instead of a live canvas.
 Every mount respects reduced motion and pauses offscreen. Placeholder content is always labeled
