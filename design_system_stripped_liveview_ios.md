@@ -20,7 +20,7 @@ Consumers must set both selectors on the root element:
 
 Valid brands:
 
-- `regent`
+- `platform`
 - `autolaunch`
 - `techtree`
 
@@ -29,33 +29,52 @@ Valid themes:
 - `light`
 - `dark`
 
+## The four colors
+
+The entire system is four colors. Black is a contrast utility for text on Tangerine, not a fifth
+identity color.
+
+| Name | Value |
+| --- | --- |
+| Tangerine Tango | `#FF5B19` |
+| Charcoal | `#161616` |
+| Platinum | `#E5E3D2` |
+| Powder Blue | `#AECACD` |
+
+A product's ground stays the same in both themes. The theme varies the frost and shine of glass,
+never the identity, foreground, action, muted, or status values.
+
 ## Brand feel
 
 ### Regent
 
 Calm, grounded, and institutional without feeling cold.
 
-- Blue leads the interface.
-- Ivory keeps the light surfaces warm.
-- Clay is a highlight color, not the main action color.
+- Charcoal is the ground and Platinum is the text.
+- Powder Blue is the main action color.
+- Tangerine Tango is a highlight, not the main action color.
 
 ### Autolaunch
 
 Focused, trustworthy, and market-ready with more energy than Regent.
 
-- Green is the main action color.
-- Linen keeps the surface warm instead of sterile.
-- Brass is supporting emphasis, not the default button color.
+- Tangerine Tango is the ground and black is the text.
+- Charcoal is the main action color, with Platinum text on it.
+- Powder Blue is supporting emphasis, not the default button color.
 
 ### Techtree
 
 Practical, guided, and research-led.
 
-- The interface should feel neutral first.
-- Light mode should stay close to paper and stone.
-- Dark mode should stay close to charcoal and ink.
-- Moss is the working accent.
-- Gold is reserved for record or standout proof states.
+- Powder Blue is the ground and Charcoal is both the text and the main action color.
+- Platinum is the elevated surface.
+- Tangerine Tango is reserved for record or standout proof states.
+
+### Readable pairs
+
+Platinum and Powder Blue are never text colors on Tangerine. Black or Charcoal supplies readable
+text there. They may be highlighted surfaces on a Tangerine page as long as the text inside them
+is black or Charcoal.
 
 ## Typography
 
@@ -95,10 +114,9 @@ Keep these shared across all three brands:
 
 The brand theme controls:
 
-- the five-color palette
-- semantic color tokens for light mode
-- semantic color tokens for dark mode
-- how strong or restrained the accent colors feel
+- which of the four colors is the ground, the text, the action, and the highlight
+- the semantic status set that stays readable on that ground
+- how strong or restrained the highlight feels
 
 ## LiveView implementation
 
@@ -162,8 +180,8 @@ Use one JSON token file and compile it to:
 
 The shared token source now carries:
 
-- brand palettes
-- light and dark semantic themes for each brand
+- the four canonical colors
+- the semantic contract for each brand, identical in both themes
 - font roles
 - font assets
 - spacing
@@ -174,8 +192,8 @@ The shared token source now carries:
 
 Use one shared system structure across products, but require an explicit brand theme.
 
-- Regent is blue-led and calm.
-- Autolaunch is green-led and more energetic.
-- Techtree is neutral-led with restrained moss and gold accents.
+- Regent is Charcoal-grounded and calm, with Powder Blue actions.
+- Autolaunch is Tangerine-grounded and more energetic, with black text and Charcoal actions.
+- Techtree is Powder Blue-grounded and practical, with Charcoal text and actions.
 
 Keep the system small, readable, and brand-specific without adding compatibility layers.

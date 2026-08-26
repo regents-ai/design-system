@@ -5,6 +5,80 @@ defmodule Regent.VisualContractTest do
   @repository_root Path.expand("..", @package_root)
   @css_directory Path.join(@package_root, "assets/css")
 
+  @palette %{
+    "--palette-tangerine-tango" => "#FF5B19",
+    "--palette-charcoal" => "#161616",
+    "--palette-platinum" => "#E5E3D2",
+    "--palette-powder-blue" => "#AECACD"
+  }
+
+  @brand_contract %{
+    "platform" => %{
+      "--color-bg" => "#161616",
+      "--color-surface" => "#20201E",
+      "--color-surface-elevated" => "#2A2A27",
+      "--color-border" => "#57564F",
+      "--color-fg" => "#E5E3D2",
+      "--color-fg-muted" => "#AAA99C",
+      "--color-accent" => "#AECACD",
+      "--color-accent-secondary" => "#FF5B19",
+      "--color-fg-on-accent" => "#161616",
+      "--color-success" => "#7ED8A9",
+      "--color-error" => "#FF9B8F",
+      "--color-warning" => "#F5C16C",
+      "--color-info" => "#AECACD",
+      "--brand-accent" => "#FF5B19"
+    },
+    "autolaunch" => %{
+      "--color-bg" => "#FF5B19",
+      "--color-surface" => "#FF7A45",
+      "--color-surface-elevated" => "#E5E3D2",
+      "--color-border" => "#161616",
+      "--color-fg" => "#000000",
+      "--color-fg-muted" => "#4F1600",
+      "--color-accent" => "#161616",
+      "--color-accent-secondary" => "#AECACD",
+      "--color-fg-on-accent" => "#E5E3D2",
+      "--color-success" => "#053022",
+      "--color-error" => "#5A0B0B",
+      "--color-warning" => "#3D1B00",
+      "--color-info" => "#072C38",
+      "--brand-accent" => "#AECACD"
+    },
+    "techtree" => %{
+      "--color-bg" => "#AECACD",
+      "--color-surface" => "#C4D8DA",
+      "--color-surface-elevated" => "#E5E3D2",
+      "--color-border" => "#3F4F51",
+      "--color-fg" => "#161616",
+      "--color-fg-muted" => "#3F4F51",
+      "--color-accent" => "#161616",
+      "--color-accent-secondary" => "#FF5B19",
+      "--color-fg-on-accent" => "#E5E3D2",
+      "--color-success" => "#053022",
+      "--color-error" => "#5A0B0B",
+      "--color-warning" => "#3D1B00",
+      "--color-info" => "#072C38",
+      "--brand-accent" => "#FF5B19"
+    }
+  }
+
+  # regent.css fallbacks cover the moment before the canonical token layer resolves,
+  # so each one must stand in for the Platform token it shadows.
+  @package_fallback_sources %{
+    "--color-accent" => "--color-accent",
+    "--color-bg" => "--color-bg",
+    "--color-error" => "--color-error",
+    "--color-fg-muted" => "--color-fg-muted",
+    "--color-info" => "--color-info",
+    "--color-warning" => "--color-warning",
+    "--glass-border-subtle" => "--color-border",
+    "--glass-surface" => "--color-surface",
+    "--glass-text-accent" => "--color-accent",
+    "--glass-text-primary" => "--color-fg",
+    "--glass-text-secondary" => "--color-fg-muted"
+  }
+
   test "packaged CSS layers exactly mirror the canonical roots" do
     assert read_repository("design_system_tokens.css") ==
              read_package_css("design_system_tokens.css")
@@ -13,18 +87,38 @@ defmodule Regent.VisualContractTest do
              read_package_css("design_system_glass.css")
   end
 
-  test "generated JSON carries the exact semantic shell timings" do
-    root_tokens =
-      @repository_root
-      |> Path.join("design_system_tokens.json")
-      |> File.read!()
-      |> Jason.decode!()
-      |> get_in(["selectors", ":root"])
+  test "generated JSON carries the exact canonical four-color palette" do
+    root = selectors()[":root"]
 
-    assert root_tokens["--shell-duration-interruption"] == "100ms"
-    assert root_tokens["--shell-duration-exit"] == "180ms"
-    assert root_tokens["--shell-duration-entrance"] == "200ms"
-    assert root_tokens["--shell-duration-border-settle"] == "100ms"
+    for {token, value} <- @palette, do: assert(root[token] == value)
+  end
+
+  test "generated JSON carries the exact semantic shell timings" do
+    root = selectors()[":root"]
+
+    assert root["--shell-duration-interruption"] == "100ms"
+    assert root["--shell-duration-exit"] == "180ms"
+    assert root["--shell-duration-entrance"] == "200ms"
+    assert root["--shell-duration-border-settle"] == "100ms"
+  end
+
+  test "every brand grounds both theme selectors in the same founder colors" do
+    selectors = selectors()
+
+    for {brand, contract} <- @brand_contract,
+        theme <- ~w(light dark),
+        {token, value} <- contract do
+      assert {brand, theme, token, resolve(selectors, brand, theme, token)} ==
+               {brand, theme, token, value}
+    end
+  end
+
+  test "generated tokens retain all three light and dark app background families" do
+    selectors = selectors()
+
+    for brand <- Map.keys(@brand_contract), theme <- ~w(light dark) do
+      assert Map.has_key?(selectors, ~s(:root[data-brand="#{brand}"][data-theme="#{theme}"]))
+    end
   end
 
   test "the single consumer entry resolves only package-local visual layers" do
@@ -50,6 +144,21 @@ defmodule Regent.VisualContractTest do
     assert combined =~ ".rg-app-shell"
   end
 
+  test "package-local colour fallbacks stand in for the Platform ground" do
+    selectors = selectors()
+
+    fallbacks =
+      ~r/var\((--[\w-]+),\s*(#[0-9A-Fa-f]{6})\)/
+      |> Regex.scan(read_package_css("regent.css"), capture: :all_but_first)
+      |> Map.new(fn [token, value] -> {token, value} end)
+
+    assert Map.keys(fallbacks) == Map.keys(@package_fallback_sources)
+
+    for {token, source} <- @package_fallback_sources do
+      assert {token, fallbacks[token]} == {token, resolve(selectors, "platform", "dark", source)}
+    end
+  end
+
   test "the existing package declaration includes every consumer CSS file" do
     package_files = Mix.Project.config() |> Keyword.fetch!(:package) |> Keyword.fetch!(:files)
 
@@ -57,14 +166,6 @@ defmodule Regent.VisualContractTest do
 
     for file <- ~w(regent.css design_system_tokens.css design_system_glass.css) do
       assert File.regular?(Path.join(@css_directory, file))
-    end
-  end
-
-  test "canonical tokens retain all three light and dark app background families" do
-    css = read_repository("design_system_tokens.css")
-
-    for brand <- ~w(platform techtree autolaunch), theme <- ~w(light dark) do
-      assert css =~ ~s(:root[data-brand="#{brand}"][data-theme="#{theme}"])
     end
   end
 
@@ -94,6 +195,27 @@ defmodule Regent.VisualContractTest do
 
     refute style =~ "Marketing surfaces may pin themselves dark"
     refute style =~ "landing's `.rl-root`"
+  end
+
+  defp selectors do
+    @repository_root
+    |> Path.join("design_system_tokens.json")
+    |> File.read!()
+    |> Jason.decode!()
+    |> Map.fetch!("selectors")
+  end
+
+  defp resolve(selectors, brand, theme, token) do
+    selectors[":root"]
+    |> Map.merge(selectors[~s(:root[data-brand="#{brand}"][data-theme="#{theme}"])])
+    |> dereference(token)
+  end
+
+  defp dereference(scope, token) do
+    case scope[token] do
+      "var(" <> reference -> dereference(scope, String.trim_trailing(reference, ")"))
+      value -> value
+    end
   end
 
   defp read_repository(file), do: @repository_root |> Path.join(file) |> File.read!()

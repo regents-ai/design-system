@@ -4,31 +4,31 @@
 :root {
   --rg-font-display: var(--font-family-title, "Geist Pixel Circle", ui-sans-serif, system-ui, sans-serif);
   --rg-font-body: var(--font-family-ui, "Geist Pixel Square", ui-sans-serif, system-ui, sans-serif);
-  --rg-bg: var(--color-bg, oklch(14.5% 0 0));
-  --rg-panel: var(--glass-surface, oklch(17.5% 0 0));
-  --rg-panel-border: var(--glass-border-subtle, oklch(32% 0 0));
-  --rg-text: var(--glass-text-primary, oklch(97% 0 0));
-  --rg-muted: var(--glass-text-secondary, oklch(70.8% 0 0));
-  --rg-node-fill: color-mix(in oklch, var(--color-accent, oklch(70% 0.12 238)) 14%, transparent);
-  --rg-node-stroke: var(--color-accent, oklch(70% 0.12 238));
-  --rg-node-fill-active: color-mix(in oklch, var(--color-accent, oklch(70% 0.12 238)) 22%, transparent);
-  --rg-node-stroke-active: var(--color-accent, oklch(70% 0.12 238));
-  --rg-node-fill-focused: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 24%, transparent);
-  --rg-node-stroke-focused: var(--color-warning, oklch(80% 0.12 75));
-  --rg-sigil-color: var(--glass-text-primary, oklch(97% 0 0));
-  --rg-sigil-color-active: var(--glass-text-accent, oklch(70% 0.12 238));
-  --rg-intent-color-scene-action: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 18%, var(--color-bg, oklch(14.5% 0 0)) 82%);
-  --rg-intent-color-navigate: color-mix(in oklch, var(--color-info, oklch(70% 0.12 238)) 18%, var(--color-bg, oklch(14.5% 0 0)) 82%);
-  --rg-intent-color-back: color-mix(in oklch, var(--color-fg-muted, oklch(70.8% 0 0)) 16%, var(--color-bg, oklch(14.5% 0 0)) 84%);
-  --rg-intent-color-danger: color-mix(in oklch, var(--color-error, oklch(74% 0.13 28)) 18%, var(--color-bg, oklch(14.5% 0 0)) 82%);
-  --rg-intent-stroke-scene-action: var(--color-warning, oklch(80% 0.12 75));
-  --rg-intent-stroke-navigate: var(--color-info, oklch(70% 0.12 238));
-  --rg-intent-stroke-back: var(--color-fg-muted, oklch(70.8% 0 0));
-  --rg-intent-stroke-danger: var(--color-error, oklch(74% 0.13 28));
-  --rg-intent-glow-scene-action: color-mix(in oklch, var(--color-warning, oklch(80% 0.12 75)) 28%, transparent);
-  --rg-intent-glow-navigate: color-mix(in oklch, var(--color-info, oklch(70% 0.12 238)) 24%, transparent);
-  --rg-intent-glow-back: color-mix(in oklch, var(--color-fg-muted, oklch(70.8% 0 0)) 22%, transparent);
-  --rg-intent-glow-danger: color-mix(in oklch, var(--color-error, oklch(74% 0.13 28)) 24%, transparent);
+  --rg-bg: var(--color-bg, #161616);
+  --rg-panel: var(--glass-surface, #20201E);
+  --rg-panel-border: var(--glass-border-subtle, #57564F);
+  --rg-text: var(--glass-text-primary, #E5E3D2);
+  --rg-muted: var(--glass-text-secondary, #AAA99C);
+  --rg-node-fill: color-mix(in oklch, var(--color-accent, #AECACD) 14%, transparent);
+  --rg-node-stroke: var(--color-accent, #AECACD);
+  --rg-node-fill-active: color-mix(in oklch, var(--color-accent, #AECACD) 22%, transparent);
+  --rg-node-stroke-active: var(--color-accent, #AECACD);
+  --rg-node-fill-focused: color-mix(in oklch, var(--color-warning, #F5C16C) 24%, transparent);
+  --rg-node-stroke-focused: var(--color-warning, #F5C16C);
+  --rg-sigil-color: var(--glass-text-primary, #E5E3D2);
+  --rg-sigil-color-active: var(--glass-text-accent, #AECACD);
+  --rg-intent-color-scene-action: color-mix(in oklch, var(--color-warning, #F5C16C) 18%, var(--color-bg, #161616) 82%);
+  --rg-intent-color-navigate: color-mix(in oklch, var(--color-info, #AECACD) 18%, var(--color-bg, #161616) 82%);
+  --rg-intent-color-back: color-mix(in oklch, var(--color-fg-muted, #AAA99C) 16%, var(--color-bg, #161616) 84%);
+  --rg-intent-color-danger: color-mix(in oklch, var(--color-error, #FF9B8F) 18%, var(--color-bg, #161616) 82%);
+  --rg-intent-stroke-scene-action: var(--color-warning, #F5C16C);
+  --rg-intent-stroke-navigate: var(--color-info, #AECACD);
+  --rg-intent-stroke-back: var(--color-fg-muted, #AAA99C);
+  --rg-intent-stroke-danger: var(--color-error, #FF9B8F);
+  --rg-intent-glow-scene-action: color-mix(in oklch, var(--color-warning, #F5C16C) 28%, transparent);
+  --rg-intent-glow-navigate: color-mix(in oklch, var(--color-info, #AECACD) 24%, transparent);
+  --rg-intent-glow-back: color-mix(in oklch, var(--color-fg-muted, #AAA99C) 22%, transparent);
+  --rg-intent-glow-danger: color-mix(in oklch, var(--color-error, #FF9B8F) 24%, transparent);
 }
 
 html,

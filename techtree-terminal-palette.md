@@ -9,18 +9,24 @@ See `STYLE.md` for the full visual language.
 
 ## Direction
 
-Use the shared hueless neutral scale for all surfaces and beaker blue as the product accent,
-with biology green (`--color-accent-secondary`) as a sparing secondary note for living/organic
-signals. Reserve semantic green, red, amber, and blue for status only.
+Techtree is the Powder Blue product: the page sits on Powder Blue with Charcoal text and Charcoal
+actions. Platinum is the elevated surface and Tangerine Tango is the secondary note
+(`--color-accent-secondary`) for standout proof states. The ground does not change when the reader
+switches Light/Dark. Reserve the status colors for state only.
 
 ## Core Values
 
-- Background: `oklch(98.5% 0 0)` light, `oklch(14.5% 0 0)` dark
-- Surface: `oklch(97% 0 0)` light, `oklch(17.5% 0 0)` dark
-- Text: `oklch(22% 0 0)` light, `oklch(97% 0 0)` dark
-- Accent: `oklch(45% 0.11 250)` light, `oklch(72% 0.11 250)` dark
-- Secondary (biology): `oklch(52% 0.1 160)` light, `oklch(76% 0.11 160)` dark
+- Background: `#AECACD` Powder Blue
+- Surface: `#C4D8DA`, elevated `#E5E3D2` Platinum
+- Border and muted text: `#3F4F51`
+- Text and primary action: `#161616` Charcoal, with `#E5E3D2` Platinum text on the action
+- Highlight: `#FF5B19` Tangerine Tango
+- Status: success `#053022`, error `#5A0B0B`, warning `#3D1B00`, info `#072C38`
+
+Charcoal on Powder Blue is 10.5:1.
 
 ## Usage
 
-Neutrals should carry the interface. Use the accent for primary actions, tree state, selected states, and a small number of active highlights.
+Powder Blue and Charcoal carry the interface. Use Charcoal for primary actions, tree state, and
+selected states. Tangerine is a sparing secondary note; keep the text inside a Tangerine chip
+black rather than Platinum or Powder Blue.

@@ -9,18 +9,25 @@ See `STYLE.md` for the full visual language.
 
 ## Direction
 
-Use the shared hueless neutral scale for all surfaces and regent blue as the single product
-accent. Reserve semantic green, red, amber, and blue for status only. Formation highlights
-inside Platform use `--product-formation` (forge orange-red) without changing the page accent.
+Regent sits on a Charcoal ground with Platinum text, and takes Powder Blue as its single action
+color. Tangerine Tango is the highlight, used sparingly. The ground does not change when the
+reader switches Light/Dark. Reserve the status colors for state only. Formation highlights inside
+Platform use `--product-formation` (Tangerine) without changing the page action color.
 
 ## Core Values
 
-- Background: `oklch(98.5% 0 0)` light, `oklch(14.5% 0 0)` dark
-- Surface: `oklch(97% 0 0)` light, `oklch(17.5% 0 0)` dark
-- Text: `oklch(22% 0 0)` light, `oklch(97% 0 0)` dark
-- Accent: `oklch(46% 0.12 238)` light, `oklch(70% 0.12 238)` dark
-- Formation identity: `oklch(52% 0.16 42)` light, `oklch(68% 0.16 45)` dark
+- Background: `#161616` Charcoal
+- Surface: `#20201E`, elevated `#2A2A27`
+- Border: `#57564F`
+- Text: `#E5E3D2` Platinum, muted `#AAA99C`
+- Primary action: `#AECACD` Powder Blue, with `#161616` Charcoal text on it
+- Highlight: `#FF5B19` Tangerine Tango
+- Status: success `#7ED8A9`, error `#FF9B8F`, warning `#F5C16C`, info `#AECACD`
+
+Platinum on Charcoal is 14.0:1; Charcoal on Powder Blue is 10.5:1.
 
 ## Usage
 
-Neutrals should carry the interface. Use the accent for primary actions, links, selected states, and a small number of active highlights.
+Charcoal and Platinum carry the interface. Use Powder Blue for primary actions, links, selected
+states, and a small number of active highlights. Tangerine is an accent note, never body text on a
+Powder Blue button.

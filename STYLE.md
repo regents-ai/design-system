@@ -12,56 +12,95 @@ one of them in the same pass.
 
 Regent is systematic restraint with a printed-machine character:
 
-- **Systematic restraint** (the Stripe/Coinbase inheritance): a small neutral scale carries the
-  interface; one accent per surface; semantic color reserved for status; consistent spacing,
+- **Systematic restraint** (the Stripe/Coinbase inheritance): four colors carry every surface;
+  one action color per surface; semantic color reserved for status; consistent spacing,
   radius, and type scales; nothing decorated that could be plain.
 - **Printed-machine character** (the Regent layer): pixel display type, hairline separators,
-  uppercase micro-labels, mono readouts, halftone/print artwork, near-black ground. The result
-  should read like precision print on dark stock, not like a generic SaaS theme.
+  uppercase micro-labels, mono readouts, halftone/print artwork, a flat saturated ground. The
+  result should read like precision print on stock, not like a generic SaaS theme.
 
 ## Color
 
-### Neutrals carry everything
+### Four colors carry everything
 
-Both themes use one hueless neutral scale (zero chroma). Dark is the brand's home; light is a
-first-class equal, not an afterthought.
+The whole system is four colors. Black is a contrast utility for text on Tangerine, not a fifth
+identity color.
 
-| Role | Dark | Light |
+| Name | Token | Value |
 | --- | --- | --- |
-| Background | `oklch(14.5% 0 0)` (`#0a0a0a` band) | `oklch(98.5% 0 0)` (`#fafafa` band) |
-| Surface | `oklch(17.5% 0 0)` | `oklch(97% 0 0)` |
-| Surface, elevated | `oklch(20.5% 0 0)` | `oklch(99.5% 0 0)` |
-| Border | `oklch(32% 0 0)` | `oklch(86% 0 0)` |
-| Text | `oklch(97% 0 0)` | `oklch(22% 0 0)` |
-| Text, muted | `oklch(70.8% 0 0)` | `oklch(46% 0 0)` |
+| Tangerine Tango | `--palette-tangerine-tango` | `#FF5B19` |
+| Charcoal | `--palette-charcoal` | `#161616` |
+| Platinum | `--palette-platinum` | `#E5E3D2` |
+| Powder Blue | `--palette-powder-blue` | `#AECACD` |
 
-Never tint surfaces toward a product hue. Identity lives in the accent, artwork, and marks —
-not in the ground.
+Identity lives in the ground, not in a lone accent. Each product owns a base color and keeps it
+whichever Light/Dark the reader picks: `data-theme` still varies the frost and shine of glass, but
+it never moves a product's ground, foreground, action, muted, or status values.
+
+| Role | Regent / Platform | Autolaunch | Techtree |
+| --- | --- | --- | --- |
+| Background | `#161616` Charcoal | `#FF5B19` Tangerine | `#AECACD` Powder Blue |
+| Surface | `#20201E` | `#FF7A45` | `#C4D8DA` |
+| Surface, elevated | `#2A2A27` | `#E5E3D2` Platinum | `#E5E3D2` Platinum |
+| Border | `#57564F` | `#161616` Charcoal | `#3F4F51` |
+| Text | `#E5E3D2` Platinum | `#000000` black | `#161616` Charcoal |
+| Text, muted | `#AAA99C` | `#4F1600` | `#3F4F51` |
+| Primary action | `#AECACD` Powder Blue | `#161616` Charcoal | `#161616` Charcoal |
+| Text on action | `#161616` Charcoal | `#E5E3D2` Platinum | `#E5E3D2` Platinum |
+| Highlight | `#FF5B19` Tangerine | `#AECACD` Powder Blue | `#FF5B19` Tangerine |
+| `color-scheme` | `dark` | `light` | `light` |
+
+### Readable pairs only
+
+Platinum and Powder Blue are never text colors on Tangerine (2.4:1 and 1.8:1). Black or Charcoal
+supplies readable text there. The pairs the system guarantees:
+
+- Platinum on Charcoal — 14.0:1
+- Black on Tangerine — 6.8:1
+- Charcoal on Powder Blue — 10.5:1
+
+Platinum and Powder Blue may be highlighted *surfaces* on a Tangerine page as long as the text
+inside them is black or Charcoal.
 
 Separators are hairlines mixed from the foreground, not solid borders:
 `--hairline` (14% fg) for structure, `--hairline-strong` (26% fg) for interactive edges.
 
+### Status stays independent of identity
+
+Status colors report state, never identity, so each set is chosen for readability on its product's
+ground rather than for brand voice.
+
+| Status | Regent / Platform | Autolaunch and Techtree |
+| --- | --- | --- |
+| Success | `#7ED8A9` | `#053022` |
+| Error | `#FF9B8F` | `#5A0B0B` |
+| Warning | `#F5C16C` | `#3D1B00` |
+| Info | `#AECACD` | `#072C38` |
+
+Every one of these clears WCAG AA for normal text on its product's background, surface, and
+elevated surface.
+
 ### Product identities
 
-Each product owns one accent. The brand attribute (`data-brand`) selects it as `--color-accent`;
-the identity constants are also available everywhere as `--product-*` tokens (theme-scoped).
+The brand attribute (`data-brand`) selects a product's whole contract. The identity constants are
+also available everywhere as `--product-*` tokens for highlights that must not move the page
+action color.
 
-| Product | Identity | Dark accent | Light accent |
-| --- | --- | --- | --- |
-| Platform / Regents Labs | regent blue | `oklch(70% 0.12 238)` | `oklch(46% 0.12 238)` |
-| Agent Formation | forge orange-red | `oklch(68% 0.16 45)` | `oklch(52% 0.16 42)` |
-| Autolaunch | bright green | `oklch(78% 0.17 155)` | `oklch(50% 0.15 155)` |
-| Techtree | beaker blue | `oklch(72% 0.11 250)` | `oklch(45% 0.11 250)` |
-| Techtree secondary | biology green | `oklch(76% 0.11 160)` | `oklch(52% 0.1 160)` |
+| Product | Identity | Token |
+| --- | --- | --- |
+| Regents Labs / Platform | Charcoal ground, Powder Blue action | — |
+| Agent Formation | Tangerine Tango | `--product-formation` |
+| Autolaunch | Tangerine Tango | `--product-autolaunch` |
+| Techtree | Powder Blue | `--product-techtree` |
+| Techtree secondary | Tangerine Tango | `--product-techtree-bio` |
 
 Rules:
 
-- One accent per surface. A Techtree page may add its biology green as a secondary note
-  (`--color-accent-secondary`); no other surface uses two accents.
+- One action color per surface. `--color-accent-secondary` (mirrored by `--brand-accent`) carries
+  the product's highlight; it is a note, not a second button color.
 - Formation renders inside the platform brand; use `--product-formation` for
-  Formation-specific highlights rather than switching the page accent.
-- Status colors (success, error, warning, info) are for state only, never identity. Note that
-  Autolaunch's accent is deliberately hotter (higher chroma) than semantic success green.
+  Formation-specific highlights rather than switching the page action color.
+- Status colors (success, error, warning, info) are for state only, never identity.
 
 ### Capability honesty
 
@@ -146,7 +185,7 @@ Liquid glass is the treatment for cards that sit over artwork:
 4. Content layer: logo, title, tagline; hairline inset ring via box-shadow.
 
 The older `--glass-*` panel/shell tokens remain the vocabulary for in-app panels; both derive
-from the same neutral scale.
+from the same four-color palette.
 
 ## Artwork
 

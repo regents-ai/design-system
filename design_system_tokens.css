@@ -56,6 +56,21 @@
 }
 
 :root {
+  /* The canonical product palette. Every branded ground, foreground, and action
+   * resolves to one of these four; black is a contrast utility, not a fifth color. */
+  --palette-tangerine-tango: #FF5B19;
+  --palette-charcoal: #161616;
+  --palette-platinum: #E5E3D2;
+  --palette-powder-blue: #AECACD;
+
+  --product-formation: var(--palette-tangerine-tango);
+  --product-formation-soft: color-mix(in oklch, var(--product-formation) 14%, transparent);
+  --product-autolaunch: var(--palette-tangerine-tango);
+  --product-autolaunch-soft: color-mix(in oklch, var(--product-autolaunch) 14%, transparent);
+  --product-techtree: var(--palette-powder-blue);
+  --product-techtree-soft: color-mix(in oklch, var(--product-techtree) 14%, transparent);
+  --product-techtree-bio: var(--palette-tangerine-tango);
+
   --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
@@ -121,16 +136,6 @@
 }
 
 :root[data-theme="light"] {
-  color-scheme: light;
-
-  --product-formation: oklch(52% 0.16 42);
-  --product-formation-soft: color-mix(in oklch, var(--product-formation) 12%, transparent);
-  --product-autolaunch: oklch(50% 0.15 155);
-  --product-autolaunch-soft: color-mix(in oklch, var(--product-autolaunch) 12%, transparent);
-  --product-techtree: oklch(45% 0.11 250);
-  --product-techtree-soft: color-mix(in oklch, var(--product-techtree) 12%, transparent);
-  --product-techtree-bio: oklch(52% 0.1 160);
-
   --glass-frost: linear-gradient(
     168deg,
     rgba(255, 255, 255, 0.7) 0%,
@@ -146,16 +151,6 @@
 }
 
 :root[data-theme="dark"] {
-  color-scheme: dark;
-
-  --product-formation: oklch(68% 0.16 45);
-  --product-formation-soft: color-mix(in oklch, var(--product-formation) 14%, transparent);
-  --product-autolaunch: oklch(78% 0.17 155);
-  --product-autolaunch-soft: color-mix(in oklch, var(--product-autolaunch) 14%, transparent);
-  --product-techtree: oklch(72% 0.11 250);
-  --product-techtree-soft: color-mix(in oklch, var(--product-techtree) 14%, transparent);
-  --product-techtree-bio: oklch(76% 0.11 160);
-
   --glass-frost: linear-gradient(
     168deg,
     rgba(255, 255, 255, 0.16) 0%,
@@ -171,22 +166,25 @@
 }
 
 :root[data-brand="platform"][data-theme="light"] {
+  color-scheme: dark;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(98.5% 0 0);
-  --color-surface: oklch(97% 0 0);
-  --color-surface-elevated: oklch(99.5% 0 0);
-  --color-border: oklch(86% 0 0);
-  --color-fg: oklch(22% 0 0);
-  --color-fg-muted: oklch(46% 0 0);
-  --color-accent: oklch(46% 0.12 238);
-  --color-fg-on-accent: oklch(98.5% 0 0);
-  --color-success: oklch(42% 0.12 150);
-  --color-error: oklch(46% 0.16 28);
-  --color-warning: oklch(50% 0.12 75);
-  --color-info: oklch(46% 0.12 238);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--palette-charcoal);
+  --color-surface: #20201E;
+  --color-surface-elevated: #2A2A27;
+  --color-border: #57564F;
+  --color-fg: var(--palette-platinum);
+  --color-fg-muted: #AAA99C;
+  --color-accent: var(--palette-powder-blue);
+  --color-accent-secondary: var(--palette-tangerine-tango);
+  --color-fg-on-accent: var(--palette-charcoal);
+  --color-success: #7ED8A9;
+  --color-error: #FF9B8F;
+  --color-warning: #F5C16C;
+  --color-info: var(--palette-powder-blue);
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -198,7 +196,7 @@
   --glass-text-secondary: var(--color-fg-muted);
   --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-fg);
+  --glass-blue-950: var(--color-bg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
@@ -224,22 +222,25 @@
 }
 
 :root[data-brand="platform"][data-theme="dark"] {
+  color-scheme: dark;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(14.5% 0 0);
-  --color-surface: oklch(17.5% 0 0);
-  --color-surface-elevated: oklch(20.5% 0 0);
-  --color-border: oklch(32% 0 0);
-  --color-fg: oklch(97% 0 0);
-  --color-fg-muted: oklch(70.8% 0 0);
-  --color-accent: oklch(70% 0.12 238);
-  --color-fg-on-accent: oklch(14.5% 0 0);
-  --color-success: oklch(72% 0.12 150);
-  --color-error: oklch(74% 0.13 28);
-  --color-warning: oklch(80% 0.12 75);
-  --color-info: oklch(70% 0.12 238);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--palette-charcoal);
+  --color-surface: #20201E;
+  --color-surface-elevated: #2A2A27;
+  --color-border: #57564F;
+  --color-fg: var(--palette-platinum);
+  --color-fg-muted: #AAA99C;
+  --color-accent: var(--palette-powder-blue);
+  --color-accent-secondary: var(--palette-tangerine-tango);
+  --color-fg-on-accent: var(--palette-charcoal);
+  --color-success: #7ED8A9;
+  --color-error: #FF9B8F;
+  --color-warning: #F5C16C;
+  --color-info: var(--palette-powder-blue);
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -277,22 +278,25 @@
 }
 
 :root[data-brand="autolaunch"][data-theme="light"] {
+  color-scheme: light;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(98.5% 0 0);
-  --color-surface: oklch(97% 0 0);
-  --color-surface-elevated: oklch(99.5% 0 0);
-  --color-border: oklch(86% 0 0);
-  --color-fg: oklch(22% 0 0);
-  --color-fg-muted: oklch(46% 0 0);
-  --color-accent: var(--product-autolaunch);
-  --color-fg-on-accent: oklch(98.5% 0 0);
-  --color-success: oklch(42% 0.12 150);
-  --color-error: oklch(46% 0.16 28);
-  --color-warning: oklch(50% 0.12 75);
-  --color-info: oklch(45% 0.10 238);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--product-autolaunch);
+  --color-surface: #FF7A45;
+  --color-surface-elevated: var(--palette-platinum);
+  --color-border: var(--palette-charcoal);
+  --color-fg: #000000;
+  --color-fg-muted: #4F1600;
+  --color-accent: var(--palette-charcoal);
+  --color-accent-secondary: var(--palette-powder-blue);
+  --color-fg-on-accent: var(--palette-platinum);
+  --color-success: #053022;
+  --color-error: #5A0B0B;
+  --color-warning: #3D1B00;
+  --color-info: #072C38;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -330,22 +334,25 @@
 }
 
 :root[data-brand="autolaunch"][data-theme="dark"] {
+  color-scheme: light;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(14.5% 0 0);
-  --color-surface: oklch(17.5% 0 0);
-  --color-surface-elevated: oklch(20.5% 0 0);
-  --color-border: oklch(32% 0 0);
-  --color-fg: oklch(97% 0 0);
-  --color-fg-muted: oklch(70.8% 0 0);
-  --color-accent: var(--product-autolaunch);
-  --color-fg-on-accent: oklch(14.5% 0 0);
-  --color-success: oklch(72% 0.12 150);
-  --color-error: oklch(74% 0.13 28);
-  --color-warning: oklch(80% 0.12 75);
-  --color-info: oklch(70% 0.12 238);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--product-autolaunch);
+  --color-surface: #FF7A45;
+  --color-surface-elevated: var(--palette-platinum);
+  --color-border: var(--palette-charcoal);
+  --color-fg: #000000;
+  --color-fg-muted: #4F1600;
+  --color-accent: var(--palette-charcoal);
+  --color-accent-secondary: var(--palette-powder-blue);
+  --color-fg-on-accent: var(--palette-platinum);
+  --color-success: #053022;
+  --color-error: #5A0B0B;
+  --color-warning: #3D1B00;
+  --color-info: #072C38;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -357,7 +364,7 @@
   --glass-text-secondary: var(--color-fg-muted);
   --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-bg);
+  --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
@@ -383,23 +390,25 @@
 }
 
 :root[data-brand="techtree"][data-theme="light"] {
+  color-scheme: light;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(98.5% 0 0);
-  --color-surface: oklch(97% 0 0);
-  --color-surface-elevated: oklch(99.5% 0 0);
-  --color-border: oklch(86% 0 0);
-  --color-fg: oklch(22% 0 0);
-  --color-fg-muted: oklch(46% 0 0);
-  --color-accent: var(--product-techtree);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--product-techtree);
+  --color-surface: #C4D8DA;
+  --color-surface-elevated: var(--palette-platinum);
+  --color-border: #3F4F51;
+  --color-fg: var(--palette-charcoal);
+  --color-fg-muted: #3F4F51;
+  --color-accent: var(--palette-charcoal);
   --color-accent-secondary: var(--product-techtree-bio);
-  --color-fg-on-accent: oklch(98.5% 0 0);
-  --color-success: oklch(42% 0.12 150);
-  --color-error: oklch(46% 0.16 28);
-  --color-warning: oklch(50% 0.12 75);
-  --color-info: oklch(45% 0.10 238);
+  --color-fg-on-accent: var(--palette-platinum);
+  --color-success: #053022;
+  --color-error: #5A0B0B;
+  --color-warning: #3D1B00;
+  --color-info: #072C38;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -437,23 +446,25 @@
 }
 
 :root[data-brand="techtree"][data-theme="dark"] {
+  color-scheme: light;
+
   --brand-ink: var(--color-accent);
   --brand-primary: var(--color-accent);
   --brand-paper: var(--color-bg);
-  --brand-accent: var(--color-warning);
-  --color-bg: oklch(14.5% 0 0);
-  --color-surface: oklch(17.5% 0 0);
-  --color-surface-elevated: oklch(20.5% 0 0);
-  --color-border: oklch(32% 0 0);
-  --color-fg: oklch(97% 0 0);
-  --color-fg-muted: oklch(70.8% 0 0);
-  --color-accent: var(--product-techtree);
+  --brand-accent: var(--color-accent-secondary);
+  --color-bg: var(--product-techtree);
+  --color-surface: #C4D8DA;
+  --color-surface-elevated: var(--palette-platinum);
+  --color-border: #3F4F51;
+  --color-fg: var(--palette-charcoal);
+  --color-fg-muted: #3F4F51;
+  --color-accent: var(--palette-charcoal);
   --color-accent-secondary: var(--product-techtree-bio);
-  --color-fg-on-accent: oklch(14.5% 0 0);
-  --color-success: oklch(72% 0.12 150);
-  --color-error: oklch(74% 0.13 28);
-  --color-warning: oklch(80% 0.12 75);
-  --color-info: oklch(70% 0.12 238);
+  --color-fg-on-accent: var(--palette-platinum);
+  --color-success: #053022;
+  --color-error: #5A0B0B;
+  --color-warning: #3D1B00;
+  --color-info: #072C38;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -465,7 +476,7 @@
   --glass-text-secondary: var(--color-fg-muted);
   --glass-text-muted: color-mix(in oklch, var(--color-fg-muted) 84%, var(--color-bg) 16%);
   --glass-text-accent: var(--color-accent);
-  --glass-blue-950: var(--color-bg);
+  --glass-blue-950: var(--color-fg);
   --glass-blue-900: color-mix(in oklch, var(--color-accent) 82%, var(--color-fg) 18%);
   --glass-blue-700: var(--color-accent);
   --glass-blue-600: var(--color-accent);
