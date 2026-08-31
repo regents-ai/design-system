@@ -159,7 +159,7 @@ body {
   font-weight: var(--font-weight-regular, 400);
   letter-spacing: 0;
   line-height: var(--type-headline-line, 26px);
-  text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .rg-panel-subtitle,
@@ -222,18 +222,18 @@ body {
 .rg-sigil-marker * {
   transition:
     transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
-    opacity var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
-    filter var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
-}
-
-.rg-sigil-marker {
-  outline: none;
+    opacity var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
 }
 
 .rg-sigil-marker.is-focused,
 .rg-sigil-marker:focus-visible,
 .rg-sigil-marker[data-pulse-state="focus"] {
   filter: drop-shadow(0 0 10px var(--rg-intent-glow-navigate));
+}
+
+.rg-sigil-marker:focus-visible {
+  outline: 2px solid var(--rg-node-stroke-focused);
+  outline-offset: 3px;
 }
 
 .rg-sigil-marker[data-intent="scene_action"] {
@@ -289,11 +289,11 @@ body {
 .rg-hover-cycle-target {
   transform-box: fill-box;
   transform-origin: center;
-  will-change: transform, opacity, filter;
 }
 
 .rg-hover-cycle-target.is-hover-cycling {
   pointer-events: auto;
+  will-change: transform, opacity;
 }
 
 @keyframes rgSigilPulse {
@@ -334,6 +334,11 @@ body {
 .rg-collateral-hoverable,
 .rg-collateral-replayable {
   cursor: pointer;
+}
+
+.rg-collateral-replayable:focus-visible {
+  outline: 2px solid var(--rg-node-stroke-focused);
+  outline-offset: 3px;
 }
 
 .rg-collateral-hoverable:active,

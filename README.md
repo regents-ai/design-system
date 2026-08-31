@@ -108,9 +108,8 @@ One command must pass before a change is proposed:
 cd regent_ui && mix check
 ```
 
-It compiles with warnings as errors, verifies no unused dependency locks, checks formatting,
-and runs the test suite with warnings as errors. If you touched a token file, also run
-`node scripts/generate-tokens-json.mjs --check`.
+It verifies the generated token mirrors, compiles with warnings as errors, checks for unused
+dependency locks and formatting drift, and runs the test suite with warnings as errors.
 
 ## Boundaries
 

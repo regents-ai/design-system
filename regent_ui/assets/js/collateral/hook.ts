@@ -1,11 +1,11 @@
-import type { RegentHook, RegentHookContext } from "../regent_hook_types"
-import { prefersReducedMotion } from "../regent_motion"
-import { mountSceneError } from "../svg_mount"
-import type { ExperimentHandle, ExperimentModule } from "./experiment"
-import { loadExperiment } from "./registry"
-import { measureMount } from "./runtime/measure"
-import { observeVisibility } from "./runtime/observer"
-import { scheduleAnimation } from "./runtime/scheduler"
+import type { RegentHook, RegentHookContext } from "../regent_hook_types.ts"
+import { prefersReducedMotion } from "../regent_motion.ts"
+import { mountSceneError } from "../svg_mount.ts"
+import type { ExperimentHandle, ExperimentModule } from "./experiment.ts"
+import { loadExperiment } from "./registry.ts"
+import { measureMount } from "./runtime/measure.ts"
+import { observeVisibility } from "./runtime/observer.ts"
+import { scheduleAnimation } from "./runtime/scheduler.ts"
 
 /** How long an experiment may sit offscreen (paused) before it is fully unmounted. */
 const OFFSCREEN_UNMOUNT_MS = 8000
@@ -13,13 +13,20 @@ const OFFSCREEN_UNMOUNT_MS = 8000
 interface CollateralState {
   module: ExperimentModule | null
   handle: ExperimentHandle | null
+  alive: boolean
   visible: boolean
   loading: boolean
   unobserve: () => void
   schedule: ReturnType<typeof scheduleAnimation>
   offscreenTimer: number | null
   onClick: ((event: MouseEvent) => void) | null
+  onKeydown: ((event: KeyboardEvent) => void) | null
   onUpdate: ((event: Event) => void) | null
+  replayAttributes: {
+    role: string | null
+    tabIndex: string | null
+    ariaLabel: string | null
+  } | null
 }
 
 type CollateralHookContext = RegentHookContext & { __collateral?: CollateralState }
@@ -34,8 +41,16 @@ function parseData(el: HTMLElement): unknown {
   }
 }
 
+function restoreAttribute(el: HTMLElement, name: string, value: string | null): void {
+  if (value === null) {
+    el.removeAttribute(name)
+  } else {
+    el.setAttribute(name, value)
+  }
+}
+
 function mountExperiment(hook: CollateralHookContext, state: CollateralState): void {
-  if (state.handle || !state.module) return
+  if (hook.__collateral !== state || !state.alive || !state.visible || state.handle || !state.module) return
   const el = hook.el
   const Heerich = window.Heerich
   if (!Heerich) {
@@ -44,11 +59,12 @@ function mountExperiment(hook: CollateralHookContext, state: CollateralState): v
   }
 
   const id = el.dataset.experimentId ?? "unknown"
+  const reducedMotion = prefersReducedMotion()
   const { handle, mountMs } = measureMount(id, () =>
     state.module!.mount({
       el,
       Heerich,
-      reducedMotion: prefersReducedMotion(),
+      reducedMotion,
       data: parseData(el),
       pushEvent: (event, payload) => hook.pushEvent(event, payload),
     }),
@@ -59,10 +75,28 @@ function mountExperiment(hook: CollateralHookContext, state: CollateralState): v
   handle.pause()
   state.schedule.setVisible(state.visible)
 
-  if (handle.play) {
-    state.onClick = () => handle.play?.()
+  if (handle.play && !reducedMotion) {
+    const play = () => state.handle?.play?.()
+    state.replayAttributes = {
+      role: el.getAttribute("role"),
+      tabIndex: el.getAttribute("tabindex"),
+      ariaLabel: el.getAttribute("aria-label"),
+    }
+    el.setAttribute("role", "button")
+    el.setAttribute("tabindex", "0")
+    if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", `Replay ${id.replace(/-/g, " ")}`)
+
+    state.onClick = play
+    state.onKeydown = (event: KeyboardEvent) => {
+      if (event.key !== "Enter" && event.key !== " ") return
+      event.preventDefault()
+      play()
+    }
     el.addEventListener("click", state.onClick)
+    el.addEventListener("keydown", state.onKeydown)
     el.classList.add("rg-collateral-replayable")
+  } else {
+    el.classList.remove("rg-collateral-replayable")
   }
 
   if (handle.update) {
@@ -79,6 +113,17 @@ function unmountExperiment(hook: CollateralHookContext, state: CollateralState):
     hook.el.removeEventListener("click", state.onClick)
     state.onClick = null
   }
+  if (state.onKeydown) {
+    hook.el.removeEventListener("keydown", state.onKeydown)
+    state.onKeydown = null
+  }
+  if (state.replayAttributes) {
+    restoreAttribute(hook.el, "role", state.replayAttributes.role)
+    restoreAttribute(hook.el, "tabindex", state.replayAttributes.tabIndex)
+    restoreAttribute(hook.el, "aria-label", state.replayAttributes.ariaLabel)
+    state.replayAttributes = null
+  }
+  hook.el.classList.remove("rg-collateral-replayable")
   if (state.onUpdate) {
     hook.el.removeEventListener("collateral:update", state.onUpdate)
     state.onUpdate = null
@@ -88,23 +133,29 @@ function unmountExperiment(hook: CollateralHookContext, state: CollateralState):
 }
 
 async function ensureLoaded(hook: CollateralHookContext, state: CollateralState): Promise<void> {
-  if (state.module || state.loading) return
+  if (hook.__collateral !== state || !state.alive || state.module || state.loading) return
   const id = hook.el.dataset.experimentId ?? ""
   const loading = loadExperiment(id)
   if (!loading) {
-    mountSceneError(hook.el, "Unknown experiment", [`No experiment registered for "${id}".`])
+    if (hook.__collateral === state && state.alive) {
+      mountSceneError(hook.el, "Unknown experiment", [`No experiment registered for "${id}".`])
+    }
     return
   }
   state.loading = true
   try {
-    state.module = await loading
+    const module = await loading
+    if (hook.__collateral !== state || !state.alive) return
+    state.module = module
   } catch (error) {
-    mountSceneError(hook.el, "Experiment failed to load", [String(error)])
+    if (hook.__collateral === state && state.alive) {
+      mountSceneError(hook.el, "Experiment failed to load", [String(error)])
+    }
     return
   } finally {
     state.loading = false
   }
-  if (state.visible) mountExperiment(hook, state)
+  if (hook.__collateral === state && state.alive && state.visible) mountExperiment(hook, state)
 }
 
 export const BrandCollateral: RegentHook = {
@@ -113,6 +164,7 @@ export const BrandCollateral: RegentHook = {
     const state: CollateralState = {
       module: null,
       handle: null,
+      alive: true,
       visible: false,
       loading: false,
       unobserve: () => undefined,
@@ -122,11 +174,14 @@ export const BrandCollateral: RegentHook = {
       }),
       offscreenTimer: null,
       onClick: null,
+      onKeydown: null,
       onUpdate: null,
+      replayAttributes: null,
     }
     hook.__collateral = state
 
     state.unobserve = observeVisibility(hook.el, (visible) => {
+      if (hook.__collateral !== state || !state.alive) return
       state.visible = visible
       state.schedule.setVisible(visible)
       if (visible) {
@@ -152,10 +207,11 @@ export const BrandCollateral: RegentHook = {
   destroyed(this: CollateralHookContext) {
     const state = this.__collateral
     if (!state) return
+    state.alive = false
+    this.__collateral = undefined
     if (state.offscreenTimer !== null) window.clearTimeout(state.offscreenTimer)
     state.unobserve()
     unmountExperiment(this, state)
     state.schedule.release()
-    this.__collateral = undefined
   },
 }

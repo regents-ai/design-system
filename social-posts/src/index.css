@@ -130,6 +130,32 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2,
+  .vhs-noise,
+  .rgb-text-glitch {
+    animation: none;
+  }
+
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2 {
+    opacity: 1;
+    transform: none;
+  }
+
+  .vhs-glitch-bar {
+    display: none;
+  }
+
+  .liquid-glass {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* ─── Post 1: Greco-Futurist CSS Background ───────────────────── */
 .bg-greco-futurist {
   position: relative;

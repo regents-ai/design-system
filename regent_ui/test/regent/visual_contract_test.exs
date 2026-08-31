@@ -4,6 +4,7 @@ defmodule Regent.VisualContractTest do
   @package_root Path.expand("../..", __DIR__)
   @repository_root Path.expand("..", @package_root)
   @css_directory Path.join(@package_root, "assets/css")
+  @js_directory Path.join(@package_root, "assets/js")
 
   @palette %{
     "--palette-tangerine-tango" => "#FF5B19",
@@ -183,6 +184,25 @@ defmodule Regent.VisualContractTest do
     end
   end
 
+  test "scene errors are announced atomically" do
+    mount = read_package_js("svg_mount.ts")
+
+    assert mount =~ ~s|wrapper.setAttribute("role", "alert")|
+    assert mount =~ ~s|wrapper.setAttribute("aria-atomic", "true")|
+  end
+
+  test "sigil focus remains visible without persistent filter promotion" do
+    css = read_package_css("regent.css")
+
+    assert css =~ ".rg-sigil-marker:focus-visible"
+    assert css =~ ".rg-collateral-replayable:focus-visible"
+    assert css =~ "outline: 2px solid var(--rg-node-stroke-focused)"
+    assert css =~ ".rg-hover-cycle-target.is-hover-cycling"
+    assert css =~ "will-change: transform, opacity"
+    refute css =~ "filter var(--duration-fast"
+    refute css =~ "will-change: transform, opacity, filter"
+  end
+
   test "style guide freezes the shell layout, motion, reduced-motion, and landing boundaries" do
     style = read_repository("STYLE.md")
 
@@ -235,4 +255,5 @@ defmodule Regent.VisualContractTest do
 
   defp read_repository(file), do: @repository_root |> Path.join(file) |> File.read!()
   defp read_package_css(file), do: @css_directory |> Path.join(file) |> File.read!()
+  defp read_package_js(file), do: @js_directory |> Path.join(file) |> File.read!()
 end

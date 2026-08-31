@@ -126,6 +126,6 @@ export function mount(ctx: ExperimentContext): ExperimentHandle {
     resume() {
       timeline?.play()
     },
-    play,
+    ...(reducedMotion ? {} : { play }),
   }
 }

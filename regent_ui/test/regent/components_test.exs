@@ -32,6 +32,7 @@ defmodule Regent.ComponentsTest do
       <.surface id="composed-surface">
         <:header_strip>Header strip content</:header_strip>
         <:left_rail>Left rail content</:left_rail>
+        <:right_rail>Right rail content</:right_rail>
         <:chamber>
           <.chamber id="composed-chamber" title="Chamber title">
             Chamber body
@@ -50,6 +51,9 @@ defmodule Regent.ComponentsTest do
 
     assert html =~ "rg-surface-side-left"
     assert html =~ "Left rail content"
+
+    assert html =~ "rg-surface-side-right"
+    assert html =~ "Right rail content"
 
     assert html =~ "rg-surface-chamber"
     assert html =~ ~s(id="composed-chamber")

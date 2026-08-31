@@ -94,4 +94,34 @@ defmodule Regent.PanelsTest do
       assert html =~ "rg-ledger-panel"
     end
   end
+
+  describe "icon/1" do
+    test "exposes a titled icon as a named image" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.icon name="gate" title="Open gate" />
+        """)
+
+      assert html =~ ~s(role="img")
+      assert html =~ ~s(aria-label="Open gate")
+      refute html =~ "aria-hidden"
+      assert html =~ "<title>Open gate</title>"
+    end
+
+    test "keeps an untitled icon decorative" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.icon name="gate" />
+        """)
+
+      assert html =~ ~s(aria-hidden="true")
+      refute html =~ ~s(role="img")
+      refute html =~ "aria-label"
+      refute html =~ "<title>"
+    end
+  end
 end

@@ -102,7 +102,9 @@ defmodule Regent.Panels do
       stroke-width="3"
       stroke-linecap="round"
       stroke-linejoin="round"
-      aria-hidden={is_nil(@title)}
+      role={if(@title, do: "img")}
+      aria-label={@title}
+      aria-hidden={if(is_nil(@title), do: "true")}
       {@rest}
     >
       <title :if={@title}>{@title}</title>

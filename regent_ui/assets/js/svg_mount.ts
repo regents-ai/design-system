@@ -25,6 +25,8 @@ export function mountSceneError(container: Element, title: string, lines: string
   const doc = container.ownerDocument ?? document
   const wrapper = doc.createElement("div")
   wrapper.className = "rg-scene-error"
+  wrapper.setAttribute("role", "alert")
+  wrapper.setAttribute("aria-atomic", "true")
 
   const strong = doc.createElement("strong")
   strong.textContent = title

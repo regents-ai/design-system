@@ -117,6 +117,6 @@ export function mount(ctx: ExperimentContext): ExperimentHandle {
     resume() {
       animations.forEach((animation) => animation.play())
     },
-    play,
+    ...(reducedMotion ? {} : { play }),
   }
 }
