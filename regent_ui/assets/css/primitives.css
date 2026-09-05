@@ -33,7 +33,7 @@
 .rg-field [aria-invalid="true"] { border-color: var(--rg-p-error); }
 .rg-field-errors { margin: 0; padding-inline-start: 1.25rem; color: var(--rg-p-error); }
 .rg-muted { color: var(--rg-p-muted, inherit); }
-.rg-status { display: inline-flex; padding: .125rem .5rem; border: 1px solid currentColor; border-radius: var(--radius-full, 999px); font-size: .8125rem; }
+.rg-status { display: inline-flex; width: fit-content; padding: .125rem .5rem; border: 1px solid currentColor; border-radius: var(--radius-full, 999px); font-size: .8125rem; }
 .rg-tone--error { color: var(--rg-p-error); }
 .rg-tone--success { color: var(--rg-p-success); }
 .rg-tone--warning { color: var(--rg-p-warning); }
@@ -46,4 +46,6 @@
 .rg-chevron { font-size: 1.5em; transform: rotate(0); transition: transform 120ms ease-out; }
 .rg-disclosure[open] > summary .rg-chevron { transform: rotate(90deg); }
 .rg-disclosure-body { padding-block: .5rem 1rem; overflow-wrap: anywhere; }
-@media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none; } }
+/* Product-wide reduced-motion rules may use !important durations. */
+.rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
