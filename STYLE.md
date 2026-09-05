@@ -5,8 +5,7 @@ values — `design_system_tokens.css` (mirrored by `design_system_tokens.json`) 
 explains the system so a person or agent can apply it without guessing.
 
 The four applications share primitives and interaction conventions. Each owns its layout,
-navigation, content and theme. Shipped product themes remain authoritative during
-incremental adoption; the palette examples below are defaults.
+navigation, content and theme. The founder-approved palettes and SVGs are shared across all four sites.
 
 ## Identity
 
@@ -33,22 +32,15 @@ identity color.
 | Platinum | `--palette-platinum` | `#E5E3D2` |
 | Powder Blue | `--palette-powder-blue` | `#AECACD` |
 
-Identity lives in the ground, not in a lone accent. Each product owns a base color and keeps it
-whichever Light/Dark the reader picks: `data-theme` still varies the frost and shine of glass, but
-it never moves a product's ground, foreground, action, muted, or status values.
+The approved September 5 palettes use distinct light and dark surfaces. Regents
+emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powder
+blue. Exact values come from the supplied `site color palettes/` images and are
+implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
 
-| Role | Regent / Platform | Autolaunch | Techtree |
-| --- | --- | --- | --- |
-| Background | `#161616` Charcoal | `#FF5B19` Tangerine | `#AECACD` Powder Blue |
-| Surface | `#20201E` | `#FF7A45` | `#C4D8DA` |
-| Surface, elevated | `#2A2A27` | `#E5E3D2` Platinum | `#E5E3D2` Platinum |
-| Border | `#57564F` | `#161616` Charcoal | `#3F4F51` |
-| Text | `#E5E3D2` Platinum | `#000000` black | `#161616` Charcoal |
-| Text, muted | `#AAA99C` | `#4F1600` | `#3F4F51` |
-| Primary action | `#AECACD` Powder Blue | `#161616` Charcoal | `#161616` Charcoal |
-| Text on action | `#161616` Charcoal | `#E5E3D2` Platinum | `#E5E3D2` Platinum |
-| Highlight | `#FF5B19` Tangerine | `#AECACD` Powder Blue | `#FF5B19` Tangerine |
-| `color-scheme` | `dark` | `light` | `light` |
+`site svg backgrounds/` supplies eight cutting mats. `regent_ui.assets` packages
+these with the shared primitives. Every product route uses its matching mat except
+Regents `/` and Techtree `/`, which retain their existing background artwork.
+Applications own these route exceptions; the shared component owns no routing.
 
 ### Readable pairs only
 

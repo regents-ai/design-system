@@ -22,7 +22,7 @@
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }
 .rg-button:disabled { opacity: .6; cursor: default; }
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
-.rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-accent); outline-offset: 3px; }
+.rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--color-focus, var(--rg-p-accent)); outline-offset: 3px; }
 .rg-field { display: grid; gap: .375rem; }
 .rg-field > label { font-weight: 600; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
@@ -49,3 +49,19 @@
 /* Product-wide reduced-motion rules may use !important durations. */
 .rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
+
+/* Product roots place this behind their own content. Home exceptions are product-owned. */
+body:has(.rg-site-background) { isolation: isolate; }
+.rg-site-background {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--site-background-image);
+  background-size: 100vw auto; background-repeat: repeat-y;
+}
+.rg-field select {
+  appearance: none; padding-right: 40px;
+  background-image:
+    linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
+    linear-gradient(135deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
+  background-position: right 18px center, right 12px center;
+  background-size: 6px 6px; background-repeat: no-repeat;
+}

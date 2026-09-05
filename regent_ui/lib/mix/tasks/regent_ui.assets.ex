@@ -9,12 +9,20 @@ defmodule Mix.Tasks.RegentUi.Assets do
 
   @impl Mix.Task
   def run([]) do
-    source = Path.join(Mix.Project.deps_paths() |> Map.fetch!(:regent_ui), "assets/css")
+    dependency = Mix.Project.deps_paths() |> Map.fetch!(:regent_ui)
+    source = Path.join(dependency, "assets/css")
     destination = Path.join(File.cwd!(), "assets/vendor/regent_ui")
     File.mkdir_p!(destination)
 
     for file <- Path.wildcard(Path.join(source, "*.css")) do
       File.cp!(file, Path.join(destination, Path.basename(file)))
+    end
+
+    images = Path.join(File.cwd!(), "priv/static/images/regent-ui")
+    File.mkdir_p!(images)
+
+    for file <- Path.wildcard(Path.join(dependency, "priv/static/images/*.svg")) do
+      File.cp!(file, Path.join(images, Path.basename(file)))
     end
   end
 end
