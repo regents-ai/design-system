@@ -41,7 +41,7 @@ defmodule Regent.Primitives do
       {render_slot(@inner_block, %{
         id: @id,
         described_by: @described_by,
-        invalid: to_string(@errors != [])
+        aria_invalid: to_string(@errors != [])
       })}
       <div :if={@hint != []} id={@id <> "-hint"} class="rg-muted">{render_slot(@hint)}</div>
       <ul :if={@errors != []} id={@id <> "-errors"} class="rg-field-errors">

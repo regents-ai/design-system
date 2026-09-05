@@ -25,7 +25,7 @@
 .rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-accent); outline-offset: 3px; }
 .rg-field { display: grid; gap: .375rem; }
 .rg-field > label { font-weight: 600; }
-.rg-field :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
+.rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
   min-width: 0; width: 100%; box-sizing: border-box; padding: .625rem .75rem;
   border: 1px solid var(--rg-p-border); border-radius: var(--radius-sm, .25rem);
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;

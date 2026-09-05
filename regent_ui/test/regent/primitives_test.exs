@@ -10,7 +10,7 @@ defmodule Regent.PrimitivesTest do
     html =
       rendered_to_string(~H"""
       <.field :let={field} id="amount" label="Amount" errors={["<invalid>"]}>
-        <input id={field.id} aria-describedby={field.described_by} aria-invalid={field.invalid} />
+        <input id={field.id} aria-describedby={field.described_by} aria-invalid={field.aria_invalid} />
         <:hint>Use whole units</:hint>
       </.field>
       """)
