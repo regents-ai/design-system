@@ -19,6 +19,10 @@ defmodule Mix.Tasks.RegentUi.Assets do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end
 
+    for file <- Path.wildcard(Path.join(dependency, "assets/js/profile.*")) do
+      File.cp!(file, Path.join(destination, Path.basename(file)))
+    end
+
     images = Path.join(File.cwd!(), "priv/static/images/regent-ui")
     File.mkdir_p!(images)
 

@@ -65,3 +65,19 @@ body:has(.rg-site-background) { isolation: isolate; }
   background-position: right 18px center, right 12px center;
   background-size: 6px 6px; background-repeat: no-repeat;
 }
+
+.rg-profile {
+  width: min(100%, 38rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+.rg-profile h1 { margin-block: 0 1.5rem; }
+.rg-profile form { display: grid; gap: 1.5rem; }
+.rg-profile form[hidden], .rg-profile [hidden] { display: none; }
+.rg-profile input, .rg-profile select { width: 100%; min-width: 0; }
+.rg-profile-connection, .rg-profile-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.rg-profile-connection > div { flex: 1; display: grid; gap: .25rem; }
+.rg-profile-connection strong { overflow-wrap: anywhere; }
+.rg-profile dl { display: grid; gap: .375rem; margin: 0; }
+.rg-profile dd { margin: 0 0 .75rem; overflow-wrap: anywhere; }
+.rg-profile .rg-disclosure p { margin-bottom: 0; }
