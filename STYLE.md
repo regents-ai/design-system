@@ -222,6 +222,9 @@ the marks; pick the correct scheme instead.
   `assets/vendor/regent_ui/` directory and import its `primitives.css` for primitives only.
   Existing spatial surfaces can import generated `regent.css`; it has global styling.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
+- For a standalone Docker context, run `mix regent_ui.stage` first and copy generated
+  `vendor/regent_ui` into the image. Set `REGENT_UI_PATH` to that path in the image.
+  Ignore staging/history outputs; this command packages local source and never deploys.
 - The package supports locked LiveView 1.1 and 1.2 consumers. Verify both lines and
   representative consuming pages; do not upgrade frameworks incidentally.
 - Change shared token values at their source and regenerate the JSON/package mirrors.
