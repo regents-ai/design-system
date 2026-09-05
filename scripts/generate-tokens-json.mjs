@@ -6,7 +6,7 @@
 // Usage: node scripts/generate-tokens-json.mjs [--check]
 //   --check  verify the JSON is in sync without rewriting it (exit 1 on drift)
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -42,9 +42,16 @@ const output = `${JSON.stringify({ selectors }, null, 2)}\n`;
 
 const outputs = [
   [jsonPath, output],
+  [join(root, "regent_ui/assets/css/tokens.json"), output],
   [packagedCssPath, css],
   [packagedGlassPath, glass],
 ];
+
+const svgSource = join(root, "site svg backgrounds");
+const svgDestination = join(root, "regent_ui/priv/static/images");
+for (const name of readdirSync(svgSource).filter(name => name.endsWith(".svg"))) {
+  outputs.push([join(svgDestination, name), readFileSync(join(svgSource, name), "utf8")]);
+}
 
 if (process.argv.includes("--check")) {
   const drifted = outputs
@@ -66,6 +73,7 @@ if (process.argv.includes("--check")) {
   console.log("Generated visual contract is in sync.");
 } else {
   for (const [path, content] of outputs) {
+    mkdirSync(dirname(path), {recursive: true});
     writeFileSync(path, content);
     console.log(`Wrote ${path}`);
   }

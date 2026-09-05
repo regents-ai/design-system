@@ -14,7 +14,8 @@ defmodule Mix.Tasks.RegentUi.Assets do
     destination = Path.join(File.cwd!(), "assets/vendor/regent_ui")
     File.mkdir_p!(destination)
 
-    for file <- Path.wildcard(Path.join(source, "*.css")) do
+    for extension <- ~w(css json),
+        file <- Path.wildcard(Path.join(source, "*.#{extension}")) do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end
 
