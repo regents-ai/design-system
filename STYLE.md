@@ -224,6 +224,9 @@ the marks; pick the correct scheme instead.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
 - For a standalone Docker context, run `mix regent_ui.stage` first and copy generated
   `vendor/regent_ui` into the image. Set `REGENT_UI_PATH` to that path in the image.
+  Run staging through `regentctl worktree-run <repo> <ticket> -- mix regent_ui.stage`.
+  It requires the pinned snapshot and `REGENT_UI_REVISION`, verifies exported content,
+  and records revision plus SHA256 in `.regent-ui-generated`. Retain that build evidence.
   Ignore staging/history outputs; this command packages local source and never deploys.
 - The package supports locked LiveView 1.1 and 1.2 consumers. Verify both lines and
   representative consuming pages; do not upgrade frameworks incidentally.

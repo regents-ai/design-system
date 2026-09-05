@@ -8,10 +8,38 @@ defmodule Mix.Tasks.RegentUi.Stage do
   """
   use Mix.Task
 
+  @entries ~w(lib assets priv mix.exs .formatter.exs)
+
   @impl Mix.Task
   def run([]) do
     source = Mix.Project.deps_paths() |> Map.fetch!(:regent_ui)
-    vendor = Path.expand("vendor")
+    stage(source, System.get_env("REGENT_UI_REVISION"), Path.expand("vendor"))
+  end
+
+  @doc false
+  def stage(source, revision, vendor) do
+    snapshot = Path.dirname(source)
+
+    unless is_binary(revision) and Regex.match?(~r/\A[0-9a-f]{40}\z/, revision) and
+             File.read(Path.join(snapshot, ".regent-revision")) == {:ok, revision <> "\n"} do
+      Mix.raise(
+        "Stage requires a pinned workspace dependency and REGENT_UI_REVISION; run through worktree-run"
+      )
+    end
+
+    expected =
+      snapshot
+      |> Path.join(".regent-files.json")
+      |> File.read!()
+      |> Jason.decode!()
+      |> Map.filter(fn {name, _} ->
+        Enum.any?(
+          @entries,
+          &(name == "regent_ui/#{&1}" or String.starts_with?(name, "regent_ui/#{&1}/"))
+        )
+      end)
+      |> Map.new(fn {name, value} -> {String.replace_prefix(name, "regent_ui/", ""), value} end)
+
     destination = Path.join(vendor, "regent_ui")
     marker = ".regent-ui-generated"
 
@@ -28,12 +56,28 @@ defmodule Mix.Tasks.RegentUi.Stage do
     staging = Path.join(vendor, ".regent-ui-stage-#{id}")
     File.mkdir_p!(staging)
 
-    for entry <- ~w(lib assets priv mix.exs .formatter.exs),
+    for entry <- @entries,
         File.exists?(Path.join(source, entry)) do
       File.cp_r!(Path.join(source, entry), Path.join(staging, entry), dereference_symlinks: false)
     end
 
-    File.write!(Path.join(staging, marker), "Generated from the resolved regent_ui dependency.\n")
+    actual = package_files(staging)
+
+    unless map_size(expected) > 0 and actual == expected do
+      Mix.raise(
+        "Shared UI package differs from the pinned snapshot; staged candidate preserved for inspection"
+      )
+    end
+
+    digest =
+      actual
+      |> Enum.sort()
+      |> Enum.map(fn {name, value} -> [name, value["sha256"]] end)
+      |> Jason.encode!()
+      |> sha256()
+
+    evidence = Jason.encode!(%{revision: revision, sha256: digest}, pretty: true) <> "\n"
+    File.write!(Path.join(staging, marker), evidence)
 
     if File.exists?(destination) do
       history = Path.join(vendor, ".regent-ui-history")
@@ -42,6 +86,26 @@ defmodule Mix.Tasks.RegentUi.Stage do
     end
 
     File.rename!(staging, destination)
-    Mix.shell().info("Staged regent_ui from the resolved dependency; no deployment performed")
+
+    Mix.shell().info(
+      "Staged regent_ui revision #{revision}, content SHA256 #{digest}; no deployment performed"
+    )
   end
+
+  defp package_files(directory) do
+    directory
+    |> Path.join("**/*")
+    |> Path.wildcard(match_dot: true)
+    |> Enum.reject(&(File.lstat!(&1).type == :directory))
+    |> Map.new(fn path ->
+      if File.lstat!(path).type != :regular do
+        Mix.raise("Shared UI package must contain regular files only")
+      end
+
+      {Path.relative_to(path, directory),
+       %{"kind" => "file", "sha256" => sha256(File.read!(path))}}
+    end)
+  end
+
+  defp sha256(value), do: :crypto.hash(:sha256, value) |> Base.encode16(case: :lower)
 end
