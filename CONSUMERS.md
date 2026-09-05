@@ -42,7 +42,7 @@ this rollout, not an audit of every backend setting in the repositories.
 | Contrast | Some components reused pale primary fill colors for text/focus | Separate primary fill, readable link, and focus tokens |
 | Error documents | Techtree errors retained unsupported theme names and no brand | Supported Techtree brand/theme plus shared background |
 | Local ports | Autolaunch tests fixed port 4050; other contexts accepted PORT | Autolaunch accepts PORT too; each worktree gets a unique reserved port |
-| Nested project | Techtree's Mix project is `platform/`; other apps are repository-root projects | Preserve layout; worktree tooling selects the correct directory |
+| Nested project | All four monorepos keep their Mix project in `platform/` | Worktree tooling selects each product's `platform/` directory |
 | Database setup | Regents migration history assumes retained platform tables; other apps can migrate empty local databases | Keep product-owned schemas; Regents uses its existing guarded test fixture. Do not replay archived migration history to solve a visual change |
 | Browser fixtures | App suites differ in seeding, authorization fixtures, server pools, and teardown | Use each app's disposable database and focused browser runs; do not merge authentication or domain fixtures into the UI package |
 | Existing work | Autolaunch had extensive uncommitted design changes | Candidate includes an isolated snapshot; integrate only this rollout's delta |
@@ -61,7 +61,7 @@ Run `node scripts/generate-tokens-json.mjs --check` from the design-system root,
 and `mix check` from its `regent_ui/` directory.
 Then use `regentctl worktree-prepare` and `worktree-run` for each consumer. The
 context records the shared commit, port, database, and logs. Run `mix assets.build`
-inside each prepared Mix root; Techtree's is `platform/`. Review light and dark
+inside each prepared Mix root (`platform/` in all four monorepos). Review light and dark
 pages, a mobile viewport, keyboard focus, and both homepage exceptions. Do not
 copy generated assets from another application's checkout.
 
@@ -83,3 +83,10 @@ Shared component edits propagate to every app that consumes that component.
 Product-owned components still need deliberate migration when their behavior and
 structure match; a shared token import does not turn every local component into a
 shared one. Avoid copying a component into an app to customize its palette.
+
+## Product monorepo locations
+
+The active consumers are `repos/regents/platform`, `repos/autolaunch/platform`,
+`repos/patchbay/platform` and `repos/techtree/platform`. Use the product names
+`regents`, `autolaunch`, `patchbay`, `techtree` with the worktree commands. Internal
+OTP names and CSS brand identifiers are unchanged.
