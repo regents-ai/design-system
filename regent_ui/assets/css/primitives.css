@@ -5,7 +5,7 @@
   --rg-p-surface: var(--pb-surface, var(--color-surface, transparent));
   --rg-p-border: var(--pb-line, var(--color-border, currentColor));
   --rg-p-accent: var(--pb-accent, var(--color-accent, currentColor));
-  --rg-p-on-accent: var(--pb-accent-ink, var(--color-on-accent, var(--color-bg, Canvas)));
+  --rg-p-on-accent: var(--pb-accent-ink, var(--color-fg-on-accent, var(--color-bg, Canvas)));
   --rg-p-error: var(--pb-bad, var(--color-error, currentColor));
   --rg-p-success: var(--pb-good, var(--color-success, currentColor));
   --rg-p-warning: var(--pb-accent, var(--color-warning, currentColor));
