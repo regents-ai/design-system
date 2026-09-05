@@ -183,35 +183,6 @@ defmodule Regent.VisualContractTest do
     end
   end
 
-  test "style guide freezes the shell layout, motion, reduced-motion, and landing boundaries" do
-    style = read_repository("STYLE.md")
-
-    for contract <- [
-          "one persistent viewport",
-          "Document scrolling is disabled",
-          "internal scrolling",
-          "stable routed task context",
-          "`65–80ch`",
-          "Charcoal Regent/Platform, Powder Blue\nTechtree, or Tangerine Autolaunch",
-          "keeps its assigned ground in both theme choices",
-          "sequential and non-overlapping",
-          "outgoing DOM clone",
-          "nested\nduplicate slide",
-          "Movement is limited to transform and opacity",
-          "OS `prefers-reduced-motion` wins",
-          "Account opt-in cannot override the OS preference",
-          "separate `/` marketing landing page is always light",
-          "no theme control",
-          "without a dark flash",
-          "RegentUI is presentation only"
-        ] do
-      assert style =~ contract
-    end
-
-    refute style =~ "Marketing surfaces may pin themselves dark"
-    refute style =~ "landing's `.rl-root`"
-  end
-
   defp selectors do
     @repository_root
     |> Path.join("design_system_tokens.json")

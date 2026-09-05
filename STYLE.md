@@ -4,9 +4,9 @@ The canonical description of the Regent visual language. Machine sources stay ca
 values — `design_system_tokens.css` (mirrored by `design_system_tokens.json`) — this document
 explains the system so a person or agent can apply it without guessing.
 
-Reference implementation: the public landing page (`platform/lib/regents_web/components/landing_components.ex`
-with `platform/assets/css/landing.css`). When this guide and a shipped surface disagree, fix
-one of them in the same pass.
+The four applications share primitives and interaction conventions. Each owns its layout,
+navigation, content and theme. Shipped product themes remain authoritative during
+incremental adoption; the palette examples below are defaults.
 
 ## Identity
 
@@ -137,25 +137,22 @@ Patterns from the landing that generalize:
 - Sidebar and nav active states are soft accent-tinted pills (~8% accent over transparent)
   with accent text and icon — never inset bars or hard borders.
 
-## Application shell
+## Product layouts and disclosure
 
-The product application is one persistent viewport. Document scrolling is disabled inside that
-shell; headers, rails, task panes, and other components own their internal scrolling. Route
-changes preserve a stable routed task context instead of replacing the application frame. A
-long-form reading pane remains a normal `65–80ch` column inside the same viewport rather than
-becoming a separate document-scrolling layout.
+Each product chooses document scrolling, panels, rails and navigation to fit its users.
+There is no required universal shell or landing-page theme. Shared components do not own
+routes, authentication, persistence, wallet admission, or product workflows.
 
-Route metadata selects one of three app background families: Charcoal Regent/Platform, Powder Blue
-Techtree, or Tangerine Autolaunch. Each product keeps its assigned ground in both theme choices —
-`data-theme` varies the frost and shine treatment of glass, never the product ground, text, action,
-muted, or status values. Background artwork is supplied by the consuming application; these
-families do not imply fallback artwork or component color forks.
+Keep pages text-light: show the object, current state and primary action first. Put supporting
+explanation, provenance and technical detail behind a labeled chevron using native details
+and summary. Keep errors, transaction outcomes, costs and information needed to choose an
+action visible. Collapsed content stays rendered. Authorized agent tools return the same
+complete detail independently of visual expansion; DOM hiding is not access control.
 
-The separate `/` marketing landing page is always light. It has no theme control and must render
-without a dark flash. Its composition and copy remain independent from the persistent app shell.
-
-RegentUI is presentation only. It owns no route or LiveView lifecycle, product workflow,
-authentication decision, persistence, or money behavior.
+Patchbay retains its existing `--pb-*` theme: `--pb-text`, `--pb-text-muted`, `--pb-surface`,
+`--pb-line`, `--pb-accent`, `--pb-accent-ink`, `--pb-good` and `--pb-bad` map directly to the
+shared primitives. The other products use their `--color-*` semantic tokens. Do not recolor
+Patchbay or replace a product layout merely to consume a common button or disclosure.
 
 ## Motion
 
@@ -219,13 +216,14 @@ the marks; pick the correct scheme instead.
 
 ## Consumption
 
-- RegentUI package consumers import only `assets/css/regent.css`; that package-relative entry
-  imports the generated token and glass layers before its component styles.
-- Set `data-brand` (`platform | autolaunch | techtree`) and `data-theme` (`light | dark`) on
-  the root element; every token above resolves from those two attributes.
-- The separate `/` landing remains always light and outside the app theme contract. It exposes
-  no theme control and must render without a dark flash.
-- Change tokens here first (`design_system_tokens.css`), regenerate the JSON mirror, then let
-  consumers pick the change up. Never fork per-component color values downstream.
-- Acceptance: `cd regent_ui && mix test`, plus the platform stylesheet suite
-  (`platform/test/regents_web/stylesheet_palette_test.exs`) which polices consumption.
+- Use `Regent.Primitives` for buttons, fields/errors, statuses, notices, empty states and
+  disclosures. Apps supply slots, routes, events and state.
+- Run `mix regent_ui.assets` before the consuming CSS build. Ignore the generated
+  `assets/vendor/regent_ui/` directory and import its `primitives.css` for primitives only.
+  Existing spatial surfaces can import generated `regent.css`; it has global styling.
+- Dependency paths resolve through Mix, including pinned isolated checkouts.
+- The package supports locked LiveView 1.1 and 1.2 consumers. Verify both lines and
+  representative consuming pages; do not upgrade frameworks incidentally.
+- Change shared token values at their source and regenerate the JSON/package mirrors.
+- Verify keyboard focus, labels/errors, mobile wrapping, empty states and reduced motion
+  in each product theme. A component render test alone is not visual QA.

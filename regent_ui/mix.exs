@@ -24,7 +24,7 @@ defmodule RegentUi.MixProject do
 
   defp deps do
     [
-      {:phoenix_live_view, "~> 1.1.0"},
+      {:phoenix_live_view, "~> 1.1.0 or ~> 1.2.0"},
       {:phoenix_html, "~> 4.1"},
       {:jason, "~> 1.2"}
     ]

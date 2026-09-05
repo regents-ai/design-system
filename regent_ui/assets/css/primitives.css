@@ -1,0 +1,49 @@
+/* Opt-in primitives: no body reset, product shell, or global color replacement. */
+:where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure) {
+  --rg-p-text: var(--pb-text, var(--color-fg, inherit));
+  --rg-p-muted: var(--pb-text-muted, var(--color-fg-muted, currentColor));
+  --rg-p-surface: var(--pb-surface, var(--color-surface, transparent));
+  --rg-p-border: var(--pb-line, var(--color-border, currentColor));
+  --rg-p-accent: var(--pb-accent, var(--color-accent, currentColor));
+  --rg-p-on-accent: var(--pb-accent-ink, var(--color-on-accent, var(--color-bg, Canvas)));
+  --rg-p-error: var(--pb-bad, var(--color-error, currentColor));
+  --rg-p-success: var(--pb-good, var(--color-success, currentColor));
+  --rg-p-warning: var(--pb-accent, var(--color-warning, currentColor));
+  font-family: var(--font-family-ui, inherit); font-size: inherit; line-height: 1.5;
+  color: var(--rg-p-text); box-sizing: border-box;
+}
+.rg-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 2.75rem; padding: .5rem 1rem; border: 1px solid transparent;
+  border-radius: var(--radius-button, .375rem); cursor: pointer;
+  background: var(--rg-p-accent); color: var(--rg-p-on-accent); font-weight: 600;
+}
+.rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-border); }
+.rg-button--quiet { background: transparent; color: var(--rg-p-text); }
+.rg-button:disabled { opacity: .6; cursor: default; }
+.rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
+.rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-accent); outline-offset: 3px; }
+.rg-field { display: grid; gap: .375rem; }
+.rg-field > label { font-weight: 600; }
+.rg-field :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
+  min-width: 0; width: 100%; box-sizing: border-box; padding: .625rem .75rem;
+  border: 1px solid var(--rg-p-border); border-radius: var(--radius-sm, .25rem);
+  color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
+}
+.rg-field [aria-invalid="true"] { border-color: var(--rg-p-error); }
+.rg-field-errors { margin: 0; padding-inline-start: 1.25rem; color: var(--rg-p-error); }
+.rg-muted { color: var(--rg-p-muted, inherit); }
+.rg-status { display: inline-flex; padding: .125rem .5rem; border: 1px solid currentColor; border-radius: var(--radius-full, 999px); font-size: .8125rem; }
+.rg-tone--error { color: var(--rg-p-error); }
+.rg-tone--success { color: var(--rg-p-success); }
+.rg-tone--warning { color: var(--rg-p-warning); }
+.rg-notice { padding: .75rem 1rem; border-inline-start: 3px solid currentColor; background: var(--rg-p-surface); overflow-wrap: anywhere; }
+.rg-empty { display: grid; gap: .75rem; padding: 1.5rem; text-align: center; }
+.rg-empty-title { margin: 0; font-weight: 600; }
+.rg-disclosure { border-block-end: 1px solid var(--rg-p-border); }
+.rg-disclosure > summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 2.75rem; cursor: pointer; list-style: none; }
+.rg-disclosure > summary::-webkit-details-marker { display: none; }
+.rg-chevron { font-size: 1.5em; transform: rotate(0); transition: transform 120ms ease-out; }
+.rg-disclosure[open] > summary .rg-chevron { transform: rotate(90deg); }
+.rg-disclosure-body { padding-block: .5rem 1rem; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none; } }
