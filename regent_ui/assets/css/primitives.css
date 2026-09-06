@@ -18,6 +18,7 @@
   border-radius: var(--radius-button, .375rem); cursor: pointer;
   background: var(--rg-p-accent); color: var(--rg-p-on-accent); font-weight: 600;
 }
+.rg-button[hidden] { display: none; }
 .rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-border); }
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }
 .rg-button:disabled { opacity: .6; cursor: default; }
