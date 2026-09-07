@@ -34,4 +34,19 @@ defmodule Regent.VisualContractTest do
                File.read!(Path.join([@repository_root, "site svg backgrounds", file]))
     end
   end
+
+  test "every declared font is packaged at its same-origin URL with only 400 and 600 weights" do
+    css = File.read!(Path.join(@repository_root, "design_system_tokens.css"))
+    faces = Regex.scan(~r/@font-face \{([^}]*)\}/, css, capture: :all_but_first)
+    assert length(faces) == 8
+
+    for [face] <- faces do
+      [_, file] = Regex.run(~r{url\("/fonts/regent-ui/([^"]+)"\)}, face)
+      assert File.exists?(Path.join([@package_root, "priv/static/fonts", file])), file
+      assert face =~ ~r/font-weight: (400|600);/
+      assert face =~ ~r/font-style: (normal|italic);/
+    end
+
+    assert File.exists?(Path.join(@package_root, "priv/static/fonts/OFL.txt"))
+  end
 end

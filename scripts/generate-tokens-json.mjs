@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-// Regenerate design_system_tokens.json and RegentUI's packaged CSS mirrors.
-// The root CSS files are the sources of truth; every other representation is
-// a generated output checked here.
+// Regenerate design_system_tokens.json and RegentUI's packaged CSS, background
+// and font mirrors. The root CSS files and asset directories are the sources of
+// truth; every other representation is a generated output checked here.
 //
 // Usage: node scripts/generate-tokens-json.mjs [--check]
 //   --check  verify the JSON is in sync without rewriting it (exit 1 on drift)
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { Buffer } from "node:buffer";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -53,11 +54,22 @@ for (const name of readdirSync(svgSource).filter(name => name.endsWith(".svg")))
   outputs.push([join(svgDestination, name), readFileSync(join(svgSource, name), "utf8")]);
 }
 
+// Every font file the canonical CSS declares, plus its license, ships in the package
+// and is served by consumers at /fonts/regent-ui/<file>.
+const fontDestination = join(root, "regent_ui/priv/static/fonts");
+const fontSources = { Geist: "Geist/webfonts", GeistMono: "GeistMono/webfonts" };
+for (const url of css.matchAll(/url\("\/fonts\/regent-ui\/([^"]+)"\)/g)) {
+  const file = url[1];
+  const family = file.split("-")[0];
+  outputs.push([join(fontDestination, file), readFileSync(join(root, "geist-font", fontSources[family], file))]);
+}
+outputs.push([join(fontDestination, "OFL.txt"), readFileSync(join(root, "geist-font/OFL.txt"))]);
+
 if (process.argv.includes("--check")) {
   const drifted = outputs
     .filter(([path, expected]) => {
       try {
-        return readFileSync(path, "utf8") !== expected;
+        return !readFileSync(path).equals(Buffer.from(expected));
       } catch (error) {
         if (error.code === "ENOENT") return true;
         throw error;

@@ -12,17 +12,27 @@ defmodule Mix.Tasks.RegentUi.StageTest do
     revision = String.duplicate("a", 40)
     File.write!(Path.join(root, "snapshot/.regent-revision"), revision <> "\n")
     File.write!(Path.join(source, "mix.exs"), "# package source\n")
-    digest = :crypto.hash(:sha256, "# package source\n") |> Base.encode16(case: :lower)
+    font = :crypto.strong_rand_bytes(256)
+    File.mkdir_p!(Path.join(source, "priv/static/fonts"))
+    File.write!(Path.join(source, "priv/static/fonts/Geist-Regular.woff2"), font)
 
     File.write!(
       Path.join(root, "snapshot/.regent-files.json"),
-      Jason.encode!(%{"regent_ui/mix.exs" => %{"kind" => "file", "sha256" => digest}})
+      Jason.encode!(%{
+        "regent_ui/mix.exs" => %{"kind" => "file", "sha256" => sha256("# package source\n")},
+        "regent_ui/priv/static/fonts/Geist-Regular.woff2" => %{
+          "kind" => "file",
+          "sha256" => sha256(font)
+        }
+      })
     )
 
     on_exit(fn -> File.rm_rf!(root) end)
 
-    %{source: source, application: application, revision: revision}
+    %{source: source, application: application, revision: revision, font: font}
   end
+
+  defp sha256(value), do: :crypto.hash(:sha256, value) |> Base.encode16(case: :lower)
 
   defp stage(context) do
     Mix.Tasks.RegentUi.Stage.stage(
@@ -40,6 +50,10 @@ defmodule Mix.Tasks.RegentUi.StageTest do
     assert evidence["revision"] == context.revision
     assert byte_size(evidence["sha256"]) == 64
     assert File.read!(Path.join(destination, "mix.exs")) == "# package source\n"
+
+    assert File.read!(Path.join(destination, "priv/static/fonts/Geist-Regular.woff2")) ==
+             context.font
+
     stage(context)
 
     assert File.read!(Path.join(destination, ".regent-ui-generated")) |> Jason.decode!() ==

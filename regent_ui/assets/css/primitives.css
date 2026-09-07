@@ -15,7 +15,7 @@
 .rg-button {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   min-height: 2.75rem; padding: .5rem 1rem; border: 1px solid transparent;
-  border-radius: var(--radius-button, .375rem); cursor: pointer;
+  border-radius: var(--radius); cursor: pointer;
   background: var(--rg-p-accent); color: var(--rg-p-on-accent); font-weight: 600;
 }
 .rg-button[hidden] { display: none; }
@@ -28,13 +28,13 @@
 .rg-field > label { font-weight: 600; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
   min-width: 0; width: 100%; box-sizing: border-box; padding: .625rem .75rem;
-  border: 1px solid var(--rg-p-border); border-radius: var(--radius-sm, .25rem);
+  border: 1px solid var(--rg-p-border); border-radius: var(--radius);
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
 }
 .rg-field [aria-invalid="true"] { border-color: var(--rg-p-error); }
 .rg-field-errors { margin: 0; padding-inline-start: 1.25rem; color: var(--pb-text, var(--rg-p-error)); }
 .rg-muted { color: var(--rg-p-muted, inherit); }
-.rg-status { display: inline-flex; width: fit-content; padding: .125rem .5rem; border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius-full, 999px); font-size: .8125rem; }
+.rg-status { display: inline-flex; width: fit-content; padding: .125rem .5rem; border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
 .rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--pb-text, var(--rg-p-error)); }
 .rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--pb-text, var(--rg-p-success)); }
 .rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--pb-text, var(--rg-p-warning)); }

@@ -17,8 +17,10 @@ This repo owns shared Regent visual assets, tokens, and Phoenix component primit
 ## Core Rules
 
 - Shared UI components must not own product workflow state, auth decisions, money movement, or product database behavior.
-- Use `GeistPixel-Circle.woff2` for titles and headers.
-- Use `GeistPixel-Square.woff2` for normal text.
+- Typography is Geist UI Sans for titles, interface and body text and Geist Mono for code,
+  weights 400 and 600 only, served from the packaged `/fonts/regent-ui/` files. Spacing steps
+  by 8px, containers pad by `--container-padding` (24px), and every box uses the single
+  `--radius` (24px). `STYLE.md` holds the exact contract.
 - Keep design tokens, terminal palettes, and component examples aligned with the product AGENTS files that consume them.
 - Never read `.env` files. `.env.example` is allowed.
 

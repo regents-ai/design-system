@@ -14,9 +14,9 @@ Regent is systematic restraint with a printed-machine character:
 - **Systematic restraint** (the Stripe/Coinbase inheritance): four colors carry every surface;
   one action color per surface; semantic color reserved for status; consistent spacing,
   radius, and type scales; nothing decorated that could be plain.
-- **Printed-machine character** (the Regent layer): pixel display type, hairline separators,
-  uppercase micro-labels, mono readouts, halftone/print artwork, a flat saturated ground. The
-  result should read like precision print on stock, not like a generic SaaS theme.
+- **Printed-machine character** (the Regent layer): hairline separators, uppercase
+  micro-labels, mono readouts, halftone/print artwork, a flat saturated ground. The result
+  should read like precision print on stock, not like a generic SaaS theme.
 
 ## Color
 
@@ -104,28 +104,54 @@ presented, styled as bordered uppercase micro-labels, never hidden for marketing
 
 ## Typography
 
-| Face | Token | Use |
-| --- | --- | --- |
-| Geist Pixel Circle | `--font-family-title` | Titles, headlines, display numbers |
-| Geist Pixel Square | `--font-family-pixel` | Body on marketing/terminal-flavored surfaces |
-| Geist UI Sans | `--font-family-ui` / `--font-family-sans` | App body, forms, dense product UI |
-| Geist Mono | `--font-family-mono` | Code, readouts, identifiers, tabular figures |
+Two faces, packaged with the shared UI library and served from the consuming application's
+own origin. Both are Vercel Geist under the SIL Open Font License 1.1; the license ships
+beside the files.
 
-Patterns from the landing that generalize:
+| Face | Canonical `font-family` name | Token | Use |
+| --- | --- | --- | --- |
+| Geist UI Sans | `"Geist UI Sans"` | `--font-family-sans`, `--font-family-ui`, `--font-family-paragraph` | Titles, headlines, display numbers, app body, forms, dense product UI, long-form prose |
+| Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, readouts, identifiers, addresses, tabular figures |
+
+`--font-family-sans` is the face; `--font-family-ui` and `--font-family-paragraph` are the
+semantic roles that resolve to it. Headings (`h1`–`h6`) and every `data-text-style` use
+`--font-family-ui`. There is no separate title or display face.
+
+Only weights 400 and 600 exist, each with a genuine italic: `--font-weight-regular` and
+`--font-weight-semibold`. Do not request other weights; the browser would synthesize them.
+
+Font URL contract: the canonical CSS declares each face as
+`url("/fonts/regent-ui/<file>")`, where the files are `Geist-Regular`, `Geist-Italic`,
+`Geist-SemiBold`, `Geist-SemiBoldItalic`, `GeistMono-Regular`, `GeistMono-Italic`,
+`GeistMono-SemiBold` and `GeistMono-SemiBoldItalic` (all `.woff2`) plus `OFL.txt`. They live in
+`regent_ui/priv/static/fonts/`, generated from `geist-font/` by `scripts/generate-tokens-json.mjs`,
+and `mix regent_ui.assets` copies them into the application's `priv/static/fonts/regent-ui/`.
+The application serves `fonts` as a static path; no cross-origin font host is involved.
+
+Math rendered by KaTeX keeps its own scoped KaTeX fonts, and Markdown output keeps its
+structure: prose paragraphs take the paragraph role, and code spans and blocks take mono.
+
+Patterns that generalize:
 
 - Uppercase micro-labels at 0.6–0.7rem with 0.14–0.22em tracking (`--tracking-microlabel`)
   for kickers, figure labels ("FIG.1 — Identity"), column headings, and chips.
 - Mono for anything an operator might copy: commands, slugs, versions, addresses.
 - `font-variant-numeric: tabular-nums` on counters and money figures.
 - Type scale tokens (`--type-*`) govern app surfaces; marketing heroes may clamp beyond the
-  scale but stay on the two pixel faces.
+  scale but stay on the two faces.
 
-## Shape
+## Shape and spacing
 
-- Radius scale: `--radius-sm|md|lg|full`. Cards and panels sit on `--color-surface-elevated`
-  at `--radius-lg` with a 1px `--hairline` border and no (or barely-there) shadow.
-- Buttons are pill-shaped via `--radius-button` (points at `--radius-full`); revert that one
-  token to `var(--radius-md)` to restore soft rectangles everywhere.
+- Spacing scale: `--space-0` is 0 and `--space-1` through `--space-7` step by 8px
+  (8, 16, 24, 32, 40, 48, 56px). Containers, cards and sections pad their contents with
+  `--container-padding` (24px).
+- One radius: `--radius` (24px) rounds every box, including containers, cards, fields,
+  buttons and chips. There are no size variants and no full or 999px pill override. A control
+  shorter than 48px clamps the radius naturally into a pill without any forced height increase.
+- Real circles (`border-radius: 50%`) are reserved for geometric avatars, indicators and
+  spinners.
+- Cards and panels sit on `--color-surface-elevated` with a 1px `--hairline` border and no
+  (or barely-there) shadow.
 - Sidebar and nav active states are soft accent-tinted pills (~8% accent over transparent)
   with accent text and icon — never inset bars or hard borders.
 
@@ -211,8 +237,9 @@ the marks; pick the correct scheme instead.
 - Use `Regent.Primitives` for buttons, fields/errors, statuses, notices, empty states and
   disclosures. Apps supply slots, routes, events and state.
 - Run `mix regent_ui.assets` before the consuming CSS build. Ignore the generated
-  `assets/vendor/regent_ui/` directory and import its `primitives.css` for primitives only.
-  Existing spatial surfaces can import generated `regent.css`; it has global styling.
+  `assets/vendor/regent_ui/`, `priv/static/images/regent-ui/` and `priv/static/fonts/regent-ui/`
+  directories and import `primitives.css` for primitives only. Existing spatial surfaces can
+  import generated `regent.css`; it has global styling.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
 - For a standalone Docker context, run `mix regent_ui.stage` first and copy generated
   `vendor/regent_ui` into the image. Set `REGENT_UI_PATH` to that path in the image.
