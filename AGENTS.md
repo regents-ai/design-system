@@ -1,15 +1,15 @@
-<!-- BEGIN REGENT META GENERATED -->
+<!-- BEGIN REPO CONTRACT -->
 ## Repo Contract
 
-Generated from `/Users/sean/Documents/regent/control/stack.yaml` and this repo's `repo.yaml`. Local notes may live outside this block.
+Repository ownership is documented below and in the local `repo.yaml`. Follow the workspace `regent-workflow` for execution.
 
 - Repo contract: `design-system/repo.yaml`
 - Owner: `design-system`
 - Release group: `ops_preview`
 - Owned areas: `shared_visual_language`, `tokens`, `money_action_risk_panels`, `status_badges`.
 - Change API or CLI behavior in the owning YAML contract before changing code.
-- Use `bd` only for execution state: tickets, claims, blockers, dependencies, and closure evidence.
-<!-- END REGENT META GENERATED -->
+- Hermes/Astra coordinates scoped Claude/Fable work; no ticket tracker is required.
+<!-- END REPO CONTRACT -->
 # Regent Design System Agent Guide
 
 This repo owns shared Regent visual assets, tokens, and Phoenix component primitives.

@@ -59,8 +59,8 @@ preserved full-page artwork and text continue to agree.
 
 Run `node scripts/generate-tokens-json.mjs --check` from the design-system root,
 and `mix check` from its `regent_ui/` directory.
-Then use `regentctl worktree-prepare` and `worktree-run` for each consumer. The
-context records the shared commit, port, database, and logs. Run `mix assets.build`
+Then select dependency paths and isolated ports/databases for each consumer.
+Record the shared commit and local run settings in the assignment. Run `mix assets.build`
 inside each prepared Mix root (`platform/` in all four monorepos). Review light and dark
 pages, a mobile viewport, keyboard focus, and both homepage exceptions. Do not
 copy generated assets from another application's checkout.
