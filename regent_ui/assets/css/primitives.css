@@ -13,8 +13,8 @@
   color: var(--rg-p-text); box-sizing: border-box;
 }
 .rg-button {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  min-height: 2.75rem; padding: .5rem 1rem; border: 1px solid transparent;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  min-height: 2.75rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
   border-radius: var(--radius); cursor: pointer;
   background: var(--rg-p-accent); color: var(--rg-p-on-accent); font-weight: 600;
 }
@@ -24,29 +24,30 @@
 .rg-button:disabled { opacity: .6; cursor: default; }
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
 .rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--color-focus, var(--rg-p-accent)); outline-offset: 3px; }
-.rg-field { display: grid; gap: .375rem; }
+.rg-field { display: grid; gap: var(--space-1); }
 .rg-field > label { font-weight: 600; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
-  min-width: 0; width: 100%; box-sizing: border-box; padding: .625rem .75rem;
+  min-width: 0; width: 100%; min-height: 2.75rem; box-sizing: border-box; padding: var(--space-1) var(--space-2);
   border: 1px solid var(--rg-p-border); border-radius: var(--radius);
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
 }
 .rg-field [aria-invalid="true"] { border-color: var(--rg-p-error); }
-.rg-field-errors { margin: 0; padding-inline-start: 1.25rem; color: var(--pb-text, var(--rg-p-error)); }
+.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--pb-text, var(--rg-p-error)); }
 .rg-muted { color: var(--rg-p-muted, inherit); }
-.rg-status { display: inline-flex; width: fit-content; padding: .125rem .5rem; border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
+.rg-status { display: inline-flex; width: fit-content; padding: var(--space-0) var(--space-1); border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
 .rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--pb-text, var(--rg-p-error)); }
 .rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--pb-text, var(--rg-p-success)); }
 .rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--pb-text, var(--rg-p-warning)); }
-.rg-notice { padding: .75rem 1rem; border-inline-start: 3px solid var(--rg-p-tone, currentColor); background: var(--rg-p-surface); overflow-wrap: anywhere; }
-.rg-empty { display: grid; gap: .75rem; padding: 1.5rem; text-align: center; }
+.rg-notice { padding: var(--container-padding); border-inline-start: 3px solid var(--rg-p-tone, currentColor); background: var(--rg-p-surface); overflow-wrap: anywhere; }
+.rg-empty { display: grid; gap: var(--space-2); padding: var(--container-padding); text-align: center; }
 .rg-empty-title { margin: 0; font-weight: 600; }
-.rg-disclosure { border-block-end: 1px solid var(--rg-p-border); }
-.rg-disclosure > summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 2.75rem; cursor: pointer; list-style: none; }
+.rg-disclosure { padding: var(--container-padding); border-block-end: 1px solid var(--rg-p-border); }
+.rg-disclosure > summary { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); min-height: 2.75rem; cursor: pointer; list-style: none; }
 .rg-disclosure > summary::-webkit-details-marker { display: none; }
 .rg-chevron { font-size: 1.5em; transform: rotate(0); transition: transform 120ms ease-out; }
 .rg-disclosure[open] > summary .rg-chevron { transform: rotate(90deg); }
-.rg-disclosure-body { padding-block: .5rem 1rem; overflow-wrap: anywhere; }
+.rg-disclosure-body { padding-block-start: var(--space-2); overflow-wrap: anywhere; }
+:where(.rg-notice, .rg-disclosure-body, .rg-profile) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 /* Product-wide reduced-motion rules may use !important durations. */
 .rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
@@ -59,26 +60,27 @@ body:has(.rg-site-background) { isolation: isolate; }
   background-size: 100vw auto; background-repeat: repeat-y;
 }
 .rg-field select {
-  appearance: none; padding-right: 40px;
+  appearance: none; padding-right: var(--space-5);
   background-image:
     linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
     linear-gradient(135deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
-  background-position: right 18px center, right 12px center;
+  background-position: right calc(var(--space-2) + 6px) center, right var(--space-2) center;
   background-size: 6px 6px; background-repeat: no-repeat;
 }
 
 .rg-profile {
   width: min(100%, 38rem);
+  box-sizing: border-box;
   margin-inline: auto;
-  padding: clamp(1rem, 4vw, 2rem);
+  padding: var(--container-padding);
 }
-.rg-profile h1 { margin-block: 0 1.5rem; }
-.rg-profile form { display: grid; gap: 1.5rem; }
+.rg-profile h1 { margin-block: 0 var(--space-3); }
+.rg-profile form { display: grid; gap: var(--space-3); }
 .rg-profile form[hidden], .rg-profile [hidden] { display: none; }
 .rg-profile input, .rg-profile select { width: 100%; min-width: 0; }
-.rg-profile-connection, .rg-profile-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
-.rg-profile-connection > div { flex: 1; display: grid; gap: .25rem; }
-.rg-profile-connection strong { overflow-wrap: anywhere; }
-.rg-profile dl { display: grid; gap: .375rem; margin: 0; }
-.rg-profile dd { margin: 0 0 .75rem; overflow-wrap: anywhere; }
+.rg-profile-connection, .rg-profile-actions { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.rg-profile-connection > div { flex: 1 1 12rem; min-width: 0; display: grid; gap: var(--space-1); }
+.rg-profile-connection strong, .rg-profile [data-profile-status], .rg-profile [data-profile-wallet-status] { overflow-wrap: anywhere; }
+.rg-profile dl { display: grid; gap: var(--space-1); margin: 0; }
+.rg-profile dd { margin: 0 0 var(--space-2); overflow-wrap: anywhere; }
 .rg-profile .rg-disclosure p { margin-bottom: 0; }

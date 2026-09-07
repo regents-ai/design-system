@@ -73,7 +73,7 @@ node scripts/generate-tokens-json.mjs
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
 | `regent_ui/` | The Phoenix component library: components, panels, sigils, scene rendering, and their CSS and TypeScript assets. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
-| `geist-font/` | The Geist, Geist Mono, and Geist Pixel font files. |
+| `geist-font/` | The Geist and Geist Mono source font files (and the unused Geist Pixel faces). |
 | `images/` | Artwork, blueprints, and per-product design studies. |
 | `terminal-palette.md` | Terminal color palettes, with per-product variants for Techtree and Autolaunch. |
 | `scripts/` | The token generator. |
@@ -94,11 +94,14 @@ apply them; the CSS file is what to read for exact values.
 
 ## Typography
 
-| Face | File | Used for |
+| Face | Packaged files | Used for |
 | --- | --- | --- |
-| Geist Pixel Circle | `geist-font/GeistPixel/webfonts/GeistPixel-Circle.woff2` | Titles and headers |
-| Geist Pixel Square | `geist-font/GeistPixel/webfonts/GeistPixel-Square.woff2` | Normal text |
-| Geist and Geist Mono | `geist-font/Geist`, `geist-font/GeistMono` | Body copy and mono readouts |
+| Geist UI Sans | `regent_ui/priv/static/fonts/Geist-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Titles, headers, interface and body text |
+| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Code, readouts, identifiers |
+
+Weights 400 and 600 only, each with a genuine italic. The packaged files are generated from
+`geist-font/` and served by consuming applications at `/fonts/regent-ui/`; `STYLE.md` records
+the full URL contract.
 
 ## Checks
 

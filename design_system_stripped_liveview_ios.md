@@ -80,17 +80,17 @@ is black or Charcoal.
 
 ### Font roles
 
-- Headers and titles use **Geist Pixel Circle**.
-- Normal interface text uses **Geist Pixel Square**.
-- Long-form paragraphs use the paragraph font token.
+- Headers, titles and normal interface text use **Geist UI Sans** (the UI font token).
+- Long-form paragraphs use the paragraph font token, which resolves to the same face.
 - Code and technical text use **Geist Mono**.
+- Weights are 400 and 600 only, each with a genuine italic.
 
 ### Suggested mapping
 
-- `display` -> title font
-- `title-lg` -> title font
-- `title` -> title font
-- `headline` -> title font
+- `display` -> UI font
+- `title-lg` -> UI font
+- `title` -> UI font
+- `headline` -> UI font
 - `body` -> UI font
 - `label` -> UI font
 - `caption` -> UI font
