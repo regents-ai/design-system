@@ -111,9 +111,15 @@ One command must pass before a change is proposed:
 cd regent_ui && mix check
 ```
 
-It compiles with warnings as errors, verifies no unused dependency locks, checks formatting,
-and runs the test suite with warnings as errors. If you touched a token file, also run
-`node scripts/generate-tokens-json.mjs --check`.
+It first verifies that every generated mirror of the canonical token sources is current
+(`node scripts/generate-tokens-json.mjs --check`, so Node.js is required), then compiles
+with warnings as errors, verifies no unused dependency locks, checks formatting, and runs
+the test suite with warnings as errors.
+
+The token verification only makes sense inside this repository checkout, where the root
+CSS sources and `scripts/` exist. A staged copy of the package (see `mix regent_ui.stage`)
+has no sources, so `mix check` fails there rather than passing an unverified tree; run the
+check from this repository before staging.
 
 ## Boundaries
 

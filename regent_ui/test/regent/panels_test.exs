@@ -27,6 +27,7 @@ defmodule Regent.PanelsTest do
 
       assert html =~ ~s(id="test-chamber")
       assert html =~ "rg-chamber"
+      assert html =~ ~s(<h2 class="rg-panel-title">Chamber title</h2>)
       assert html =~ "extra-class"
       assert html =~ "Chamber title"
       assert html =~ "Chamber subtitle"
@@ -74,6 +75,7 @@ defmodule Regent.PanelsTest do
 
       assert html =~ ~s(id="test-ledger")
       assert html =~ "rg-ledger"
+      assert html =~ ~s(<h2 class="rg-panel-title">Ledger title</h2>)
       assert html =~ "rg-ledger-briefing"
       assert html =~ "extra-class"
       assert html =~ "Ledger title"

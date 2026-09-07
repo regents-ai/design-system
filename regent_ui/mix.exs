@@ -40,6 +40,7 @@ defmodule RegentUi.MixProject do
   defp aliases do
     [
       check: [
+        "cmd --cd .. node scripts/generate-tokens-json.mjs --check",
         "compile --warnings-as-errors",
         "deps.unlock --check-unused",
         "format --check-formatted",
