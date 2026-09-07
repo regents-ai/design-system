@@ -558,9 +558,13 @@ body {
   color: var(--color-fg);
   background: var(--color-bg);
   font-family: var(--font-family-ui);
+  font-weight: var(--font-weight-regular);
   text-rendering: optimizeLegibility;
 }
 
+/* Only 400 and 600 are packaged, so ordinary heading and bold semantics resolve to
+ * 600 instead of the user agent's 700. Zero specificity keeps KaTeX's own math
+ * weights (and any explicit product rule) in charge. */
 h1,
 h2,
 h3,
@@ -568,6 +572,11 @@ h4,
 h5,
 h6 {
   font-family: var(--font-family-ui);
+  font-weight: var(--font-weight-semibold);
+}
+
+:where(strong, b) {
+  font-weight: var(--font-weight-semibold);
 }
 
 button,
