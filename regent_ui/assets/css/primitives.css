@@ -1,9 +1,13 @@
+@import "./structure.css";
+
 /* Opt-in primitives: no body reset, product shell, or global color replacement. */
 :where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure) {
-  --rg-p-text: var(--pb-text, var(--color-fg, inherit));
-  --rg-p-muted: var(--pb-text, var(--color-fg-muted, currentColor));
-  --rg-p-surface: var(--pb-surface, var(--color-surface, transparent));
-  --rg-p-border: var(--pb-line, var(--color-border, currentColor));
+  --rg-p-text: var(--rg-local-ink, var(--pb-text, var(--color-fg, inherit)));
+  --rg-p-muted: var(--rg-local-ink, var(--pb-text, var(--color-fg-muted, currentColor)));
+  --rg-p-surface: var(--rg-local-fill, var(--pb-surface, var(--color-surface, transparent)));
+  /* Essential controls need stronger boundaries than decorative page hairlines. */
+  --rg-p-border: var(--rg-local-rule, var(--pb-line, var(--color-border, currentColor)));
+  --rg-p-control-border: color-mix(in srgb, var(--rg-p-text) 65%, var(--rg-p-surface));
   --rg-p-accent: var(--pb-accent, var(--color-accent, currentColor));
   --rg-p-on-accent: var(--pb-accent-ink, var(--color-fg-on-accent, var(--color-bg, Canvas)));
   --rg-p-error: var(--pb-bad, var(--color-error, currentColor));
@@ -13,58 +17,87 @@
   color: var(--rg-p-text); box-sizing: border-box;
 }
 .rg-button {
+  position: relative; isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
   min-height: 2.75rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
-  border-radius: var(--radius); cursor: pointer;
-  background: var(--rg-p-accent); color: var(--rg-p-on-accent); font-weight: 600;
+  max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere; text-align: center;
+  border-radius: var(--radius); cursor: pointer; overflow: visible;
+  background: transparent; color: var(--rg-p-on-accent); font-weight: 600;
+  text-decoration: none;
 }
+.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { border: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); }
+/* Keep text on its paired fill while the full-strength sweep passes underneath.
+   This also protects contrast when callers choose a different shimmer color. */
+.rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background-color: var(--rg-p-accent); }
+.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  --rg-shimmer-ink: var(--rg-p-on-accent);
+  background-color: var(--rg-p-accent);
+  clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
+}
+/* Static, corner-only marks. Keep the existing fill skin and rectangular hit area.
+   Diagonal stops are distances along the 45-degree gradient: a 1px interior gap,
+   then a 1px stroke. Fixed cut-sized tiles cannot stretch with a wrapped label. */
+@media (forced-colors: none) {
+  :root:is([data-brand="platform"], [data-brand="patchbay"])[data-theme="dark"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      linear-gradient(135deg, transparent calc(50% + 1px), var(--palette-tangerine-tango) calc(50% + 1px) calc(50% + 2px), transparent calc(50% + 2px)) left top / var(--rg-cut-control) var(--rg-cut-control),
+      linear-gradient(315deg, transparent calc(50% + 1px), var(--palette-tangerine-tango) calc(50% + 1px) calc(50% + 2px), transparent calc(50% + 2px)) right bottom / var(--rg-cut-control) var(--rg-cut-control),
+      linear-gradient(var(--palette-powder-blue) 0 0) right top / var(--rg-cut-control) 1px,
+      linear-gradient(var(--palette-powder-blue) 0 0) right top / 1px var(--rg-cut-control),
+      linear-gradient(var(--palette-powder-blue) 0 0) left bottom / var(--rg-cut-control) 1px,
+      linear-gradient(var(--palette-powder-blue) 0 0) left bottom / 1px var(--rg-cut-control);
+    background-repeat: no-repeat;
+  }
+}
+.rg-button:hover:not(:disabled) { text-decoration: underline; text-underline-offset: .2em; }
 .rg-button[hidden] { display: none; }
-.rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-border); }
+.rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-control-border); }
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }
 .rg-button:disabled { opacity: .6; cursor: default; }
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
-.rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--color-focus, var(--rg-p-accent)); outline-offset: 3px; }
+.rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 4px; }
 .rg-field { display: grid; gap: var(--space-1); }
 .rg-field > label { font-weight: 600; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
   min-width: 0; width: 100%; min-height: 2.75rem; box-sizing: border-box; padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--rg-p-border); border-radius: var(--radius);
+  border: 1px solid var(--rg-p-control-border); border-radius: var(--radius);
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
 }
-.rg-field [aria-invalid="true"] { border-color: var(--rg-p-error); }
-.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--pb-text, var(--rg-p-error)); }
+.rg-field [aria-invalid="true"] { border-width: 2px; border-color: var(--rg-p-text); }
+.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-error))); }
 .rg-muted { color: var(--rg-p-muted, inherit); }
 .rg-status { display: inline-flex; width: fit-content; padding: var(--space-0) var(--space-1); border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
-.rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--pb-text, var(--rg-p-error)); }
-.rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--pb-text, var(--rg-p-success)); }
-.rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--pb-text, var(--rg-p-warning)); }
+.rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-error))); }
+.rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-success))); }
+.rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-warning))); }
 .rg-notice { padding: var(--container-padding); border-inline-start: 3px solid var(--rg-p-tone, currentColor); background: var(--rg-p-surface); overflow-wrap: anywhere; }
-.rg-empty { display: grid; gap: var(--space-2); padding: var(--container-padding); text-align: center; }
-.rg-empty-title { margin: 0; font-weight: 600; }
-.rg-disclosure { padding: var(--container-padding); border-block-end: 1px solid var(--rg-p-border); }
-.rg-disclosure > summary { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); min-height: 2.75rem; cursor: pointer; list-style: none; }
+.rg-empty { display: grid; gap: var(--space-2); padding: var(--container-padding); text-align: start; }
+.rg-empty-title { margin: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
+.rg-disclosure { padding: 0; border-block-end: 1px solid var(--rg-p-border); }
+.rg-disclosure > summary { display: flex; align-items: center; gap: var(--space-2); min-height: 4rem; padding-block: var(--space-2); cursor: pointer; list-style: none; box-sizing: border-box; }
+.rg-disclosure-index { flex: 0 0 2rem; font-family: var(--font-family-mono); font-size: .8125rem; }
+.rg-disclosure-title { flex: 1; min-inline-size: 0; overflow-wrap: anywhere; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure > summary::-webkit-details-marker { display: none; }
-.rg-chevron { font-size: 1.5em; transform: rotate(0); transition: transform 120ms ease-out; }
-.rg-disclosure[open] > summary .rg-chevron { transform: rotate(90deg); }
-.rg-disclosure-body { padding-block-start: var(--space-2); overflow-wrap: anywhere; }
+.rg-chevron { flex: 0 0 auto; font-size: 1.5em; transform: rotate(0); }
+.rg-disclosure[open] > summary .rg-chevron { transform: rotate(180deg); }
+.rg-disclosure-body { padding-block: var(--space-1) var(--space-3); overflow-wrap: anywhere; }
+.rg-disclosure--indexed > .rg-disclosure-body { padding-inline-start: calc(2rem + var(--space-2)); }
 :where(.rg-notice, .rg-disclosure-body, .rg-profile) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 /* Product-wide reduced-motion rules may use !important durations. */
 .rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
 
-/* Product roots place this behind their own content. Home exceptions are product-owned. */
-body:has(.rg-site-background) { isolation: isolate; }
-.rg-site-background {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background-image: var(--site-background-image);
-  background-size: 100vw auto; background-repeat: repeat-y;
-}
+/* Compatibility for consumers still rendering the retired background component. */
+.rg-site-background { display: none; }
 .rg-field select {
-  appearance: none; padding-right: var(--space-5);
+  --rg-select-chevron-inset: 24px;
+  appearance: none; padding-right: calc(var(--rg-select-chevron-inset) + 24px);
   background-image:
     linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
     linear-gradient(135deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
-  background-position: right calc(var(--space-2) + 6px) center, right var(--space-2) center;
+  background-position: right calc(var(--rg-select-chevron-inset) + 6px) center, right var(--rg-select-chevron-inset) center;
   background-size: 6px 6px; background-repeat: no-repeat;
 }
 
@@ -84,3 +117,17 @@ body:has(.rg-site-background) { isolation: isolate; }
 .rg-profile dl { display: grid; gap: var(--space-1); margin: 0; }
 .rg-profile dd { margin: 0 0 var(--space-2); overflow-wrap: anywhere; }
 .rg-profile .rg-disclosure p { margin-bottom: 0; }
+
+@media (max-width: 47.99rem) {
+  .rg-button { --rg-cut-control: 8px; }
+}
+@media (forced-colors: active) {
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before { display: none; }
+  .rg-button { border: 1px solid ButtonText; color: ButtonText; background: ButtonFace; }
+  .rg-button__label { background-color: ButtonFace; }
+  .rg-button:disabled { color: GrayText; opacity: 1; }
+  .rg-field :is(input, select, textarea) { border-color: CanvasText; }
+  .rg-field select { appearance: auto; background-image: none; }
+  .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
+  .rg-field :is(input, select, textarea):focus-visible { outline-color: Highlight; }
+}

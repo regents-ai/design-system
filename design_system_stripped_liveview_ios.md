@@ -1,5 +1,10 @@
 # Shared Design System for LiveView and iOS
 
+> Historical design notes. The current authority is `STYLE.md` and the canonical
+> `design_system_tokens.css`, including eight light/dark product palettes and the
+> ruled, square-cell/cut-panel geometry. Fixed-ground, radius-scale and speculative
+> component names below are not the current implementation contract.
+
 This is one shared system with three explicit brand themes:
 
 - Regent

@@ -1,0 +1,81 @@
+/* Read-only ratio sheet: local paired ink, no product state or interaction skin. */
+:where(.rg-ratio-card, .rg-ratio-card *, .rg-ratio-card::before, .rg-ratio-card::after) { box-sizing: border-box; }
+.rg-ratio-card {
+  --rg-ratio-fill: var(--pb-surface, var(--color-surface));
+  --rg-ratio-ink: var(--pb-text, var(--color-fg));
+  --rg-ratio-rule: color-mix(in srgb, var(--rg-ratio-ink) 22%, var(--rg-ratio-fill));
+  --rg-ratio-muted: color-mix(in srgb, var(--rg-ratio-ink) 76%, var(--rg-ratio-fill));
+  /* The orange note remains readable on its tinted surface in all eight palettes. */
+  --rg-ratio-note-ink: color-mix(in srgb, var(--palette-tangerine-tango) 55%, var(--rg-ratio-ink));
+  --rg-ratio-note-fill: color-mix(in srgb, var(--palette-tangerine-tango) 12%, var(--rg-ratio-fill));
+  --rg-ratio-padding: var(--rg-panel-padding, var(--space-4));
+  container: rg-ratio / inline-size;
+  position: relative;
+  isolation: isolate;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  border: 1px solid var(--rg-ratio-rule);
+  border-radius: 0;
+  overflow: visible;
+  background: var(--rg-ratio-fill);
+  color: var(--rg-ratio-ink);
+  font-family: var(--font-family-mono);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+/* Eight strokes make four faint L brackets on a pointer-inert, square skin. */
+.rg-ratio-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(currentColor, currentColor) left top / 16px 1px,
+    linear-gradient(currentColor, currentColor) left top / 1px 16px,
+    linear-gradient(currentColor, currentColor) right top / 16px 1px,
+    linear-gradient(currentColor, currentColor) right top / 1px 16px,
+    linear-gradient(currentColor, currentColor) left bottom / 16px 1px,
+    linear-gradient(currentColor, currentColor) left bottom / 1px 16px,
+    linear-gradient(currentColor, currentColor) right bottom / 16px 1px,
+    linear-gradient(currentColor, currentColor) right bottom / 1px 16px;
+  background-repeat: no-repeat;
+  opacity: .55;
+}
+.rg-ratio-card :where(h3, dl, dd, p) { margin: 0; }
+.rg-ratio-card :where(a, button, summary):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.rg-ratio-card__header { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-1) var(--space-2); padding: var(--rg-ratio-padding); border-block-end: 1px solid var(--rg-ratio-rule); }
+.rg-ratio-card__eyebrow, .rg-ratio-card__slash { color: var(--rg-ratio-muted); font-size: clamp(1.25rem, 3cqi, 1.75rem); line-height: 1.2; }
+.rg-ratio-card .rg-ratio-card__title { margin: 0; min-inline-size: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; font-size: clamp(1.25rem, 3cqi, 1.75rem); line-height: 1.2; }
+.rg-ratio-card__body { padding: var(--space-6) var(--rg-ratio-padding) var(--space-4); }
+.rg-ratio-card__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto; align-items: stretch; gap: var(--space-3); margin-block-end: var(--space-4); }
+.rg-ratio-card__metric { display: grid; grid-row: span 2; grid-template-rows: subgrid; min-inline-size: 0; gap: var(--space-1); }
+.rg-ratio-card__label { text-transform: uppercase; letter-spacing: var(--tracking-microlabel); font-size: .8125rem; color: var(--rg-ratio-muted); }
+.rg-ratio-card__readout { align-self: baseline; display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); min-inline-size: 0; }
+.rg-ratio-card__value { min-inline-size: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; font-variant-numeric: tabular-nums; font-size: clamp(2.5rem, 9cqi, 5.5rem); line-height: 1.05; letter-spacing: -.035em; }
+.rg-ratio-card__metric--remainder { text-align: end; }
+.rg-ratio-card__metric--remainder .rg-ratio-card__readout { justify-content: flex-end; }
+.rg-ratio-card__change { color: var(--rg-ratio-note-ink); font-size: .75rem; }
+.rg-ratio-card__meter { block-size: var(--space-3); background: repeating-linear-gradient(90deg, transparent 0 4px, var(--rg-ratio-rule) 4px 5px); outline: 1px solid var(--rg-ratio-rule); outline-offset: -1px; }
+.rg-ratio-card__fill { display: block; block-size: 100%; background: var(--palette-tangerine-tango); }
+.rg-ratio-card__scale { display: flex; justify-content: space-between; gap: 2px; margin-block-start: var(--space-2); color: var(--rg-ratio-muted); font-size: .6875rem; font-variant-numeric: tabular-nums; }
+.rg-ratio-card__empty { padding-block: var(--space-2); color: var(--rg-ratio-muted); }
+.rg-ratio-card__footer { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); padding: var(--rg-ratio-padding); border-block-start: 1px solid var(--rg-ratio-rule); }
+.rg-ratio-card__footer > *, .rg-ratio-card__footer-content > * { min-inline-size: 0; max-inline-size: 100%; }
+.rg-ratio-card__footer-label { flex-basis: 100%; color: var(--rg-ratio-muted); font-size: .6875rem; text-transform: uppercase; letter-spacing: var(--tracking-microlabel); }
+.rg-ratio-card__footer-content { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+.rg-ratio-card__tile { display: inline-flex; align-items: center; justify-content: center; min-inline-size: var(--space-5); min-block-size: var(--space-5); padding: var(--space-1); border: 1px solid var(--rg-ratio-rule); font-size: .8125rem; }
+.rg-ratio-card__header-badge, .rg-ratio-card__footer-badge { max-inline-size: 100%; margin-inline-start: auto; padding: var(--space-1) var(--space-2); border: 1px solid color-mix(in srgb, var(--rg-ratio-note-ink) 35%, var(--rg-ratio-note-fill)); background: var(--rg-ratio-note-fill); color: var(--rg-ratio-note-ink); font-size: .75rem; }
+@container rg-ratio (max-width: 30rem) {
+  .rg-ratio-card__header, .rg-ratio-card__footer { padding: var(--space-2); }
+  .rg-ratio-card__body { padding: var(--space-4) var(--space-2); }
+  .rg-ratio-card__metrics { grid-template-columns: minmax(0, 1fr); }
+  .rg-ratio-card__metric--remainder { text-align: start; }
+  .rg-ratio-card__metric--remainder .rg-ratio-card__readout { justify-content: flex-start; }
+}
+@media (forced-colors: active) {
+  .rg-ratio-card { --rg-ratio-ink: CanvasText; --rg-ratio-fill: Canvas; --rg-ratio-muted: CanvasText; --rg-ratio-rule: CanvasText; --rg-ratio-note-ink: CanvasText; --rg-ratio-note-fill: Canvas; border-color: CanvasText; }
+  .rg-ratio-card::before { display: none; }
+  .rg-ratio-card__meter { background: Canvas; outline-color: CanvasText; }
+  .rg-ratio-card__fill { forced-color-adjust: none; background: Highlight; }
+  .rg-ratio-card__header-badge, .rg-ratio-card__footer-badge { border-color: CanvasText; }
+}

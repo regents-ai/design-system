@@ -13,13 +13,66 @@ source_of_truth:
   repo_contract: repo.yaml
   http_contracts: []
   cli_contracts: []
-  shared_contracts: []
+  shared_contracts:
+    - STYLE.md
   runtime_contracts: []
   chain_contracts: []
 code_map:
   - path: regent_ui
     owns: regent_ui
+  - path: scripts/render-structure-showcase.exs
+    owns: structural_showcase
+shared_api:
+  Regent.Structure.ratio_card:
+    kind: phoenix_function_component
+    attributes:
+      id: {type: string, required: true}
+      title: {type: string, required: true}
+      eyebrow: {type: string, default: Allocation}
+      value_bps: {type: integer, default: null, minimum: 0, maximum: 10000}
+      label: {type: string, default: Allocated}
+      remainder_label: {type: string, default: Remaining}
+      change: {type: string, default: null}
+      footer_label: {type: string, default: Details}
+      class: {type: any, default: null}
+      rest: {type: global}
+    slots:
+      footer: {required: false, purpose: "Caller-owned footer content; use rg-ratio-card__tile for static tiles"}
+      footer_badge: {required: false, purpose: "Caller-supplied badge content"}
+    semantics: "article.rg-ratio-card with h3; named read-only meter uses a 0..100 scale; paired percentages derive from one integer bps value with at most two decimals and no trailing zeros"
+    unknown: "Null renders em dashes and No data; no meter or fabricated zero fill"
+    validation: "Raise ArgumentError for non-null values outside integer 0..10000; never clamp"
+    layout: "Square unclipped frame with four inert corner brackets, ruled header/footer; header computed percentage badge (No data when unknown), aligned title/eyebrow; uppercase labels above paired baseline metrics; orange fill and vertical-striped remainder; five scale labels; footer label above tiles and right badge; stacks in narrow containers"
+    accessibility: "System-color borders and solid meter fill in forced colors; locally paired orange badge ink; no slider, thumb, implicit control or animation"
+    ownership: "Presentation only; change is display-only text with a caller-defined period; no product, data, authentication or money-movement state"
+  Regent.Structure.capability_card:
+    kind: phoenix_function_component
+    attributes:
+      title: {type: string, required: true}
+      description: {type: string, required: true}
+      index: {type: string, default: null}
+      tone: {type: string, values: [surface, accent], default: surface}
+      image_src: {type: string, default: null}
+      image_alt: {type: string, default: ""}
+      class: {type: any, default: null}
+      rest: {type: global}
+    slots:
+      media: {required: false, purpose: "Custom media; image_src takes precedence"}
+      actions: {required: false, purpose: "Caller-owned interactive actions"}
+    semantics: "article.rg-feature; face panel has h3, optional index and figure; caption panel has description and optional actions"
+    layout: "Three subgrid bands; responsive three/two/one columns in rg-feature-grid; unclipped content and focus"
+    ownership: "Presentation only; no product state, implicit action, onclick or added tab stop"
+  shimmer:
+    consumers: "Every enabled primary rg-button and every rg-feature card, across all eight palettes"
+    css_properties:
+      --rg-shimmer-color: "Optional inherited override; falls back to contrasting button/panel ink"
+      --rg-shimmer-duration: "Optional inherited base duration; default 1.15s; cards multiply by 3 (3.45s)"
+    gradient: "100deg; transparent 30%, color at 42% source strength 50%, transparent 70%; 300% 100%; 160% 0 to -60% 0; var(--ease-out)"
+    activation: "Enabled primary hover/focus-visible; card hover/focus-within; no idle animation"
+    accessibility: "Motion disabled for reduced motion and forced colors; only inert visual skins clip; primary corner marks preserved; full media-area overlay crosses opaque images without recoloring title/caption text; reduced motion keeps only a static faint panel edge"
 local_path_dependencies: []
 acceptance_commands:
   - cwd: design-system/regent_ui
-    command: mix test
+    command: mix check
+  - cwd: design-system/regent_ui
+    command: mix run ../scripts/render-structure-showcase.exs

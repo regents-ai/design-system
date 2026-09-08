@@ -73,7 +73,7 @@ node scripts/generate-tokens-json.mjs
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
 | `regent_ui/` | The Phoenix component library: components, panels, sigils, scene rendering, and their CSS and TypeScript assets. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
-| `geist-font/` | The Geist and Geist Mono source font files (and the unused Geist Pixel faces). |
+| `geist-font/` | Canonical Geist Pixel Square and Geist Mono fonts, plus compatibility Geist sans files. |
 | `images/` | Artwork, blueprints, and per-product design studies. |
 | `terminal-palette.md` | Terminal color palettes, with per-product variants for Techtree and Autolaunch. |
 | `scripts/` | The token generator. |
@@ -96,14 +96,108 @@ apply them; the CSS file is what to read for exact values.
 
 | Face | Packaged files | Used for |
 | --- | --- | --- |
-| Geist UI Sans | `regent_ui/priv/static/fonts/Geist-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Titles, headers, interface and body text |
-| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Code, readouts, identifiers |
+| Geist Pixel Square | `regent_ui/priv/static/fonts/GeistPixel-Square.woff2` | All titles and subtitles, upright 400 only; no synthetic bold/italic |
+| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | All remaining text and UI, including body, controls, code and readouts |
 
-Weights 400 and 600 only, each with a genuine italic. The packaged files are generated from
+Mono uses weights 400 and 600, each with a genuine italic. Pixel uses 400 only.
+Geist sans assets remain for compatibility, not as the default. The packaged files are generated from
 `geist-font/` and served by consuming applications at `/fonts/regent-ui/`; `STYLE.md` records
 the full URL contract.
 
 ## Checks
+
+### Ruled structural showcase
+
+The current shared language uses square grid cells, flat chamfered panels, opposing-cut
+primary actions and ruled native disclosures. Eight base palettes are unchanged; supporting
+surface/ink roles expose the other three identity colors in coherent compartments.
+Typography is Pixel Square for titles/subtitles and Mono for all other text/UI.
+Page-background SVGs are retired; the source artwork remains available for smaller sections.
+
+```bash
+cd regent_ui
+mix run ../scripts/render-structure-showcase.exs
+cd ..
+python3 -m http.server 8766 --bind 127.0.0.1 --directory .showcase
+```
+
+Open `http://127.0.0.1:8766/`; switch product and theme on the same real-component page.
+`?brand=techtree&theme=dark` selects a combination directly. The output is ignored.
+`Regent.Structure` supplies frame/row, section bar, panel, technical figure and capability card;
+`primitives.css` imports the shared structural rules. See `STYLE.md` for integration.
+
+### Capability cards and shared shimmer
+
+```heex
+<div class="rg-feature-grid" style="--rg-shimmer-color: var(--palette-powder-blue)">
+  <Regent.Structure.capability_card
+    title="Clear boundaries"
+    description="Rules and shared edges give every region a deliberate place."
+    index="001"
+    tone="surface"
+    image_src="/images/boundaries.svg"
+    image_alt="Three connected boundaries"
+  >
+    <:actions><a href="#details">Read details</a></:actions>
+  </Regent.Structure.capability_card>
+</div>
+```
+
+`title` and `description` are required strings. Optional `index` and `image_src`
+default to `nil`; `tone` accepts `surface` (default) or `accent`; `image_alt` defaults
+to `""` for decorative images. Supply custom SVG in `:media` instead of `image_src`
+(the image wins when both are supplied). `:actions` is optional and owns no implicit
+behavior. `class` and global attributes, including inline `style`, reach the article.
+Cards retain aligned heading/figure/caption subgrid bands in three/two/one columns.
+
+All primary `.rg-button` controls share an interaction-only shimmer across all eight
+palettes. Hover/focus-visible enables it only on enabled primaries; secondary/quiet/
+disabled controls are excluded. Cards use hover/focus-within. `--rg-shimmer-color`
+inherits from an ancestor or component style, falling back to the local contrasting
+ink. `--rg-shimmer-duration` defaults to `1.15s`; cards multiply it by three (`3.45s`).
+Only visual skins clip: primary corner marks, actual content and focus remain intact.
+The card shimmer covers its full media area, including opaque images; title, caption
+and actions remain outside it. Reduced motion removes the sweep, retaining only a
+static faint card edge. Forced colors use system borders; nothing loops at idle.
+`Regent.Primitives.button` protects primary-label contrast with an opaque paired-fill
+`span.rg-button__label`. Include the same label wrapper when authoring a primary link
+or button directly with CSS classes instead of the component.
+
+### Read-only ratio cards
+
+```heex
+<Regent.Structure.ratio_card
+  id="allocation-example"
+  title="Capacity illustration"
+  value_bps={5620}
+  change="+2.1 pp / 7 days (illustration)"
+>
+  <:footer>
+    <span class="rg-ratio-card__tile">A</span>
+    <span class="rg-ratio-card__tile">B</span>
+  </:footer>
+  <:footer_badge>Illustration</:footer_badge>
+</Regent.Structure.ratio_card>
+```
+
+Required strings: unique `id` and `title`. `value_bps` accepts integer `0..10000`
+(default `nil`); `5620` renders **56.2% / 43.8%** from the same integer basis.
+The named read-only meter uses matching `0..100` values and fill. Invalid values
+raise `ArgumentError`; unknown data renders two em dashes and `No data`, not a zero meter.
+Optional strings: `eyebrow="Allocation"`, `label="Allocated"`,
+`remainder_label="Remaining"`, `footer_label="Details"`, `change={nil}`.
+The caller defines the change's units/period; it is display text only. Optional
+`:footer` and `:footer_badge` slots provide content; `rg-ratio-card__tile` styles
+static footer tiles without inventing buttons. `class` and global attributes reach
+the article. The square bracketed sheet stacks paired metrics in containers at or
+below 30rem, uses Pixel Square 400 display numbers, and keeps content/focus unclipped.
+Canonical orange fills the meter; its computed percentage also appears in a read-only
+header badge (`No data` when unknown). Uppercase labels sit above the metrics;
+the footer label sits above the tiles and right badge. Orange-tinted notes use locally contrasting ink
+in both themes. Forced colors retain a solid system-color fill and borders. No
+animation, data loading, authentication, wallet or product workflow is included.
+
+### Package checks
 
 One command must pass before a change is proposed:
 

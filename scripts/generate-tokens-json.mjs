@@ -57,7 +57,7 @@ for (const name of readdirSync(svgSource).filter(name => name.endsWith(".svg")))
 // Every font file the canonical CSS declares, plus its license, ships in the package
 // and is served by consumers at /fonts/regent-ui/<file>.
 const fontDestination = join(root, "regent_ui/priv/static/fonts");
-const fontSources = { Geist: "Geist/webfonts", GeistMono: "GeistMono/webfonts" };
+const fontSources = { Geist: "Geist/webfonts", GeistMono: "GeistMono/webfonts", GeistPixel: "GeistPixel/webfonts" };
 for (const url of css.matchAll(/url\("\/fonts\/regent-ui\/([^"]+)"\)/g)) {
   const file = url[1];
   const family = file.split("-")[0];

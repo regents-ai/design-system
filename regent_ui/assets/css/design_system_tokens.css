@@ -8,7 +8,15 @@
  */
 
 /* Packaged font assets. Consumers serve regent_ui/priv/static/fonts at /fonts/regent-ui/
- * (mix regent_ui.assets copies them). Only 400 and 600, upright and italic. */
+ * (mix regent_ui.assets copies them). Pixel is regular upright only; Mono and legacy sans are 400/600. */
+@font-face {
+  font-family: "Geist Pixel Square";
+  src: url("/fonts/regent-ui/GeistPixel-Square.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @font-face {
   font-family: "Geist UI Sans";
   src: url("/fonts/regent-ui/Geist-Regular.woff2") format("woff2");
@@ -98,13 +106,20 @@
   --space-5: 40px;
   --space-6: 48px;
   --space-7: 56px;
-  /* Inner padding of containers, cards and sections. */
-  --container-padding: 24px;
-
-  /* One corner radius for every box: containers, cards, fields, buttons and chips.
-   * Short controls clamp it naturally; geometric avatars, indicators and spinners
-   * may be real circles. */
-  --radius: 24px;
+  --space-8: 64px;
+  /* Square cells; cut visual skins for panels and primary actions. Real circles
+   * remain appropriate for geometric avatars, indicators and spinners. */
+  --radius: 0px;
+  --container-padding: var(--space-4);
+  --rg-frame-max: 100rem;
+  --rg-page-gutter: var(--space-4);
+  --rg-rail-width: 11rem;
+  --rg-track-gap: var(--space-4);
+  --rg-panel-padding: var(--space-4);
+  --rg-section-gap: var(--space-8);
+  --rg-cut-panel: 16px;
+  --rg-cut-control: 12px;
+  --rg-rule-width: 1px;
 
   --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);
   --shadow-md: 0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 24%, transparent);
@@ -127,8 +142,9 @@
   --active-scale: 0.97;
 
   --font-family-sans: "Geist UI Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-family-ui: var(--font-family-sans);
-  --font-family-paragraph: var(--font-family-sans);
+  --font-family-title: "Geist Pixel Square", ui-monospace, monospace;
+  --font-family-ui: var(--font-family-mono);
+  --font-family-paragraph: var(--font-family-mono);
   --font-family-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --type-display-size: 40px;
@@ -180,6 +196,41 @@
     rgba(255, 255, 255, 0.09),
     transparent 64%
   );
+}
+
+/* Supporting compartments are identity constants, paired in both light and dark.
+ * The main theme and action semantics below remain unchanged. */
+:root[data-brand="platform"] {
+  --support-figure-surface: var(--palette-powder-blue);
+  --support-figure-ink: var(--palette-charcoal);
+  --support-band-surface: var(--palette-tangerine-tango);
+  --support-band-ink: var(--palette-charcoal);
+  --support-panel-surface: var(--palette-platinum);
+  --support-panel-ink: var(--palette-charcoal);
+}
+:root[data-brand="autolaunch"] {
+  --support-figure-surface: var(--palette-powder-blue);
+  --support-figure-ink: var(--palette-charcoal);
+  --support-band-surface: var(--palette-charcoal);
+  --support-band-ink: var(--palette-platinum);
+  --support-panel-surface: var(--palette-platinum);
+  --support-panel-ink: var(--palette-charcoal);
+}
+:root[data-brand="patchbay"] {
+  --support-figure-surface: var(--palette-powder-blue);
+  --support-figure-ink: var(--palette-charcoal);
+  --support-band-surface: var(--palette-tangerine-tango);
+  --support-band-ink: var(--palette-charcoal);
+  --support-panel-surface: var(--palette-charcoal);
+  --support-panel-ink: var(--palette-platinum);
+}
+:root[data-brand="techtree"] {
+  --support-figure-surface: var(--palette-platinum);
+  --support-figure-ink: var(--palette-charcoal);
+  --support-band-surface: var(--palette-tangerine-tango);
+  --support-band-ink: var(--palette-charcoal);
+  --support-panel-surface: var(--palette-charcoal);
+  --support-panel-ink: var(--palette-platinum);
 }
 
 :root[data-brand="platform"][data-theme="light"] {
@@ -240,7 +291,7 @@
   --color-focus: #A33208;
   --color-link: #161616;
   --color-muted: var(--color-fg-muted);
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-regents-light.svg");
+  --site-background-image: none;
 }
 
 :root[data-brand="platform"][data-theme="dark"] {
@@ -301,7 +352,7 @@
   --color-focus: #AECACD;
   --color-link: #E5E3D2;
   --color-muted: var(--color-fg-muted);
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-regents-dark.svg");
+  --site-background-image: none;
 }
 
 :root[data-brand="autolaunch"][data-theme="light"] {
@@ -362,7 +413,7 @@
   --color-focus: #A33208;
   --color-link: #161616;
   --color-muted: #B8B6A6;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-autolaunch-light.svg");
+  --site-background-image: none;
 }
 
 :root[data-brand="autolaunch"][data-theme="dark"] {
@@ -423,7 +474,7 @@
   --color-focus: #AECACD;
   --color-link: #FF5B19;
   --color-muted: #A1A19A;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-autolaunch-dark.svg");
+  --site-background-image: none;
 }
 
 :root[data-brand="techtree"][data-theme="light"] {
@@ -484,7 +535,7 @@
   --color-focus: #A33208;
   --color-link: #161616;
   --color-muted: #B8B6A6;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-tech-light.svg");
+  --site-background-image: none;
 }
 
 :root[data-brand="techtree"][data-theme="dark"] {
@@ -545,7 +596,7 @@
   --color-focus: #AECACD;
   --color-link: #AECACD;
   --color-muted: #8C8C8C;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-tech-dark.svg");
+  --site-background-image: none;
 }
 
 html {
@@ -571,8 +622,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-family-ui);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-title);
+  font-weight: var(--font-weight-regular);
+  font-synthesis: none;
 }
 
 :where(strong, b) {
@@ -619,24 +671,27 @@ samp {
 }
 
 [data-text-style="display"] {
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-title);
+  font-synthesis: none;
   font-size: var(--type-display-size);
   line-height: var(--type-display-line);
   font-weight: var(--font-weight-regular);
 }
 
 [data-text-style="title"] {
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-title);
+  font-synthesis: none;
   font-size: var(--type-title-size);
   line-height: var(--type-title-line);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
 }
 
 [data-text-style="headline"] {
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-title);
+  font-synthesis: none;
   font-size: var(--type-headline-size);
   line-height: var(--type-headline-line);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
 }
 
 [data-text-style="body"] {
@@ -691,7 +746,7 @@ samp {
   --color-error: #FF9B8F;
   --color-warning: #F5C16C;
   --color-info: #AECACD;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-patchbay-dark.svg");
+  --site-background-image: none;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);
@@ -752,7 +807,7 @@ samp {
   --color-error: #9C2525;
   --color-warning: #754600;
   --color-info: #365D62;
-  --site-background-image: url("/images/regent-ui/cutting-mat-100x100-patchbay-light.svg");
+  --site-background-image: none;
   --glass-page-bg: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
   --glass-surface: color-mix(in oklch, var(--color-surface) 88%, transparent);
   --glass-surface-strong: color-mix(in oklch, var(--color-surface-elevated) 92%, transparent);

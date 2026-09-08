@@ -3,3 +3,6 @@
 
 # local experiments (shader remixes etc.) — not brand source
 logos/experimental/
+
+# Generated real-component showcase and local browser evidence.
+.showcase/

@@ -1,10 +1,10 @@
 defmodule Regent.SiteBackground do
-  @moduledoc "Decorative cutting mat selected by the consuming site and light/dark tokens."
+  @moduledoc "Compatibility component. Page background artwork is retired; assets remain packaged."
   use Phoenix.Component
 
   def site_background(assigns) do
     ~H"""
-    <div class="rg-site-background" aria-hidden="true"></div>
+    <div class="rg-site-background" aria-hidden="true" hidden></div>
     """
   end
 end
