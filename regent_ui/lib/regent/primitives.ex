@@ -15,7 +15,10 @@ defmodule Regent.Primitives do
   def button(assigns) do
     ~H"""
     <button type={@type} class={["rg-button", "rg-button--#{@variant}", @class]} {@rest}>
-      {render_slot(@inner_block)}
+      <span :if={@variant == "primary"} class="rg-button__label">{render_slot(@inner_block)}</span>
+      <%= if @variant != "primary" do %>
+        {render_slot(@inner_block)}
+      <% end %>
     </button>
     """
   end
@@ -99,6 +102,7 @@ defmodule Regent.Primitives do
 
   attr :id, :string, required: true
   attr :summary, :string, required: true
+  attr :index, :string, default: nil
   attr :open, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
@@ -106,8 +110,17 @@ defmodule Regent.Primitives do
 
   def disclosure(assigns) do
     ~H"""
-    <details id={@id} open={@open} class={["rg-disclosure", @class]} {@rest}>
-      <summary><span>{@summary}</span><span class="rg-chevron" aria-hidden="true">›</span></summary>
+    <details
+      id={@id}
+      open={@open}
+      class={["rg-disclosure", @index && "rg-disclosure--indexed", @class]}
+      {@rest}
+    >
+      <summary>
+        <span :if={@index} class="rg-disclosure-index">{@index}</span>
+        <span class="rg-disclosure-title">{@summary}</span>
+        <span class="rg-chevron" aria-hidden="true">⌄</span>
+      </summary>
       <div class="rg-disclosure-body">{render_slot(@inner_block)}</div>
     </details>
     """

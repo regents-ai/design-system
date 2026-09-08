@@ -1,0 +1,26 @@
+/* Showcase-only controls and demonstration state, not an application theme. */
+body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-family-ui); }
+.showcase-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 16px 32px; font-size: .875rem; }
+.showcase-toolbar > span { margin-inline-end: auto; }
+.showcase-toolbar .rg-field { display: flex; align-items: center; min-inline-size: 0; max-inline-size: 100%; }
+.showcase-toolbar .rg-field select { width: auto; max-inline-size: 100%; }
+.showcase-toolbar label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.showcase-toolbar :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.showcase-skip { position: absolute; inset-inline-start: 16px; top: -100px; z-index: 20; padding: 16px; background: var(--color-surface); color: var(--color-fg); }
+.showcase-skip:focus { top: 16px; }
+.showcase-brand-tab { position: relative; isolation: isolate; display: grid; place-items: center; min-height: 80px; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; color: var(--color-fg-on-accent); }
+.showcase-brand-tab::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--color-accent); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px)); }
+.showcase-meta { font-family: var(--font-family-mono); font-size: .75rem; overflow-wrap: anywhere; }
+.showcase-hero-figure { aspect-ratio: auto; padding-inline: 0; }
+.showcase-stack { display: grid; gap: var(--space-3); align-content: start; }
+.showcase-stack > p { margin: 0; }
+.showcase-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.showcase-menu { position: relative; }
+.showcase-menu > summary { min-height: 44px; cursor: pointer; }
+.showcase-menu__items { position: absolute; z-index: 5; inset-inline: 0; top: calc(100% - 8px); display: grid; border: 1px solid currentColor; background: var(--color-surface); color: var(--color-fg); padding: 16px; }
+.showcase-menu__items :is(a, button) { font: inherit; min-height: 44px; text-align: start; background: transparent; color: inherit; border: 0; padding: 8px; overflow-wrap: anywhere; }
+.showcase-menu__items button { cursor: pointer; }
+#sample-dialog { color: var(--color-fg); background: var(--color-surface); border: 1px solid currentColor; padding: 32px; max-inline-size: min(32rem, calc(100% - 64px)); }
+#sample-dialog::backdrop { background: rgb(0 0 0 / .5); }
+@media (max-width: 767px) { .showcase-toolbar { padding-inline: 16px; } }
+@media (forced-colors: active) { .showcase-brand-tab::before { display: none; } .showcase-brand-tab { color: CanvasText; border: 1px solid CanvasText; } }

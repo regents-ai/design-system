@@ -25,7 +25,7 @@ defmodule Regent.Panels do
   """
   def chamber(assigns) do
     ~H"""
-    <section id={@id} class={["rg-chamber", @class]} {@rest}>
+    <section id={@id} class={["rg-chamber rg-panel", @class]} {@rest}>
       <header class="rg-panel-header">
         <div>
           <h2 class="rg-panel-title">{@title}</h2>
@@ -66,7 +66,7 @@ defmodule Regent.Panels do
   """
   def ledger(assigns) do
     ~H"""
-    <section id={@id} class={["rg-ledger", @class, "rg-ledger-#{@kind}"]} {@rest}>
+    <section id={@id} class={["rg-ledger rg-panel", @class, "rg-ledger-#{@kind}"]} {@rest}>
       <header class="rg-panel-header">
         <div>
           <h2 class="rg-panel-title">{@title}</h2>

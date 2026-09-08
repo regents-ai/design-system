@@ -1,0 +1,167 @@
+@import "./ratio.css";
+
+/* Shared ruled-sheet structure. Import tokens first; palettes remain product-owned. */
+/* The shared sweep is interaction-only and never replaces a content/focus host.
+ * Keep public shimmer properties unset here so ancestor overrides inherit. */
+@keyframes rg-shimmer {
+  from { background-position: 160% 0; }
+  to { background-position: -60% 0; }
+}
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before,
+  .rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before {
+    /* Warm even on pale fills; the small Platinum mix makes the sweep visible on
+       Tangerine itself. Restrained alpha protects default paired label ink. */
+    background-image: linear-gradient(100deg, transparent 30%, color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) 50%, transparent 70%);
+    background-size: 300% 100%;
+    background-repeat: no-repeat;
+    animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite;
+  }
+  .rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before {
+    animation-duration: calc(var(--rg-shimmer-duration, 1.15s) * 3);
+  }
+}
+.rg-sheet {
+  --rg-page-ink: var(--pb-text, var(--color-fg));
+  --rg-page-muted: var(--pb-text-muted, var(--color-fg-muted));
+  --rg-page-rule: color-mix(in srgb, var(--rg-page-ink) 22%, transparent);
+  color: var(--rg-page-ink);
+  font-family: var(--font-family-ui);
+  line-height: 1.5;
+}
+:where(.rg-sheet, .rg-sheet *, .rg-sheet *::before, .rg-sheet *::after) { box-sizing: border-box; }
+.rg-sheet :where(a) { color: inherit; text-underline-offset: .2em; }
+.rg-sheet :where(a, button, summary, input, select, textarea):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.rg-frame {
+  inline-size: min(calc(100% - 2 * var(--rg-page-gutter)), var(--rg-frame-max));
+  margin-inline: auto;
+  border-inline: var(--rg-rule-width) solid var(--rg-page-rule);
+  border-block-start: var(--rg-rule-width) solid var(--rg-page-rule);
+}
+.rg-sheet-row {
+  display: grid;
+  grid-template-columns: var(--rg-rail-width) minmax(0, 1fr);
+  column-gap: var(--rg-track-gap);
+  border-block-end: var(--rg-rule-width) solid var(--rg-page-rule);
+}
+.rg-sheet-row--no-rail { grid-template-columns: minmax(0, 1fr); }
+.rg-sheet-row > * { min-inline-size: 0; }
+.rg-sheet-row__rail { border-inline-end: var(--rg-rule-width) solid var(--rg-page-rule); }
+.rg-sheet-row__main { min-inline-size: 0; border-inline-start: var(--rg-rule-width) solid var(--rg-page-rule); }
+.rg-sheet-row--no-rail > .rg-sheet-row__main { border-inline-start: 0; }
+.rg-sheet-header { min-block-size: 4rem; }
+.rg-sheet-nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-4); padding: var(--space-1) var(--rg-panel-padding); }
+.rg-sheet-nav a { display: inline-flex; align-items: center; min-block-size: 2.75rem; }
+.rg-rail-nav { display: grid; padding-block: var(--space-4); }
+.rg-rail-nav a { display: flex; gap: var(--space-1); padding: var(--space-1); min-block-size: 2.75rem; border-block-end: 1px solid var(--rg-page-rule); text-decoration: none; overflow-wrap: anywhere; }
+.rg-rail-nav a:hover { text-decoration: underline; }
+.rg-rail-nav a[aria-current] { font-weight: 600; border-inline-start: 3px solid currentColor; }
+.rg-rail-nav span { flex: 0 0 auto; white-space: nowrap; font-family: var(--font-family-mono); font-size: .8125rem; }
+.rg-inset { padding: var(--rg-panel-padding); }
+.rg-section { padding-block: var(--rg-section-gap); }
+.rg-section__body { margin-block-start: var(--space-4); }
+.rg-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--rg-track-gap); }
+.rg-split > * { min-inline-size: 0; }
+.rg-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rg-hero__copy { padding: var(--rg-panel-padding); }
+.rg-hero__figure { border-inline-start: 1px solid var(--rg-page-rule); display: grid; align-items: center; min-inline-size: 0; padding: var(--rg-panel-padding); }
+.rg-hero-title { margin: var(--space-5) 0 0; max-inline-size: 15ch; font-size: clamp(2.5rem, 4.8vw, 4.5rem); font-weight: 400; line-height: 1.03; letter-spacing: -.045em; text-wrap: balance; overflow-wrap: anywhere; }
+.rg-hero-description { max-inline-size: 52ch; margin-block: var(--space-3) 0; font-size: 1rem; line-height: 1.5; color: var(--rg-page-muted); }
+.rg-hero-actions { margin-block: var(--space-6); }
+.rg-hero-actions > .rg-button { inline-size: 100%; }
+.rg-section-title { margin: 0; font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.1; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.rg-section-bar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); min-block-size: 2.25rem; padding-block: var(--space-1); border-block: 1px solid color-mix(in srgb, currentColor 22%, transparent); font-family: var(--font-family-ui); font-size: .8125rem; line-height: 1.4; }
+.rg-section-bar__label { margin: 0; font-size: inherit; line-height: inherit; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; letter-spacing: .02em; overflow-wrap: anywhere; min-inline-size: 0; }
+.rg-section-bar__diamond { inline-size: .5rem; block-size: .5rem; flex: 0 0 auto; border: 1px solid currentColor; transform: rotate(45deg); margin-inline: 2px; }
+.rg-section-bar__leader { flex: 1 1 4rem; min-inline-size: 2rem; block-size: .75rem; background: currentColor; opacity: .5; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath d='M4 2.5v3M2.5 4h3' fill='none' stroke='black' stroke-width='1'/%3E%3C/svg%3E") repeat 0 0 / 8px 8px; }
+/* Only skins are clipped. Hosts, descendants, focus rings and overlays remain visible. */
+.rg-panel {
+  --rg-cut: var(--rg-cut-panel);
+  --rg-edge: 1px;
+  --rg-panel-fill: var(--pb-surface, var(--color-surface));
+  --rg-panel-ink: var(--pb-text, var(--color-fg));
+  --rg-local-fill: var(--rg-panel-fill);
+  --rg-local-ink: var(--rg-panel-ink);
+  --rg-local-rule: color-mix(in srgb, var(--rg-panel-ink) 22%, var(--rg-panel-fill));
+  --rg-panel-edge: color-mix(in srgb, var(--rg-panel-ink) 22%, var(--rg-panel-fill));
+  position: relative; isolation: isolate; min-inline-size: 0;
+  color: var(--rg-panel-ink); background: transparent; border: 0; border-radius: 0; overflow: visible;
+}
+.rg-panel--accent { --rg-panel-fill: var(--pb-accent, var(--color-accent)); --rg-panel-ink: var(--pb-accent-ink, var(--color-fg-on-accent)); }
+.rg-panel.rg-support-panel { --rg-panel-fill: var(--support-panel-surface); --rg-panel-ink: var(--support-panel-ink); }
+.rg-support-band { background: var(--support-band-surface); color: var(--support-band-ink); padding-inline: var(--space-2); }
+.rg-support-figure .rg-technical-figure__art { background: var(--support-figure-surface); color: var(--support-figure-ink); }
+.rg-panel::before, .rg-panel::after { content: ""; position: absolute; pointer-events: none; }
+.rg-panel::before { z-index: -2; inset: 0; background: var(--rg-panel-edge); clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut)); }
+.rg-panel::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - .585786 * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
+.rg-panel__body { padding: var(--rg-panel-padding); }
+.rg-panel:focus-within { z-index: 2; }
+.rg-panel__heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding: var(--rg-panel-padding); border-block-end: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+.rg-panel__heading h3 { margin: 0; min-inline-size: 0; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.rg-panel__index { font-family: var(--font-family-mono); font-size: .8125rem; white-space: nowrap; }
+/* Subgrid aligns heading, image and separate caption bands even with long copy. */
+:where(.rg-feature, .rg-feature *, .rg-feature *::before, .rg-feature *::after) { box-sizing: border-box; }
+.rg-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
+.rg-feature { display: grid; grid-row: span 3; grid-template-rows: subgrid; min-inline-size: 0; gap: 0; }
+.rg-feature__face { display: grid; grid-row: span 2; grid-template-rows: subgrid; gap: 0; }
+/* The full media area shimmers, including over opaque images. Keep this inert
+ * overlay inside the art box: heading/caption ink and actual focus stay untouched. */
+.rg-feature__shimmer {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut));
+}
+.rg-feature__shimmer::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.rg-feature:is(:hover, :focus-within) > .rg-panel {
+  --rg-panel-edge: color-mix(in srgb, var(--rg-panel-ink) 38%, var(--rg-panel-fill));
+}
+.rg-feature__caption { min-block-size: 7rem; margin-block-start: 1px; padding: var(--rg-panel-padding); overflow-wrap: anywhere; }
+.rg-feature__caption p { margin: 0; }
+.rg-feature__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-3); }
+.rg-feature__actions > * { min-inline-size: 0; max-inline-size: 100%; }
+.rg-feature .rg-panel__index { min-inline-size: 0; white-space: normal; overflow-wrap: anywhere; }
+.rg-feature__face .rg-technical-figure__art > :is(img, svg) { display: block; width: 100%; max-inline-size: 100%; block-size: auto; aspect-ratio: 1; object-fit: contain; }
+.rg-technical-figure { display: grid; align-content: center; min-inline-size: 0; margin: 0; padding: var(--rg-panel-padding); color: inherit; }
+.rg-technical-figure__art { position: relative; isolation: isolate; min-inline-size: 0; }
+.rg-technical-figure__art::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(currentColor .6px, transparent .9px); background-size: 4px 4px; }
+.rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
+.rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }
+.rg-technical-figure svg text { font-family: var(--font-family-mono); font-size: 12px; fill: currentColor; stroke: none; }
+.rg-technical-figure figcaption { font-family: var(--font-family-ui); font-size: .8125rem; text-align: start; justify-self: start; margin-block-start: var(--space-2); }
+.rg-closing { padding: var(--rg-panel-padding); }
+.rg-link-directory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.rg-link-directory h3 { margin-block: 0 var(--space-2); font-size: 1.125rem; font-weight: 400; }
+.rg-link-directory a { display: flex; min-block-size: 2.75rem; align-items: center; overflow-wrap: anywhere; }
+.rg-wordmark-band { padding: var(--rg-panel-padding); margin-block-start: var(--space-4); }
+.rg-wordmark-band__name { display: block; max-inline-size: 100%; margin: 0; font-family: var(--font-family-title); font-synthesis: none; font-size: clamp(2.5rem, 8vw, 8rem); font-weight: 400; line-height: 1.05; letter-spacing: -.05em; overflow-wrap: anywhere; }
+.rg-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) var(--rg-panel-padding); font-family: var(--font-family-ui); font-size: .8125rem; }
+@media (max-width: 74.99rem) {
+  .rg-sheet { --rg-page-gutter: var(--space-3); --rg-rail-width: 9rem; --rg-track-gap: var(--space-3); --rg-panel-padding: var(--space-3); }
+}
+@media (max-width: 63.99rem) {
+  .rg-sheet-row { grid-template-columns: minmax(0, 1fr); }
+  .rg-sheet-row__rail { border-inline-end: 0; border-block-end: 1px solid var(--rg-page-rule); }
+  .rg-sheet-row__rail:empty { display: none; }
+  .rg-sheet-row__main { border-inline-start: 0; }
+  .rg-rail-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-block: 0; }
+  .rg-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 47.99rem) {
+  .rg-rail-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rg-sheet { --rg-page-gutter: var(--space-2); --rg-section-gap: var(--space-5); --rg-cut-panel: 12px; --rg-cut-control: 8px; }
+  .rg-panel { --rg-cut-panel: 12px; }
+  .rg-split, .rg-hero, .rg-feature-grid { grid-template-columns: minmax(0, 1fr); }
+  .rg-hero__figure { border-inline-start: 0; border-block-start: 1px solid var(--rg-page-rule); }
+  .rg-section-bar__leader { display: none; }
+}
+@media (max-width: 24rem) {
+  .rg-sheet { --rg-panel-padding: var(--space-2); }
+  .rg-rail-nav { grid-template-columns: minmax(0, 1fr); }
+  .rg-link-directory { grid-template-columns: minmax(0, 1fr); }
+}
+@media (forced-colors: active) {
+  .rg-feature__shimmer { display: none; }
+  .rg-support-band, .rg-support-figure .rg-technical-figure__art { background: Canvas; color: CanvasText; }
+  .rg-panel::before, .rg-panel::after, .rg-technical-figure__art::before, .rg-section-bar__leader { display: none; }
+  .rg-panel { --rg-local-ink: CanvasText; --rg-local-fill: Canvas; color: CanvasText; background: Canvas; border: 1px solid CanvasText; }
+  .rg-sheet :where(a, button, summary, input, select, textarea):focus-visible { outline-color: Highlight; }
+}

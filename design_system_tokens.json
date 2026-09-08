@@ -20,8 +20,18 @@
       "--space-5": "40px",
       "--space-6": "48px",
       "--space-7": "56px",
-      "--container-padding": "24px",
-      "--radius": "24px",
+      "--space-8": "64px",
+      "--radius": "0px",
+      "--container-padding": "var(--space-4)",
+      "--rg-frame-max": "100rem",
+      "--rg-page-gutter": "var(--space-4)",
+      "--rg-rail-width": "11rem",
+      "--rg-track-gap": "var(--space-4)",
+      "--rg-panel-padding": "var(--space-4)",
+      "--rg-section-gap": "var(--space-8)",
+      "--rg-cut-panel": "16px",
+      "--rg-cut-control": "12px",
+      "--rg-rule-width": "1px",
       "--shadow-sm": "0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent)",
       "--shadow-md": "0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 24%, transparent)",
       "--shadow-lg": "0 28px 64px -48px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 32%, transparent)",
@@ -39,6 +49,7 @@
       "--ease-in-out": "cubic-bezier(0.77, 0, 0.175, 1)",
       "--active-scale": "0.97",
       "--font-family-sans": "\"Geist UI Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "--font-family-title": "\"Geist Pixel Square\", ui-monospace, monospace",
       "--font-family-ui": "var(--font-family-sans)",
       "--font-family-paragraph": "var(--font-family-sans)",
       "--font-family-mono": "\"Geist Mono\", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
@@ -67,6 +78,38 @@
     ":root[data-theme=\"dark\"]": {
       "--glass-frost": "linear-gradient( 168deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 32%, rgba(10, 10, 10, 0.18) 55%, rgba(10, 10, 10, 0.78) 100% )",
       "--glass-shine": "radial-gradient( 24rem circle at var(--shine-x, 50%) var(--shine-y, 35%), rgba(255, 255, 255, 0.09), transparent 64% )"
+    },
+    ":root[data-brand=\"platform\"]": {
+      "--support-figure-surface": "var(--palette-powder-blue)",
+      "--support-figure-ink": "var(--palette-charcoal)",
+      "--support-band-surface": "var(--palette-tangerine-tango)",
+      "--support-band-ink": "var(--palette-charcoal)",
+      "--support-panel-surface": "var(--palette-platinum)",
+      "--support-panel-ink": "var(--palette-charcoal)"
+    },
+    ":root[data-brand=\"autolaunch\"]": {
+      "--support-figure-surface": "var(--palette-powder-blue)",
+      "--support-figure-ink": "var(--palette-charcoal)",
+      "--support-band-surface": "var(--palette-charcoal)",
+      "--support-band-ink": "var(--palette-platinum)",
+      "--support-panel-surface": "var(--palette-platinum)",
+      "--support-panel-ink": "var(--palette-charcoal)"
+    },
+    ":root[data-brand=\"patchbay\"]": {
+      "--support-figure-surface": "var(--palette-powder-blue)",
+      "--support-figure-ink": "var(--palette-charcoal)",
+      "--support-band-surface": "var(--palette-tangerine-tango)",
+      "--support-band-ink": "var(--palette-charcoal)",
+      "--support-panel-surface": "var(--palette-charcoal)",
+      "--support-panel-ink": "var(--palette-platinum)"
+    },
+    ":root[data-brand=\"techtree\"]": {
+      "--support-figure-surface": "var(--palette-platinum)",
+      "--support-figure-ink": "var(--palette-charcoal)",
+      "--support-band-surface": "var(--palette-tangerine-tango)",
+      "--support-band-ink": "var(--palette-charcoal)",
+      "--support-panel-surface": "var(--palette-charcoal)",
+      "--support-panel-ink": "var(--palette-platinum)"
     },
     ":root[data-brand=\"platform\"][data-theme=\"light\"]": {
       "--brand-ink": "#161616",
@@ -124,7 +167,7 @@
       "--color-focus": "#A33208",
       "--color-link": "#161616",
       "--color-muted": "var(--color-fg-muted)",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-regents-light.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"platform\"][data-theme=\"dark\"]": {
       "--brand-ink": "#E5E3D2",
@@ -182,7 +225,7 @@
       "--color-focus": "#AECACD",
       "--color-link": "#E5E3D2",
       "--color-muted": "var(--color-fg-muted)",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-regents-dark.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"autolaunch\"][data-theme=\"light\"]": {
       "--brand-ink": "#161616",
@@ -240,7 +283,7 @@
       "--color-focus": "#A33208",
       "--color-link": "#161616",
       "--color-muted": "#B8B6A6",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-autolaunch-light.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"autolaunch\"][data-theme=\"dark\"]": {
       "--brand-ink": "#E5E3D2",
@@ -298,7 +341,7 @@
       "--color-focus": "#AECACD",
       "--color-link": "#FF5B19",
       "--color-muted": "#A1A19A",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-autolaunch-dark.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"techtree\"][data-theme=\"light\"]": {
       "--brand-ink": "#161616",
@@ -356,7 +399,7 @@
       "--color-focus": "#A33208",
       "--color-link": "#161616",
       "--color-muted": "#B8B6A6",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-tech-light.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"techtree\"][data-theme=\"dark\"]": {
       "--brand-ink": "#E5E3D2",
@@ -414,7 +457,7 @@
       "--color-focus": "#AECACD",
       "--color-link": "#AECACD",
       "--color-muted": "#8C8C8C",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-tech-dark.svg\")"
+      "--site-background-image": "none"
     },
     ":root[data-brand=\"patchbay\"][data-theme=\"dark\"]": {
       "--brand-primary": "#B9B7A6",
@@ -438,7 +481,7 @@
       "--color-error": "#FF9B8F",
       "--color-warning": "#F5C16C",
       "--color-info": "#AECACD",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-patchbay-dark.svg\")",
+      "--site-background-image": "none",
       "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
       "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
       "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",
@@ -496,7 +539,7 @@
       "--color-error": "#9C2525",
       "--color-warning": "#754600",
       "--color-info": "#365D62",
-      "--site-background-image": "url(\"/images/regent-ui/cutting-mat-100x100-patchbay-light.svg\")",
+      "--site-background-image": "none",
       "--glass-page-bg": "linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)",
       "--glass-surface": "color-mix(in oklch, var(--color-surface) 88%, transparent)",
       "--glass-surface-strong": "color-mix(in oklch, var(--color-surface-elevated) 92%, transparent)",

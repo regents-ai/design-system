@@ -1,5 +1,45 @@
 # Shared design system: consumer configuration
 
+## Current structural contract (supersedes background/geometry rollout notes below)
+
+Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
+subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
+Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` from
+`geist-font/GeistPixel/webfonts/`; rerun `mix regent_ui.assets` and serve
+`/fonts/regent-ui/` from the consumer origin. Supporting figure/band/panel surface and ink
+roles expose the other three palette constants per brand; use their paired utility
+classes coherently, not random per-card accents. Patchbay aliases remain unchanged.
+Shared selects reserve a 24px right chevron inset and 48px text padding, with native
+forced-colors appearance. Enabled primaries use a restrained orange 1.15s hover/focus
+area sheen; capability cards use the same gradient at 3.45s. `--rg-shimmer-color` is an
+inherited source override (default Tangerine, mixed 75% with Platinum at 24% strength).
+`--rg-shimmer-duration` controls base speed; cards multiply by three. Custom colors
+and fill/ink overrides require caller contrast review. Labels are transparent; CSS-only
+primary links need no label wrapper and never underline, even under `.sc a:hover`.
+Dark rest has blue opposite square corners plus orange cut accents; light rest has
+two opposite orange L-edges. Enabled hover/focus grows a continuous cut outline with
+150ms base transitions on entry and exit, naturally reversing interruptions.
+`--rg-button-border-color` overrides the outline, falling back to shimmer color then
+Tangerine. Reduced motion means instant outline states and no sweep; forced colors
+retain a system border. No new markup, JS, semantic changes or clipped host/content.
+Import canonical token CSS then
+`primitives.css`, which now includes `structure.css`. Use `Regent.Structure` for the
+optional ruled frame, section bars, cut panels and technical figures, and existing
+`Regent.Primitives` for primary/secondary/quiet buttons and indexed native disclosures.
+The old universal 24px radius is retired: plain cells are square; panel skins cut
+16px/12px and primary-action skins cut 12px/8px (desktop/mobile).
+
+Page background SVGs are no longer used. The shared background component is inert and
+`--site-background-image` is `none`; SVG assets remain packaged for future smaller
+illustration sections. Remove product-owned background mounts during deliberate consumer
+adoption. The historic home exceptions below do not override this new direction.
+No product routes, authentication, wallets or database state are changed by this refactor.
+
+See `STYLE.md` for the current API and real-component showcase commands. Shared changes
+are verified first; consumer rollout follows visual acceptance and each app's own build.
+
+## Historical palette rollout evidence
+
 September 5, 2026. Approved rollout tracked in central Regent graph **regent-qht.9**
 and Techtree graph **techtree-p90**. This records the differences encountered in
 this rollout, not an audit of every backend setting in the repositories.
@@ -47,7 +87,7 @@ this rollout, not an audit of every backend setting in the repositories.
 | Browser fixtures | App suites differ in seeding, authorization fixtures, server pools, and teardown | Use each app's disposable database and focused browser runs; do not merge authentication or domain fixtures into the UI package |
 | Existing work | Autolaunch had extensive uncommitted design changes | Candidate includes an isolated snapshot; integrate only this rollout's delta |
 
-## Boundaries that remain intentional
+## Historical boundaries at the palette rollout
 
 Applications keep their domains, databases, routes, authorization, wallet behavior,
 page layouts, and deployment schedules. The shared background component has no

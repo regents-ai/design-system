@@ -27,7 +27,7 @@ defmodule Regent.PrimitivesTest do
 
     html =
       rendered_to_string(~H"""
-      <.disclosure id="evidence" summary="Evidence">Complete evidence</.disclosure>
+      <.disclosure id="evidence" summary="Evidence" index="01">Complete evidence</.disclosure>
       <.disclosure id="errors" summary="Errors" open>Visible error</.disclosure>
       """)
 
@@ -35,6 +35,8 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Complete evidence"
     assert html =~ ~s(id="errors" open)
     assert html =~ ~s(aria-hidden="true")
+    assert html =~ ~s(class="rg-disclosure-index")
+    assert html =~ ">01</span>"
   end
 
   test "buttons pass application events through without implicit disabling or submission" do
@@ -48,6 +50,7 @@ defmodule Regent.PrimitivesTest do
     assert html =~ ~s(type="button")
     assert html =~ ~s(phx-click="request_wallet")
     assert html =~ ~s(phx-value-item="a")
+    assert html =~ ~s(class="rg-button__label")
     refute html =~ "disabled"
   end
 
