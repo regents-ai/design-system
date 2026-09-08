@@ -127,21 +127,22 @@ presented, styled as bordered uppercase micro-labels, never hidden for marketing
 
 ## Typography
 
-Two faces, packaged with the shared UI library and served from the consuming application's
-own origin. Both are Vercel Geist under the SIL Open Font License 1.1; the license ships
+Three faces, packaged with the shared UI library and served from the consuming application's
+own origin. All are Vercel Geist under the SIL Open Font License 1.1; the license ships
 beside the files.
 
 | Face | Canonical `font-family` name | Token | Use |
 | --- | --- | --- | --- |
 | Geist Pixel Square | `"Geist Pixel Square"` | `--font-family-title` | All titles and subtitles, headings, section bars, disclosure titles, empty-state titles and wordmarks |
-| Geist Mono | `"Geist Mono"` | `--font-family-mono`, `--font-family-ui`, `--font-family-paragraph` | All other text and UI: body, forms, navigation, labels, technical indices, code and readouts |
+| Geist UI Sans | `"Geist UI Sans"` | `--font-family-sans`, `--font-family-ui`, `--font-family-paragraph` | Body, forms, navigation, labels, captions, legal text and other UI |
+| Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, technical indices, addresses and readouts |
 
-`--font-family-ui` and `--font-family-paragraph` resolve to Mono. Headings (`h1`–`h6`)
-and display/title/headline text styles use Pixel Square. `--font-family-sans` and
-the packaged Geist UI Sans files remain compatibility assets, never the default.
+`--font-family-ui` and `--font-family-paragraph` resolve to Geist UI Sans. Headings
+(`h1`–`h6`) and display/title/headline text styles use Pixel Square. Mono is reserved
+for technical/code roles rather than general UI text.
 
 Pixel Square is genuine upright **400 only**, with `font-synthesis: none`; never fake
-bold or italic Pixel. Mono supports 400 and 600 with genuine italics, using
+bold or italic Pixel. Sans and Mono support 400 and 600 with genuine italics, using
 `--font-weight-regular` and `--font-weight-semibold`.
 
 Font URL contract: the canonical CSS declares each face as
@@ -162,7 +163,7 @@ Patterns that generalize:
 - Mono for anything an operator might copy: commands, slugs, versions, addresses.
 - `font-variant-numeric: tabular-nums` on counters and money figures.
 - Type scale tokens (`--type-*`) govern app surfaces; marketing heroes may clamp beyond the
-  scale but stay on the two faces.
+  scale but stay on the assigned title/body/technical roles.
 
 ## Shape and spacing
 
@@ -174,14 +175,20 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right only, 12px desktop
   and 8px mobile. Secondary actions are square outlines; quiet actions are text.
-- In **Platform/Regents and Patchbay dark mode only**, primary controls have static
-  corner marks on `::after`: 1px Tangerine lines parallel to the top-left and bottom-right
-  cuts, inset 1px from the diagonal edge, and 1px Powder Blue L-strokes on the exterior
-  top-right and bottom-left square edges. Each mark occupies only a cut-sized tile
-  (12px desktop / 8px mobile), independent of label length. Use the canonical palette
-  variables, preserve the accent fill on `::before`, and never outline the full button
-  in orange. Decoration cannot receive pointer events and is absent in forced colors;
-  the accessible rectangular system-color border and external focus outline remain.
+- Across **all four brands**, dark primary controls rest with 1px Powder Blue L-strokes
+  at the top-right/bottom-left square corners and Tangerine accents inset 1px along
+  the top-left/bottom-right cuts. Light controls rest with two opposite Tangerine
+  L-edges and no diagonal marks. Rest marks occupy cut-sized tiles (12px/8px).
+- Enabled primary hover/focus-visible grows the four straight edges to full length
+  and crossfades the cut accents into a continuous matching cut outline in **150ms**.
+  Base transitions reverse on leave, including an interrupted entrance, without JS
+  or additional markup. CSS reversal shortening applies to interrupted transitions;
+  complete rest-to-hover and hover-to-rest transitions each take 150ms.
+  `--rg-button-border-color` overrides the active outline and light rest edges,
+  falling back to `--rg-shimmer-color`, then Tangerine. Dark rest marks keep their
+  canonical blue/orange pairing. Only `::after` clips; hit areas remain rectangular.
+  Reduced motion swaps outline states instantly. Forced colors omit decoration and
+  retain a rectangular system border plus the distinct external keyboard focus ring.
 - Clip visual pseudo-elements only. Panel and button hosts have no clipping or hidden
   overflow, so menus, focus rings and expanded validation remain visible. Two inset
   skins supply the diagonal perimeter. Never fake a diagonal stroke with a clipped CSS border.
@@ -286,23 +293,28 @@ completes does the incoming view enter from 180–380ms. The border shimmer/sett
 duplicate slide inside the route transition. Movement is limited to transform and opacity.
 
 - Animate only `transform` and `opacity` except the shared interaction-only background
-  shimmer below. Enters use ease-out; on-screen moves use ease-in-out.
+  shimmer and 150ms primary-outline paint transitions below. Enters use ease-out;
+  on-screen moves use ease-in-out.
 - Shared structural controls retain clear focus. No card lift, pointer-following shine,
   perspective or idle decorative animation is enabled.
 - Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
-  opt-in and no palette-specific gating. Secondary, quiet, native disabled and
-  `aria-disabled="true"` controls do not shimmer. Cards shimmer on hover/focus-within.
+  opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
+  and `aria-disabled="true"` controls do not shimmer. Cards shimmer on hover/focus-within.
   Both use `rg-shimmer`: a 100-degree linear gradient, transparent stops at 30%/70%,
-  42%-strength color at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0`
+  restrained orange highlight at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0`
   with `var(--ease-out)`. Loops exist only for the active interaction.
-- Set inherited `--rg-shimmer-color` on a component or ancestor to override the color;
-  otherwise it uses the button's on-accent ink or the card panel's paired ink.
+- `--rg-shimmer-color` is an inherited optional source-color override, defaulting to
+  Tangerine (`--palette-tangerine-tango`, fallback `#ff5b19`), never paired gray/blue ink.
+  The highlight mixes 75% of that source with canonical Platinum, then applies 24% strength against
+  transparent. This preserves warmth on pale fills, remains visible on Tangerine itself,
+  and keeps default text contrast without an opaque label rectangle. Custom colors,
+  local fill/ink overrides and opacity remain the caller's contrast responsibility;
+  there is no runtime color validator or conditional recoloring.
   `--rg-shimmer-duration` defaults to `1.15s` for buttons; cards use
   `calc(var(--rg-shimmer-duration, 1.15s) * 3)` (default `3.45s`).
-  Button `::before` remains the clipped accent fill and `::after` corner marks survive.
-  The button primitive keeps its label on an opaque paired-fill span so the peak
-  sweep cannot lower text contrast. CSS-only primary links should use the same
-  `rg-button__label` wrapper around their label.
+  Button `::before` remains the clipped accent fill/sweep, while `::after` owns the outline.
+  Existing `rg-button__label` spans are transparent and optional for CSS-only links.
+  Primary text never underlines, including under later consumer `.sc a:hover` rules.
   Card `.rg-feature__shimmer` is an aria-hidden, pointer-inert full-media-area overlay
   inside `.rg-technical-figure__art`, so opaque images cannot hide the area sweep.
   Heading, caption and actions stay outside the overlay, preserving their paired ink.

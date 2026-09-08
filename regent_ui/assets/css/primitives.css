@@ -26,32 +26,62 @@
   text-decoration: none;
 }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { border: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); }
-/* Keep text on its paired fill while the full-strength sweep passes underneath.
-   This also protects contrast when callers choose a different shimmer color. */
-.rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background-color: var(--rg-p-accent); }
+/* Optional compatibility wrapper, not an opaque patch across the area sheen. */
+.rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background: transparent; }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  --rg-shimmer-ink: var(--rg-p-on-accent);
   background-color: var(--rg-p-accent);
   clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
 }
-/* Static, corner-only marks. Keep the existing fill skin and rectangular hit area.
-   Diagonal stops are distances along the 45-degree gradient: a 1px interior gap,
-   then a 1px stroke. Fixed cut-sized tiles cannot stretch with a wrapped label. */
+/* Registered private paint values interpolate colors and the diagonal inset.
+   Public override properties remain inherited and unset on the host. */
+@property --rg-button-edge-ink { syntax: "<color>"; inherits: false; initial-value: #ff5b19; }
+@property --rg-button-cut-ink { syntax: "<color>"; inherits: false; initial-value: transparent; }
+@property --rg-button-cut-gap { syntax: "<length>"; inherits: false; initial-value: 1px; }
 @media (forced-colors: none) {
-  :root:is([data-brand="platform"], [data-brand="patchbay"])[data-theme="dark"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+    --rg-button-active-border: var(--rg-button-border-color, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)));
+    --rg-button-edge-ink: var(--rg-button-active-border);
+    --rg-button-cut-ink: transparent;
+    --rg-button-cut-gap: 1px;
     content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    /* Four edge tiles grow from opposite square corners; the two fixed-size
+       diagonals close the cut outline. 1px edge overlap prevents endpoint gaps. */
     background:
-      linear-gradient(135deg, transparent calc(50% + 1px), var(--palette-tangerine-tango) calc(50% + 1px) calc(50% + 2px), transparent calc(50% + 2px)) left top / var(--rg-cut-control) var(--rg-cut-control),
-      linear-gradient(315deg, transparent calc(50% + 1px), var(--palette-tangerine-tango) calc(50% + 1px) calc(50% + 2px), transparent calc(50% + 2px)) right bottom / var(--rg-cut-control) var(--rg-cut-control),
-      linear-gradient(var(--palette-powder-blue) 0 0) right top / var(--rg-cut-control) 1px,
-      linear-gradient(var(--palette-powder-blue) 0 0) right top / 1px var(--rg-cut-control),
-      linear-gradient(var(--palette-powder-blue) 0 0) left bottom / var(--rg-cut-control) 1px,
-      linear-gradient(var(--palette-powder-blue) 0 0) left bottom / 1px var(--rg-cut-control);
+      linear-gradient(135deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)) left top / var(--rg-cut-control) var(--rg-cut-control),
+      linear-gradient(315deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)) right bottom / var(--rg-cut-control) var(--rg-cut-control),
+      linear-gradient(var(--rg-button-edge-ink) 0 0) right top / var(--rg-cut-control) 1px,
+      linear-gradient(var(--rg-button-edge-ink) 0 0) right top / 1px var(--rg-cut-control),
+      linear-gradient(var(--rg-button-edge-ink) 0 0) left bottom / var(--rg-cut-control) 1px,
+      linear-gradient(var(--rg-button-edge-ink) 0 0) left bottom / 1px var(--rg-cut-control);
     background-repeat: no-repeat;
+    clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
+    /* Base transitions reverse from the current paint on leave/interruption. */
+    transition: background-size 150ms ease, --rg-button-edge-ink 150ms ease,
+      --rg-button-cut-ink 150ms ease, --rg-button-cut-gap 150ms ease;
+  }
+  :root[data-theme="dark"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+    --rg-button-edge-ink: var(--palette-powder-blue, #aecacd);
+    --rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19);
+  }
+  :root .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::after {
+    --rg-button-edge-ink: var(--rg-button-active-border);
+    --rg-button-cut-ink: var(--rg-button-active-border);
+    --rg-button-cut-gap: 0px;
+    background-size:
+      var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
   }
 }
-.rg-button:hover:not(:disabled) { text-decoration: underline; text-underline-offset: .2em; }
+.rg-button:is(.rg-button--secondary, .rg-button--quiet):hover:not(:disabled):not([aria-disabled="true"]) { text-decoration: underline; text-underline-offset: .2em; }
+/* Deliberately outrank consumer prose rules such as .sc a:hover, even when
+   loaded later. Primary links need no additional markup or consumer opt-out. */
+.rg-button.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)),
+.rg-button.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):is(:hover, :focus-visible) { text-decoration: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after { transition: none !important; }
+}
 .rg-button[hidden] { display: none; }
 .rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-control-border); }
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }
@@ -124,7 +154,6 @@
 @media (forced-colors: active) {
   .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before { display: none; }
   .rg-button { border: 1px solid ButtonText; color: ButtonText; background: ButtonFace; }
-  .rg-button__label { background-color: ButtonFace; }
   .rg-button:disabled { color: GrayText; opacity: 1; }
   .rg-field :is(input, select, textarea) { border-color: CanvasText; }
   .rg-field select { appearance: auto; background-image: none; }

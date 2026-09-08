@@ -19,7 +19,7 @@
   overflow: visible;
   background: var(--rg-ratio-fill);
   color: var(--rg-ratio-ink);
-  font-family: var(--font-family-mono);
+  font-family: var(--font-family-ui);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }

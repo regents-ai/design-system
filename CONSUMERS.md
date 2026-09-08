@@ -3,17 +3,25 @@
 ## Current structural contract (supersedes background/geometry rollout notes below)
 
 Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
-subtitle, and Geist Mono 400/600 for all other text/UI. Never synthesize bold Pixel.
-The generator now packages `GeistPixel-Square.woff2` from `geist-font/GeistPixel/webfonts/`;
-rerun `mix regent_ui.assets` and serve `/fonts/regent-ui/` from the consumer origin.
-Geist sans remains compatibility-only. Supporting figure/band/panel surface and ink
+subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
+Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` from
+`geist-font/GeistPixel/webfonts/`; rerun `mix regent_ui.assets` and serve
+`/fonts/regent-ui/` from the consumer origin. Supporting figure/band/panel surface and ink
 roles expose the other three palette constants per brand; use their paired utility
 classes coherently, not random per-card accents. Patchbay aliases remain unchanged.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
-forced-colors appearance. Enabled primary controls use the shared 1.15s hover/focus
-shimmer; capability cards use the same full-media-area sweep at 3.45s. Both support
-inherited color overrides and stop for reduced motion/forced colors. Primary labels
-retain an opaque paired fill; CSS-only primary links need `rg-button__label` too.
+forced-colors appearance. Enabled primaries use a restrained orange 1.15s hover/focus
+area sheen; capability cards use the same gradient at 3.45s. `--rg-shimmer-color` is an
+inherited source override (default Tangerine, mixed 75% with Platinum at 24% strength).
+`--rg-shimmer-duration` controls base speed; cards multiply by three. Custom colors
+and fill/ink overrides require caller contrast review. Labels are transparent; CSS-only
+primary links need no label wrapper and never underline, even under `.sc a:hover`.
+Dark rest has blue opposite square corners plus orange cut accents; light rest has
+two opposite orange L-edges. Enabled hover/focus grows a continuous cut outline with
+150ms base transitions on entry and exit, naturally reversing interruptions.
+`--rg-button-border-color` overrides the outline, falling back to shimmer color then
+Tangerine. Reduced motion means instant outline states and no sweep; forced colors
+retain a system border. No new markup, JS, semantic changes or clipped host/content.
 Import canonical token CSS then
 `primitives.css`, which now includes `structure.css`. Use `Regent.Structure` for the
 optional ruled frame, section bars, cut panels and technical figures, and existing

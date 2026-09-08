@@ -101,13 +101,12 @@ defmodule Regent.VisualContractTest do
     assert css =~ ".rg-field select { appearance: auto; background-image: none; }"
   end
 
-  test "dark platform and Patchbay primary corners are finite palette strokes, not a new skin" do
+  test "primary corners retain finite rest strokes and grow only their decorative skin" do
     css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
 
     # The root theme owns decoration, including inside locally colored panels.
     selector =
-      ~s|:root:is([data-brand="platform"], [data-brand="patchbay"])[data-theme="dark"] | <>
-        ".rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after"
+      ".rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after"
 
     assert [_, decoration] =
              Regex.run(~r/#{Regex.escape(selector)}\s*\{([^}]+)\}/, css)
@@ -125,9 +124,11 @@ defmodule Regent.VisualContractTest do
       assert decoration =~ "linear-gradient(#{angle}deg,"
     end
 
-    assert length(Regex.scan(~r/var\(--palette-tangerine-tango\)/, decoration)) == 2
-    assert length(Regex.scan(~r/var\(--palette-powder-blue\)/, decoration)) == 4
-    assert decoration =~ "calc(50% + 1px) calc(50% + 2px)"
+    assert decoration =~ "--rg-button-cut-gap: 1px"
+    assert decoration =~ "--rg-button-cut-ink: transparent"
+    assert decoration =~ "transition: background-size 150ms ease"
+    assert css =~ "--rg-button-edge-ink: var(--palette-powder-blue, #aecacd)"
+    assert css =~ "--rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19)"
 
     for corner <- ["left top", "right bottom"] do
       assert decoration =~ "#{corner} / var(--rg-cut-control) var(--rg-cut-control)"
@@ -138,7 +139,9 @@ defmodule Regent.VisualContractTest do
       assert decoration =~ "#{corner} / 1px var(--rg-cut-control)"
     end
 
-    for forbidden <- ["border:", "clip-path:", "animation:", "transition:", "url("] do
+    refute decoration =~ ~r/(?:^|[;\s])border:/
+
+    for forbidden <- ["animation:", "url("] do
       refute decoration =~ forbidden
     end
   end
@@ -147,7 +150,7 @@ defmodule Regent.VisualContractTest do
     css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
 
     assert css =~
-             ~r/@media \(forced-colors: none\)\s*\{\s*:root:is\([^}]+::after\s*\{[^}]+\}\s*\}/s
+             ~r/@media \(forced-colors: none\)\s*\{\s*\.rg-button[^}]+::after\s*\{/s
 
     [_, host] = Regex.run(~r/\.rg-button \{([^}]+)\}/, css)
     assert host =~ "overflow: visible"
@@ -172,7 +175,7 @@ defmodule Regent.VisualContractTest do
     assert css =~ "@media (prefers-reduced-motion: no-preference) and (forced-colors: none)"
 
     assert css =~
-             "linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--rg-shimmer-color, var(--rg-shimmer-ink)) 42%, transparent) 50%, transparent 70%)"
+             "linear-gradient(100deg, transparent 30%, color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) 50%, transparent 70%)"
 
     assert css =~ "background-size: 300% 100%"
     assert css =~ "from { background-position: 160% 0; }"
@@ -181,7 +184,7 @@ defmodule Regent.VisualContractTest do
     assert css =~
              "animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite"
 
-    assert primitives =~ "--rg-shimmer-ink: var(--rg-p-on-accent)"
+    refute primitives =~ "--rg-shimmer-ink:"
     assert primitives =~ "background-color: var(--rg-p-accent)"
 
     # Public overrides must inherit from any ancestor, not be reset by a host default.
@@ -197,7 +200,7 @@ defmodule Regent.VisualContractTest do
              ".rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before"
 
     assert css =~ "animation-duration: calc(var(--rg-shimmer-duration, 1.15s) * 3)"
-    assert css =~ "--rg-shimmer-ink: var(--rg-panel-ink)"
+    refute css =~ "--rg-shimmer-ink:"
     assert component =~ ~s(<span class="rg-feature__shimmer" aria-hidden="true"></span>)
     assert component =~ ~r/<\.technical_figure>\s*<span class="rg-feature__shimmer"/
     [_, skin] = Regex.run(~r/\.rg-feature__shimmer \{([^}]+)\}/, css)
@@ -250,15 +253,15 @@ defmodule Regent.VisualContractTest do
     end
   end
 
-  test "titles use genuine regular Pixel Square while UI and prose use Mono" do
+  test "titles use genuine regular Pixel Square while UI and prose use Sans" do
     tokens =
       File.read!(Path.join(@repository_root, "design_system_tokens.json"))
       |> Jason.decode!()
       |> get_in(["selectors", ":root"])
 
     assert tokens["--font-family-title"] =~ "Geist Pixel Square"
-    assert tokens["--font-family-ui"] == "var(--font-family-mono)"
-    assert tokens["--font-family-paragraph"] == "var(--font-family-mono)"
+    assert tokens["--font-family-ui"] == "var(--font-family-sans)"
+    assert tokens["--font-family-paragraph"] == "var(--font-family-sans)"
     file = "GeistPixel-Square.woff2"
 
     assert File.read!(Path.join([@package_root, "priv/static/fonts", file])) ==

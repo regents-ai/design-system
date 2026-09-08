@@ -73,7 +73,7 @@ node scripts/generate-tokens-json.mjs
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
 | `regent_ui/` | The Phoenix component library: components, panels, sigils, scene rendering, and their CSS and TypeScript assets. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
-| `geist-font/` | Canonical Geist Pixel Square and Geist Mono fonts, plus compatibility Geist sans files. |
+| `geist-font/` | Canonical Geist Pixel Square, Geist UI Sans and Geist Mono fonts. |
 | `images/` | Artwork, blueprints, and per-product design studies. |
 | `terminal-palette.md` | Terminal color palettes, with per-product variants for Techtree and Autolaunch. |
 | `scripts/` | The token generator. |
@@ -97,10 +97,11 @@ apply them; the CSS file is what to read for exact values.
 | Face | Packaged files | Used for |
 | --- | --- | --- |
 | Geist Pixel Square | `regent_ui/priv/static/fonts/GeistPixel-Square.woff2` | All titles and subtitles, upright 400 only; no synthetic bold/italic |
-| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | All remaining text and UI, including body, controls, code and readouts |
+| Geist UI Sans | `regent_ui/priv/static/fonts/Geist-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Body, controls, navigation, captions, labels and other UI |
+| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Code, technical indices, addresses and readouts |
 
-Mono uses weights 400 and 600, each with a genuine italic. Pixel uses 400 only.
-Geist sans assets remain for compatibility, not as the default. The packaged files are generated from
+Sans and Mono use weights 400 and 600, each with a genuine italic. Pixel uses 400 only.
+The packaged files are generated from
 `geist-font/` and served by consuming applications at `/fonts/regent-ui/`; `STYLE.md` records
 the full URL contract.
 
@@ -111,7 +112,7 @@ the full URL contract.
 The current shared language uses square grid cells, flat chamfered panels, opposing-cut
 primary actions and ruled native disclosures. Eight base palettes are unchanged; supporting
 surface/ink roles expose the other three identity colors in coherent compartments.
-Typography is Pixel Square for titles/subtitles and Mono for all other text/UI.
+Typography is Pixel Square for titles/subtitles, Sans for body/UI, and Mono for technical text.
 Page-background SVGs are retired; the source artwork remains available for smaller sections.
 
 ```bash
@@ -150,18 +151,29 @@ to `""` for decorative images. Supply custom SVG in `:media` instead of `image_s
 behavior. `class` and global attributes, including inline `style`, reach the article.
 Cards retain aligned heading/figure/caption subgrid bands in three/two/one columns.
 
-All primary `.rg-button` controls share an interaction-only shimmer across all eight
-palettes. Hover/focus-visible enables it only on enabled primaries; secondary/quiet/
-disabled controls are excluded. Cards use hover/focus-within. `--rg-shimmer-color`
-inherits from an ancestor or component style, falling back to the local contrasting
-ink. `--rg-shimmer-duration` defaults to `1.15s`; cards multiply it by three (`3.45s`).
-Only visual skins clip: primary corner marks, actual content and focus remain intact.
+All primary `.rg-button` controls and CSS-only primary links share an interaction-only
+orange area sheen across all eight palettes. Hover/focus-visible enables it only on
+enabled primaries; secondary/quiet/disabled controls are excluded. Cards use
+hover/focus-within. `--rg-shimmer-color` inherits from an ancestor or component,
+defaulting to Tangerine; the highlight mixes 75% source with Platinum, at 24% strength.
+This restrained orange mix preserves default label contrast without an opaque patch;
+custom color/fill/ink overrides require caller contrast review. `--rg-shimmer-duration`
+defaults to `1.15s`; cards multiply it by three (`3.45s`).
+
+Dark primaries rest with blue TR/BL square corners and orange TL/BR cut accents;
+light primaries have two opposite orange L-edges. Enabled hover/focus-visible grows
+and crossfades these into a continuous cut outline, with **150ms base transitions in
+both directions**, including native reversal from an interrupted state. Set inherited
+`--rg-button-border-color` to override the outline; it falls back to shimmer color,
+then Tangerine. No JavaScript or additional markup is required. Existing
+`span.rg-button__label` wrappers remain transparent; plain-text primary links work.
+Primary text does not underline, including under consumer `.sc a:hover` rules.
+
+Only visual skins clip; content, rectangular hit areas and external focus remain intact.
 The card shimmer covers its full media area, including opaque images; title, caption
-and actions remain outside it. Reduced motion removes the sweep, retaining only a
-static faint card edge. Forced colors use system borders; nothing loops at idle.
-`Regent.Primitives.button` protects primary-label contrast with an opaque paired-fill
-`span.rg-button__label`. Include the same label wrapper when authoring a primary link
-or button directly with CSS classes instead of the component.
+and actions remain outside it. Reduced motion removes the sweep, swaps the button
+outline instantly, and retains only a static faint card edge. Forced colors use system
+borders; nothing loops at idle.
 
 ### Read-only ratio cards
 

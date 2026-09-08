@@ -65,11 +65,13 @@ shared_api:
   shimmer:
     consumers: "Every enabled primary rg-button and every rg-feature card, across all eight palettes"
     css_properties:
-      --rg-shimmer-color: "Optional inherited override; falls back to contrasting button/panel ink"
+      --rg-shimmer-color: "Optional inherited source color; defaults to Tangerine. Mixed 75% with Platinum, then 24% strength; custom colors/fills require caller contrast review"
       --rg-shimmer-duration: "Optional inherited base duration; default 1.15s; cards multiply by 3 (3.45s)"
-    gradient: "100deg; transparent 30%, color at 42% source strength 50%, transparent 70%; 300% 100%; 160% 0 to -60% 0; var(--ease-out)"
+      --rg-button-border-color: "Optional inherited primary outline override; falls back to shimmer color then Tangerine"
+    gradient: "100deg; transparent 30%, restrained orange highlight 50%, transparent 70%; 300% 100%; 160% 0 to -60% 0; var(--ease-out)"
     activation: "Enabled primary hover/focus-visible; card hover/focus-within; no idle animation"
-    accessibility: "Motion disabled for reduced motion and forced colors; only inert visual skins clip; primary corner marks preserved; full media-area overlay crosses opaque images without recoloring title/caption text; reduced motion keeps only a static faint panel edge"
+    primary_outline: "All dark palettes: blue TR/BL square corner marks and orange TL/BR cut accents at rest. All light palettes: orange TR/BL L-edges. Enabled hover/focus-visible grows a continuous matching TL/BR-cut outline; base 150ms transitions reverse on exit/interruption. CSS-only links require no label wrapper; primary text never underlines"
+    accessibility: "Transparent primary labels; default sweep preserves paired text contrast. Reduced motion has instant outline states and no sweep; forced colors use rectangular system borders. Only inert skins clip; full media-area overlay excludes card title/caption/actions; distinct external focus ring"
 local_path_dependencies: []
 acceptance_commands:
   - cwd: design-system/regent_ui
