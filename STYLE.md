@@ -263,6 +263,17 @@ Use three/two/one feature columns and 1px gaps; an odd final card never spans a 
 The closing copy/action, link directory, broad brand band and legal row reuse frame tracks.
 Use approved marks or Geist Pixel Square brand text, never borrowed wordmarks or invented metrics.
 
+### Mobile controls and acceptance
+
+Read [MOBILE.md](MOBILE.md) for phone hierarchy, touch targets, input/keyboard and
+safe-area guidance, GPU fallbacks and the WebKit-versus-physical-iPhone evidence boundary.
+On coarse-pointer or no-hover devices, shared buttons preserve a 44 CSS px minimum
+hit box in both dimensions and their larger rem-based sizing. Text-like inputs,
+selects and textareas inside `rg-field` use `max(1em, 16px)` and a 44px height floor;
+larger inherited text remains larger. Never disable page zoom to compensate for a
+small input. Product-owned native controls and stronger legacy overrides still
+need deliberate adoption; this is not a universal form reset.
+
 ## Product layouts and disclosure
 
 Each product chooses document scrolling, panels, rails and navigation to fit its users.
@@ -302,7 +313,9 @@ duplicate slide inside the route transition. Movement is limited to transform an
   and `aria-disabled="true"` controls do not shimmer. Cards shimmer on hover/focus-within.
   Both use `rg-shimmer`: a 100-degree linear gradient, transparent stops at 30%/70%,
   restrained orange highlight at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0`
-  with `var(--ease-out)`. Loops exist only for the active interaction.
+  with `var(--ease-out)`. Loops exist only for the active interaction. Coarse/no-hover
+  devices suppress pointer-only sticky hover sweeps after a tap; keyboard
+  `:focus-visible` remains supported, including a focus-visible descendant in cards.
 - `--rg-shimmer-color` is an inherited optional source-color override, defaulting to
   Tangerine (`--palette-tangerine-tango`, fallback `#ff5b19`), never paired gray/blue ink.
   The highlight mixes 75% of that source with canonical Platinum, then applies 24% strength against

@@ -35,6 +35,13 @@ illustration sections. Remove product-owned background mounts during deliberate 
 adoption. The historic home exceptions below do not override this new direction.
 No product routes, authentication, wallets or database state are changed by this refactor.
 
+See [MOBILE.md](MOBILE.md) for the iPhone-oriented composition and acceptance contract.
+Coarse/no-hover shared buttons retain a 44px minimum hit box, and text-like `rg-field`
+controls have a 16px font floor without shrinking larger inherited text. Pointer-only
+sticky hover no longer leaves button/card sweeps running on touch; keyboard focus
+still works. These defaults do not fix raw product controls or stronger legacy CSS
+overrides automatically. Product managers own adoption and actual-route checks.
+
 See `STYLE.md` for the current API and real-component showcase commands. Shared changes
 are verified first; consumer rollout follows visual acceptance and each app's own build.
 

@@ -20,6 +20,15 @@
   .rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before {
     animation-duration: calc(var(--rg-shimmer-duration, 1.15s) * 3);
   }
+  /* Mobile Safari can retain :hover after a tap. Do not leave a paint loop
+     running; an actual keyboard focus indicator remains available on touch. */
+  @media (hover: none), (pointer: coarse) {
+    .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):not(:focus-visible)::before,
+    .rg-feature:not(:has(:focus-visible)) > .rg-feature__face .rg-feature__shimmer::before {
+      background-image: none;
+      animation: none;
+    }
+  }
 }
 .rg-sheet {
   --rg-page-ink: var(--pb-text, var(--color-fg));

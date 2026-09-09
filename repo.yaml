@@ -15,6 +15,7 @@ source_of_truth:
   cli_contracts: []
   shared_contracts:
     - STYLE.md
+    - MOBILE.md
   runtime_contracts: []
   chain_contracts: []
 code_map:
@@ -69,9 +70,15 @@ shared_api:
       --rg-shimmer-duration: "Optional inherited base duration; default 1.15s; cards multiply by 3 (3.45s)"
       --rg-button-border-color: "Optional inherited primary outline override; falls back to shimmer color then Tangerine"
     gradient: "100deg; transparent 30%, restrained orange highlight 50%, transparent 70%; 300% 100%; 160% 0 to -60% 0; var(--ease-out)"
-    activation: "Enabled primary hover/focus-visible; card hover/focus-within; no idle animation"
+    activation: "Enabled primary hover/focus-visible; card hover/focus-within; no idle animation. On coarse/no-hover devices, pointer-only sticky hover never runs the sweep; keyboard focus-visible still does, including within cards"
     primary_outline: "All dark palettes: blue TR/BL square corner marks and orange TL/BR cut accents at rest. All light palettes: orange TR/BL L-edges. Enabled hover/focus-visible grows a continuous matching TL/BR-cut outline; base 150ms transitions reverse on exit/interruption. CSS-only links require no label wrapper; primary text never underlines"
     accessibility: "Transparent primary labels; default sweep preserves paired text contrast. Reduced motion has instant outline states and no sweep; forced colors use rectangular system borders. Only inert skins clip; full media-area overlay excludes card title/caption/actions; distinct external focus ring"
+  mobile_controls:
+    kind: css_contract
+    scope: "Coarse-pointer or no-hover devices; existing rg-button and rg-field only, no product shell or workflow mutation"
+    touch_target: "rg-button has a 44 CSS px minimum in both dimensions, preserving larger rem-based sizing and the primary 3rem minimum"
+    editable_text: "Text-like inputs, selects and textareas inside rg-field use max(1em, 16px), preserving larger inherited text; checkbox/radio/file/hidden inputs are excluded"
+    ownership: "Products own raw controls, inputmode/autocomplete, mobile navigation, keyboard/drawer layout and safe areas; this package does not disable zoom or alter events"
 local_path_dependencies: []
 acceptance_commands:
   - cwd: design-system/regent_ui

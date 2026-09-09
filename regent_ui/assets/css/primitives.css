@@ -151,6 +151,16 @@
 @media (max-width: 47.99rem) {
   .rg-button { --rg-cut-control: 8px; }
 }
+/* Touch defaults are independent of viewport width (including tablets). Keep
+   larger inherited text and primary sizing; never disable Safari page zoom. */
+@media (hover: none), (pointer: coarse) {
+  .rg-button { min-height: max(2.75rem, 44px); min-inline-size: max(2.75rem, 44px); }
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { min-height: max(3rem, 44px); }
+  .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
+    min-height: max(2.75rem, 44px);
+    font-size: max(1em, 16px);
+  }
+}
 @media (forced-colors: active) {
   .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before { display: none; }
   .rg-button { border: 1px solid ButtonText; color: ButtonText; background: ButtonFace; }
