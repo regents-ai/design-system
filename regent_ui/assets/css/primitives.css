@@ -1,4 +1,5 @@
 @import "./structure.css";
+@import "./theme_toggle.css";
 
 /* Opt-in primitives: no body reset, product shell, or global color replacement. */
 :where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure) {

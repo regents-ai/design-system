@@ -1,0 +1,75 @@
+/* Shared Techtree prism motif. The application owns theme state and events. */
+.rg-theme-toggle.rg-button {
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  flex: 0 0 auto;
+  padding: 0;
+  perspective: 5rem;
+}
+.rg-theme-toggle .theme-toggle__stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--rg-p-surface);
+  transform-style: preserve-3d;
+  --prism-laser: var(--palette-tangerine-tango);
+  --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--rg-p-accent));
+  --prism-face: color-mix(in oklch, var(--rg-p-accent) 28%, transparent);
+}
+html[data-theme="dark"] .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-powder-blue); }
+.rg-theme-toggle .theme-toggle__laser {
+  position: absolute;
+  inset-block: .125rem;
+  left: calc(50% - .0625rem);
+  width: .125rem;
+  background: var(--prism-laser);
+  box-shadow: 0 0 .3rem var(--prism-laser);
+}
+.rg-theme-toggle .theme-toggle__cube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .75rem;
+  height: .75rem;
+  transform-style: preserve-3d;
+  transform: translate3d(-50%, -50%, 0) rotateX(-19deg) rotateY(28deg);
+}
+.rg-theme-toggle .theme-toggle__face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--prism-edge);
+  background: var(--prism-face);
+  backface-visibility: visible;
+}
+.rg-theme-toggle .theme-toggle__face--front { transform: translateZ(.375rem); }
+.rg-theme-toggle .theme-toggle__face--back { transform: rotateY(180deg) translateZ(.375rem); }
+.rg-theme-toggle .theme-toggle__face--left { transform: rotateY(-90deg) translateZ(.375rem); }
+.rg-theme-toggle .theme-toggle__face--right { transform: rotateY(90deg) translateZ(.375rem); }
+.rg-theme-toggle .theme-toggle__face--top { transform: rotateX(90deg) translateZ(.375rem); }
+.rg-theme-toggle .theme-toggle__face--bottom { transform: rotateX(-90deg) translateZ(.375rem); }
+.rg-theme-toggle__state {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 14s linear infinite; }
+}
+@keyframes regent-theme-prism {
+  from { transform: translate3d(-50%, -50%, 0) rotateX(-19deg) rotateY(28deg); }
+  to { transform: translate3d(-50%, -50%, 0) rotateX(341deg) rotateY(388deg); }
+}
+@media (forced-colors: active) {
+  .rg-theme-toggle .theme-toggle__face { border-color: ButtonText; background: Canvas; }
+  .rg-theme-toggle .theme-toggle__laser { background: Highlight; box-shadow: none; }
+}

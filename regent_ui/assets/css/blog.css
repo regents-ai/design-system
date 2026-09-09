@@ -1,0 +1,75 @@
+/* Shared editorial structure; all surfaces and ink inherit the current product palette. */
+.rg-blog { --rg-blog-sticky-top: 1.5rem; inline-size: min(calc(100% - 2 * var(--rg-page-gutter, 24px)), 1320px); margin-inline: auto; border: 1px solid var(--rg-page-rule); background: transparent; }
+.rg-blog :where(h1,h2,h3,h4,h5,h6) { font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; line-height: 1.18; text-wrap: balance; overflow-wrap: anywhere; }
+.rg-blog :where(p,li,td,th,a) { overflow-wrap: anywhere; }
+.rg-blog__intro { padding: clamp(24px, 5vw, 72px) clamp(20px, 4vw, 48px); border-block-end: 1px solid var(--rg-page-rule); }
+.rg-blog__intro h1 { max-inline-size: 20ch; margin: 0; font-size: clamp(2.25rem, 4.5vw, 4rem); }
+.rg-blog__eyebrow { margin: 0 0 16px; font-size: 1rem; }
+.rg-blog__grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; list-style: none; margin: 0; padding: 24px; }
+.rg-blog__grid > li { min-inline-size: 0; }
+.rg-blog__card { block-size: 100%; border: 1px solid var(--rg-page-rule); }
+.rg-blog__card-link { display: flex; flex-direction: column; block-size: 100%; text-decoration: none; }
+.rg-blog__card-link:hover h2, .rg-blog__card-link:focus-visible h2 { text-decoration: underline; text-underline-offset: .15em; }
+.rg-blog__card img { inline-size: 100%; block-size: auto; aspect-ratio: 16/9; object-fit: cover; border-block-end: 1px solid var(--rg-page-rule); }
+.rg-blog__card-copy { padding: 24px; }
+.rg-blog__meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; font-size: .875rem; }
+.rg-blog__card h2 { margin: 20px 0 0; font-size: clamp(1.5rem,2.1vw,2rem); }
+.rg-blog__card-copy > p { margin-block: 16px 0; }
+.rg-blog__empty { padding: 48px 24px; }
+.rg-blog__empty h2 { margin-block-start: 0; }
+.rg-blog__heading { padding: clamp(24px,5vw,64px) 24px 40px; text-align: center; }
+.rg-blog__heading h1 { max-inline-size: 24ch; margin: 24px auto; font-size: clamp(2.25rem,4.8vw,4rem); }
+.rg-blog__back { display: inline-flex; align-items: center; min-block-size: 44px; }
+.rg-blog__byline { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 24px; }
+.rg-blog__byline a { display: inline-flex; align-items: center; min-block-size: 44px; }
+.rg-blog__hero { margin: 0; border-block: 1px solid var(--rg-page-rule); }
+.rg-blog__hero img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 16/9; object-fit: cover; }
+.rg-blog__body { display: grid; grid-template-columns: minmax(10rem,1fr) minmax(0,46rem) minmax(0,1fr); gap: 32px; padding: 48px 24px; align-items: start; }
+.rg-blog__toc-desktop { position: sticky; inset-block-start: var(--rg-blog-sticky-top); max-block-size: calc(100dvh - var(--rg-blog-sticky-top) - 24px); overflow-y: auto; scrollbar-gutter: stable; }
+.rg-blog__reading { grid-column: 2; min-inline-size: 0; }
+.rg-blog__toc-title { margin: 0 0 16px; font-family: var(--font-family-title); font-size: 1.125rem; }
+.rg-blog__contents ol { list-style: none; margin: 0; padding: 0; }
+.rg-blog__contents a { display: flex; align-items: center; min-block-size: 44px; padding: 8px 12px; font-size: .9375rem; line-height: 1.45; text-decoration: none; border-inline-start: 1px solid var(--rg-page-rule); }
+.rg-blog__contents a:is(:hover,[aria-current="location"]) { border-inline-start: 3px solid currentColor; padding-inline-start: 10px; text-decoration: underline; text-underline-offset: .2em; }
+.rg-blog__toc-sub { padding-inline-start: 12px; }
+.rg-blog__toc-mobile { display: none; }
+.rg-blog__prose { font-size: 1.125rem; line-height: 1.8; }
+.rg-blog__prose > :first-child { margin-block-start: 0; }
+.rg-blog__prose :where(h2,h3,h4,h5,h6) { margin-block: 2em .7em; scroll-margin-block-start: calc(var(--rg-blog-sticky-top) + 24px); }
+.rg-blog__prose h2 { font-size: 1.875rem; }
+.rg-blog__prose h3 { font-size: 1.5rem; }
+.rg-blog__prose h4 { font-size: 1.25rem; }
+.rg-blog__prose p { margin-block: 0 1.35em; }
+.rg-blog__prose :where(ul,ol) { padding-inline-start: 1.5em; margin-block: 1em 1.5em; }
+.rg-blog__prose li + li { margin-block-start: .4em; }
+.rg-blog__prose :where(img,video,svg) { max-inline-size: 100%; block-size: auto; }
+.rg-blog__prose pre { max-inline-size: 100%; overflow-x: auto; padding: 24px; border: 1px solid var(--rg-page-rule); background: var(--color-surface); color: var(--color-fg); line-height: 1.6; }
+.rg-blog__prose code { font-family: var(--font-family-mono); font-size: .875em; white-space: break-spaces; }
+.rg-blog__prose pre code { white-space: pre; }
+.rg-blog__prose blockquote { margin-inline: 0; padding: 8px 0 8px 24px; border-inline-start: 3px solid currentColor; }
+.rg-blog__prose blockquote > :last-child { margin-block-end: 0; }
+.rg-blog__prose hr { border: 0; border-block-start: 1px solid var(--rg-page-rule); margin-block: 40px; }
+.rg-blog-table { max-inline-size: 100%; overflow-x: auto; margin-block: 24px; }
+.rg-blog__prose table { border-collapse: collapse; inline-size: 100%; font-size: 1rem; }
+.rg-blog__prose :where(th,td) { padding: 12px 16px; border: 1px solid var(--rg-page-rule); text-align: start; }
+.rg-blog [data-math-style="display"] { display: block; overflow-x: auto; padding: 24px 8px; text-align: center; }
+.rg-blog math { font-size: 1.1em; }
+.rg-blog [data-math-ready="error"] { font-family: var(--font-family-mono); white-space: pre-wrap; }
+.rg-blog__article-footer { border-block-start: 1px solid var(--rg-page-rule); margin-block-start: 48px; padding-block-start: 24px; }
+@media (max-width: 64rem) {
+  .rg-blog__body { display: block; padding: 32px 24px; }
+  .rg-blog__reading { max-inline-size: 46rem; margin-inline: auto; }
+  .rg-blog__toc-desktop { display: none; }
+  .rg-blog__toc-mobile { display: block; margin-block-end: 32px; border-block: 1px solid var(--rg-page-rule); }
+  .rg-blog__toc-mobile summary { min-block-size: 44px; padding: 12px 0; cursor: pointer; }
+  .rg-blog__toc-mobile .rg-blog__toc-title { display: none; }
+  .rg-blog__toc-mobile nav { padding-block-end: 16px; }
+}
+@media (max-width: 40rem) {
+  .rg-blog { inline-size: calc(100% - 32px); }
+  .rg-blog__grid { grid-template-columns: minmax(0,1fr); padding: 16px; gap: 24px; }
+  .rg-blog__card-copy, .rg-blog__body { padding: 24px 16px; }
+  .rg-blog__heading { padding-inline: 16px; }
+  .rg-blog__prose { font-size: 1rem; }
+}
+@media (forced-colors: active) { .rg-blog { border-color: CanvasText; } .rg-blog__contents a[aria-current] { border-color: LinkText; } }

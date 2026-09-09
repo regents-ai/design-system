@@ -209,6 +209,8 @@ Patterns that generalize:
 
 `Regent.Structure` supplies `frame`, `row`, `section_bar`, `panel`, `technical_figure`,
 `capability_card`, and `ratio_card`.
+`Regent.Blog` supplies the gallery, article and sticky-contents compositions; see
+[BLOG.md](BLOG.md) for the shared contract and product/content ownership boundary.
 `primitives.css` imports `structure.css` (including `ratio.css`); consumers still import the canonical tokens first.
 `row` reserves the same optional 176px rail and 32px gutter throughout header, hero,
 features and footer. Set `rail={false}` on **every** row for a no-rail frame; otherwise

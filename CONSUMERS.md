@@ -2,6 +2,12 @@
 
 ## Current structural contract (supersedes background/geometry rollout notes below)
 
+`Regent.ThemeToggle.button` owns the shared animated prism/laser theme icon used
+by Techtree and Patchbay. Pass `id`, `theme` (`light`/`dark`) and the product's
+event data attribute. Theme persistence and events stay product-owned; update
+ARIA/title and `[data-theme-toggle-state]`, never the button's entire text content.
+Its styles ship through `primitives.css`; reduced motion disables rotation.
+
 Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
 subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
 Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` from
