@@ -312,6 +312,7 @@ html = """
 """
 
 File.write!(Path.join(out, "index.html"), html)
+File.rm_rf!(Path.join(out, "css"))
 File.cp_r!(Path.join(root, "regent_ui/assets/css"), Path.join(out, "css"))
 File.mkdir_p!(Path.join(out, "fonts"))
 File.cp_r!(Path.join(root, "regent_ui/priv/static/fonts"), Path.join(out, "fonts/regent-ui"))

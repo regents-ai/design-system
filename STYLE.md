@@ -39,9 +39,8 @@ emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powde
 blue. Exact values come from the supplied `site color palettes/` images and are
 implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
 
-Page background SVGs are retired. `--site-background-image` is `none` in every theme,
-and `Regent.SiteBackground` remains an inert compatibility component so consumers
-can remove their calls without a breaking import. Preserve the eight assets in
+Page background SVGs are retired and `--site-background-image` is `none` in every
+theme; the package ships no background component. Preserve the eight assets in
 `site svg backgrounds/` and the package for potential future small illustration sections;
 do not use them as page backgrounds. Real layout borders supply the page structure.
 Consumer-owned artwork and route wiring need deliberate migration in the owning app;
@@ -344,10 +343,10 @@ duplicate slide inside the route transition. Movement is limited to transform an
 
 ## Glass
 
-`design_system_glass.css` and its tokens remain import-stable for existing specialized
-renderers. They are legacy opt-in assets, not the current panel treatment. New shared
-structure uses opaque semantic surfaces, no blur, and no new animation dependency.
-The interaction-only shimmer is the restrained exception to undecorated panel skins.
+There is no glass layer. The `--glass-*` tokens remain in `design_system_tokens.css`
+only for product styles that still alias them; shared structure uses opaque semantic
+surfaces, no blur, and no animation dependency. The interaction-only shimmer is the
+restrained exception to undecorated panel skins.
 
 ## Artwork
 
@@ -384,8 +383,8 @@ the marks; pick the correct scheme instead.
   disclosures. Apps supply slots, routes, events and state.
 - Run `mix regent_ui.assets` before the consuming CSS build. Ignore the generated
   `assets/vendor/regent_ui/`, `priv/static/images/regent-ui/` and `priv/static/fonts/regent-ui/`
-  directories and import `primitives.css` for primitives only. Existing spatial surfaces can
-  import generated `regent.css`; it has global styling.
+  directories. Import the canonical tokens and then `primitives.css`; the package has
+  no global body or page stylesheet.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
 - For a standalone Docker context, run `mix regent_ui.stage` first and copy generated
   `vendor/regent_ui` into the image. Set `REGENT_UI_PATH` to that path in the image.

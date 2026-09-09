@@ -14,6 +14,8 @@ defmodule Mix.Tasks.RegentUi.Assets do
     dependency = Mix.Project.deps_paths() |> Map.fetch!(:regent_ui)
     source = Path.join(dependency, "assets/css")
     destination = Path.join(File.cwd!(), "assets/vendor/regent_ui")
+    # The directory is fully generated; clearing it keeps retired files from lingering.
+    File.rm_rf!(destination)
     File.mkdir_p!(destination)
 
     for extension <- ~w(css json),

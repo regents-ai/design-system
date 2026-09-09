@@ -23,8 +23,7 @@ mix deps.get
 mix check
 ```
 
-To change a design token, edit `design_system_tokens.css` (or `design_system_glass.css`),
-then regenerate every mirror of it:
+To change a design token, edit `design_system_tokens.css`, then regenerate every mirror of it:
 
 ```bash
 node scripts/generate-tokens-json.mjs
@@ -67,11 +66,10 @@ node scripts/generate-tokens-json.mjs
 
 | Path | What is in it |
 | --- | --- |
-| `STYLE.md` | The canonical style guide: color, typography, motion, glass, artwork, logos. Read this first. |
+| `STYLE.md` | The canonical style guide: color, typography, shape, motion, artwork, logos. Read this first. |
 | `design_system_tokens.css` | Source of truth for every design token. |
-| `design_system_glass.css` | Source of truth for the import-stable glass layer. |
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
-| `regent_ui/` | The Phoenix component library: components, panels, sigils, scene rendering, and their CSS and TypeScript assets. |
+| `regent_ui/` | The Phoenix component library: primitives, ruled-sheet structure, blog, profile and theme toggle, with their CSS, fonts and small browser modules. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
 | `geist-font/` | Canonical Geist Pixel Square, Geist UI Sans and Geist Mono fonts. |
 | `images/` | Artwork, blueprints, and per-product design studies. |

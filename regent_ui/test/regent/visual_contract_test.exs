@@ -18,11 +18,9 @@ defmodule Regent.VisualContractTest do
     assert tokens["--rg-panel-padding"] == "var(--space-4)"
   end
 
-  test "packaged styles mirror the canonical sources" do
-    for file <- ~w(design_system_tokens.css design_system_glass.css) do
-      assert File.read!(Path.join(@repository_root, file)) ==
-               File.read!(Path.join([@package_root, "assets/css", file]))
-    end
+  test "packaged tokens mirror the canonical source" do
+    assert File.read!(Path.join(@repository_root, "design_system_tokens.css")) ==
+             File.read!(Path.join([@package_root, "assets/css", "design_system_tokens.css"]))
   end
 
   test "all four products preserve palettes and assets without page background artwork" do
