@@ -151,12 +151,12 @@ Cards retain aligned heading/figure/caption subgrid bands in three/two/one colum
 
 All primary `.rg-button` controls and CSS-only primary links share an interaction-only
 orange area sheen across all eight palettes. Hover/focus-visible enables it only on
-enabled primaries; secondary/quiet/disabled controls are excluded. Cards use
+enabled primaries; secondary/quiet/disabled controls are excluded. Cards ripple their panel edge on
 hover/focus-within. `--rg-shimmer-color` inherits from an ancestor or component,
 defaulting to Tangerine; the highlight mixes 75% source with Platinum, at 24% strength.
 This restrained orange mix preserves default label contrast without an opaque patch;
 custom color/fill/ink overrides require caller contrast review. `--rg-shimmer-duration`
-defaults to `1.15s`; cards multiply it by three (`3.45s`).
+defaults to `1.15s`; the card edge ripple doubles it (`2.3s` per turn).
 
 Dark primaries rest with blue TR/BL square corners and orange TL/BR cut accents;
 light primaries have two opposite orange L-edges. Enabled hover/focus-visible grows

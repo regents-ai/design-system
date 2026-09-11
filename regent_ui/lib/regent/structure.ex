@@ -79,7 +79,6 @@ defmodule Regent.Structure do
           <span :if={@index} class="rg-panel__index">{@index}</span>
         </div>
         <.technical_figure>
-          <span class="rg-feature__shimmer" aria-hidden="true"></span>
           <img :if={@image_src} src={@image_src} alt={@image_alt} />
           <%= if is_nil(@image_src) do %>
             {render_slot(@media)}

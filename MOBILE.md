@@ -33,7 +33,7 @@ On `(hover: none)` or `(pointer: coarse)`:
 - Primary/button and capability-card sweep animation does not run for sticky,
   pointer-only `:hover` after a tap. Keyboard `:focus-visible` still enables the
   approved sweep; within a card, a genuinely focus-visible descendant is required.
-- Fine-pointer hover, 150ms outline transitions, primary 1.15s/card 3.45s timing,
+- Fine-pointer hover, 150ms outline transitions, primary 1.15s sweep and 2.3s card edge-ripple timing,
   transparent labels, reduced motion and forced-colors behavior remain intact.
 
 These defaults are not blanket overrides for native product controls. A product's

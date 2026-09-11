@@ -190,27 +190,19 @@ defmodule Regent.VisualContractTest do
     refute primitives =~ ~r/--rg-shimmer-(color|duration):/
   end
 
-  test "feature shimmer runs three times slower across the full media area, never across title or caption" do
+  test "feature cards ripple the panel edge on interaction and never paint the media" do
     css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
     component = File.read!(Path.join(@package_root, "lib/regent/structure.ex"))
 
-    assert css =~
-             ".rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before"
+    assert css =~ ".rg-feature:is(:hover, :focus-within) > .rg-panel::before"
+    assert css =~ "conic-gradient(from var(--rg-edge-angle)"
+    assert css =~ "animation: rg-edge-ripple calc(var(--rg-shimmer-duration, 1.15s) * 2) linear infinite"
+    assert css =~ "@keyframes rg-edge-ripple"
+    assert css =~ ~s|@property --rg-edge-angle|
 
-    assert css =~ "animation-duration: calc(var(--rg-shimmer-duration, 1.15s) * 3)"
-    refute css =~ "--rg-shimmer-ink:"
-    assert component =~ ~s(<span class="rg-feature__shimmer" aria-hidden="true"></span>)
-    assert component =~ ~r/<\.technical_figure>\s*<span class="rg-feature__shimmer"/
-    [_, skin] = Regex.run(~r/\.rg-feature__shimmer \{([^}]+)\}/, css)
-    assert skin =~ "pointer-events: none"
-    assert skin =~ "position: absolute"
-    assert skin =~ "z-index: 1"
-    assert skin =~ "clip-path:"
-    assert skin =~ "inset: 0"
-    refute skin =~ "mask"
-    refute skin =~ "padding:"
-    refute css =~ "--rg-feature-highlight"
-    assert css =~ ".rg-feature__shimmer { display: none; }"
+    # No media overlay, ever: the art box holds art and nothing else.
+    refute css =~ "rg-feature__shimmer"
+    refute component =~ "rg-feature__shimmer"
   end
 
   test "capability bands retain subgrid reflow and contain arbitrary image proportions without clipping" do

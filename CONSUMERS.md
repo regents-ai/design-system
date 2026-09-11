@@ -17,9 +17,9 @@ roles expose the other three palette constants per brand; use their paired utili
 classes coherently, not random per-card accents. Patchbay aliases remain unchanged.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
 forced-colors appearance. Enabled primaries use a restrained orange 1.15s hover/focus
-area sheen; capability cards use the same gradient at 3.45s. `--rg-shimmer-color` is an
+area sheen; feature cards ripple a single band along their panel edge at 2.3s per turn. `--rg-shimmer-color` is an
 inherited source override (default Tangerine, mixed 75% with Platinum at 24% strength).
-`--rg-shimmer-duration` controls base speed; cards multiply by three. Custom colors
+`--rg-shimmer-duration` controls base speed; the card edge ripple doubles it. Custom colors
 and fill/ink overrides require caller contrast review. Labels are transparent; CSS-only
 primary links need no label wrapper and never underline, even under `.sc a:hover`.
 Dark rest has blue opposite square corners plus orange cut accents; light rest has

@@ -311,10 +311,12 @@ duplicate slide inside the route transition. Movement is limited to transform an
   perspective or idle decorative animation is enabled.
 - Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
   opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
-  and `aria-disabled="true"` controls do not shimmer. Cards shimmer on hover/focus-within.
-  Both use `rg-shimmer`: a 100-degree linear gradient, transparent stops at 30%/70%,
-  restrained orange highlight at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0`
-  with `var(--ease-out)`. Loops exist only for the active interaction. Coarse/no-hover
+  and `aria-disabled="true"` controls do not shimmer. Buttons use `rg-shimmer`: a
+  100-degree linear gradient, transparent stops at 30%/70%, restrained orange highlight
+  at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0` with `var(--ease-out)`.
+  Feature cards ripple instead: on hover/focus-within a single conic band travels the
+  panel edge layer (`.rg-panel::before`, chamfers included) driven by the registered
+  `--rg-edge-angle` property; the media stays still. Loops exist only for the active interaction. Coarse/no-hover
   devices suppress pointer-only sticky hover sweeps after a tap; keyboard
   `:focus-visible` remains supported, including a focus-visible descendant in cards.
 - `--rg-shimmer-color` is an inherited optional source-color override, defaulting to
@@ -324,15 +326,13 @@ duplicate slide inside the route transition. Movement is limited to transform an
   and keeps default text contrast without an opaque label rectangle. Custom colors,
   local fill/ink overrides and opacity remain the caller's contrast responsibility;
   there is no runtime color validator or conditional recoloring.
-  `--rg-shimmer-duration` defaults to `1.15s` for buttons; cards use
-  `calc(var(--rg-shimmer-duration, 1.15s) * 3)` (default `3.45s`).
+  `--rg-shimmer-duration` defaults to `1.15s` for buttons; the card edge ripple takes
+  `calc(var(--rg-shimmer-duration, 1.15s) * 2)` per turn (default `2.3s`).
   Button `::before` remains the clipped accent fill/sweep, while `::after` owns the outline.
   Existing `rg-button__label` spans are transparent and optional for CSS-only links.
   Primary text never underlines, including under later consumer `.sc a:hover` rules.
-  Card `.rg-feature__shimmer` is an aria-hidden, pointer-inert full-media-area overlay
-  inside `.rg-technical-figure__art`, so opaque images cannot hide the area sweep.
-  Heading, caption and actions stay outside the overlay, preserving their paired ink.
-  Only the visual overlay clips; actual media, content and external focus rings do not.
+  Cards carry no media overlay: the art box holds art and nothing else, and heading,
+  caption and actions keep their paired ink. External focus rings are never clipped.
 - Content is visible by default. Scroll reveals hide elements only after script takes over
   (the landing's `rl-reveal-pending` pattern) so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a

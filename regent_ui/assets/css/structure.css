@@ -8,9 +8,16 @@
   from { background-position: 160% 0; }
   to { background-position: -60% 0; }
 }
+@property --rg-edge-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes rg-edge-ripple {
+  to { --rg-edge-angle: 1turn; }
+}
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
-  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before,
-  .rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before {
+  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
     /* Warm even on pale fills; the small Platinum mix makes the sweep visible on
        Tangerine itself. Restrained alpha protects default paired label ink. */
     background-image: linear-gradient(100deg, transparent 30%, color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) 50%, transparent 70%);
@@ -18,14 +25,22 @@
     background-repeat: no-repeat;
     animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite;
   }
-  .rg-feature:is(:hover, :focus-within) > .rg-feature__face .rg-feature__shimmer::before {
-    animation-duration: calc(var(--rg-shimmer-duration, 1.15s) * 3);
+  /* A feature card keeps its art still; on interaction a single sweep travels
+     the panel edge layer, which is exactly the visible border, chamfers
+     included. The conic band overlays the base edge color; the rest of the
+     turn stays transparent so the border reads ruled, not glowing. */
+  .rg-feature:is(:hover, :focus-within) > .rg-panel::before {
+    background-image: conic-gradient(from var(--rg-edge-angle),
+      transparent 0turn .84turn,
+      color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) .92turn,
+      transparent 1turn);
+    animation: rg-edge-ripple calc(var(--rg-shimmer-duration, 1.15s) * 2) linear infinite;
   }
   /* Mobile Safari can retain :hover after a tap. Do not leave a paint loop
      running; an actual keyboard focus indicator remains available on touch. */
   @media (hover: none), (pointer: coarse) {
     .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):not(:focus-visible)::before,
-    .rg-feature:not(:has(:focus-visible)) > .rg-feature__face .rg-feature__shimmer::before {
+    .rg-feature:not(:has(:focus-visible)) > .rg-panel::before {
       background-image: none;
       animation: none;
     }
@@ -114,13 +129,6 @@
 .rg-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
 .rg-feature { display: grid; grid-row: span 3; grid-template-rows: subgrid; min-inline-size: 0; gap: 0; }
 .rg-feature__face { display: grid; grid-row: span 2; grid-template-rows: subgrid; gap: 0; }
-/* The full media area shimmers, including over opaque images. Keep this inert
- * overlay inside the art box: heading/caption ink and actual focus stay untouched. */
-.rg-feature__shimmer {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut));
-}
-.rg-feature__shimmer::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
 .rg-feature:is(:hover, :focus-within) > .rg-panel {
   --rg-panel-edge: color-mix(in srgb, var(--rg-panel-ink) 38%, var(--rg-panel-fill));
 }
@@ -169,7 +177,6 @@
   .rg-link-directory { grid-template-columns: minmax(0, 1fr); }
 }
 @media (forced-colors: active) {
-  .rg-feature__shimmer { display: none; }
   .rg-support-band, .rg-support-figure .rg-technical-figure__art { background: Canvas; color: CanvasText; }
   .rg-panel::before, .rg-panel::after, .rg-technical-figure__art::before, .rg-section-bar__leader { display: none; }
   .rg-panel { --rg-local-ink: CanvasText; --rg-local-fill: Canvas; color: CanvasText; background: Canvas; border: 1px solid CanvasText; }
