@@ -174,6 +174,8 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right only, 12px desktop
   and 8px mobile. Secondary actions are square outlines; quiet actions are text.
+  A disabled primary action fills inert gray (`--rg-p-disabled-fill`) with muted text and a
+  matching gray edge; it never reads as a dimmed accent.
 - Across **all four brands**, dark primary controls rest with 1px Powder Blue L-strokes
   at the top-right/bottom-left square corners and Tangerine accents inset 1px along
   the top-left/bottom-right cuts. Light controls rest with two opposite Tangerine

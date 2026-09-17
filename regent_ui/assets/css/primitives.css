@@ -9,6 +9,8 @@
   /* Essential controls need stronger boundaries than decorative page hairlines. */
   --rg-p-border: var(--rg-local-rule, var(--pb-line, var(--color-border, currentColor)));
   --rg-p-control-border: color-mix(in srgb, var(--rg-p-text) 65%, var(--rg-p-surface));
+  /* An action that cannot run right now fills inert gray instead of a dimmed accent. */
+  --rg-p-disabled-fill: color-mix(in srgb, var(--rg-p-text) 22%, var(--rg-p-surface));
   --rg-p-accent: var(--pb-accent, var(--color-accent, currentColor));
   --rg-p-on-accent: var(--pb-accent-ink, var(--color-fg-on-accent, var(--color-bg, Canvas)));
   --rg-p-error: var(--pb-bad, var(--color-error, currentColor));
@@ -65,6 +67,10 @@
     --rg-button-edge-ink: var(--palette-powder-blue, #aecacd);
     --rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19);
   }
+  :root .rg-button.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):disabled::after {
+    --rg-button-edge-ink: var(--rg-p-disabled-fill);
+    --rg-button-cut-ink: transparent;
+  }
   :root .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::after {
     --rg-button-edge-ink: var(--rg-button-active-border);
     --rg-button-cut-ink: var(--rg-button-active-border);
@@ -86,7 +92,10 @@
 .rg-button[hidden] { display: none; }
 .rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-control-border); }
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }
-.rg-button:disabled { opacity: .6; cursor: default; }
+.rg-button:disabled { cursor: default; }
+.rg-button:is(.rg-button--secondary, .rg-button--quiet):disabled { opacity: .6; }
+.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):disabled { color: var(--rg-p-muted); }
+.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):disabled::before { background-color: var(--rg-p-disabled-fill); }
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
 .rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 4px; }
 .rg-field { display: grid; gap: var(--space-1); }
