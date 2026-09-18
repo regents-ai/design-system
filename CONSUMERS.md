@@ -2,6 +2,18 @@
 
 ## Current structural contract (supersedes background/geometry rollout notes below)
 
+`Regent.AgentMetadata.head` owns canonical, sharing and agent-discovery head tags,
+including JSON-LD encoding with script-safe escaping. Call it once from the root
+layout, replacing the corresponding local tags; keep the document title, viewport,
+CSRF, provider configuration and styles/scripts product-owned. Pass truthful brand,
+canonical URL, image dimensions/alt and a structured-data map. Optional guide,
+sitemap and OpenAPI links must name real routes. `markdown` defaults to false:
+enable it only for the product's explicit supported-page set. Site classification
+is optional and caller-owned, never selected to inflate a score. `nonce` supports
+the consumer's existing CSP without weakening it. This presentation-only component
+does not implement HTTP negotiation, authentication, routes or WebMCP registration.
+The workspace `ash-webmcp` skill governs staged adoption and those separate owners.
+
 `Regent.ThemeToggle.button` owns the shared animated prism/laser theme icon used
 by Techtree and Patchbay. Pass `id`, `theme` (`light`/`dark`) and the product's
 event data attribute. Theme persistence and events stay product-owned; update
