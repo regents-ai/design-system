@@ -4,11 +4,12 @@
 // device loss and the pointer. This module only draws.
 //
 // Adapted from the Vercel vgpu "Holographic Card" example. The material — the
-// diffraction grating, the pearlescence, the etched contours, the triangular
-// fractal engraving, the grain and the guide marks — is that example's; the
-// card silhouette, its lettering and its projection were left behind, because
-// here the canvas is the card face and the application's own markup carries the
-// text. See THIRD_PARTY_NOTICES.md at the repository root.
+// diffraction grating, the pearlescence, the etched contours, the grain and the
+// guide marks — is that example's; the card silhouette, its lettering, its
+// projection and its triangular fractal engraving were left behind, because
+// here the canvas is the card face, the application's own markup carries the
+// text and the engraved mark is the Regents crown. See THIRD_PARTY_NOTICES.md
+// at the repository root.
 import {effect, frame, init, surface} from "vgpu"
 
 /** Radians of tilt at the card's edge, on both axes. */
@@ -25,11 +26,6 @@ struct Params {
   hover: f32,
 }
 @group(0) @binding(0) var<uniform> params: Params;
-
-fn segment(p: vec2f, a: vec2f, b: vec2f) -> f32 {
-  let v = b - a;
-  return length(p - a - v * clamp(dot(p - a, v) / dot(v, v), 0.0, 1.0));
-}
 
 fn stroke(distance: f32, width: f32, aa: f32) -> f32 {
   return 1.0 - smoothstep(width, width + aa, abs(distance));
@@ -82,48 +78,68 @@ fn etchedPhase(p: vec2f) -> f32 {
   return radius * 142.0 + sin(atan2(q.y, q.x) * 3.0 + radius * 8.0) * 1.7;
 }
 
-// Signed edge distance inside an equilateral triangle centered at its centroid.
-fn triangleBoundary(p: vec2f, height: f32) -> f32 {
-  return max((abs(p.x) * sqrt(3.0) - p.y - height * (2.0 / 3.0)) * 0.5, p.y - height / 3.0);
+// The thirteen squares of the Regents crown, in cell pitches from its centre:
+// three points over two full rows, y downward like the page.
+const CROWN_CELLS = array<vec2f, 13>(
+  vec2f(-2, -1), vec2f(0, -1), vec2f(2, -1),
+  vec2f(-2, 0), vec2f(-1, 0), vec2f(0, 0), vec2f(1, 0), vec2f(2, 0),
+  vec2f(-2, 1), vec2f(-1, 1), vec2f(0, 1), vec2f(1, 1), vec2f(2, 1)
+);
+
+struct CrownHit {
+  // Signed distance to the nearest square's edge, negative inside it.
+  edge: f32,
+  // The same distance measured along the axes, so a widened silhouette keeps
+  // its corners and the gaps between neighbouring squares close up.
+  band: f32,
+  // The point relative to that square's centre.
+  local: vec2f,
 }
 
-fn triangleGrooves(edgeDistances: vec3f) -> vec2f {
-  if (edgeDistances.x <= edgeDistances.y && edgeDistances.x <= edgeDistances.z) {
-    return vec2f(0, -1);
+fn crownHit(p: vec2f, pitch: f32, half: f32) -> CrownHit {
+  var cells = CROWN_CELLS;
+  var hit = CrownHit(1e9, 1e9, vec2f(0));
+  for (var i = 0; i < 13; i++) {
+    let local = p - cells[i] * pitch;
+    let q = abs(local) - half;
+    let band = max(q.x, q.y);
+    if (band < hit.band) {
+      hit = CrownHit(length(max(q, vec2f(0))) + min(band, 0.0), band, local);
+    }
   }
-  if (edgeDistances.y <= edgeDistances.z) {
-    return vec2f(-sqrt(3.0) * 0.5, 0.5);
-  }
-  return vec2f(sqrt(3.0) * 0.5, 0.5);
+  return hit;
 }
 
-struct FractalMark {
+// Grooves run parallel to the nearest edge of a square.
+fn squareGrooves(local: vec2f) -> vec2f {
+  if (abs(local.x) > abs(local.y)) {
+    return vec2f(1, 0);
+  }
+  return vec2f(0, 1);
+}
+
+struct Engraving {
   coverage: f32,
   across: vec2f,
 }
 
-// Recursive triangular engraving, with screen-space antialiasing at every scale.
-fn fractalEngraving(p: vec2f, halfWidth: f32, height: f32, aa: f32) -> FractalMark {
-  let apex = (height / 3.0 - p.y) / height;
-  var barycentric = vec3f(apex, (1.0 - apex - p.x / halfWidth) * 0.5, (1.0 - apex + p.x / halfWidth) * 0.5);
-  var cellHeight = height;
-  for (var level = 0; level < 6; level++) {
-    let largest = max(barycentric.x, max(barycentric.y, barycentric.z));
-    if (largest < 0.5) {
-      // Each removed central triangle leaves a fine foil border.
-      return FractalMark(stroke((0.5 - largest) * cellHeight, 0.0008, aa * 0.65), triangleGrooves(0.5 - barycentric));
+// Recursive square engraving inside one block of the crown, with screen-space
+// antialiasing at every scale: each level lifts out the middle ninth.
+fn carpetEngraving(local: vec2f, half: f32, aa: f32) -> Engraving {
+  var q = local;
+  var cellHalf = half;
+  for (var level = 0; level < 3; level++) {
+    let third = cellHalf / 3.0;
+    let cell = clamp(round(q / (2.0 * third)), vec2f(-1), vec2f(1));
+    if (all(cell == vec2f(0))) {
+      // Each removed central square leaves a fine foil border.
+      return Engraving(stroke(third - max(abs(q.x), abs(q.y)), 0.0008, aa * 0.65), squareGrooves(q));
     }
-    var corner = vec3f(0, 0, 1);
-    if (barycentric.x >= barycentric.y && barycentric.x >= barycentric.z) {
-      corner = vec3f(1, 0, 0);
-    } else if (barycentric.y >= barycentric.z) {
-      corner = vec3f(0, 1, 0);
-    }
-    barycentric = barycentric * 2.0 - corner;
-    cellHeight *= 0.5;
+    q -= cell * 2.0 * third;
+    cellHalf = third;
   }
-  let leafEdge = min(barycentric.x, min(barycentric.y, barycentric.z)) * cellHeight;
-  return FractalMark(stroke(leafEdge, 0.0006, aa * 0.5) * 0.65, triangleGrooves(barycentric));
+  let leafEdge = cellHalf - max(abs(q.x), abs(q.y));
+  return Engraving(stroke(leafEdge, 0.0006, aa * 0.5) * 0.65, squareGrooves(q));
 }
 
 @fragment
@@ -169,20 +185,18 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   color += noise * (0.022 + light * 0.085);
   color += light * (vec3f(0.045) + tint * 0.065);
 
-  // The engraved mark stands to the right of a wide card and centred on a narrow one,
-  // leaving the left of the face to the application's own content.
-  let halfWidth = 0.38;
-  let triangleHeight = halfWidth * sqrt(3.0);
-  let mark = p - vec2f(max(halfSize.x - 0.62, 0.0), 0.0);
-  let top = vec2f(0, -triangleHeight * (2.0 / 3.0));
-  let left = vec2f(-halfWidth, triangleHeight / 3.0);
-  let rightCorner = vec2f(halfWidth, triangleHeight / 3.0);
-  let triangleDistance = min(segment(mark, top, left), min(segment(mark, left, rightCorner), segment(mark, rightCorner, top)));
-  let innerBoundary = triangleBoundary(mark, triangleHeight);
-  let outerScale = 1.12;
-  let outerBoundary = triangleBoundary(mark, triangleHeight * outerScale);
-  let inside = 1.0 - smoothstep(-aa * 1.5, -aa * 0.5, innerBoundary);
-  let outside = smoothstep(aa * 0.5, aa * 1.5, outerBoundary);
+  // The engraved mark is the Regents crown in the proportions of the flat brand
+  // mark (34-unit squares on a 36-unit pitch). It stands to the right of a wide
+  // card and centred on a narrow one, leaving the left of the face to the
+  // application's own content.
+  let cellHalf = 0.115;
+  let pitch = cellHalf * 2.0 * (36.0 / 34.0);
+  let mark = p - vec2f(max(halfSize.x - 0.9, 0.0), 0.0);
+  let crown = crownHit(mark, pitch, cellHalf);
+  // The surrounding foil keeps a clear graphite band around the whole silhouette.
+  let bandWidth = 0.05;
+  let inside = 1.0 - smoothstep(-aa * 1.5, -aa * 0.5, crown.edge);
+  let outside = smoothstep(aa * 0.5, aa * 1.5, crown.band - bandWidth);
 
   // Separate engravings leave a clear graphite gap between the two outlines.
   let contour = etchedPhase(p);
@@ -195,11 +209,11 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let outerDiffraction = diffraction(across, lightAndView, 1.65) * illumination;
   let contours = stroke(sin(contour), 0.06, min(fwidth(contour), 1.0));
   let reveal = hover * (0.06 + 0.24 * spotlight + light * 1.15);
-  let fractal = fractalEngraving(mark, halfWidth, triangleHeight, aa);
-  let innerDiffraction = diffraction(fractal.across, lightAndView, 1.35) * illumination;
+  let engraving = carpetEngraving(crown.local, cellHalf, aa);
+  let innerDiffraction = diffraction(engraving.across, lightAndView, 1.35) * illumination;
   let pearlPhase = dot(lightAndView, vec2f(0.48, -0.32)) + p.y * 0.32 + contour * 0.003;
   let outerPearl = pearlColor(pearlPhase);
-  let innerPearl = pearlColor(pearlPhase + dot(fractal.across, lightAndView) * 0.32 + 0.12);
+  let innerPearl = pearlColor(pearlPhase + dot(engraving.across, lightAndView) * 0.32 + 0.12);
   // Color washes over the material between etched lines, with a narrower silver
   // flash moving through it. Both layers respect the empty gap between outlines.
   let pearl = outerPearl * outside + innerPearl * inside;
@@ -209,7 +223,7 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   color += pearl * sparkle * 0.22;
   let outerFoil = vec3f(0.12, 0.14, 0.18) + outerPearl * 0.65 + outerDiffraction * 0.12;
   let innerFoil = vec3f(0.12, 0.14, 0.18) + innerPearl * 0.65 + innerDiffraction * 0.12;
-  color += (contours * 0.65 * outside * outerFoil + fractal.coverage * inside * innerFoil) * reveal;
+  color += (contours * 0.65 * outside * outerFoil + engraving.coverage * inside * innerFoil) * reveal;
 
   // A delicate spectral echo stays clipped to the same engraving regions.
   let foilOffset = vec2f(0.007, -0.004) + params.tilt * 0.012;
@@ -217,17 +231,14 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let foilMark = mark - foilOffset;
   let foilPhase = etchedPhase(foilPoint);
   let foilLines = stroke(sin(foilPhase), 0.025, min(fwidth(foilPhase), 1.0));
-  let foilFractal = fractalEngraving(foilMark, halfWidth, triangleHeight, aa);
-  let echoDiffraction = diffraction(foilFractal.across, lightAndView, 1.35) * illumination;
+  let foilEngraving = carpetEngraving(crownHit(foilMark, pitch, cellHalf).local, cellHalf, aa);
+  let echoDiffraction = diffraction(foilEngraving.across, lightAndView, 1.35) * illumination;
   color += (foilLines * 0.65 * outside * (outerPearl + outerDiffraction * 0.2)
-    + foilFractal.coverage * inside * (innerPearl + echoDiffraction * 0.2)) * reveal * 0.22;
-  // Scale every vertex around the shared centroid, keeping the outer foil centered.
-  let foilEdge = min(segment(mark, top * outerScale, left * outerScale), min(segment(mark, left * outerScale, rightCorner * outerScale), segment(mark, rightCorner * outerScale, top * outerScale)));
-  let foilAcross = triangleGrooves(vec3f(triangleHeight * outerScale / 3.0 - mark.y,
-    (mark.y + triangleHeight * outerScale * (2.0 / 3.0) - mark.x * sqrt(3.0)) * 0.5,
-    (mark.y + triangleHeight * outerScale * (2.0 / 3.0) + mark.x * sqrt(3.0)) * 0.5));
+    + foilEngraving.coverage * inside * (innerPearl + echoDiffraction * 0.2)) * reveal * 0.22;
+  // A fine line traces the band's outer edge around the crown's silhouette.
+  let foilAcross = squareGrooves(crown.local);
   let foilTint = outerPearl * 0.8 + vec3f(0.2) + diffraction(foilAcross, lightAndView, 1.65) * illumination * 0.15;
-  color += stroke(foilEdge, 0.0007, aa * 0.5) * foilTint * hover * (0.12 + light * 0.5);
+  color += stroke(crown.band - bandWidth, 0.0007, aa * 0.5) * foilTint * hover * (0.12 + light * 0.5);
 
   // Sparse microdots and registration ticks emerge in the surrounding foil.
   let grid = (fract((p + 1.0) * 20.0) - 0.5) / 20.0;
@@ -238,8 +249,9 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let vertical = stroke(guide.x, 0.0006, aa * 0.5) * (1.0 - smoothstep(0.012, 0.017, abs(guide.y)));
   color += max(horizontal, vertical) * hover * (0.12 + light * 0.22);
 
-  // Always-visible outline: its baseline contrast does not depend on hover or light.
-  let outline = stroke(triangleDistance, 0.0012, aa * 0.65);
+  // Always-visible outline of every square: its baseline contrast does not
+  // depend on hover or light.
+  let outline = stroke(crown.edge, 0.0012, aa * 0.65);
   color = mix(color, vec3f(0.29, 0.32, 0.36) + tint * light * 0.16, outline);
   return vec4f(color, 1);
 }
