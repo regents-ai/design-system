@@ -69,11 +69,13 @@ defmodule Regent.Structure do
   attr :rest, :global
   slot :media
   slot :actions
+  slot :foil, doc: "a `Regent.HolographicCard.foil` face; the face panel becomes its graphite ground"
 
   def capability_card(assigns) do
     ~H"""
     <article class={["rg-feature", @class]} {@rest}>
-      <.panel tone={@tone} class="rg-feature__face">
+      <.panel tone={@tone} class={["rg-feature__face", @foil != [] && "rg-holo-ground"]}>
+        {render_slot(@foil)}
         <div class="rg-panel__heading">
           <h3>{@title}</h3>
           <span :if={@index} class="rg-panel__index">{@index}</span>

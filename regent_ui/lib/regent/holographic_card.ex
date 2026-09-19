@@ -9,6 +9,12 @@ defmodule Regent.HolographicCard do
   renderer, and the consumer binds it to `[data-holo-canvas]` with its own hook,
   writes the tilt to `--rg-holo-tilt-x` / `--rg-holo-tilt-y` and marks the root
   `data-holo-ready="true"` once the GPU has drawn.
+
+  `foil/1` is the same stage for a surface that is not the whole card: the face
+  of a panel (`class="rg-holo-foil--face"` inside a panel marked
+  `rg-holo-ground`) or the ink of a line drawing (`class="rg-holo-foil--ink"`
+  beside the drawing in a technical figure). The element the application mounts
+  carries `rg-holo-tilt` when it should turn with the pointer.
   """
   use Phoenix.Component
 
@@ -24,6 +30,17 @@ defmodule Regent.HolographicCard do
         <canvas class="rg-holo__canvas" data-holo-canvas></canvas>
       </div>
       <div class="rg-holo__content">{render_slot(@inner_block)}</div>
+    </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :class, :any, default: nil
+
+  def foil(assigns) do
+    ~H"""
+    <div id={@id} class={["rg-holo-foil", @class]} phx-update="ignore" aria-hidden="true">
+      <canvas class="rg-holo-foil__canvas" data-holo-canvas></canvas>
     </div>
     """
   end

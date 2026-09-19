@@ -61,10 +61,46 @@
   padding: var(--rg-panel-padding, var(--space-4, 1.5rem));
 }
 .rg-holo :where(a, button, summary):focus-visible { outline-color: var(--rg-holo-ink); }
+/* The same foil on part of a card. A panel marked as the ground takes the
+   graphite and the fixed ink; the foil is its fill once the GPU has drawn, and
+   the panel's own flat fill is the picture until then. */
+.rg-holo-tilt {
+  transform: perspective(1400px) rotateX(var(--rg-holo-tilt-y, 0deg)) rotateY(var(--rg-holo-tilt-x, 0deg));
+}
+.rg-panel.rg-holo-ground {
+  --rg-panel-fill: #101216;
+  --rg-panel-ink: var(--palette-platinum, #e5e3d2);
+}
+.rg-holo-foil { position: absolute; pointer-events: none; }
+.rg-holo-foil__canvas { display: block; inline-size: 100%; block-size: 100%; }
+.rg-holo-foil--face {
+  --rg-holo-foil-cut: max(0px, calc(var(--rg-cut) - .585786 * var(--rg-edge)));
+  inset: var(--rg-edge);
+  z-index: -1;
+  visibility: hidden;
+  clip-path: polygon(
+    var(--rg-holo-foil-cut) 0, calc(100% - var(--rg-holo-foil-cut)) 0,
+    100% var(--rg-holo-foil-cut), 100% calc(100% - var(--rg-holo-foil-cut)),
+    calc(100% - var(--rg-holo-foil-cut)) 100%, var(--rg-holo-foil-cut) 100%,
+    0 calc(100% - var(--rg-holo-foil-cut)), 0 var(--rg-holo-foil-cut)
+  );
+}
+[data-holo-ready="true"] .rg-holo-foil--face { visibility: visible; }
+[data-holo-ready="true"] .rg-holo-ground::after,
+.rg-holo-ground[data-holo-ready="true"]::after { content: none; }
+/* Foil ink: the application masks the canvas to the drawing beside it, and the
+   drawing's own ink steps aside once the foil has drawn. */
+.rg-holo-foil--ink { inset: 0; visibility: hidden; }
+.rg-holo-foil--ink .rg-holo-foil__canvas { mask-size: 100% 100%; mask-repeat: no-repeat; }
+[data-holo-ready="true"] .rg-holo-foil--ink { visibility: visible; }
+[data-holo-ready="true"] .rg-technical-figure__art:has(> .rg-holo-foil--ink) > svg { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
-  .rg-holo { transform: none; }
+  .rg-holo, .rg-holo-tilt { transform: none; }
 }
 @media (forced-colors: active) {
+  .rg-holo-tilt { transform: none; }
+  .rg-holo-foil { display: none; }
+  [data-holo-ready="true"] .rg-technical-figure__art:has(> .rg-holo-foil--ink) > svg { visibility: visible; }
   .rg-holo { color: CanvasText; transform: none; }
   .rg-holo__stage { background: CanvasText; }
   .rg-holo__stage::before, .rg-holo__canvas { background: Canvas; }

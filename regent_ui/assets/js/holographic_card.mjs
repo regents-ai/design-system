@@ -7,9 +7,11 @@
 // diffraction grating, the pearlescence, the etched contours, the grain and the
 // guide marks — is that example's; the card silhouette, its lettering, its
 // projection and its triangular fractal engraving were left behind, because
-// here the canvas is the card face, the application's own markup carries the
-// text and the engraved mark is the Regents crown. See THIRD_PARTY_NOTICES.md
-// at the repository root.
+// here the canvas is the surface, the application's own markup carries the
+// text and the engraved mark is the Regents crown. A surface is either a
+// graphite face, with or without the crown, or the ink of a line drawing the
+// application masks the canvas to. See THIRD_PARTY_NOTICES.md at the
+// repository root.
 import {effect, frame, init, surface} from "vgpu"
 
 /** Radians of tilt at the card's edge, on both axes. */
@@ -24,6 +26,14 @@ struct Params {
   tilt: vec2f,
   pointer: vec2f,
   hover: f32,
+  // How much of the light's effect is kept; 1 is the account card's shine.
+  shine: f32,
+  // The ink colour and, in w, whether the surface is ink rather than a face.
+  ink: vec4f,
+  // 1 when the face carries the crown.
+  crown: f32,
+  // 1 when the ink sits on a light ground, so its spectrum is kept deep.
+  deep: f32,
 }
 @group(0) @binding(0) var<uniform> params: Params;
 
@@ -58,6 +68,11 @@ fn diffraction(across: vec2f, lightAndView: vec2f, spacing: f32) -> vec3f {
 fn pearlColor(phase: f32) -> vec3f {
   return vec3f(0.55, 0.52, 0.64) + vec3f(0.43, 0.40, 0.34)
     * cos(6.2831853 * (phase + vec3f(0.05, 0.38, 0.63)));
+}
+
+// Saturated spectrum for foil ink, which has only a line's width to show itself.
+fn inkColor(phase: f32) -> vec3f {
+  return vec3f(0.5) + vec3f(0.5) * cos(6.2831853 * (phase + vec3f(0.0, 0.33, 0.67)));
 }
 
 fn grain(point: vec2f) -> f32 {
@@ -118,30 +133,6 @@ fn squareGrooves(local: vec2f) -> vec2f {
   return vec2f(0, 1);
 }
 
-struct Engraving {
-  coverage: f32,
-  across: vec2f,
-}
-
-// Recursive square engraving inside one block of the crown, with screen-space
-// antialiasing at every scale: each level lifts out the middle ninth.
-fn carpetEngraving(local: vec2f, half: f32, aa: f32) -> Engraving {
-  var q = local;
-  var cellHalf = half;
-  for (var level = 0; level < 3; level++) {
-    let third = cellHalf / 3.0;
-    let cell = clamp(round(q / (2.0 * third)), vec2f(-1), vec2f(1));
-    if (all(cell == vec2f(0))) {
-      // Each removed central square leaves a fine foil border.
-      return Engraving(stroke(third - max(abs(q.x), abs(q.y)), 0.0008, aa * 0.65), squareGrooves(q));
-    }
-    q -= cell * 2.0 * third;
-    cellHalf = third;
-  }
-  let leafEdge = cellHalf - max(abs(q.x), abs(q.y));
-  return Engraving(stroke(leafEdge, 0.0006, aa * 0.5) * 0.65, squareGrooves(q));
-}
-
 @fragment
 fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let resolution = max(params.resolution, vec2f(1));
@@ -180,9 +171,10 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let illumination = max(dot(normal, lightDirection), 0.0) * max(dot(normal, viewDirection), 0.0);
   let tint = vec3f(0.72, 0.76, 0.8);
   let noise = grain(p + vec2f(2));
-  var color = vec3f(0.062, 0.068, 0.078) + 0.008 * (0.9 - p.y);
+  let atRest = vec3f(0.062, 0.068, 0.078) + 0.008 * (0.9 - p.y) + noise * 0.022;
+  var color = atRest;
   // Fine, surface-locked grain catches the grazing reflection without animated static.
-  color += noise * (0.022 + light * 0.085);
+  color += noise * light * 0.085;
   color += light * (vec3f(0.045) + tint * 0.065);
 
   // The engraved mark is the Regents crown in the proportions of the flat brand
@@ -195,8 +187,8 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let crown = crownHit(mark, pitch, cellHalf);
   // The surrounding foil keeps a clear graphite band around the whole silhouette.
   let bandWidth = 0.05;
-  let inside = 1.0 - smoothstep(-aa * 1.5, -aa * 0.5, crown.edge);
-  let outside = smoothstep(aa * 0.5, aa * 1.5, crown.band - bandWidth);
+  let inside = (1.0 - smoothstep(-aa * 1.5, -aa * 0.5, crown.edge)) * params.crown;
+  let outside = mix(1.0, smoothstep(aa * 0.5, aa * 1.5, crown.band - bandWidth), params.crown);
 
   // Separate engravings leave a clear graphite gap between the two outlines.
   let contour = etchedPhase(p);
@@ -209,11 +201,12 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let outerDiffraction = diffraction(across, lightAndView, 1.65) * illumination;
   let contours = stroke(sin(contour), 0.06, min(fwidth(contour), 1.0));
   let reveal = hover * (0.06 + 0.24 * spotlight + light * 1.15);
-  let engraving = carpetEngraving(crown.local, cellHalf, aa);
-  let innerDiffraction = diffraction(engraving.across, lightAndView, 1.35) * illumination;
+  // Each square of the crown is one plain block of foil, grooved along its nearest edge.
+  let blockAcross = squareGrooves(crown.local);
+  let innerDiffraction = diffraction(blockAcross, lightAndView, 1.35) * illumination;
   let pearlPhase = dot(lightAndView, vec2f(0.48, -0.32)) + p.y * 0.32 + contour * 0.003;
   let outerPearl = pearlColor(pearlPhase);
-  let innerPearl = pearlColor(pearlPhase + dot(engraving.across, lightAndView) * 0.32 + 0.12);
+  let innerPearl = pearlColor(pearlPhase + dot(blockAcross, lightAndView) * 0.32 + 0.12);
   // Color washes over the material between etched lines, with a narrower silver
   // flash moving through it. Both layers respect the empty gap between outlines.
   let pearl = outerPearl * outside + innerPearl * inside;
@@ -223,22 +216,17 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   color += pearl * sparkle * 0.22;
   let outerFoil = vec3f(0.12, 0.14, 0.18) + outerPearl * 0.65 + outerDiffraction * 0.12;
   let innerFoil = vec3f(0.12, 0.14, 0.18) + innerPearl * 0.65 + innerDiffraction * 0.12;
-  color += (contours * 0.65 * outside * outerFoil + engraving.coverage * inside * innerFoil) * reveal;
+  color += (contours * 0.65 * outside * outerFoil + 0.16 * inside * innerFoil) * reveal;
 
   // A delicate spectral echo stays clipped to the same engraving regions.
   let foilOffset = vec2f(0.007, -0.004) + params.tilt * 0.012;
   let foilPoint = p - foilOffset;
-  let foilMark = mark - foilOffset;
   let foilPhase = etchedPhase(foilPoint);
   let foilLines = stroke(sin(foilPhase), 0.025, min(fwidth(foilPhase), 1.0));
-  let foilEngraving = carpetEngraving(crownHit(foilMark, pitch, cellHalf).local, cellHalf, aa);
-  let echoDiffraction = diffraction(foilEngraving.across, lightAndView, 1.35) * illumination;
-  color += (foilLines * 0.65 * outside * (outerPearl + outerDiffraction * 0.2)
-    + foilEngraving.coverage * inside * (innerPearl + echoDiffraction * 0.2)) * reveal * 0.22;
+  color += foilLines * 0.65 * outside * (outerPearl + outerDiffraction * 0.2) * reveal * 0.22;
   // A fine line traces the band's outer edge around the crown's silhouette.
-  let foilAcross = squareGrooves(crown.local);
-  let foilTint = outerPearl * 0.8 + vec3f(0.2) + diffraction(foilAcross, lightAndView, 1.65) * illumination * 0.15;
-  color += stroke(crown.band - bandWidth, 0.0007, aa * 0.5) * foilTint * hover * (0.12 + light * 0.5);
+  let foilTint = outerPearl * 0.8 + vec3f(0.2) + diffraction(blockAcross, lightAndView, 1.65) * illumination * 0.15;
+  color += stroke(crown.band - bandWidth, 0.0007, aa * 0.5) * params.crown * foilTint * hover * (0.12 + light * 0.5);
 
   // Sparse microdots and registration ticks emerge in the surrounding foil.
   let grid = (fract((p + 1.0) * 20.0) - 0.5) / 20.0;
@@ -249,13 +237,26 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let vertical = stroke(guide.x, 0.0006, aa * 0.5) * (1.0 - smoothstep(0.012, 0.017, abs(guide.y)));
   color += max(horizontal, vertical) * hover * (0.12 + light * 0.22);
 
+  color = atRest + (color - atRest) * params.shine;
+
   // Always-visible outline of every square: its baseline contrast does not
   // depend on hover or light.
-  let outline = stroke(crown.edge, 0.0012, aa * 0.65);
-  color = mix(color, vec3f(0.29, 0.32, 0.36) + tint * light * 0.16, outline);
+  let outline = stroke(crown.edge, 0.0012, aa * 0.65) * params.crown;
+  color = mix(color, vec3f(0.29, 0.32, 0.36) + tint * light * 0.16 * params.shine, outline);
+
+  // Ink: the application masks the canvas to a line drawing, so the whole
+  // surface is the ink. It rests as the plain ink colour and turns spectral
+  // where the light crosses it.
+  let inkLight = clamp(light * 1.5 + glint * spotlight * hover * 0.7, 0.0, 1.0) * params.shine;
+  let spectrum = inkColor(pearlPhase * 1.4 + sweepDistance * 0.9) * mix(1.0, 0.62, params.deep)
+    + vec3f(0.18) * (1.0 - params.deep) + outerDiffraction * 0.3;
+  color = mix(color, mix(params.ink.rgb, spectrum, inkLight), params.ink.a);
   return vec4f(color, 1);
 }
 `
+
+/** The narrowest face, in widths per height, whose crown stands clear of the content beside it. */
+const CROWN_BESIDE_ASPECT = 2.4
 
 /** How far each eased value travels toward its target per frame. */
 const EASE = {tilt: 0.14, pointer: 0.18, hover: 0.12}
@@ -263,22 +264,76 @@ const EASE = {tilt: 0.14, pointer: 0.18, hover: 0.12}
 const approach = (current, target, rate, snap) =>
   snap ? target : current + (target - current) * rate
 
+const clamp = (value, limit) => Math.min(limit, Math.max(-limit, value))
+
+// Every surface on a page draws on one device: a page may carry a dozen of
+// them, and a browser hands out devices far less freely than canvases. The
+// device goes back when the last surface lets go of it.
+let lease
+
+function acquireDevice() {
+  lease ??= {gpu: init(), surfaces: 0}
+  lease.surfaces += 1
+  return lease
+}
+
+function releaseDevice(held) {
+  held.surfaces -= 1
+  if (held.surfaces > 0) return
+  if (lease === held) lease = undefined
+  void held.gpu.then(gpu => gpu.dispose(), () => {})
+}
+
+/**
+ * The mask that turns a foil canvas into the ink of an inline line drawing:
+ * strokes and hatching show the foil, and filled shapes keep hiding the lines
+ * behind them, as they do in the drawing itself.
+ *
+ * @param {SVGSVGElement} drawing
+ */
+export function holographicInkMask(drawing) {
+  const copy = /** @type {SVGSVGElement} */ (drawing.cloneNode(true))
+  copy.removeAttribute("id")
+  copy.removeAttribute("class")
+  copy.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+  copy.setAttribute("stroke", "#fff")
+  for (const shape of copy.querySelectorAll("[fill]")) {
+    if (!shape.getAttribute("fill").startsWith("url(")) shape.setAttribute("fill", "#000")
+  }
+  const viewBox = copy.getAttribute("viewBox")
+  const inner = new XMLSerializer().serializeToString(copy)
+  const mask = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}"><style>*{vector-effect:non-scaling-stroke}</style><mask id="ink" style="mask-type:luminance">${inner}</mask><rect width="100%" height="100%" fill="#fff" mask="url(#ink)"/></svg>`
+  return `url("data:image/svg+xml,${encodeURIComponent(mask)}")`
+}
+
 /**
  * @param {HTMLCanvasElement} canvas
  * @param {readonly [number, number]} size
  * @param {() => void} onDeviceLost
+ * @param {{crown?: boolean | "beside", ink?: readonly [number, number, number], tilt?: number, shine?: number}} [look]
+ *   `crown` engraves the Regents crown (default true); `"beside"` engraves it only
+ *   while the face is wide enough for it to stand clear of the content. `ink` makes the surface
+ *   the ink of a masked line drawing, in that resting colour. `tilt` and `shine`
+ *   scale the turn and the light against the account card's, which is 1 for both.
  */
-export async function createHolographicCardRenderer(canvas, size, onDeviceLost) {
-  const gpu = await init()
+export async function createHolographicCardRenderer(canvas, size, onDeviceLost, look = {}) {
+  const {crown = true, ink, tilt: tiltScale = 1, shine = 1} = look
+  const inkLuminance = ink ? 0.2126 * ink[0] + 0.7152 * ink[1] + 0.0722 * ink[2] : 0
+  const held = acquireDevice()
   let disposed = false
-  // A device this call created and could not finish equipping is still this call's
-  // to release; the caller only ever learns that the renderer did not arrive.
-  const {canvasSurface, foil} = await equip(gpu, canvas, size).catch(error => {
-    gpu.dispose()
-    throw error
-  })
-  // Disposing the renderer destroys the device, which resolves the same promise.
+  // A lease this call took and could not use is still this call's to give back;
+  // the caller only ever learns that the renderer did not arrive.
+  const {gpu, canvasSurface, foil} = await held.gpu
+    .then(gpu => equip(gpu, canvas, size).then(equipped => ({gpu, ...equipped})))
+    .catch(error => {
+      if (lease === held) lease = undefined
+      releaseDevice(held)
+      throw error
+    })
+  // Disposing the device resolves the same promise, so only a surface still in
+  // use reports a loss; the next surface asks for a fresh device.
   void gpu.gpu.lost.then(() => {
+    if (lease === held) lease = undefined
     if (!disposed) onDeviceLost()
   })
 
@@ -305,12 +360,18 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost) 
       return moved
     },
     present() {
+      const [width, height] = canvasSurface.size
+      const room = crown !== "beside" || width / height >= CROWN_BESIDE_ASPECT
       foil.set({
         params: {
           resolution: canvasSurface.size,
           tilt: state.tilt,
           pointer: state.pointer,
           hover: state.hover,
+          shine,
+          ink: ink ? [...ink, 1] : [0, 0, 0, 0],
+          crown: crown && room && !ink ? 1 : 0,
+          deep: ink && inkLuminance < 0.5 ? 1 : 0,
         },
       })
       frame(gpu, current => current.pass(canvasSurface, foil))
@@ -323,14 +384,18 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost) 
       if (disposed) return
       disposed = true
       canvasSurface.dispose()
-      gpu.dispose()
+      releaseDevice(held)
     },
-    /** The pointer at (x, y), as fractions of the card's width and height. */
-    point(x, y) {
-      const px = Math.min(1, Math.max(-1, (x - 0.5) * 2))
-      const py = Math.min(1, Math.max(-1, (y - 0.5) * 2))
-      target.pointer = [px, py]
-      target.tilt = [px * HOLOGRAPHIC_CARD_TILT, -py * HOLOGRAPHIC_CARD_TILT]
+    /**
+     * The pointer, as fractions of two boxes: the card that turns, and the
+     * canvas the light falls on. They differ when the foil is only part of the
+     * card, and the light may then stand a little outside the canvas.
+     */
+    point(card, light) {
+      const px = clamp((card[0] - 0.5) * 2, 1)
+      const py = clamp((card[1] - 0.5) * 2, 1)
+      target.tilt = [px * HOLOGRAPHIC_CARD_TILT * tiltScale, -py * HOLOGRAPHIC_CARD_TILT * tiltScale]
+      target.pointer = [clamp((light[0] - 0.5) * 2, 1.8), clamp((light[1] - 0.5) * 2, 1.8)]
       target.hover = 1
     },
     /** The pointer has left: the light fades and the face settles flat. */

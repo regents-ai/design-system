@@ -26,12 +26,23 @@ face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the conten
 `mix regent_ui.assets` copies `holographic_card.mjs` and its `.d.mts` next to the styles;
 `createHolographicCardRenderer(canvas, size, onDeviceLost)` draws the foil with `vgpu`,
 which the consumer pins at exactly `0.3.1`. The product owns the mount: when to load the
-chunk, the frame loop, reduced motion, device loss and the pointer. It calls `point(x, y)`
-with fractions of the card's width and height, `rest()` on leave, writes `tilt()` to
+chunk, the frame loop, reduced motion, device loss and the pointer. It calls
+`point(card, light)` with the pointer as fractions of the card that turns and of the canvas
+the light falls on, `rest()` on leave, writes `tilt()` to
 `--rg-holo-tilt-x` / `--rg-holo-tilt-y` in radians, and marks the root
 `data-holo-ready="true"` once a frame has drawn. Without a renderer the static foil in
 `holographic_card.css` is the whole picture. Attribution for the foil material is in
 `THIRD_PARTY_NOTICES.md`.
+
+The same foil covers part of a card through `Regent.HolographicCard.foil`. As a face, pass
+it in `capability_card`'s `foil` slot (or put it first inside any panel marked
+`rg-holo-ground`) with `class="rg-holo-foil--face"`; the mounted element takes `rg-holo-tilt`
+when it should turn. As ink, put it beside an inline line drawing in a technical figure with
+`class="rg-holo-foil--ink"`, set the canvas's `mask-image` to `holographicInkMask(svg)` and
+pass the drawing's colour as `look.ink`. The renderer's fourth argument, `look`, also takes
+`crown` (`false`, or `"beside"` to engrave it only where it stands clear of the content) and
+`tilt` / `shine`, which scale the turn and the light against the account card's. Every
+surface on a page shares one GPU device.
 
 Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
 subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
