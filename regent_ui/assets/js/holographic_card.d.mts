@@ -28,6 +28,8 @@ export type HolographicCardLook = {
   crown?: boolean | "beside";
   /** Makes the surface the ink of a masked line drawing, in this resting colour (0..1 sRGB). */
   ink?: readonly [number, number, number];
+  /** The colour the drawing sits on (0..1 sRGB); the ink lights in the palette colours that stand out from it. */
+  ground?: readonly [number, number, number];
   /** Scales the turn against the account card's. Default 1. */
   tilt?: number;
   /** Scales the light against the account card's. Default 1. */

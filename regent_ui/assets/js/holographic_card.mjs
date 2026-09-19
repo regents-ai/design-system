@@ -30,6 +30,9 @@ struct Params {
   shine: f32,
   // The ink colour and, in w, whether the surface is ink rather than a face.
   ink: vec4f,
+  // The two palette colours foil ink lights in: the two its ground is not.
+  inkLightA: vec4f,
+  inkLightB: vec4f,
   // 1 when the face carries the crown.
   crown: f32,
   // 1 when the ink sits on a light ground, so its spectrum is kept deep.
@@ -86,9 +89,10 @@ fn pearlColor(phase: f32) -> vec3f {
   return brandColor(phase) * 0.92;
 }
 
-// Foil ink has only a line's width to show itself, so it takes the palette at full strength.
+// Foil ink has only a line's width to show itself, so it lights at full
+// strength in the two palette colours that stand out from its ground.
 fn inkColor(phase: f32) -> vec3f {
-  return brandColor(phase);
+  return mix(params.inkLightA.rgb, params.inkLightB.rgb, 0.5 + 0.5 * cos(6.2831853 * phase));
 }
 
 fn grain(point: vec2f) -> f32 {
@@ -271,6 +275,21 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
 }
 `
 
+const GRAPHITE = [0.062, 0.068, 0.078]
+
+/** The palette, as the shader has it. */
+const PALETTE = [
+  [1.0, 0.357, 0.098],
+  [0.682, 0.792, 0.804],
+  [0.898, 0.89, 0.824],
+]
+
+/** The two palette colours farthest from a ground, so foil ink on it stands out. */
+function inkLights(ground) {
+  const apart = colour => Math.hypot(...colour.map((channel, index) => channel - ground[index]))
+  return [...PALETTE].sort((a, b) => apart(b) - apart(a)).slice(0, 2)
+}
+
 /** The narrowest face, in widths per height, whose crown stands clear of the content beside it. */
 const CROWN_BESIDE_ASPECT = 2.4
 
@@ -326,15 +345,17 @@ export function holographicInkMask(drawing) {
  * @param {HTMLCanvasElement} canvas
  * @param {readonly [number, number]} size
  * @param {() => void} onDeviceLost
- * @param {{crown?: boolean | "beside", ink?: readonly [number, number, number], tilt?: number, shine?: number}} [look]
+ * @param {{crown?: boolean | "beside", ink?: readonly [number, number, number], ground?: readonly [number, number, number], tilt?: number, shine?: number}} [look]
  *   `crown` engraves the Regents crown (default true); `"beside"` engraves it only
  *   while the face is wide enough for it to stand clear of the content. `ink` makes the surface
- *   the ink of a masked line drawing, in that resting colour. `tilt` and `shine`
+ *   the ink of a masked line drawing, in that resting colour, and `ground` is the colour
+ *   the drawing sits on, so the ink lights in the palette colours that stand out from it. `tilt` and `shine`
  *   scale the turn and the light against the account card's, which is 1 for both.
  */
 export async function createHolographicCardRenderer(canvas, size, onDeviceLost, look = {}) {
-  const {crown = true, ink, tilt: tiltScale = 1, shine = 1} = look
+  const {crown = true, ink, ground = GRAPHITE, tilt: tiltScale = 1, shine = 1} = look
   const inkLuminance = ink ? 0.2126 * ink[0] + 0.7152 * ink[1] + 0.0722 * ink[2] : 0
+  const [inkLightA, inkLightB] = inkLights(ground)
   const held = acquireDevice()
   let disposed = false
   // A lease this call took and could not use is still this call's to give back;
@@ -386,6 +407,8 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
           hover: state.hover,
           shine,
           ink: ink ? [...ink, 1] : [0, 0, 0, 0],
+          inkLightA: [...inkLightA, 1],
+          inkLightB: [...inkLightB, 1],
           crown: crown && room && !ink ? 1 : 0,
           deep: ink && inkLuminance < 0.5 ? 1 : 0,
         },

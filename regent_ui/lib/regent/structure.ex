@@ -69,7 +69,9 @@ defmodule Regent.Structure do
   attr :rest, :global
   slot :media
   slot :actions
-  slot :foil, doc: "a `Regent.HolographicCard.foil` face; the face panel becomes its graphite ground"
+
+  slot :foil,
+    doc: "a `Regent.HolographicCard.foil` face; the face panel becomes its graphite ground"
 
   def capability_card(assigns) do
     ~H"""

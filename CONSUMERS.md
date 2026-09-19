@@ -39,7 +39,8 @@ it in `capability_card`'s `foil` slot (or put it first inside any panel marked
 `rg-holo-ground`) with `class="rg-holo-foil--face"`; the mounted element takes `rg-holo-tilt`
 when it should turn. As ink, put it beside an inline line drawing in a technical figure with
 `class="rg-holo-foil--ink"`, set the canvas's `mask-image` to `holographicInkMask(svg)` and
-pass the drawing's colour as `look.ink`. The renderer's fourth argument, `look`, also takes
+pass the drawing's colour as `look.ink` and the colour it sits on as `look.ground`, so the
+ink lights in the two palette colours that stand out from it. The renderer's fourth argument, `look`, also takes
 `crown` (`false`, or `"beside"` to engrave it only where it stands clear of the content) and
 `tilt` / `shine`, which scale the turn and the light against the account card's. Every
 surface on a page shares one GPU device.
