@@ -23,7 +23,7 @@ defmodule Mix.Tasks.RegentUi.Assets do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end
 
-    for pattern <- ["profile.*", "blog.mjs"],
+    for pattern <- ["profile.*", "blog.mjs", "holographic_card.*"],
         file <- Path.wildcard(Path.join(dependency, "assets/js/#{pattern}")) do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end

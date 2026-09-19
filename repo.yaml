@@ -63,6 +63,19 @@ shared_api:
     semantics: "article.rg-feature; face panel has h3, optional index and figure; caption panel has description and optional actions"
     layout: "Three subgrid bands; responsive three/two/one columns in rg-feature-grid; unclipped content and focus"
     ownership: "Presentation only; no product state, implicit action, onclick or added tab stop"
+  Regent.HolographicCard.card:
+    kind: phoenix_function_component
+    attributes:
+      id: {type: string, required: true}
+      class: {type: any, default: null}
+      rest: {type: global, purpose: "The product's hook attribute and any other host attributes"}
+    slots:
+      inner_block: {required: true, purpose: "Caller-owned content on the card face"}
+    semantics: "div.rg-holo host; a phx-update=ignore stage (id <id>-stage, aria-hidden) holds canvas[data-holo-canvas]; div.rg-holo__content carries the slot"
+    browser_module: "assets/js/holographic_card.mjs exports createHolographicCardRenderer(canvas, size, onDeviceLost) and HOLOGRAPHIC_CARD_TILT; requires the consumer's vgpu 0.3.1; the product owns loading, the frame loop, reduced motion, device loss and the pointer"
+    layout: "Graphite ground and platinum ink in both themes; panel-cut corners; static foil until data-holo-ready=true; the product writes --rg-holo-tilt-x/--rg-holo-tilt-y for the tilt"
+    accessibility: "Content stays real DOM text; the stage is aria-hidden; reduced motion and forced colors render the card flat and still"
+    ownership: "Presentation only; the founder-approved exception to the flat-panel rule; no product state, authentication or money movement"
   shimmer:
     consumers: "Every enabled primary rg-button and every rg-feature card, across all eight palettes"
     css_properties:

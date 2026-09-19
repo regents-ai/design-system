@@ -1,0 +1,71 @@
+/* Holographic card: a graphite foil face that answers the pointer. The one
+   founder-approved exception (2026-09-19) to the flat, still panel: it tilts
+   with the pointer and its foil lights up under it, and only then. Every
+   application mounts the renderer itself; without one the static foil below is
+   the whole picture. The card carries its own graphite ground in both themes,
+   like the physical object it stands for, so its ink is fixed platinum. */
+.rg-holo {
+  --rg-holo-cut: var(--rg-cut-panel, 16px);
+  --rg-holo-tilt-x: 0deg;
+  --rg-holo-tilt-y: 0deg;
+  --rg-holo-graphite: #101216;
+  --rg-holo-ink: var(--palette-platinum, #e5e3d2);
+  --rg-holo-edge: color-mix(in srgb, var(--rg-holo-ink) 30%, var(--rg-holo-graphite));
+  --rg-holo-clip: polygon(
+    var(--rg-holo-cut) 0, calc(100% - var(--rg-holo-cut)) 0,
+    100% var(--rg-holo-cut), 100% calc(100% - var(--rg-holo-cut)),
+    calc(100% - var(--rg-holo-cut)) 100%, var(--rg-holo-cut) 100%,
+    0 calc(100% - var(--rg-holo-cut)), 0 var(--rg-holo-cut)
+  );
+  --rg-local-fill: var(--rg-holo-graphite);
+  --rg-local-ink: var(--rg-holo-ink);
+  --rg-local-rule: var(--rg-holo-edge);
+  position: relative;
+  isolation: isolate;
+  min-inline-size: 0;
+  color: var(--rg-holo-ink);
+  transform: perspective(1400px) rotateX(var(--rg-holo-tilt-y)) rotateY(var(--rg-holo-tilt-x));
+}
+.rg-holo__stage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--rg-holo-edge);
+  clip-path: var(--rg-holo-clip);
+}
+/* The still foil: graphite with a faint pearl wash, the picture until the GPU draws. */
+.rg-holo__stage::before,
+.rg-holo__canvas {
+  position: absolute;
+  inset: 1px;
+  --rg-holo-cut: max(0px, calc(var(--rg-cut-panel, 16px) - 1px));
+  clip-path: var(--rg-holo-clip);
+}
+.rg-holo__stage::before {
+  content: "";
+  z-index: 1;
+  background:
+    linear-gradient(118deg, transparent 38%, color-mix(in srgb, var(--rg-holo-ink) 9%, transparent) 50%, transparent 62%),
+    var(--rg-holo-graphite);
+}
+.rg-holo__canvas {
+  display: block;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  background: var(--rg-holo-graphite);
+}
+.rg-holo[data-holo-ready="true"] .rg-holo__stage::before { content: none; }
+.rg-holo__content {
+  position: relative;
+  min-inline-size: 0;
+  padding: var(--rg-panel-padding, var(--space-4, 1.5rem));
+}
+.rg-holo :where(a, button, summary):focus-visible { outline-color: var(--rg-holo-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .rg-holo { transform: none; }
+}
+@media (forced-colors: active) {
+  .rg-holo { color: CanvasText; transform: none; }
+  .rg-holo__stage { background: CanvasText; }
+  .rg-holo__stage::before, .rg-holo__canvas { background: Canvas; }
+}

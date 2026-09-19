@@ -20,6 +20,19 @@ event data attribute. Theme persistence and events stay product-owned; update
 ARIA/title and `[data-theme-toggle-state]`, never the button's entire text content.
 Its styles ship through `primitives.css`; reduced motion disables rotation.
 
+`Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
+product's hook attribute and the content that sits on the face; the component renders the
+face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
+`mix regent_ui.assets` copies `holographic_card.mjs` and its `.d.mts` next to the styles;
+`createHolographicCardRenderer(canvas, size, onDeviceLost)` draws the foil with `vgpu`,
+which the consumer pins at exactly `0.3.1`. The product owns the mount: when to load the
+chunk, the frame loop, reduced motion, device loss and the pointer. It calls `point(x, y)`
+with fractions of the card's width and height, `rest()` on leave, writes `tilt()` to
+`--rg-holo-tilt-x` / `--rg-holo-tilt-y` in radians, and marks the root
+`data-holo-ready="true"` once a frame has drawn. Without a renderer the static foil in
+`holographic_card.css` is the whole picture. Attribution for the foil material is in
+`THIRD_PARTY_NOTICES.md`.
+
 Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
 subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
 Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` from

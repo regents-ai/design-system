@@ -196,6 +196,10 @@ Patterns that generalize:
 - Panels are flat and opaque. No default glass, gradient, shadow, glow, hover lift or tilt.
   Pair `--rg-panel-fill` and `--rg-panel-ink`; the `accent` variant consumes the existing
   accent/on-accent pair, including Patchbay aliases. Local rules and texture use local ink.
+  The one exception is `Regent.HolographicCard.card` (founder, 2026-09-19): a graphite foil
+  card that tilts with the pointer and lights up under it, and only then. It keeps its own
+  graphite ground and platinum ink in both themes, cuts its corners like every panel, and
+  stands still under reduced motion and forced colors.
 - Real circles remain valid for geometric avatars, indicators and spinners.
 - Connected features have 1px seams and separate heading, near-square figure and caption
   bands. CSS subgrid aligns bands across a row; captions grow with content. The cuts themselves
@@ -209,7 +213,8 @@ Patterns that generalize:
 ### Shared compositions
 
 `Regent.Structure` supplies `frame`, `row`, `section_bar`, `panel`, `technical_figure`,
-`capability_card`, and `ratio_card`.
+`capability_card`, and `ratio_card`. `Regent.HolographicCard` supplies `card`, the pointer-lit
+foil card, with its WebGPU renderer in `regent_ui/assets/js/holographic_card.mjs`.
 `Regent.Blog` supplies the gallery, article and sticky-contents compositions; see
 [BLOG.md](BLOG.md) for the shared contract and product/content ownership boundary.
 `primitives.css` imports `structure.css` (including `ratio.css`); consumers still import the canonical tokens first.

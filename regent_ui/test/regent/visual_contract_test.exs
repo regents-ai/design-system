@@ -196,7 +196,10 @@ defmodule Regent.VisualContractTest do
 
     assert css =~ ".rg-feature:is(:hover, :focus-within) > .rg-panel::before"
     assert css =~ "conic-gradient(from var(--rg-edge-angle)"
-    assert css =~ "animation: rg-edge-ripple calc(var(--rg-shimmer-duration, 1.15s) * 2) linear infinite"
+
+    assert css =~
+             "animation: rg-edge-ripple calc(var(--rg-shimmer-duration, 1.15s) * 2) linear infinite"
+
     assert css =~ "@keyframes rg-edge-ripple"
     assert css =~ ~s|@property --rg-edge-angle|
 

@@ -22,9 +22,11 @@ Techtree platforms.
 - `design_system_tokens.css` owns every palette and typography value; `node scripts/generate-tokens-json.mjs`
   regenerates the JSON mirror, the packaged CSS and the packaged fonts. Never hand-edit generated
   copies or a consumer's `assets/vendor/regent_ui/`.
-- `regent_ui/lib/regent/` owns shared presentation: `Primitives`, `Structure`, `Blog`, `Profile`
-  and `ThemeToggle`. `regent_ui/assets/css/` owns their styles. A defect in a shared control is
+- `regent_ui/lib/regent/` owns shared presentation: `Primitives`, `Structure`, `Blog`, `Profile`,
+  `ThemeToggle` and `HolographicCard`. `regent_ui/assets/css/` owns their styles and
+  `regent_ui/assets/js/` their browser modules. A defect in a shared control is
   fixed here once, not in four product overrides.
+- Third-party material redistributed here is recorded in `THIRD_PARTY_NOTICES.md`.
 - `CONSUMERS.md` records the current consumer contract; its dated rollout sections are history.
   `BLOG.md` and `MOBILE.md` hold the blog and mobile contracts.
 
