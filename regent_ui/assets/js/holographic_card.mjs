@@ -41,11 +41,28 @@ fn stroke(distance: f32, width: f32, aa: f32) -> f32 {
   return 1.0 - smoothstep(width, width + aa, abs(distance));
 }
 
-// Approximate visible wavelengths in micrometers with smooth display RGB responses.
+// The foil's spectrum is the site's palette, not the rainbow: tangerine, powder
+// blue and platinum, blended around a cycle.
+const TANGERINE = vec3f(1.0, 0.357, 0.098);
+const POWDER_BLUE = vec3f(0.682, 0.792, 0.804);
+const PLATINUM = vec3f(0.898, 0.890, 0.824);
+
+fn brandWeight(phase: f32, centre: f32) -> f32 {
+  return max(0.0, 1.0 - abs(fract(phase - centre + 0.5) - 0.5) * 3.0);
+}
+
+fn brandColor(phase: f32) -> vec3f {
+  return TANGERINE * brandWeight(phase, 0.0)
+    + POWDER_BLUE * brandWeight(phase, 1.0 / 3.0)
+    + PLATINUM * brandWeight(phase, 2.0 / 3.0);
+}
+
+// Visible wavelengths in micrometers, laid across the palette in place of the
+// rainbow: tangerine at the long end, powder blue, then platinum at the short.
 fn wavelengthColor(wavelength: f32) -> vec3f {
-  let response = (vec3f(wavelength) - vec3f(0.610, 0.545, 0.460)) / vec3f(0.045, 0.038, 0.032);
   let visible = smoothstep(0.380, 0.410, wavelength) * (1.0 - smoothstep(0.700, 0.780, wavelength));
-  return exp(-0.5 * response * response) * visible;
+  let phase = (1.0 - clamp((wavelength - 0.40) / 0.30, 0.0, 1.0)) * (2.0 / 3.0);
+  return brandColor(phase) * visible;
 }
 
 // Reflection grating approximation: m * wavelength = d * dot(L + V, across).
@@ -64,15 +81,14 @@ fn diffraction(across: vec2f, lightAndView: vec2f, spacing: f32) -> vec3f {
   return reflected * envelope;
 }
 
-// Broad, art-directed pearlescence underneath the finer diffraction detail.
+// Broad pearlescence underneath the finer diffraction detail, in the palette.
 fn pearlColor(phase: f32) -> vec3f {
-  return vec3f(0.55, 0.52, 0.64) + vec3f(0.43, 0.40, 0.34)
-    * cos(6.2831853 * (phase + vec3f(0.05, 0.38, 0.63)));
+  return brandColor(phase) * 0.92;
 }
 
-// Saturated spectrum for foil ink, which has only a line's width to show itself.
+// Foil ink has only a line's width to show itself, so it takes the palette at full strength.
 fn inkColor(phase: f32) -> vec3f {
-  return vec3f(0.5) + vec3f(0.5) * cos(6.2831853 * (phase + vec3f(0.0, 0.33, 0.67)));
+  return brandColor(phase);
 }
 
 fn grain(point: vec2f) -> f32 {
