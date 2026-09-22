@@ -3,12 +3,9 @@ repo: design-system
 owner: design-system
 path: design-system
 release_group: ops_preview
-stack_contract: ../meta/stack.yaml
 owns:
   - shared_visual_language
   - tokens
-  - money_action_risk_panels
-  - status_badges
 source_of_truth:
   repo_contract: repo.yaml
   http_contracts: []
@@ -16,6 +13,8 @@ source_of_truth:
   shared_contracts:
     - STYLE.md
     - MOBILE.md
+    - BLOG.md
+    - CONSUMERS.md
   runtime_contracts: []
   chain_contracts: []
 code_map:
@@ -24,74 +23,7 @@ code_map:
   - path: scripts/render-structure-showcase.exs
     owns: structural_showcase
 shared_api:
-  Regent.Structure.ratio_card:
-    kind: phoenix_function_component
-    attributes:
-      id: {type: string, required: true}
-      title: {type: string, required: true}
-      eyebrow: {type: string, default: Allocation}
-      value_bps: {type: integer, default: null, minimum: 0, maximum: 10000}
-      label: {type: string, default: Allocated}
-      remainder_label: {type: string, default: Remaining}
-      change: {type: string, default: null}
-      footer_label: {type: string, default: Details}
-      class: {type: any, default: null}
-      rest: {type: global}
-    slots:
-      footer: {required: false, purpose: "Caller-owned footer content; use rg-ratio-card__tile for static tiles"}
-      footer_badge: {required: false, purpose: "Caller-supplied badge content"}
-    semantics: "article.rg-ratio-card with h3; named read-only meter uses a 0..100 scale; paired percentages derive from one integer bps value with at most two decimals and no trailing zeros"
-    unknown: "Null renders em dashes and No data; no meter or fabricated zero fill"
-    validation: "Raise ArgumentError for non-null values outside integer 0..10000; never clamp"
-    layout: "Square unclipped frame with four inert corner brackets, ruled header/footer; header computed percentage badge (No data when unknown), aligned title/eyebrow; uppercase labels above paired baseline metrics; orange fill and vertical-striped remainder; five scale labels; footer label above tiles and right badge; stacks in narrow containers"
-    accessibility: "System-color borders and solid meter fill in forced colors; locally paired orange badge ink; no slider, thumb, implicit control or animation"
-    ownership: "Presentation only; change is display-only text with a caller-defined period; no product, data, authentication or money-movement state"
-  Regent.Structure.capability_card:
-    kind: phoenix_function_component
-    attributes:
-      title: {type: string, required: true}
-      description: {type: string, required: true}
-      index: {type: string, default: null}
-      tone: {type: string, values: [surface, accent], default: surface}
-      image_src: {type: string, default: null}
-      image_alt: {type: string, default: ""}
-      class: {type: any, default: null}
-      rest: {type: global}
-    slots:
-      media: {required: false, purpose: "Custom media; image_src takes precedence"}
-      actions: {required: false, purpose: "Caller-owned interactive actions"}
-    semantics: "article.rg-feature; face panel has h3, optional index and figure; caption panel has description and optional actions"
-    layout: "Three subgrid bands; responsive three/two/one columns in rg-feature-grid; unclipped content and focus"
-    ownership: "Presentation only; no product state, implicit action, onclick or added tab stop"
-  Regent.HolographicCard.card:
-    kind: phoenix_function_component
-    attributes:
-      id: {type: string, required: true}
-      class: {type: any, default: null}
-      rest: {type: global, purpose: "The product's hook attribute and any other host attributes"}
-    slots:
-      inner_block: {required: true, purpose: "Caller-owned content on the card face"}
-    semantics: "div.rg-holo host; a phx-update=ignore stage (id <id>-stage, aria-hidden) holds canvas[data-holo-canvas]; div.rg-holo__content carries the slot"
-    browser_module: "assets/js/holographic_card.mjs exports createHolographicCardRenderer(canvas, size, onDeviceLost) and HOLOGRAPHIC_CARD_TILT; requires the consumer's vgpu 0.3.1; the product owns loading, the frame loop, reduced motion, device loss and the pointer"
-    layout: "Graphite ground and platinum ink in both themes; panel-cut corners; static foil until data-holo-ready=true; the product writes --rg-holo-tilt-x/--rg-holo-tilt-y for the tilt"
-    accessibility: "Content stays real DOM text; the stage is aria-hidden; reduced motion and forced colors render the card flat and still"
-    ownership: "Presentation only; the founder-approved exception to the flat-panel rule; no product state, authentication or money movement"
-  shimmer:
-    consumers: "Every enabled primary rg-button and every rg-feature card, across all eight palettes"
-    css_properties:
-      --rg-shimmer-color: "Optional inherited source color; defaults to Tangerine. Mixed 75% with Platinum, then 24% strength; custom colors/fills require caller contrast review"
-      --rg-shimmer-duration: "Optional inherited base duration; default 1.15s; cards multiply by 3 (3.45s)"
-      --rg-button-border-color: "Optional inherited primary outline override; falls back to shimmer color then Tangerine"
-    gradient: "100deg; transparent 30%, restrained orange highlight 50%, transparent 70%; 300% 100%; 160% 0 to -60% 0; var(--ease-out)"
-    activation: "Enabled primary hover/focus-visible; card hover/focus-within; no idle animation. On coarse/no-hover devices, pointer-only sticky hover never runs the sweep; keyboard focus-visible still does, including within cards"
-    primary_outline: "All dark palettes: blue TR/BL square corner marks and orange TL/BR cut accents at rest. All light palettes: orange TR/BL L-edges. Enabled hover/focus-visible grows a continuous matching TL/BR-cut outline; base 150ms transitions reverse on exit/interruption. CSS-only links require no label wrapper; primary text never underlines"
-    accessibility: "Transparent primary labels; default sweep preserves paired text contrast. Reduced motion has instant outline states and no sweep; forced colors use rectangular system borders. Only inert skins clip; full media-area overlay excludes card title/caption/actions; distinct external focus ring"
-  mobile_controls:
-    kind: css_contract
-    scope: "Coarse-pointer or no-hover devices; existing rg-button and rg-field only, no product shell or workflow mutation"
-    touch_target: "rg-button has a 44 CSS px minimum in both dimensions, preserving larger rem-based sizing and the primary 3rem minimum"
-    editable_text: "Text-like inputs, selects and textareas inside rg-field use max(1em, 16px), preserving larger inherited text; checkbox/radio/file/hidden inputs are excluded"
-    ownership: "Products own raw controls, inputmode/autocomplete, mobile navigation, keyboard/drawer layout and safe areas; this package does not disable zoom or alter events"
+  catalog: "STYLE.md, section Shared compositions: every public regent_ui component, its purpose and its consumers"
 local_path_dependencies: []
 acceptance_commands:
   - cwd: design-system/regent_ui

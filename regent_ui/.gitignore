@@ -3,14 +3,5 @@ local-only-*
 /_build/
 /deps/
 /.elixir_ls/
-/AGENTS.md
-/IMPLEMENTATION_PLAN.md
-/PLAN.md
-/NOTES.md
-/SCRATCH.md
-/WORKFLOW.md
-/codeplan.md
-/layer2.md
-/layer3.md
 /.codex/
 /.claude/

@@ -61,7 +61,7 @@ defmodule Regent.Profile do
             <dt>Evidence</dt>
             <dd data-profile-evidence>Last synchronized Privy proof</dd>
           </dl>
-          <p>Shared across Regents, Autolaunch, Patchbay and Techtree.</p>
+          <p>One profile across the Regent sites.</p>
           <p>
             Wallet selection here does not change an existing payment destination or send a transaction.
           </p>

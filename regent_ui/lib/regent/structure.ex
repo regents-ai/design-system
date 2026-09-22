@@ -155,8 +155,7 @@ defmodule Regent.Structure do
             aria-valuenow={@value}
             aria-valuetext={"#{@label}: #{@value}%; #{@remainder_label}: #{@remainder}%"}
           >
-            <span class="rg-ratio-card__fill" style={"inline-size: #{@value}%"} aria-hidden="true">
-            </span>
+            <span class="rg-ratio-card__fill" style={"inline-size: #{@value}%"} aria-hidden="true"></span>
           </div>
           <div class="rg-ratio-card__scale" aria-hidden="true">
             <span :for={tick <- [0, 25, 50, 75, 100]}>{tick}%</span>

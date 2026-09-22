@@ -6,15 +6,15 @@ Repository ownership is documented below and in the local `repo.yaml`. Follow th
 - Repo contract: `design-system/repo.yaml`
 - Owner: `design-system`
 - Release group: `ops_preview`
-- Owned areas: `shared_visual_language`, `tokens`, `money_action_risk_panels`, `status_badges`.
+- Owned areas: `shared_visual_language`, `tokens`.
 - Change API or CLI behavior in the owning YAML contract before changing code.
 - Hermes/Astra coordinates scoped Claude/Fable work; no ticket tracker is required.
 <!-- END REPO CONTRACT -->
 # Regent Design System Agent Guide
 
 This repo owns the shared Regent visual language: tokens, fonts, palettes, logos and the
-`regent_ui` Phoenix component package consumed by the Regents, Autolaunch, Patchbay and
-Techtree platforms.
+`regent_ui` Phoenix component package consumed by the Regents, Autolaunch, Patchbay, Techtree,
+Ash Template and KeyFleet platforms and the `elixir-utils/erc8004` components.
 
 ## Start here
 
@@ -23,12 +23,13 @@ Techtree platforms.
   regenerates the JSON mirror, the packaged CSS and the packaged fonts. Never hand-edit generated
   copies or a consumer's `assets/vendor/regent_ui/`.
 - `regent_ui/lib/regent/` owns shared presentation: `Primitives`, `Structure`, `Blog`, `Profile`,
-  `ThemeToggle` and `HolographicCard`. `regent_ui/assets/css/` owns their styles and
-  `regent_ui/assets/js/` their browser modules. A defect in a shared control is
-  fixed here once, not in four product overrides.
+  `ThemeToggle`, `HolographicCard` and `AgentMetadata`. The Shared compositions table in
+  `STYLE.md` lists every public component and which apps use it. `regent_ui/assets/css/` owns
+  their styles and `regent_ui/assets/js/` their browser modules. A defect in a shared control is
+  fixed here once, not in per-product overrides.
 - Third-party material redistributed here is recorded in `THIRD_PARTY_NOTICES.md`.
-- `CONSUMERS.md` records the current consumer contract; its dated rollout sections are history.
-  `BLOG.md` and `MOBILE.md` hold the blog and mobile contracts.
+- `CONSUMERS.md` records the current consumer contract. `BLOG.md` and `MOBILE.md` hold the blog
+  and mobile contracts.
 
 ## Core rules
 

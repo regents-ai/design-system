@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![Fonts: OFL 1.1](https://img.shields.io/badge/fonts-OFL--1.1-lightgrey)](geist-font/OFL.txt)
 [![Elixir 1.19](https://img.shields.io/badge/elixir-1.19-lightgrey)](https://elixir-lang.org)
-[![Phoenix LiveView 1.1](https://img.shields.io/badge/liveview-1.1-lightgrey)](https://hexdocs.pm/phoenix_live_view)
+[![Phoenix LiveView 1.2](https://img.shields.io/badge/liveview-1.2-lightgrey)](https://hexdocs.pm/phoenix_live_view)
 
 The shared visual language for the Regent family of products, maintained by Regents Labs.
 It holds one style guide, one set of design tokens, the logo and font assets, and
@@ -30,7 +30,7 @@ node scripts/generate-tokens-json.mjs
 ```
 
 > [!NOTE]
-> The two root CSS files are the only sources of truth for token values.
+> `design_system_tokens.css` at the repository root is the only source of truth for token values.
 > `design_system_tokens.json` and the copies under `regent_ui/assets/css/` are generated
 > outputs. A hand-edited copy is overwritten on the next run, and
 > `node scripts/generate-tokens-json.mjs --check` exits non-zero when they have drifted.
@@ -38,28 +38,17 @@ node scripts/generate-tokens-json.mjs
 ## Where this sits
 
 ```text
-  client surfaces
-    ios                               mobile app, wallet, action signing
-    regents-cli                       operator control surface
-    regents-techtree-hermes-plugin    Hermes mission-control tab
-                    │
-                    ▼
-  platform
-    ash-platform                      Phoenix, LiveView, Ash: web, API, product domains
-                    │
-                    ▼
-  services and chain
-    siwa-server                       agent request signing, nonce and replay state
-    media-web                         hosted card images and video
-    fly-sentinel                      operator health checks
-    regent-contracts                  canonical Solidity, ABIs, deployment records
-    autolaunch-contracts              frozen Autolaunch V1 Solidity
+  product platforms (each depends on regent_ui by path from its platform/ directory)
+    regents                  regents.sh: $REGENT staking and the Regents Labs home
+    autolaunch               token auctions on Base
+    patchbay                 broken-tool reports and bounded repairs
+    techtree                 agent Skill improvement and shared evidence
+    ash-template             quickstart monorepo: website, HTTP API and CLI
+    keyfleet                 KeyFleet website, HTTP API and CLI
 
-  shared libraries and standalone tools
-    elixir-utils                      SIWA, ENS, XMTP, cache, Credo checks
-    design-system                     tokens and regent_ui components   ◀ this repository
-    python-cli                        offline Techtree skill-tree inspection
-    videocontrol                      video project and timeline workflows
+  shared libraries
+    elixir-utils/erc8004     ERC-8004 components built on Regent.Structure.panel
+    design-system            tokens and regent_ui components   ◀ this repository
 ```
 
 ## Repository layout
@@ -69,11 +58,10 @@ node scripts/generate-tokens-json.mjs
 | `STYLE.md` | The canonical style guide: color, typography, shape, motion, artwork, logos. Read this first. |
 | `design_system_tokens.css` | Source of truth for every design token. |
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
-| `regent_ui/` | The Phoenix component library: primitives, ruled-sheet structure, blog, profile and theme toggle, with their CSS, fonts and small browser modules. |
+| `regent_ui/` | The Phoenix component library: primitives, ruled-sheet structure, blog, profile, theme toggle, holographic card and agent metadata, with their CSS, fonts and small browser modules. `STYLE.md` lists every component and which apps use it. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
 | `geist-font/` | Canonical Geist Pixel Square, Geist UI Sans and Geist Mono fonts. |
 | `images/` | Artwork, blueprints, and per-product design studies. |
-| `terminal-palette.md` | Terminal color palettes, with per-product variants for Techtree and Autolaunch. |
 | `scripts/` | The token generator. |
 
 ## Design tokens
@@ -122,7 +110,8 @@ python3 -m http.server 8766 --bind 127.0.0.1 --directory .showcase
 
 Open `http://127.0.0.1:8766/`; switch product and theme on the same real-component page.
 `?brand=techtree&theme=dark` selects a combination directly. The output is ignored.
-`Regent.Structure` supplies frame/row, section bar, panel, technical figure and capability card;
+`Regent.Structure` supplies frame/row, section bar, panel, technical figure, capability card
+and ratio card;
 `primitives.css` imports the shared structural rules. See `STYLE.md` for integration.
 
 ### Capability cards and shared shimmer
@@ -163,14 +152,15 @@ light primaries have two opposite orange L-edges. Enabled hover/focus-visible gr
 and crossfades these into a continuous cut outline, with **150ms base transitions in
 both directions**, including native reversal from an interrupted state. Set inherited
 `--rg-button-border-color` to override the outline; it falls back to shimmer color,
-then Tangerine. No JavaScript or additional markup is required. Existing
-`span.rg-button__label` wrappers remain transparent; plain-text primary links work.
+then Tangerine. No JavaScript or additional markup is required. The
+`span.rg-button__label` that `Regent.Primitives.button` renders is transparent;
+plain-text primary links work.
 Primary text does not underline, including under consumer `.sc a:hover` rules.
 
 Only visual skins clip; content, rectangular hit areas and external focus remain intact.
-The card shimmer covers its full media area, including opaque images; title, caption
-and actions remain outside it. Reduced motion removes the sweep, swaps the button
-outline instantly, and retains only a static faint card edge. Forced colors use system
+The card ripple travels only the panel edge; the media, title, caption and actions carry
+no overlay. Reduced motion removes the sweep and the ripple, swaps the button outline
+instantly, and retains only a static faint card edge. Forced colors use system
 borders; nothing loops at idle.
 
 ### Read-only ratio cards
@@ -230,23 +220,6 @@ check from this repository before staging.
 Shared UI stays shared. Components in `regent_ui` must not own product workflow state,
 authorisation decisions, money movement, or product database behaviour — those belong to
 the product that owns them.
-
-## The other repositories
-
-| Repository | What it is | What it deliberately does not do |
-| --- | --- | --- |
-| `ash-platform` | The Phoenix, LiveView, and Ash application: public web pages, the HTTP API, product domains, human identity, billing, and the Techtree and Autolaunch product areas. | It does not hold Solidity source or user signing keys; wallet actions remain browser-signed. |
-| `autolaunch-contracts` | A clean-room Solidity implementation of the founder-frozen Autolaunch V1 system, controlled by its own `SPEC.md`. | It authorises no deployment, signature, or value movement; the older Autolaunch code in `regent-contracts` is historical reference only. |
-| `elixir-utils` | A collection of standalone Elixir libraries used across the family: SIWA, ENS, XMTP, a cache, agentbook helpers, and the in-house `credo_ash` lint checks. | Each package is a library only; none of them runs a service or holds product behaviour. |
-| `fly-sentinel` | A small Phoenix service that reports Fly.io observability and operator preview checks. | It observes and reports; it does not deploy, scale, or change any other application. |
-| `ios` | The Expo and React Native mobile app: the mobile wallet, action signing, and mobile Regent records. | It consumes the platform HTTP contracts and owns no server-side product logic. |
-| `media-web` | A standalone Phoenix service that serves hosted Regents card images and video files from `media.regents.sh`. | It only serves bytes over HTTP; it holds no identity, database, or product logic. |
-| `python-cli` | The installable `regents-techtree` Python package, whose shipped surface is a deterministic offline inspection of one champion/challenger skill-tree pair. | It does not evaluate or execute an agent, and it makes no network calls once its locked dependencies are installed. |
-| `regent-contracts` | The canonical home for Regent Solidity source, Foundry tests, deployment scripts, verified deployment records, ABIs, and the chain-contract manifest. | It holds no HTTP or CLI contracts, Ash resources, workflow logic, UI, or projection workers. |
-| `regents-cli` | The operator control surface: the `regents` command line tool, its generated bindings, and its local runtime. | It drives the platform over published contracts and owns no product database or on-chain authority. |
-| `regents-techtree-hermes-plugin` | The Hermes plugin that presents Techtree mission control across Forge, Techtree Verify, and Uplift. | It is presentation only: no second task store, no private Verify database, no identity model, no payment system, and no Hermes runtime of its own. |
-| `siwa-server` | The shared Sign-In With Anything service for signed agent requests, nonce and replay state, and internal keyring endpoints. | It owns no product data or product authorization policy. |
-| `videocontrol` | A separate product: video project workflows, timeline editing, preview rendering, and Codex plugin media control. | It shares the house style but no runtime, database, or contract with the Regent platform. |
 
 ## License
 

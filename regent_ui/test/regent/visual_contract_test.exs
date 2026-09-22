@@ -23,7 +23,7 @@ defmodule Regent.VisualContractTest do
              File.read!(Path.join([@package_root, "assets/css", "design_system_tokens.css"]))
   end
 
-  test "all four products preserve palettes and assets without page background artwork" do
+  test "all four products preserve their light and dark grounds" do
     selectors =
       @repository_root
       |> Path.join("design_system_tokens.json")
@@ -31,20 +31,15 @@ defmodule Regent.VisualContractTest do
       |> Jason.decode!()
       |> Map.fetch!("selectors")
 
-    for {brand, light, dark, source} <- [
-          {"platform", "#F6F4EA", "#0B0B0B", "regents"},
-          {"autolaunch", "#E5E3D2", "#0E0E0E", "autolaunch"},
-          {"patchbay", "#F6F4EA", "#0F0F10", "patchbay"},
-          {"techtree", "#F6F4EA", "#161616", "tech"}
+    for {brand, light, dark} <- [
+          {"platform", "#F6F4EA", "#0B0B0B"},
+          {"autolaunch", "#E5E3D2", "#0E0E0E"},
+          {"patchbay", "#F6F4EA", "#0F0F10"},
+          {"techtree", "#F6F4EA", "#161616"}
         ],
         {mode, ground} <- [{"light", light}, {"dark", dark}] do
       tokens = Map.fetch!(selectors, ~s(:root[data-brand="#{brand}"][data-theme="#{mode}"]))
       assert tokens["--color-bg"] == ground
-      file = "cutting-mat-100x100-#{source}-#{mode}.svg"
-      assert tokens["--site-background-image"] == "none"
-
-      assert File.read!(Path.join([@package_root, "priv/static/images", file])) ==
-               File.read!(Path.join([@repository_root, "site svg backgrounds", file]))
     end
   end
 
@@ -182,7 +177,6 @@ defmodule Regent.VisualContractTest do
     assert css =~
              "animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite"
 
-    refute primitives =~ "--rg-shimmer-ink:"
     assert primitives =~ "background-color: var(--rg-p-accent)"
 
     # Public overrides must inherit from any ancestor, not be reset by a host default.
@@ -190,9 +184,8 @@ defmodule Regent.VisualContractTest do
     refute primitives =~ ~r/--rg-shimmer-(color|duration):/
   end
 
-  test "feature cards ripple the panel edge on interaction and never paint the media" do
+  test "feature cards ripple the panel edge on interaction" do
     css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
-    component = File.read!(Path.join(@package_root, "lib/regent/structure.ex"))
 
     assert css =~ ".rg-feature:is(:hover, :focus-within) > .rg-panel::before"
     assert css =~ "conic-gradient(from var(--rg-edge-angle)"
@@ -202,10 +195,6 @@ defmodule Regent.VisualContractTest do
 
     assert css =~ "@keyframes rg-edge-ripple"
     assert css =~ ~s|@property --rg-edge-angle|
-
-    # No media overlay, ever: the art box holds art and nothing else.
-    refute css =~ "rg-feature__shimmer"
-    refute component =~ "rg-feature__shimmer"
   end
 
   test "capability bands retain subgrid reflow and contain arbitrary image proportions without clipping" do

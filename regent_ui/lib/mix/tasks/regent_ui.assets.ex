@@ -3,9 +3,9 @@ defmodule Mix.Tasks.RegentUi.Assets do
   @moduledoc """
   Run before the consuming application's CSS build. Files are resolved through Mix's
   dependency paths, including isolated pinned dependencies. Output is generated and
-  belongs in `.gitignore`: `assets/vendor/regent_ui/`, `priv/static/images/regent-ui/`
-  and `priv/static/fonts/regent-ui/`. The packaged CSS declares its fonts at
-  `/fonts/regent-ui/<file>`, so the application must serve `priv/static/fonts`.
+  belongs in `.gitignore`: `assets/vendor/regent_ui/` and `priv/static/fonts/regent-ui/`.
+  The packaged CSS declares its fonts at `/fonts/regent-ui/<file>`, so the application
+  must serve `priv/static/fonts`.
   """
   use Mix.Task
 
@@ -28,16 +28,11 @@ defmodule Mix.Tasks.RegentUi.Assets do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end
 
-    for {source, destination} <- [
-          {"priv/static/images/*.svg", "priv/static/images/regent-ui"},
-          {"priv/static/fonts/*", "priv/static/fonts/regent-ui"}
-        ] do
-      target = Path.join(File.cwd!(), destination)
-      File.mkdir_p!(target)
+    fonts = Path.join(File.cwd!(), "priv/static/fonts/regent-ui")
+    File.mkdir_p!(fonts)
 
-      for file <- Path.wildcard(Path.join(dependency, source)) do
-        File.cp!(file, Path.join(target, Path.basename(file)))
-      end
+    for file <- Path.wildcard(Path.join(dependency, "priv/static/fonts/*")) do
+      File.cp!(file, Path.join(fonts, Path.basename(file)))
     end
   end
 end

@@ -30,7 +30,7 @@
   text-decoration: none;
 }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { border: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); }
-/* Optional compatibility wrapper, not an opaque patch across the area sheen. */
+/* The primary label span stays transparent so the sheen passes behind the text. */
 .rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background: transparent; }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -130,8 +130,6 @@
 .rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
 
-/* Compatibility for consumers still rendering the retired background component. */
-.rg-site-background { display: none; }
 .rg-field select {
   --rg-select-chevron-inset: 24px;
   appearance: none; padding-right: calc(var(--rg-select-chevron-inset) + 24px);

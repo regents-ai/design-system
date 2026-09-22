@@ -33,8 +33,7 @@ defmodule Regent.ThemeToggle do
           <span
             :for={face <- ~w(front back left right top bottom)}
             class={"theme-toggle__face theme-toggle__face--#{face}"}
-          >
-          </span>
+          ></span>
         </span>
       </span>
       <span class="rg-theme-toggle__state" data-theme-toggle-state>{@theme_name} theme active</span>

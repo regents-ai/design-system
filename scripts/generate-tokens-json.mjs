@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Regenerate design_system_tokens.json and RegentUI's packaged CSS, background
-// and font mirrors. The root CSS files and asset directories are the sources of
-// truth; every other representation is a generated output checked here.
+// Regenerate design_system_tokens.json and RegentUI's packaged CSS and font
+// mirrors. The root CSS file and font directory are the sources of truth; every
+// other representation is a generated output checked here.
 //
 // Usage: node scripts/generate-tokens-json.mjs [--check]
-//   --check  verify the JSON is in sync without rewriting it (exit 1 on drift)
+//   --check  verify every generated output is in sync without rewriting it (exit 1 on drift)
 
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { Buffer } from "node:buffer";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -43,12 +43,6 @@ const outputs = [
   [join(root, "regent_ui/assets/css/tokens.json"), output],
   [packagedCssPath, css],
 ];
-
-const svgSource = join(root, "site svg backgrounds");
-const svgDestination = join(root, "regent_ui/priv/static/images");
-for (const name of readdirSync(svgSource).filter(name => name.endsWith(".svg"))) {
-  outputs.push([join(svgDestination, name), readFileSync(join(svgSource, name), "utf8")]);
-}
 
 // Every font file the canonical CSS declares, plus its license, ships in the package
 // and is served by consumers at /fonts/regent-ui/<file>.

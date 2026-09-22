@@ -26,7 +26,9 @@ defmodule Regent.Blog do
               />
               <div class="rg-blog__card-copy">
                 <div class="rg-blog__meta">
-                  <span>{post.author}</span><time datetime={Date.to_iso8601(post.date)}>{date(post.date)}</time>
+                  <span>{post.author}</span><time datetime={Date.to_iso8601(post.date)}>{date(
+                    post.date
+                  )}</time>
                 </div>
                 <h2>{post.title}</h2>
                 <p :if={post.description != ""}>{post.description}</p>

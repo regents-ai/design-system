@@ -4,7 +4,7 @@ The canonical description of the Regent visual language. Machine sources stay ca
 values — `design_system_tokens.css` (mirrored by `design_system_tokens.json`) — this document
 explains the system so a person or agent can apply it without guessing.
 
-The four applications share primitives and interaction conventions. Each owns its layout,
+The product applications share primitives and interaction conventions. Each owns its layout,
 navigation, content and theme. Preserve all eight approved palettes. The structural language
 is a ruled technical sheet: actual aligned rules, square cells, flat cut-corner panels,
 generous internal spacing and static technical figures. It is not a dark-and-orange theme.
@@ -39,10 +39,10 @@ emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powde
 blue. Exact values come from the supplied `site color palettes/` images and are
 implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
 
-Page background SVGs are retired and `--site-background-image` is `none` in every
-theme; the package ships no background component. Preserve the eight assets in
-`site svg backgrounds/` and the package for potential future small illustration sections;
-do not use them as page backgrounds. Real layout borders supply the page structure.
+Page background SVGs are retired; the package ships no background component and no
+background images. The eight source assets stay in `site svg backgrounds/` for potential
+future small illustration sections; do not use them as page backgrounds. Real layout
+borders supply the page structure.
 Consumer-owned artwork and route wiring need deliberate migration in the owning app;
 changing this package does not claim those applications have been deployed or migrated.
 
@@ -88,15 +88,14 @@ action color.
 | Agent Formation | Tangerine Tango | `--product-formation` |
 | Autolaunch | Tangerine Tango | `--product-autolaunch` |
 | Techtree | Powder Blue | `--product-techtree` |
-| Techtree secondary | Tangerine Tango | `--product-techtree-bio` |
 
 Rules:
 
-- One action color per surface. `--color-accent-secondary` (mirrored by `--brand-accent`) carries
-  the product's highlight; it is a note, not a second button color.
-- On Autolaunch, `--brand-accent` is Powder Blue and is for non-text highlights only — chips,
-  rules, fills, and marker shapes. Never set it as text color on Tangerine (1.8:1), and keep the
-  text inside any highlighted element black or Charcoal.
+- One action color per surface. `--color-accent-secondary` carries the product's highlight;
+  it is a note, not a second button color. `--brand-accent` is Tangerine in every theme.
+- On Autolaunch, `--color-accent-secondary` is Powder Blue and is for non-text highlights only —
+  chips, rules, fills, and marker shapes. Never set it as text color on Tangerine (1.8:1), and
+  keep the text inside any highlighted element black or Charcoal.
 - Formation renders inside the platform brand; use `--product-formation` for
   Formation-specific highlights rather than switching the page action color.
 - Status colors (success, error, warning, info) are for state only, never identity.
@@ -137,8 +136,8 @@ beside the files.
 | Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, technical indices, addresses and readouts |
 
 `--font-family-ui` and `--font-family-paragraph` resolve to Geist UI Sans. Headings
-(`h1`–`h6`) and display/title/headline text styles use Pixel Square. Mono is reserved
-for technical/code roles rather than general UI text.
+(`h1`–`h6`) use Pixel Square. Mono is reserved for technical/code roles rather than
+general UI text.
 
 Pixel Square is genuine upright **400 only**, with `font-synthesis: none`; never fake
 bold or italic Pixel. Sans and Mono support 400 and 600 with genuine italics, using
@@ -204,19 +203,48 @@ Patterns that generalize:
 - Connected features have 1px seams and separate heading, near-square figure and caption
   bands. CSS subgrid aligns bands across a row; captions grow with content. The cuts themselves
   form the diamond-shaped gaps. Do not add decorative diamonds at panel joints.
-  Hover and focus-within add a faint edge and a shared full-area shimmer over the face media.
-  Only an inert visual skin clips; text, media and focus stay unclipped. No lift,
-  idle animation or moving reduced-motion state.
+  Hover and focus-within add a faint edge and run a single ripple along the panel edge
+  (see Motion); the media stays still. Only an inert visual skin clips; text, media and
+  focus stay unclipped. No lift, idle animation or moving reduced-motion state.
 - Active navigation has a visible structural indicator and text emphasis, not a pill or
   color alone. Essential field/control boundaries are stronger than decorative hairlines.
 
 ### Shared compositions
 
-`Regent.Structure` supplies `frame`, `row`, `section_bar`, `panel`, `technical_figure`,
-`capability_card`, and `ratio_card`. `Regent.HolographicCard` supplies `card`, the pointer-lit
-foil card, with its WebGPU renderer in `regent_ui/assets/js/holographic_card.mjs`.
-`Regent.Blog` supplies the gallery, article and sticky-contents compositions; see
-[BLOG.md](BLOG.md) for the shared contract and product/content ownership boundary.
+This table is the complete public component catalog of `regent_ui/lib`. "Used by" is
+checked against each consumer's own source; "(showcase)" means only that app's component
+showcase page renders it. Consumers are Regents, Autolaunch, Patchbay, Techtree,
+Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
+`elixir-utils/erc8004`.
+
+| Component | Purpose | Used by |
+| --- | --- | --- |
+| `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
+| `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and KeyFleet (showcase) |
+| `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and KeyFleet (showcase) |
+| `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |
+| `Regent.Primitives.empty_state` | Titled empty result with an optional action | Patchbay; Regents, Ash Template and KeyFleet (showcase) |
+| `Regent.Primitives.disclosure` | Native details/summary with an optional index | Regents, Autolaunch, Patchbay, Techtree; Ash Template and KeyFleet (showcase) |
+| `Regent.Structure.frame` | Ruled page frame | All six apps |
+| `Regent.Structure.row` | Row with the optional rail and main column | All six apps |
+| `Regent.Structure.section_bar` | Section heading bar with diamond and leader | Regents, Autolaunch, Techtree; Ash Template and KeyFleet (showcase) |
+| `Regent.Structure.panel` | Flat cut-corner panel, `surface` or `accent` | Regents, Autolaunch, Patchbay, Techtree, ERC-8004; Ash Template and KeyFleet (showcase) |
+| `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and KeyFleet (showcase) |
+| `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, KeyFleet |
+| `Regent.Structure.ratio_card` | Read-only basis-point allocation sheet | Regents |
+| `Regent.Blog.gallery` | Blog index | Regents, Autolaunch, Patchbay, Techtree |
+| `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
+| `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
+| `Regent.Blog.not_found` | Missing-post page | Regents, Autolaunch, Patchbay, Techtree |
+| `Regent.Profile.panel` | Shared private-profile form | Autolaunch, Patchbay, Techtree |
+| `Regent.ThemeToggle.button` | Prism/laser light-dark control | All six apps |
+| `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, KeyFleet |
+| `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, KeyFleet |
+| `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Ash Template, KeyFleet |
+
+The foil's WebGPU renderer is `regent_ui/assets/js/holographic_card.mjs`; `Regent.Blog`'s
+contract and content ownership boundary is in [BLOG.md](BLOG.md); `Regent.AgentMetadata`
+and `Regent.ThemeToggle` wiring is in [CONSUMERS.md](CONSUMERS.md).
 `primitives.css` imports `structure.css` (including `ratio.css`); consumers still import the canonical tokens first.
 `row` reserves the same optional 176px rail and 32px gutter throughout header, hero,
 features and footer. Set `rail={false}` on **every** row for a no-rail frame; otherwise
@@ -302,20 +330,13 @@ Patchbay or replace a product layout merely to consume a common button or disclo
 ## Motion
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
-Shell phase tokens: `--shell-duration-interruption` (100ms), `--shell-duration-exit` (180ms),
-`--shell-duration-entrance` (200ms), and `--shell-duration-border-settle` (100ms).
-
-Shell transitions are sequential and non-overlapping. On interruption, fade for 100ms, then
-resolve the newest destination. The outgoing view exits from 0–180ms; only after that exit
-completes does the incoming view enter from 180–380ms. The border shimmer/settle follows for
-100ms and ends at about 480ms. Do not keep an outgoing DOM clone, and do not add a nested
-duplicate slide inside the route transition. Movement is limited to transform and opacity.
 
 - Animate only `transform` and `opacity` except the shared interaction-only background
   shimmer and 150ms primary-outline paint transitions below. Enters use ease-out;
   on-screen moves use ease-in-out.
 - Shared structural controls retain clear focus. No card lift, pointer-following shine,
-  perspective or idle decorative animation is enabled.
+  perspective or idle decorative animation is enabled, except `Regent.HolographicCard`,
+  which tilts and lights under the pointer (see Shape and spacing).
 - Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
   opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
   and `aria-disabled="true"` controls do not shimmer. Buttons use `rg-shimmer`: a
@@ -336,12 +357,13 @@ duplicate slide inside the route transition. Movement is limited to transform an
   `--rg-shimmer-duration` defaults to `1.15s` for buttons; the card edge ripple takes
   `calc(var(--rg-shimmer-duration, 1.15s) * 2)` per turn (default `2.3s`).
   Button `::before` remains the clipped accent fill/sweep, while `::after` owns the outline.
-  Existing `rg-button__label` spans are transparent and optional for CSS-only links.
+  The `rg-button__label` span that `Regent.Primitives.button` renders is transparent;
+  CSS-only primary links need no label span.
   Primary text never underlines, including under later consumer `.sc a:hover` rules.
   Cards carry no media overlay: the art box holds art and nothing else, and heading,
   caption and actions keep their paired ink. External focus rings are never clipped.
-- Content is visible by default. Scroll reveals hide elements only after script takes over
-  (the landing's `rl-reveal-pending` pattern) so a page without JS is fully readable.
+- Content is visible by default. Scroll reveals hide elements only after script takes over,
+  so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a
   brief color/opacity dissolve. A later Account opt-in cannot override the OS preference.
 - Keyboard-triggered UI never animates except this explicit focus shimmer. Reduced
@@ -350,10 +372,9 @@ duplicate slide inside the route transition. Movement is limited to transform an
 
 ## Glass
 
-There is no glass layer. The `--glass-*` tokens remain in `design_system_tokens.css`
-only for product styles that still alias them; shared structure uses opaque semantic
-surfaces, no blur, and no animation dependency. The interaction-only shimmer is the
-restrained exception to undecorated panel skins.
+There is no glass layer. Shared structure uses opaque semantic surfaces, no blur, and no
+animation dependency. The interaction-only shimmer is the restrained exception to
+undecorated panel skins.
 
 ## Artwork
 
@@ -389,18 +410,18 @@ the marks; pick the correct scheme instead.
 - Use `Regent.Primitives` for buttons, fields/errors, statuses, notices, empty states and
   disclosures. Apps supply slots, routes, events and state.
 - Run `mix regent_ui.assets` before the consuming CSS build. Ignore the generated
-  `assets/vendor/regent_ui/`, `priv/static/images/regent-ui/` and `priv/static/fonts/regent-ui/`
-  directories. Import the canonical tokens and then `primitives.css`; the package has
-  no global body or page stylesheet.
+  `assets/vendor/regent_ui/` and `priv/static/fonts/regent-ui/` directories. Import the
+  canonical tokens and then `primitives.css`; the package has no global body or page
+  stylesheet.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
-- For a standalone Docker context, run `mix regent_ui.stage` first and copy generated
-  `vendor/regent_ui` into the image. Set `REGENT_UI_PATH` to that path in the image.
-  Run `mix regent_ui.stage` from the consumer’s `platform/` directory with `REGENT_UI_PATH` set to the selected shared UI checkout.
+- For a standalone Docker context, run `mix regent_ui.stage` from the consumer’s `platform/`
+  directory with `REGENT_UI_PATH` set to the selected shared UI checkout, copy the generated
+  `vendor/regent_ui` into the image and set `REGENT_UI_PATH` to that path in the image.
   It requires the pinned snapshot and `REGENT_UI_REVISION`, verifies exported content,
   and records revision plus SHA256 in `.regent-ui-generated`. Retain that build evidence.
   Ignore staging/history outputs; this command packages local source and never deploys.
-- The package supports locked LiveView 1.1 and 1.2 consumers. Verify both lines and
-  representative consuming pages; do not upgrade frameworks incidentally.
+- The package requires LiveView 1.2, which every consumer locks. Verify representative
+  consuming pages; do not upgrade frameworks incidentally.
 - Change shared token values at their source and regenerate the JSON/package mirrors.
 - Verify keyboard focus, labels/errors, mobile wrapping, empty states and reduced motion
   in each product theme. A component render test alone is not visual QA.
@@ -413,5 +434,5 @@ Open `http://127.0.0.1:8766/`. This renders actual shared Phoenix components to 
 document; product/theme selectors only change root attributes. It needs no product database.
 Use its long-label toggle, expanded errors, disabled state, native select/dialog and overflow
 options for desktop, 320px reflow, 200% text, keyboard, reduced-motion and forced-colors review.
-Do not treat this as completed adoption in four products. Verify a bounded consumer after
+Do not treat this as completed adoption in every product. Verify a bounded consumer after
 the shared visual direction is accepted, before rolling pinned revisions to the other apps.

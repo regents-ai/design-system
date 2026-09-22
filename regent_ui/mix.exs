@@ -2,7 +2,7 @@ defmodule RegentUi.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @description "Shared Regent Phoenix components, hooks, assets, and spatial UI primitives."
+  @description "Shared Regent Phoenix components, styles, fonts and browser modules."
 
   def project do
     [
@@ -24,7 +24,7 @@ defmodule RegentUi.MixProject do
 
   defp deps do
     [
-      {:phoenix_live_view, "~> 1.1.0 or ~> 1.2.0"},
+      {:phoenix_live_view, "~> 1.2.0"},
       {:phoenix_html, "~> 4.1"},
       {:jason, "~> 1.2"}
     ]
