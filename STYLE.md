@@ -103,7 +103,7 @@ Rules:
 ### Supporting palette compartments
 
 The reusable `--support-{figure,band,panel}-{surface,ink}` pairs use the other three
-identity constants in both modes, without changing base/semantic values or Patchbay aliases:
+identity constants in both modes, without changing base/semantic values:
 
 | Brand (primary identity) | Figure | Narrow band | Secondary panel |
 | --- | --- | --- | --- |
@@ -115,7 +115,7 @@ identity constants in both modes, without changing base/semantic values or Patch
 Charcoal surfaces use Platinum ink; the other surfaces use Charcoal ink. Opt into
 `rg-support-figure` on technical figures, `rg-support-band` on narrow section bars,
 and `rg-support-panel` on secondary panels. Keep main surfaces/actions dominant;
-do not assign arbitrary colors per card. The showcase demonstrates these as a hero
+do not assign arbitrary colors per card. The showcase demonstrates these as the overview
 figure compartment, Capabilities band and secondary interface panel respectively.
 
 ### Capability honesty
@@ -194,7 +194,7 @@ Patterns that generalize:
   skins supply the diagonal perimeter. Never fake a diagonal stroke with a clipped CSS border.
 - Panels are flat and opaque. No default glass, gradient, shadow, glow, hover lift or tilt.
   Pair `--rg-panel-fill` and `--rg-panel-ink`; the `accent` variant consumes the existing
-  accent/on-accent pair, including Patchbay aliases. Local rules and texture use local ink.
+  accent/on-accent pair. Local rules and texture use local ink.
   The one exception is `Regent.HolographicCard.card` (founder, 2026-09-19): a graphite foil
   card that tilts with the pointer and lights up under it, and only then. It keeps its own
   graphite ground and platinum ink in both themes, cuts its corners like every panel, and
@@ -246,21 +246,19 @@ The foil's WebGPU renderer is `regent_ui/assets/js/holographic_card.mjs`; `Regen
 contract and content ownership boundary is in [BLOG.md](BLOG.md); `Regent.AgentMetadata`
 and `Regent.ThemeToggle` wiring is in [CONSUMERS.md](CONSUMERS.md).
 `primitives.css` imports `structure.css` (including `ratio.css`); consumers still import the canonical tokens first.
-`row` reserves the same optional 176px rail and 32px gutter throughout header, hero,
-features and footer. Set `rail={false}` on **every** row for a no-rail frame; otherwise
-empty rail slots preserve alignment. Rail content lives in `:rail_content`. The maximum
-frame is 1600px with 32px outer margins. Below 1200px use 144px rail and 24px margins/gutters;
-below 1024px navigation reflows in-document; below 768px columns stack and margins are 16px.
-Each boundary has one owner: frame edges, row bottom, rail right, main left, hero divider.
+`row` reserves the same optional 176px rail and 32px gutter on every row. Set `rail={false}`
+on **every** row for a no-rail frame; otherwise empty rail slots preserve alignment. Rail
+content lives in `:rail_content`. The maximum frame is 1600px with 32px outer margins. Below
+1200px use 144px rail and 24px margins/gutters; below 1024px each rail stacks above its main
+column; below 768px columns stack and margins are 16px.
+Each boundary has one owner: frame edges, row bottom, rail right, main left.
 
 Section bars contain the caller's real heading (with `rg-section-bar__label`), an 8px
 decorative diamond and a CSS patterned leader. Decorations are aria-hidden; the leader
 disappears on mobile before labels become too small. Bars wrap and grow.
 
-Use `rg-hero` with copy/actions/disclosures before the illustration in DOM order. Hero
-titles are Geist Pixel Square 400, 40–72px, line-height 1.03 and tracking -0.045em. Descriptions use
-16px/24px with a 52ch maximum. Heading-to-copy spacing is 24px; action spacing is 48px.
-These are opt-in display roles, not overrides for dense application typography.
+`rg-hero-title` is the display title: Geist Pixel Square 400, 40–72px, line-height 1.03 and
+tracking -0.045em. It is an opt-in display role, not an override for dense application typography.
 
 Disclosures remain native `details`/`summary`. Optional `index` uses a mono column;
 summary rows are at least 64px, and expanded content aligns with the title and pads
@@ -294,9 +292,8 @@ never use raw orange as small badge ink in light mode. Content stays unclipped,
 metrics stack at a 30rem container width, and forced colors retain system borders
 and a solid Highlight meter fill. No shimmer or idle animation applies.
 
-Feature groups and closing sections remain small HTML compositions, not a page-builder API.
+Feature groups remain small HTML compositions, not a page-builder API.
 Use three/two/one feature columns and 1px gaps; an odd final card never spans a whole row.
-The closing copy/action, link directory, broad brand band and legal row reuse frame tracks.
 Use approved marks or Geist Pixel Square brand text, never borrowed wordmarks or invented metrics.
 
 ### Mobile controls and acceptance
@@ -322,10 +319,9 @@ and summary. Keep errors, transaction outcomes, costs and information needed to 
 action visible. Collapsed content stays rendered. Authorized agent tools return the same
 complete detail independently of visual expansion; DOM hiding is not access control.
 
-Patchbay retains its existing `--pb-*` theme: `--pb-text`, `--pb-text-muted`, `--pb-surface`,
-`--pb-line`, `--pb-accent`, `--pb-accent-ink`, `--pb-good` and `--pb-bad` map directly to the
-shared primitives. The other products use their `--color-*` semantic tokens. Do not recolor
-Patchbay or replace a product layout merely to consume a common button or disclosure.
+Shared CSS reads only the shared `--color-*` semantic tokens; a product's own color names stay
+in that product's CSS. Do not recolor a product or replace its layout merely to consume a
+common button or disclosure.
 
 ## Motion
 
@@ -414,12 +410,8 @@ the marks; pick the correct scheme instead.
   canonical tokens and then `primitives.css`; the package has no global body or page
   stylesheet.
 - Dependency paths resolve through Mix, including pinned isolated checkouts.
-- For a standalone Docker context, run `mix regent_ui.stage` from the consumer’s `platform/`
-  directory with `REGENT_UI_PATH` set to the selected shared UI checkout, copy the generated
-  `vendor/regent_ui` into the image and set `REGENT_UI_PATH` to that path in the image.
-  It requires the pinned snapshot and `REGENT_UI_REVISION`, verifies exported content,
-  and records revision plus SHA256 in `.regent-ui-generated`. Retain that build evidence.
-  Ignore staging/history outputs; this command packages local source and never deploys.
+- Release builds copy the resolved `regent_ui` source into the build context; the one method
+  is described under "Release builds" in [CONSUMERS.md](CONSUMERS.md).
 - The package requires LiveView 1.2, which every consumer locks. Verify representative
   consuming pages; do not upgrade frameworks incidentally.
 - Change shared token values at their source and regenerate the JSON/package mirrors.

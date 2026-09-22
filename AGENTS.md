@@ -42,8 +42,8 @@ Ash Template and KeyFleet platforms and the `elixir-utils/erc8004` components.
   buttons cut two corners. Only inert CSS skins clip; content, menus and focus rings never do.
   Flat, opaque surfaces with paired surface/ink roles; no glass, blur, glow, lift or idle motion.
 - Palette: preserve the eight brand/mode definitions (`platform`, `autolaunch`, `patchbay`,
-  `techtree` × `light`, `dark`) and the Patchbay `--pb-*` aliases. Status colors report state,
-  never identity.
+  `techtree` × `light`, `dark`). Shared CSS reads only the shared `--color-*` names. Status
+  colors report state, never identity.
 - Motion: transform and opacity only, plus the interaction-only primary/card sheen and the
   150ms outline transitions defined in `STYLE.md`. Reduced motion and forced colors are honored.
 - Keep examples public-safe: no private user data, billing data, wallet secrets or support details.

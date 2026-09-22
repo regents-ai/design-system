@@ -206,8 +206,7 @@ defmodule Regent.VisualContractTest do
 
     assert css =~ ".rg-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }"
 
-    assert css =~
-             ".rg-split, .rg-hero, .rg-feature-grid { grid-template-columns: minmax(0, 1fr); }"
+    assert css =~ ".rg-feature-grid { grid-template-columns: minmax(0, 1fr); }"
 
     [_, image] =
       Regex.run(

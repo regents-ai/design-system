@@ -211,9 +211,9 @@ with warnings as errors, verifies no unused dependency locks, checks formatting,
 the test suite with warnings as errors.
 
 The token verification only makes sense inside this repository checkout, where the root
-CSS sources and `scripts/` exist. A staged copy of the package (see `mix regent_ui.stage`)
+CSS sources and `scripts/` exist. The copy of `regent_ui` in an app's release build context
 has no sources, so `mix check` fails there rather than passing an unverified tree; run the
-check from this repository before staging.
+check from this repository before an app builds a release.
 
 ## Boundaries
 

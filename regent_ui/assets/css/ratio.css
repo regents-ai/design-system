@@ -1,8 +1,8 @@
 /* Read-only ratio sheet: local paired ink, no product state or interaction skin. */
 :where(.rg-ratio-card, .rg-ratio-card *, .rg-ratio-card::before, .rg-ratio-card::after) { box-sizing: border-box; }
 .rg-ratio-card {
-  --rg-ratio-fill: var(--pb-surface, var(--color-surface));
-  --rg-ratio-ink: var(--pb-text, var(--color-fg));
+  --rg-ratio-fill: var(--color-surface);
+  --rg-ratio-ink: var(--color-fg);
   --rg-ratio-rule: color-mix(in srgb, var(--rg-ratio-ink) 22%, var(--rg-ratio-fill));
   --rg-ratio-muted: color-mix(in srgb, var(--rg-ratio-ink) 76%, var(--rg-ratio-fill));
   /* The orange note remains readable on its tinted surface in all eight palettes. */

@@ -27,96 +27,72 @@ defmodule Regent.StructureShowcase do
       <label><input id="stress" type="checkbox" /> Long labels</label>
     </div>
     <.frame>
-      <.row class="rg-sheet-header">
-        <:rail_content>
-          <div class="showcase-brand-tab">REGENT / UI</div>
-        </:rail_content>
-        <header class="rg-sheet-nav">
-          <a href="#capabilities">Capabilities</a><a href="#details">Details</a>
-          <a href="#closing">Resources</a>
-          <span class="showcase-meta">STRUCTURAL EDITION / 01</span>
-        </header>
-      </.row>
       <.row>
-        <:rail_content>
-          <nav class="rg-rail-nav" aria-label="Sections">
-            <a href="#main" aria-current="location"><span>01</span> Overview</a>
-            <a href="#capabilities"><span>02</span> Capabilities</a>
-            <a href="#details"><span>03</span> Interface states</a>
-            <a href="#closing"><span>04</span> Resources</a>
-          </nav>
-        </:rail_content>
-        <main id="main" class="rg-hero">
-          <div class="rg-hero__copy">
-            <.section_bar>
-              <p class="rg-section-bar__label">A shared visual language</p>
-            </.section_bar>
-            <h1 class="rg-hero-title">One structure.<br />Room to build.</h1>
-            <p class="rg-hero-description">
-              Clear boundaries. Deliberate space. A common interface for four products,
-              without giving up what makes each one distinct.
+        <main id="main" class="rg-inset showcase-stack">
+          <.section_bar>
+            <p class="rg-section-bar__label">A shared visual language</p>
+          </.section_bar>
+          <h1 class="rg-hero-title">One structure.<br />Room to build.</h1>
+          <p>
+            Clear boundaries. Deliberate space. A common interface for four products,
+            without giving up what makes each one distinct.
+          </p>
+          <.button id="hero-action" data-scroll-to="capabilities">
+            <span
+              data-short="Explore the system"
+              data-long="Explore the shared structural design system and its accessible component states"
+            >
+              Explore the system
+            </span>
+          </.button>
+          <.disclosure id="principle-1" index="01" summary="Structure before decoration" open>
+            <p>
+              Shared edges carry the page. Fine rules separate meaningful regions; space stays inside them.
             </p>
-            <div class="rg-hero-actions">
-              <.button id="hero-action" data-scroll-to="capabilities">
-                <span
-                  data-short="Explore the system"
-                  data-long="Explore the shared structural design system and its accessible component states"
-                >
-                  Explore the system
-                </span>
-              </.button>
-            </div>
-            <.disclosure id="principle-1" index="01" summary="Structure before decoration" open>
-              <p>
-                Shared edges carry the page. Fine rules separate meaningful regions; space stays inside them.
-              </p>
-            </.disclosure>
-            <.disclosure id="principle-2" index="02" summary="One geometry, eight themes">
-              <p>
-                Surface and foreground always travel together. Product palettes stay independent of layout.
-              </p>
-            </.disclosure>
-            <.disclosure id="principle-3" index="03" summary="Details remain available">
-              <p>
-                Native disclosure keeps supporting content in the document. Errors and action outcomes stay visible.
-              </p>
-            </.disclosure>
-          </div>
-          <div class="rg-hero__figure">
-            <.technical_figure class="showcase-hero-figure rg-support-figure">
-              <svg
-                viewBox="0 0 320 440"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.2"
-                aria-hidden="true"
-              >
-                <path d="M160 24V416" stroke-dasharray="2 6" opacity=".4" />
-                <path d="M160 46 224 100 160 148 96 100Z M160 46V148 M96 100H224" />
-                <path d="M160 156 278 214 160 276 42 214Z" opacity=".4" />
-                <circle cx="160" cy="214" r="58" /><ellipse cx="160" cy="214" rx="58" ry="23" />
-                <path d="M160 292 235 332 160 372 85 332Z M85 332V350L160 390 235 350V332 M160 372V390" />
-                <path d="M160 100H284 M160 214H284 M160 332H284" opacity=".6" />
-                <circle
-                  :for={y <- [24, 100, 214, 332, 416]}
-                  cx="160"
-                  cy={y}
-                  r="3"
-                  fill="currentColor"
-                  stroke="none"
-                />
-              </svg>
-              <:caption>Illustration / boundaries, surfaces, connections</:caption>
-            </.technical_figure>
-          </div>
+          </.disclosure>
+          <.disclosure id="principle-2" index="02" summary="One geometry, eight themes">
+            <p>
+              Surface and foreground always travel together. Product palettes stay independent of layout.
+            </p>
+          </.disclosure>
+          <.disclosure id="principle-3" index="03" summary="Details remain available">
+            <p>
+              Native disclosure keeps supporting content in the document. Errors and action outcomes stay visible.
+            </p>
+          </.disclosure>
+          <.technical_figure class="showcase-hero-figure rg-support-figure">
+            <svg
+              viewBox="0 0 320 440"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.2"
+              aria-hidden="true"
+            >
+              <path d="M160 24V416" stroke-dasharray="2 6" opacity=".4" />
+              <path d="M160 46 224 100 160 148 96 100Z M160 46V148 M96 100H224" />
+              <path d="M160 156 278 214 160 276 42 214Z" opacity=".4" />
+              <circle cx="160" cy="214" r="58" /><ellipse cx="160" cy="214" rx="58" ry="23" />
+              <path d="M160 292 235 332 160 372 85 332Z M85 332V350L160 390 235 350V332 M160 372V390" />
+              <path d="M160 100H284 M160 214H284 M160 332H284" opacity=".6" />
+              <circle
+                :for={y <- [24, 100, 214, 332, 416]}
+                cx="160"
+                cy={y}
+                r="3"
+                fill="currentColor"
+                stroke="none"
+              />
+            </svg>
+            <:caption>Illustration / boundaries, surfaces, connections</:caption>
+          </.technical_figure>
         </main>
       </.row>
       <.row>
-        <section id="capabilities" class="rg-inset rg-section">
+        <section id="capabilities" class="rg-inset">
           <.section_bar class="rg-support-band">
             <h2 class="rg-section-bar__label">Capabilities</h2>
           </.section_bar>
-          <div class="rg-feature-grid rg-section__body">
+          <div class="rg-feature-grid">
             <.capability_card
               :for={{title, caption, kind, index} <- features()}
               title={title}
@@ -164,14 +140,14 @@ defmodule Regent.StructureShowcase do
         </section>
       </.row>
       <.row>
-        <section id="details" class="rg-inset rg-section">
+        <section id="details" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Interface states / interactive examples</h2>
           </.section_bar>
-          <div class="rg-split rg-section__body">
+          <div class="showcase-stack">
             <.panel id="overflow-panel" class="rg-support-panel">
               <div class="rg-panel__body showcase-stack">
-                <h3 class="rg-section-title">Space for the details.</h3>
+                <h3>Space for the details.</h3>
                 <p>These controls are local examples. They do not submit data or connect a wallet.</p>
                 <.field
                   :let={field}
@@ -201,7 +177,7 @@ defmodule Regent.StructureShowcase do
                 <details class="showcase-menu">
                   <summary id="menu-trigger">Open overflow options</summary>
                   <div class="showcase-menu__items">
-                    <a href="#closing">Read the component guide</a>
+                    <a href="#main">Back to the overview</a>
                     <button type="button" id="menu-close">Close options</button>
                   </div>
                 </details>
@@ -232,41 +208,6 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
-      </.row>
-      <.row>
-        <footer id="closing" class="rg-closing rg-section">
-          <div class="rg-split">
-            <div>
-              <.section_bar>
-                <h2 class="rg-section-bar__label">Build with the shared system</h2>
-              </.section_bar>
-              <h3 class="rg-section-title rg-section__body">
-                Keep the palette.<br />Change the structure.
-              </h3>
-              <p>Presentation is shared. Product decisions remain yours.</p>
-              <.button data-scroll-to="main">Back to the overview</.button>
-            </div>
-            <nav class="rg-link-directory" aria-label="Resources">
-              <div>
-                <h3>Foundations</h3>
-                <a href="#main">Structure</a><a href="#capabilities">Geometry</a><a href="#details">Interaction</a>
-              </div>
-              <div>
-                <h3>Reference</h3>
-                <a href="/STYLE.md">Style guide</a><a href="/CONSUMERS.md">Consumption</a><a href="/design_system_tokens.json">Tokens</a>
-              </div>
-            </nav>
-          </div>
-          <.panel tone="accent" class="rg-wordmark-band">
-            <span class="showcase-meta">ONE SHARED SYSTEM / FOUR PRODUCT IDENTITIES</span>
-            <p class="rg-wordmark-band__name">Regent systems.</p>
-          </.panel>
-        </footer>
-      </.row>
-      <.row>
-        <div class="rg-legal">
-          <span>Regents / shared design language</span><span>Local showcase · illustrative content</span>
-        </div>
       </.row>
     </.frame>
     <dialog id="sample-dialog" aria-labelledby="dialog-title">
@@ -316,9 +257,6 @@ File.rm_rf!(Path.join(out, "css"))
 File.cp_r!(Path.join(root, "regent_ui/assets/css"), Path.join(out, "css"))
 File.mkdir_p!(Path.join(out, "fonts"))
 File.cp_r!(Path.join(root, "regent_ui/priv/static/fonts"), Path.join(out, "fonts/regent-ui"))
-
-for name <- ~w(STYLE.md MOBILE.md CONSUMERS.md design_system_tokens.json),
-    do: File.cp!(Path.join(root, name), Path.join(out, name))
 
 for name <- ~w(showcase.css showcase.js),
     do: File.cp!(Path.join(root, "scripts/" <> name), Path.join(out, name))

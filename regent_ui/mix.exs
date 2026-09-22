@@ -26,7 +26,7 @@ defmodule RegentUi.MixProject do
     [
       {:phoenix_live_view, "~> 1.2.0"},
       {:phoenix_html, "~> 4.1"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2", only: :test}
     ]
   end
 

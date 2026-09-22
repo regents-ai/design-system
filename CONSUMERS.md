@@ -51,7 +51,7 @@ Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` fr
 `geist-font/GeistPixel/webfonts/`; rerun `mix regent_ui.assets` and serve
 `/fonts/regent-ui/` from the consumer origin. Supporting figure/band/panel surface and ink
 roles expose the other three palette constants per brand; use their paired utility
-classes coherently, not random per-card accents. Patchbay aliases remain unchanged.
+classes coherently, not random per-card accents.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
 forced-colors appearance. Enabled primaries use a restrained orange 1.15s hover/focus
 area sheen; feature cards ripple a single band along their panel edge at 2.3s per turn. `--rg-shimmer-color` is an
@@ -102,6 +102,23 @@ are verified first; consumer rollout follows visual acceptance and each app's ow
 - Shared component edits reach every app that renders that component (see the Shared
   compositions table in `STYLE.md`). A shared token import does not turn a product-owned
   component into a shared one; avoid copying a component into an app to recolor it.
+
+## Release builds
+
+There is one way to get `regent_ui` into an app's release image: copy the source the app
+already resolves into the build context, laid out as it is in the workspace.
+
+1. A release script assembles one context directory holding the app's checkout as
+   `platform/` and the resolved package (`REGENT_UI_PATH`, otherwise
+   `$REGENT_DEPS_ROOT/design-system/regent_ui`) as `design-system/regent_ui/`, leaving out
+   `.git`, `_build/`, `deps/` and `node_modules/`.
+2. The Dockerfile copies `design-system/regent_ui` to `/workspace/design-system/regent_ui`,
+   builds from `/workspace/platform` and sets `REGENT_DEPS_ROOT=/workspace`, so Mix resolves
+   the same path dependency inside the image as in the workspace.
+
+Regents is the reference: `platform/scripts/build-release-context.sh` and
+`platform/Dockerfile`. Nothing is copied into the app's own tree, so there is no `vendor/`
+copy to ignore.
 
 ## Reproduce the build
 

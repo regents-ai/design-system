@@ -4,19 +4,19 @@
 
 /* Opt-in primitives: no body reset, product shell, or global color replacement. */
 :where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure) {
-  --rg-p-text: var(--rg-local-ink, var(--pb-text, var(--color-fg, inherit)));
-  --rg-p-muted: var(--rg-local-ink, var(--pb-text, var(--color-fg-muted, currentColor)));
-  --rg-p-surface: var(--rg-local-fill, var(--pb-surface, var(--color-surface, transparent)));
+  --rg-p-text: var(--rg-local-ink, var(--color-fg, inherit));
+  --rg-p-muted: var(--rg-local-ink, var(--color-fg-muted, currentColor));
+  --rg-p-surface: var(--rg-local-fill, var(--color-surface, transparent));
   /* Essential controls need stronger boundaries than decorative page hairlines. */
-  --rg-p-border: var(--rg-local-rule, var(--pb-line, var(--color-border, currentColor)));
+  --rg-p-border: var(--rg-local-rule, var(--color-border, currentColor));
   --rg-p-control-border: color-mix(in srgb, var(--rg-p-text) 65%, var(--rg-p-surface));
   /* An action that cannot run right now fills inert gray instead of a dimmed accent. */
   --rg-p-disabled-fill: color-mix(in srgb, var(--rg-p-text) 22%, var(--rg-p-surface));
-  --rg-p-accent: var(--pb-accent, var(--color-accent, currentColor));
-  --rg-p-on-accent: var(--pb-accent-ink, var(--color-fg-on-accent, var(--color-bg, Canvas)));
-  --rg-p-error: var(--pb-bad, var(--color-error, currentColor));
-  --rg-p-success: var(--pb-good, var(--color-success, currentColor));
-  --rg-p-warning: var(--pb-accent, var(--color-warning, currentColor));
+  --rg-p-accent: var(--color-accent, currentColor);
+  --rg-p-on-accent: var(--color-fg-on-accent, var(--color-bg, Canvas));
+  --rg-p-error: var(--color-error, currentColor);
+  --rg-p-success: var(--color-success, currentColor);
+  --rg-p-warning: var(--color-warning, currentColor);
   font-family: var(--font-family-ui, inherit); font-size: inherit; line-height: 1.5;
   color: var(--rg-p-text); box-sizing: border-box;
 }
@@ -107,12 +107,12 @@
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
 }
 .rg-field [aria-invalid="true"] { border-width: 2px; border-color: var(--rg-p-text); }
-.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-error))); }
+.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--rg-local-ink, var(--rg-p-error)); }
 .rg-muted { color: var(--rg-p-muted, inherit); }
 .rg-status { display: inline-flex; width: fit-content; padding: var(--space-0) var(--space-1); border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
-.rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-error))); }
-.rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-success))); }
-.rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--rg-local-ink, var(--pb-text, var(--rg-p-warning))); }
+.rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--rg-local-ink, var(--rg-p-error)); }
+.rg-tone--success { --rg-p-tone: var(--rg-p-success); color: var(--rg-local-ink, var(--rg-p-success)); }
+.rg-tone--warning { --rg-p-tone: var(--rg-p-warning); color: var(--rg-local-ink, var(--rg-p-warning)); }
 .rg-notice { padding: var(--container-padding); border-inline-start: 3px solid var(--rg-p-tone, currentColor); background: var(--rg-p-surface); overflow-wrap: anywhere; }
 .rg-empty { display: grid; gap: var(--space-2); padding: var(--container-padding); text-align: start; }
 .rg-empty-title { margin: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
