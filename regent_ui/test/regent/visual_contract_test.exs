@@ -34,7 +34,7 @@ defmodule Regent.VisualContractTest do
     for {brand, light, dark} <- [
           {"platform", "#F6F4EA", "#0B0B0B"},
           {"autolaunch", "#E5E3D2", "#0E0E0E"},
-          {"patchbay", "#F6F4EA", "#0F0F10"},
+          {"patchbay", "#E5E3D2", "#0F0F10"},
           {"techtree", "#F6F4EA", "#161616"}
         ],
         {mode, ground} <- [{"light", light}, {"dark", dark}] do

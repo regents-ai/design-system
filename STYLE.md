@@ -38,6 +38,8 @@ The approved September 5 palettes use distinct light and dark surfaces. Regents
 emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powder
 blue. Exact values come from the supplied `site color palettes/` images and are
 implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
+Patchbay light is the exception to its image: a Platinum ground, Powder Blue surfaces,
+a Tangerine action colour and Charcoal ink and panels.
 
 Page background SVGs are retired; the package ships no background component and no
 background images. The eight source assets stay in `site svg backgrounds/` for potential

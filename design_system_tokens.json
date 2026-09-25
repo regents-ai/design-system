@@ -236,23 +236,23 @@
     },
     ":root[data-brand=\"patchbay\"][data-theme=\"light\"]": {
       "--brand-accent": "#FF5B19",
-      "--color-bg": "#F6F4EA",
-      "--color-surface": "#FFFFFF",
-      "--color-surface-elevated": "#FFFFFF",
-      "--color-border": "#DAD8C7",
+      "--color-bg": "#E5E3D2",
+      "--color-surface": "#AECACD",
+      "--color-surface-elevated": "#AECACD",
+      "--color-border": "color-mix(in srgb, var(--color-fg) 28%, var(--color-bg))",
       "--color-fg": "#161616",
-      "--color-fg-muted": "color-mix(in srgb, var(--color-fg) 65%, var(--color-bg))",
-      "--color-accent": "#E5E3D2",
-      "--color-primary-shade": "#CFCDBB",
-      "--color-accent-secondary": "#FF5B19",
+      "--color-fg-muted": "color-mix(in srgb, var(--color-fg) 75%, var(--color-bg))",
+      "--color-accent": "#FF5B19",
+      "--color-primary-shade": "#E6450E",
+      "--color-accent-secondary": "#161616",
       "--color-fg-on-accent": "#161616",
       "--color-focus": "#A33208",
       "--color-link": "#161616",
       "--color-muted": "var(--color-fg-muted)",
-      "--color-success": "#145C3B",
-      "--color-error": "#9C2525",
-      "--color-warning": "#754600",
-      "--color-info": "#365D62"
+      "--color-success": "#124F33",
+      "--color-error": "#8A1F1F",
+      "--color-warning": "#6A3F00",
+      "--color-info": "#2C4E52"
     }
   }
 }
