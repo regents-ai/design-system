@@ -24,6 +24,41 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
+  attr :text, :string, required: true, doc: "What the button copies."
+  attr :variant, :string, default: "secondary", values: ~w(primary secondary quiet)
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @doc """
+  A button that copies `text`. The application registers the `CopyText` hook,
+  which copies on press and sets `data-copy-state` to `copied` or `failed` for
+  a moment. The button then shows "Copied" or "Couldn't copy" in place of its
+  label, at the label's widest, and the polite status after it says the same
+  for screen readers.
+  """
+  def copy_button(assigns) do
+    ~H"""
+    <.button
+      id={@id}
+      variant={@variant}
+      class={["rg-copy", @class]}
+      phx-hook="CopyText"
+      data-copy-text={@text}
+      data-copy-status={"#{@id}-status"}
+      {@rest}
+    >
+      <span class="rg-copy__words">
+        <span class="rg-copy__idle">{render_slot(@inner_block)}</span>
+        <span class="rg-copy__copied">Copied</span>
+        <span class="rg-copy__failed">Couldn't copy</span>
+      </span>
+    </.button>
+    <span id={"#{@id}-status"} class="rg-copy__status" role="status" phx-update="ignore"></span>
+    """
+  end
+
+  attr :id, :string, required: true
   attr :label, :string, required: true
   attr :errors, :list, default: []
   attr :class, :any, default: nil

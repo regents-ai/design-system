@@ -222,6 +222,7 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | Component | Purpose | Used by |
 | --- | --- | --- |
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
+| `Regent.Primitives.copy_button` | Copies a value and says "Copied" (or "Couldn't copy") on the button and to screen readers | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and KeyFleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and KeyFleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |

@@ -71,4 +71,24 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Transaction reverted"
     assert html =~ ~s(href="/new")
   end
+
+  test "copy buttons name their text, their hook and a polite status that patches leave alone" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.copy_button id="wallet-copy" text="0xabc">Copy</.copy_button>
+      """)
+
+    assert html =~ ~s(id="wallet-copy")
+    assert html =~ ~s(phx-hook="CopyText")
+    assert html =~ ~s(data-copy-text="0xabc")
+    assert html =~ ~s(data-copy-status="wallet-copy-status")
+
+    assert html =~
+             ~s(<span id="wallet-copy-status" class="rg-copy__status" role="status" phx-update="ignore">)
+
+    assert html =~ "Copied"
+    assert html =~ "Couldn't copy"
+  end
 end

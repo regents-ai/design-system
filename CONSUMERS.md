@@ -20,6 +20,14 @@ event data attribute. Theme persistence and events stay product-owned; update
 ARIA/title and `[data-theme-toggle-state]`, never the button's entire text content.
 Its styles ship through `primitives.css`; reduced motion disables rotation.
 
+`Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, the `text` to
+copy and the label as its slot. The product registers a LiveView hook named `CopyText`
+(the template's `assets/js/hooks/copy_text.ts`) that copies `data-copy-text`, sets
+`data-copy-state` to `copied` or `failed` for a moment, writes the same word into the
+element named by `data-copy-status`, and sets the state again after each patch. The
+component renders that element as a polite `role="status"` beside the button with
+`phx-update="ignore"`, so a patch never clears what it said.
+
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
 product's hook attribute and the content that sits on the face; the component renders the
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
