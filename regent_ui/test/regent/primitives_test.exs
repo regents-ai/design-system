@@ -90,5 +90,19 @@ defmodule Regent.PrimitivesTest do
 
     assert html =~ "Copied"
     assert html =~ "Couldn't copy"
+    refute html =~ "Selected"
+  end
+
+  test "a copy button with a target names it and can say the text was selected instead" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.copy_button id="prompt-copy" target="prompt">Copy prompt</.copy_button>
+      """)
+
+    assert html =~ ~s(data-copy-target="prompt")
+    refute html =~ "data-copy-text"
+    assert html =~ "Selected"
   end
 end

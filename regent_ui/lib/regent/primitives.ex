@@ -24,19 +24,31 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
-  attr :text, :string, required: true, doc: "What the button copies."
+  attr :text, :string, default: nil, doc: "What the button copies. Give this or `target`."
+
+  attr :target, :string,
+    default: nil,
+    doc: "The id of the element on the page whose text the button copies. Give this or `text`."
+
   attr :variant, :string, default: "secondary", values: ~w(primary secondary quiet)
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   @doc """
-  A button that copies `text`. The application registers the `CopyText` hook,
-  which copies on press and sets `data-copy-state` to `copied` or `failed` for
-  a moment. The button then shows "Copied" or "Couldn't copy" in place of its
-  label, at the label's widest, and the polite status after it says the same
-  for screen readers.
+  A button that copies `text`, or the text of the element whose id is `target`.
+  The application registers the `CopyText` hook, which copies on press and sets
+  `data-copy-state` to `copied`, `selected` or `failed` for a moment. The button
+  then shows "Copied", "Selected" or "Couldn't copy" in place of its label, at
+  the label's widest, and the polite status after it says the same for screen
+  readers. When the browser refuses the clipboard, a `target` is selected for the
+  person to copy themselves; a `text` cannot be, so the button says it failed.
   """
+  def copy_button(%{text: text, target: target} = assigns)
+      when is_nil(text) == is_nil(target) do
+    raise ArgumentError, "copy_button #{assigns.id} takes exactly one of text or target"
+  end
+
   def copy_button(assigns) do
     ~H"""
     <.button
@@ -45,12 +57,14 @@ defmodule Regent.Primitives do
       class={["rg-copy", @class]}
       phx-hook="CopyText"
       data-copy-text={@text}
+      data-copy-target={@target}
       data-copy-status={"#{@id}-status"}
       {@rest}
     >
       <span class="rg-copy__words">
         <span class="rg-copy__idle">{render_slot(@inner_block)}</span>
         <span class="rg-copy__copied">Copied</span>
+        <span :if={@target} class="rg-copy__selected">Selected</span>
         <span class="rg-copy__failed">Couldn't copy</span>
       </span>
     </.button>

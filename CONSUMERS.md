@@ -20,10 +20,12 @@ event data attribute. Theme persistence and events stay product-owned; update
 ARIA/title and `[data-theme-toggle-state]`, never the button's entire text content.
 Its styles ship through `primitives.css`; reduced motion disables rotation.
 
-`Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, the `text` to
-copy and the label as its slot. The product registers a LiveView hook named `CopyText`
-(the template's `assets/js/hooks/copy_text.ts`) that copies `data-copy-text`, sets
-`data-copy-state` to `copied` or `failed` for a moment, writes the same word into the
+`Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, either the
+`text` to copy or the `target` id of an element on the page whose text it copies, and
+the label as its slot. The product registers a LiveView hook named `CopyText` (the
+template's `assets/js/hooks/copy_text.ts`) that copies `data-copy-text` or the target's
+text, selects the target instead when the browser refuses the clipboard, sets
+`data-copy-state` to `copied`, `selected` or `failed` for a moment, writes the same word into the
 element named by `data-copy-status`, and sets the state again after each patch. The
 component renders that element as a polite `role="status"` beside the button with
 `phx-update="ignore"`, so a patch never clears what it said.
