@@ -72,7 +72,7 @@ defmodule Regent.PrimitivesTest do
     assert html =~ ~s(href="/new")
   end
 
-  test "copy buttons name their text, their hook and a polite status that patches leave alone" do
+  test "copy buttons name their text, keep their copy state through patches and have a polite status that patches leave alone" do
     assigns = %{}
 
     html =
@@ -81,7 +81,9 @@ defmodule Regent.PrimitivesTest do
       """)
 
     assert html =~ ~s(id="wallet-copy")
-    assert html =~ ~s(phx-hook="CopyText")
+    refute html =~ "phx-hook"
+    assert html =~ "ignore_attrs"
+    assert html =~ "data-copy-state"
     assert html =~ ~s(data-copy-text="0xabc")
     assert html =~ ~s(data-copy-status="wallet-copy-status")
 

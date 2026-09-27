@@ -22,13 +22,15 @@ Its styles ship through `primitives.css`; reduced motion disables rotation.
 
 `Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, either the
 `text` to copy or the `target` id of an element on the page whose text it copies, and
-the label as its slot. The product registers a LiveView hook named `CopyText` (the
-template's `assets/js/hooks/copy_text.ts`) that copies `data-copy-text` or the target's
+the label as its slot. It works on every page, LiveView or controller-rendered: the
+product calls the template's `installCopyButtons()` (`assets/js/copy_buttons.ts`) once
+from `app.ts`, and that one page-wide listener copies `data-copy-text` or the target's
 text, selects the target instead when the browser refuses the clipboard, sets
-`data-copy-state` to `copied`, `selected` or `failed` for a moment, writes the same word into the
-element named by `data-copy-status`, and sets the state again after each patch. The
-component renders that element as a polite `role="status"` beside the button with
-`phx-update="ignore"`, so a patch never clears what it said.
+`data-copy-state` to `copied`, `selected` or `failed` for a moment and writes the same
+word into the element named by `data-copy-status`. The button tells LiveView to leave
+`data-copy-state` alone on patches (`JS.ignore_attributes`), and the component renders
+the status element as a polite `role="status"` with `phx-update="ignore"`, so a patch
+never clears either. There is no copy hook.
 
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
 product's hook attribute and the content that sits on the face; the component renders the

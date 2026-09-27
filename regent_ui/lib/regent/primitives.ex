@@ -36,9 +36,11 @@ defmodule Regent.Primitives do
   slot :inner_block, required: true
 
   @doc """
-  A button that copies `text`, or the text of the element whose id is `target`.
-  The application registers the `CopyText` hook, which copies on press and sets
-  `data-copy-state` to `copied`, `selected` or `failed` for a moment. The button
+  A button that copies `text`, or the text of the element whose id is `target`,
+  on any page, live or not. The application installs the template's page-wide copy
+  listener once, which copies on press and sets `data-copy-state` to `copied`,
+  `selected` or `failed` for a moment; a live page keeps that state through its
+  updates. The button
   then shows "Copied", "Selected" or "Couldn't copy" in place of its label, at
   the label's widest, and the polite status after it says the same for screen
   readers. When the browser refuses the clipboard, a `target` is selected for the
@@ -55,7 +57,7 @@ defmodule Regent.Primitives do
       id={@id}
       variant={@variant}
       class={["rg-copy", @class]}
-      phx-hook="CopyText"
+      phx-mounted={Phoenix.LiveView.JS.ignore_attributes(["data-copy-state"])}
       data-copy-text={@text}
       data-copy-target={@target}
       data-copy-status={"#{@id}-status"}
