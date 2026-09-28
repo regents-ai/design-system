@@ -1,13 +1,15 @@
 defmodule Regent.Profile do
   @moduledoc """
-  Shared private-profile presentation. Products supply authorized data and wire
-  the `data-profile-*` controls to their own identity adapter. No authentication,
+  Shared private-profile presentation. Products supply the page's signed-in state
+  and authorized data, and wire the `data-profile-*` controls to their own identity
+  adapter. A signed-in visitor is never shown "Sign in". No authentication,
   persistence or wallet action runs in this component.
   """
   use Phoenix.Component
   import Regent.Primitives
 
   attr :id, :string, default: "regent-profile"
+  attr :signed_in, :boolean, required: true, doc: "whether the page's visitor is signed in"
   attr :profile, :map, default: nil
   attr :class, :any, default: nil
 
@@ -18,17 +20,19 @@ defmodule Regent.Profile do
         <h1>Profile</h1>
       </header>
       <p data-profile-status role="status" aria-live="polite">Loading profile…</p>
-      <.button data-profile-action="sign-in" hidden={!is_nil(@profile)}>Sign in</.button>
-      <.button data-profile-action="create" hidden>Create shared profile</.button>
+      <.button :if={!@signed_in} data-profile-action="sign-in">Sign in</.button>
+      <.button data-profile-action="create" hidden>Set up your profile</.button>
       <form data-profile-form hidden={is_nil(@profile)}>
         <.field :let={field} id={"#{@id}-name"} label="Name">
           <input
             id={field.id}
             name="display_name"
+            aria-describedby={field.described_by}
             value={@profile && @profile.display_name}
             maxlength="80"
             autocomplete="nickname"
           />
+          <:hint>Your name on every Regent site. Your agents can change it too.</:hint>
         </.field>
         <.field :let={field} id={"#{@id}-wallet"} label="Wallet">
           <select id={field.id} name="wallet_address">
@@ -52,18 +56,17 @@ defmodule Regent.Profile do
         </div>
         <div class="rg-profile-actions">
           <.button type="submit">Save</.button>
-          <.button variant="quiet" data-profile-action="sync">Refresh verification</.button>
+          <.button variant="quiet" data-profile-action="sync">Refresh linked accounts</.button>
         </div>
         <.disclosure id={"#{@id}-details"} summary="Account details">
           <dl>
-            <dt>Profile ID</dt>
+            <dt>Profile reference</dt>
             <dd data-profile-id>{@profile && @profile.profile_id}</dd>
-            <dt>Evidence</dt>
-            <dd data-profile-evidence>Last synchronized Privy proof</dd>
+            <dt>Linked accounts last checked</dt>
+            <dd data-profile-checked></dd>
           </dl>
-          <p>One profile across the Regent sites.</p>
           <p>
-            Wallet selection here does not change an existing payment destination or send a transaction.
+            Choosing a wallet here does not change where payments go or send a transaction.
           </p>
         </.disclosure>
       </form>

@@ -18,6 +18,7 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
   const find = selector => root.querySelector(selector);
   const status = find("[data-profile-status]");
   const form = find("[data-profile-form]");
+  const signInButton = find("[data-profile-action=sign-in]"); // Rendered only for a signed-out visitor.
   let generation = 0;
   let displayed = null;
   const message = text => { status.textContent = text; };
@@ -33,13 +34,13 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
     find("[data-profile-x]").textContent = "Not connected";
     find("[data-profile-x-verified]").hidden = true;
     find("select[name=wallet_address]").replaceChildren();
-    find("[data-profile-evidence]").textContent = "";
+    find("[data-profile-checked]").textContent = "";
   };
 
   const render = value => {
     displayed = value;
     form.hidden = false;
-    find("[data-profile-action=sign-in]").hidden = true;
+    if (signInButton) signInButton.hidden = true;
     find("[data-profile-action=create]").hidden = true;
     form.elements.namedItem("display_name").value = value.display_name ?? "";
     const select = form.elements.namedItem("wallet_address");
@@ -61,8 +62,7 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
     find("[data-profile-x]").textContent = value.x?.username ? `@${value.x.username}` : value.x ? "Connected" : "Not connected";
     find("[data-profile-x-verified]").hidden = !value.x?.verified;
     find("[data-profile-id]").textContent = value.profile_id;
-    find("[data-profile-evidence]").textContent =
-      `Last synchronized ${new Date(value.evidence_issued_at * 1000).toLocaleString()}`;
+    find("[data-profile-checked]").textContent = new Date(value.evidence_issued_at * 1000).toLocaleString();
   };
 
   const run = async (operation, input = {}) => {
@@ -81,19 +81,23 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
         const code = result.error?.code ?? result.body?.error?.code;
         if (["authentication_required", "identity_changed"].includes(code)) {
           hidePrivate();
-          find("[data-profile-action=sign-in]").hidden = false;
           find("[data-profile-action=create]").hidden = true;
-          message("Sign in to view your profile.");
+          if (signInButton) {
+            signInButton.hidden = false;
+            message("Sign in to see your profile.");
+          } else {
+            message("Your profile could not be loaded. Refresh the page.");
+          }
         } else if (code === "profile_not_created") {
           hidePrivate();
-          find("[data-profile-action=sign-in]").hidden = true;
+          if (signInButton) signInButton.hidden = true;
           find("[data-profile-action=create]").hidden = false;
-          message("Your shared profile is ready to create.");
+          message("You don't have a profile yet.");
         } else {
           message(result.error?.outcome_unknown
             ? "The result is uncertain. Refresh before trying again."
             : code === "identity_evidence_conflict"
-              ? "Verification changed. Refresh and try again."
+              ? "Your linked accounts changed. Refresh and try again."
               : "Profile could not be updated. Try again.");
         }
       }
@@ -110,7 +114,7 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
     try {
       if (action === "sign-in") await signIn();
       if (action === "link-x") {
-        message("Complete verification in the account window.");
+        message("Finish connecting X in the window that opened.");
         await linkX(); // Opening the provider is not proof of verification.
       }
       if (action === "sync" || action === "create") await run("sync");

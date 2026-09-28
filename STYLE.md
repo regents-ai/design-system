@@ -239,7 +239,7 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
 | `Regent.Blog.not_found` | Missing-post page | Regents, Autolaunch, Patchbay, Techtree |
-| `Regent.Profile.panel` | Shared private-profile form | Autolaunch, Patchbay, Techtree |
+| `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, KeyFleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, KeyFleet |
