@@ -243,7 +243,7 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, KeyFleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, KeyFleet |
-| `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Ash Template, KeyFleet |
+| `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |
 
 The foil's WebGPU renderer is `regent_ui/assets/js/holographic_card.mjs`; `Regent.Blog`'s
 contract and content ownership boundary is in [BLOG.md](BLOG.md); `Regent.AgentMetadata`

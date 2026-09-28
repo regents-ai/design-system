@@ -12,8 +12,8 @@ defmodule Regent.AgentMetadata do
   attr :site_name, :string, required: true
   attr :site_type, :string, default: nil, values: [nil, "content", "business", "app", "store"]
   attr :image, :string, required: true
-  attr :image_width, :integer, required: true
-  attr :image_height, :integer, required: true
+  attr :image_width, :integer, default: nil
+  attr :image_height, :integer, default: nil
   attr :image_alt, :string, required: true
   attr :twitter_site, :string, default: nil
   attr :markdown, :boolean, default: false
@@ -58,8 +58,8 @@ defmodule Regent.AgentMetadata do
     <meta property="og:description" content={@description} />
     <meta property="og:url" content={@canonical} />
     <meta property="og:image" content={@image} />
-    <meta property="og:image:width" content={@image_width} />
-    <meta property="og:image:height" content={@image_height} />
+    <meta :if={@image_width} property="og:image:width" content={@image_width} />
+    <meta :if={@image_height} property="og:image:height" content={@image_height} />
     <meta property="og:image:alt" content={@image_alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta :if={@twitter_site} name="twitter:site" content={@twitter_site} />

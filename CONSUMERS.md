@@ -6,7 +6,10 @@
 including JSON-LD encoding with script-safe escaping. Call it once from the root
 layout, replacing the corresponding local tags; keep the document title, viewport,
 CSRF, provider configuration and styles/scripts product-owned. Pass truthful brand,
-canonical URL, image dimensions/alt and a structured-data map. Optional guide,
+canonical URL, share image and alt, and a structured-data map. `image_width` and
+`image_height` are optional and print only when set: give them for a picture whose
+size is known, such as the site's own, and leave them out for a page's own picture,
+such as a blog post's cover. Optional guide,
 sitemap and OpenAPI links must name real routes. `markdown` defaults to false:
 enable it only for the product's explicit supported-page set. Site classification
 is optional and caller-owned, never selected to inflate a score. `nonce` supports
