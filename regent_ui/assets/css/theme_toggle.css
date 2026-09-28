@@ -20,7 +20,10 @@
   --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--rg-p-accent));
   --prism-face: color-mix(in oklch, var(--rg-p-accent) 28%, transparent);
 }
-html[data-theme="dark"] .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-powder-blue); }
+:root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-powder-blue); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-tangerine-tango); }
+}
 .rg-theme-toggle .theme-toggle__laser {
   position: absolute;
   inset-block: .125rem;
@@ -61,6 +64,14 @@ html[data-theme="dark"] .rg-theme-toggle .theme-toggle__stage { --prism-laser: v
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+/* The button's name is the one sentence for the theme showing. Dark shows when chosen, or
+   when no choice is made and the device does not ask for light. */
+:root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle__state--light,
+:root[data-theme="light"] .rg-theme-toggle__state--dark { display: none; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-theme-toggle__state--light { display: block; }
+  :root:not([data-theme]) .rg-theme-toggle__state--dark { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
   .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 14s linear infinite; }

@@ -17,11 +17,23 @@ the consumer's existing CSP without weakening it. This presentation-only compone
 does not implement HTTP negotiation, authentication, routes or WebMCP registration.
 The workspace `ash-webmcp` skill governs staged adoption and those separate owners.
 
+The page's theme is `data-theme` on the root: `light` or `dark` once the person has
+chosen on the site, and no `data-theme` at all until they do. With no choice the page
+is dark, or light when their device asks for light (`prefers-color-scheme: light`);
+the tokens and shared CSS follow the device by themselves. A product's own CSS that
+changes with the theme covers the no-choice case the same way (see the last block of
+`design_system_tokens.css`), or uses `light-dark()`, which follows the root's
+`color-scheme`.
+
 `Regent.ThemeToggle.button` owns the shared animated prism/laser theme icon used
-by all six product platforms. Pass `id`, `theme` (`light`/`dark`) and the product's
-event data attribute. Theme persistence and events stay product-owned; update
-ARIA/title and `[data-theme-toggle-state]`, never the button's entire text content.
-Its styles ship through `primitives.css`; reduced motion disables rotation.
+by all six product platforms. Pass `id` and the product's event data attribute. The
+button always names the theme that is showing: it carries one sentence for each
+theme and the shared CSS shows the right one, so the server needs no theme and
+product script never rewrites its words, ARIA or title. Theme persistence and the
+click stay product-owned: the click sets `data-theme` and the saved choice to the
+opposite of the theme showing, which is `data-theme` when set, otherwise `light`
+when `matchMedia("(prefers-color-scheme: light)")` matches and `dark` when it does
+not. Its styles ship through `primitives.css`; reduced motion disables rotation.
 
 `Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, either the
 `text` to copy or the `target` id of an element on the page whose text it copies, and

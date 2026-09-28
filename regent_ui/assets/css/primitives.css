@@ -65,9 +65,16 @@
     transition: background-size 150ms ease, --rg-button-edge-ink 150ms ease,
       --rg-button-cut-ink 150ms ease, --rg-button-cut-gap 150ms ease;
   }
-  :root[data-theme="dark"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+  /* Dark marks when dark is showing: chosen, or no choice made and the device does not ask for light. */
+  :root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
     --rg-button-edge-ink: var(--palette-powder-blue, #aecacd);
     --rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
+      --rg-button-edge-ink: var(--rg-button-active-border);
+      --rg-button-cut-ink: transparent;
+    }
   }
   :root .rg-button.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):disabled::after {
     --rg-button-edge-ink: var(--rg-p-disabled-fill);

@@ -18,12 +18,20 @@ const packagedCssPath = join(root, "regent_ui", "assets", "css", "design_system_
 
 const css = readFileSync(cssPath, "utf8");
 
+// The JSON keeps each explicit selector, such as :root[data-brand="x"][data-theme="dark"].
+// The no-choice selectors (:not([data-theme]) and the prefers-color-scheme copies) repeat
+// those values and are left out.
 const selectors = {};
-const blockPattern = /(^|\n)(:root(?:\[[^\]]+\])*)\s*\{([\s\S]*?)\n\}/g;
+const blockPattern = /(^|\n)(:root[^{]*?)\s*\{([\s\S]*?)\n\}/g;
+const explicitSelector = /^:root(?:\[[^\]]+\])*$/;
 
 for (const match of css.matchAll(blockPattern)) {
-  const selector = match[2];
-  const body = match[3];
+  for (const selector of match[2].split(",").map(item => item.trim()).filter(item => explicitSelector.test(item))) {
+    addBlock(selector, match[3]);
+  }
+}
+
+function addBlock(selector, body) {
   const vars = {};
 
   const declPattern = /(--[\w-]+)\s*:\s*([\s\S]*?);/g;

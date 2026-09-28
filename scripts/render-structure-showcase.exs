@@ -22,8 +22,10 @@ defmodule Regent.StructureShowcase do
         <select id="theme">
           <option>light</option>
           <option>dark</option>
+          <option value="system">device setting</option>
         </select>
       </.field>
+      <Regent.ThemeToggle.button id="showcase-theme-toggle" />
       <label><input id="stress" type="checkbox" /> Long labels</label>
     </div>
     <.frame>

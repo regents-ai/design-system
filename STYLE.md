@@ -34,7 +34,9 @@ identity color.
 | Platinum | `--palette-platinum` | `#E5E3D2` |
 | Powder Blue | `--palette-powder-blue` | `#AECACD` |
 
-The approved September 5 palettes use distinct light and dark surfaces. Regents
+The approved September 5 palettes use distinct light and dark surfaces. Dark is the
+default: until a person chooses on the site, pages are dark unless their device asks
+for light (founder, 2026-09-28). A choice made on the site always wins. Regents
 emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powder
 blue. Exact values come from the supplied `site color palettes/` images and are
 implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
@@ -240,7 +242,7 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
 | `Regent.Blog.not_found` | Missing-post page | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
-| `Regent.ThemeToggle.button` | Prism/laser light-dark control | All six apps |
+| `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, KeyFleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, KeyFleet |
 | `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |

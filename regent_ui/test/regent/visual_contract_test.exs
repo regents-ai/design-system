@@ -43,6 +43,31 @@ defmodule Regent.VisualContractTest do
     end
   end
 
+  test "with no choice made on the site, each product is dark unless the device asks for light" do
+    css = File.read!(Path.join(@repository_root, "design_system_tokens.css"))
+
+    selectors =
+      File.read!(Path.join(@repository_root, "design_system_tokens.json"))
+      |> Jason.decode!()
+      |> Map.fetch!("selectors")
+
+    [_, device_light] = String.split(css, "@media (prefers-color-scheme: light) {\n")
+
+    for brand <- ~w(platform autolaunch patchbay techtree) do
+      no_choice = ~s|:root[data-brand="#{brand}"]:not([data-theme])|
+      assert css =~ ~s(:root[data-brand="#{brand}"][data-theme="dark"],\n#{no_choice} {)
+
+      [_, body] = Regex.run(~r/#{Regex.escape(no_choice)} \{([^}]*)\}/, device_light)
+
+      copy =
+        Regex.scan(~r/(--[\w-]+)\s*:\s*([^;]+);/, body, capture: :all_but_first)
+        |> Map.new(fn [name, value] -> {name, value} end)
+
+      assert body =~ "color-scheme: light;"
+      assert copy == selectors[~s(:root[data-brand="#{brand}"][data-theme="light"])]
+    end
+  end
+
   test "every declared font is packaged at its same-origin URL with only 400 and 600 weights" do
     css = File.read!(Path.join(@repository_root, "design_system_tokens.css"))
     faces = Regex.scan(~r/@font-face \{([^}]*)\}/, css, capture: :all_but_first)
