@@ -30,7 +30,6 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
     name.value = "";
     name.defaultValue = "";
     form.hidden = true;
-    find("[data-profile-id]").textContent = "";
     find("[data-profile-x]").textContent = "Not connected";
     find("[data-profile-x-verified]").hidden = true;
     find("select[name=wallet_address]").replaceChildren();
@@ -61,7 +60,6 @@ function bindProfile(root, {profile, signIn, linkX, onIdentityChange}) {
       ? "Selected wallet is no longer verified. Choose a linked wallet." : "";
     find("[data-profile-x]").textContent = value.x?.username ? `@${value.x.username}` : value.x ? "Connected" : "Not connected";
     find("[data-profile-x-verified]").hidden = !value.x?.verified;
-    find("[data-profile-id]").textContent = value.profile_id;
     find("[data-profile-checked]").textContent = new Date(value.evidence_issued_at * 1000).toLocaleString();
   };
 

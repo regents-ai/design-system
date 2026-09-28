@@ -60,8 +60,6 @@ defmodule Regent.Profile do
         </div>
         <.disclosure id={"#{@id}-details"} summary="Account details">
           <dl>
-            <dt>Profile reference</dt>
-            <dd data-profile-id>{@profile && @profile.profile_id}</dd>
             <dt>Linked accounts last checked</dt>
             <dd data-profile-checked></dd>
           </dl>
