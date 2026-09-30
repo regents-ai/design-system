@@ -1,6 +1,7 @@
 /* Shared Techtree prism motif. The application owns theme state and events.
-   The button is a borderless 2.75rem press target; the prism shows as a 1.75rem square in
-   its middle, so it sits beside header icons at their height instead of filling the bar.
+   The button is a borderless 2.75rem press target; the prism shows as a 1.75rem box with
+   slightly rounded corners in its middle, so it sits beside header icons at their height
+   instead of filling the bar.
    Pointing at it shows the other theme's colours, which is what a press switches to. */
 .rg-theme-toggle.rg-button {
   width: 2.75rem;
@@ -19,6 +20,7 @@
   width: 1.75rem;
   height: 1.75rem;
   overflow: hidden;
+  border-radius: .25rem;
   background: var(--rg-p-surface);
   transform-style: preserve-3d;
   --prism-laser: var(--palette-tangerine-tango);
