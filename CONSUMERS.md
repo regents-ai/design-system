@@ -51,6 +51,16 @@ word into the element named by `data-copy-status`. The button tells LiveView to 
 the status element as a polite `role="status"` with `phx-update="ignore"`, so a patch
 never clears either. There is no copy hook.
 
+`Regent.Discussion` owns the forum thread's look, from Patchbay's discussion page:
+`thread` (title, Solved mark, reply, view and like counts, Compact replies switch),
+`post` (opening post or reply: picture slot, name, time, words, `solved` and `actions`
+slots), `solved`, `replies` (filters as `%{label, href, current}`, the list and its empty
+line), `like` and `label`. The product owns the records, routes, sign-in, pictures, the
+words for times, and the like press: pass `phx-click` and its values to `like`, or wrap it
+in the product's form with `type="submit"`. Import `discussion.mjs` (copied by
+`mix regent_ui.assets`) once to remember the Compact replies choice; the switch works
+without it and survives LiveView patches.
+
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
 product's hook attribute and the content that sits on the face; the component renders the
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.

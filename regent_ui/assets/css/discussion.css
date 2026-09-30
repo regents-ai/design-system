@@ -1,0 +1,114 @@
+/* A forum thread (Regent.Discussion), from Patchbay's discussion page: one column,
+   a picture beside each name, a thin rule between posts. Ink and paper follow the
+   product palette; a given like is tangerine in both themes. */
+.rg-discussion {
+  --rg-discussion-rule: var(--rg-page-rule);
+  --rg-discussion-good: var(--color-success);
+  --rg-discussion-sunk: color-mix(in srgb, var(--color-fg) 5%, transparent);
+  max-inline-size: 78ch; margin-inline: auto; padding: 1.75rem clamp(1rem, 3vw, 2rem);
+  font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere;
+}
+.rg-discussion :where(h1, h2, h3) { font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
+.rg-discussion h1 { display: flex; align-items: baseline; gap: .5rem; margin: 0 0 .5rem; font-size: clamp(1.35rem, 1.7vw, 1.85rem); line-height: 1.3; }
+.rg-discussion h2 { font-size: 1.0625rem; line-height: 1.4; }
+.rg-discussion__icon { inline-size: 1em; block-size: 1em; flex: none; }
+.rg-discussion__hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.rg-discussion__solved-mark { display: inline-flex; flex: none; color: var(--rg-discussion-good); font-size: .85em; }
+.rg-discussion__solved-mark .rg-discussion__icon, .rg-discussion__solved h2 .rg-discussion__icon { stroke-width: 2.25; }
+.rg-discussion__context, .rg-discussion__caption { color: var(--rg-page-muted); font-size: .8125rem; line-height: 1.6; }
+.rg-discussion__context { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0; }
+
+/* Under the title: replies, views, likes, last activity, and the compact switch. */
+.rg-discussion__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem 1rem; margin: 1rem 0 0; padding: .25rem 0; border-block: 1px solid var(--rg-discussion-rule); color: var(--rg-page-muted); font-size: .75rem; }
+.rg-discussion__stats { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin: 0; }
+.rg-discussion__stats > span { display: inline-flex; align-items: center; gap: .3rem; }
+.rg-discussion__compact label { display: inline-flex; align-items: center; gap: .45rem; min-block-size: 2.75rem; color: var(--rg-page-ink); cursor: pointer; }
+.rg-discussion__compact input { inline-size: 1rem; block-size: 1rem; margin: 0; accent-color: var(--palette-tangerine-tango); }
+
+/* A post: the picture in its own column, a rule above every reply. */
+.rg-discussion__post { display: grid; grid-template-columns: 3rem minmax(0, 1fr); align-items: start; gap: 1rem; padding: 1.25rem 0 .5rem; }
+.rg-discussion__avatar { inline-size: 3rem; block-size: 3rem; }
+.rg-discussion__avatar > * { display: block; inline-size: 100%; block-size: 100%; }
+.rg-discussion__replies .rg-discussion__avatar { margin-block-start: .5rem; }
+.rg-discussion__main { display: flex; flex-direction: column; min-inline-size: 0; padding-block-start: .5rem; border-block-start: 1px solid var(--rg-discussion-rule); }
+.rg-discussion__post--opening .rg-discussion__main { padding-block-start: 0; border-block-start: 0; }
+.rg-discussion__post-head { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; min-block-size: 1.5rem; }
+.rg-discussion__author { font-weight: 600; text-decoration: none; }
+a.rg-discussion__author:hover { text-decoration: underline; }
+.rg-discussion__when { margin-inline-start: auto; color: var(--rg-page-muted); font-size: .75rem; text-decoration: none; }
+.rg-discussion__when:hover { color: var(--rg-page-ink); text-decoration: underline; }
+.rg-discussion__body { margin: .5rem 0 0; }
+.rg-discussion__body > :first-child { margin-block-start: 0; }
+.rg-discussion__body > :last-child { margin-block-end: 0; }
+.rg-discussion__body blockquote { margin: .75rem 0; padding: .5rem .875rem; border-inline-start: 3px solid var(--rg-discussion-rule); background: var(--rg-discussion-sunk); }
+.rg-discussion__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .5rem; margin: .5rem 0 0; }
+.rg-discussion__label { display: inline-flex; align-items: center; gap: .3rem; padding: .15rem .5rem; border: 1px solid var(--rg-page-ink); font: 600 .6875rem/1.4 var(--font-family-mono); }
+.rg-discussion__label--good { background: var(--rg-page-ink); color: var(--color-bg); }
+
+/* The marked answer has a green rule down its left; the site's own replies sit on
+   darker paper; both keep room inside the colour. */
+.rg-discussion__post--solution, .rg-discussion__post--house { padding-inline: .75rem; }
+.rg-discussion__post--solution { box-shadow: inset 3px 0 var(--rg-discussion-good); }
+.rg-discussion__post--house { background: var(--rg-discussion-sunk); }
+
+/* The Solved box under the question: who answered, when, the opening lines fading out. */
+.rg-discussion__solved { margin: 1rem 0 0; padding: .875rem 1rem; border: 1px solid var(--rg-discussion-rule); border-inline-start: 3px solid var(--rg-discussion-good); background: var(--color-surface); }
+.rg-discussion__solved h2 { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--rg-discussion-good); }
+.rg-discussion__solved-by { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .35rem 0 0; color: var(--rg-page-muted); font-size: .8125rem; }
+.rg-discussion__solved-by a { color: var(--rg-page-ink); font-weight: 600; }
+.rg-discussion__excerpt { max-block-size: 7.5em; overflow: hidden; margin: .5rem 0 0; font-size: .9375rem; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+.rg-discussion__excerpt > :first-child { margin-block-start: 0; }
+.rg-discussion__solved .rg-discussion__caption { margin: .25rem 0 0; }
+.rg-discussion__solved > a { display: inline-block; margin-block-start: .25rem; font-size: .8125rem; font-weight: 600; }
+
+/* Replies, their filters and the empty line. */
+.rg-discussion__conversation { margin-block-start: 1.5rem; }
+.rg-discussion__conversation > h2 { margin: 0; }
+.rg-discussion__conversation > h2 span { color: var(--rg-page-muted); }
+.rg-discussion__filters { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: .75rem 0 0; border-block-end: 1px solid var(--rg-discussion-rule); }
+.rg-discussion__filters a { display: inline-flex; align-items: center; min-block-size: 2.75rem; color: var(--rg-page-muted); font-size: .75rem; text-decoration: none; }
+.rg-discussion__filters a[aria-current="page"] { color: var(--rg-page-ink); box-shadow: inset 0 -2px var(--palette-tangerine-tango); }
+.rg-discussion__replies { display: grid; gap: 0; margin: .5rem 0 0; padding: 0; list-style: none; }
+
+/* A heart and its count; a like the reader gave is filled in. */
+.rg-discussion__like { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .15rem; }
+.rg-discussion__heart { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: .25rem .6rem; border: 0; background: transparent; color: var(--rg-page-muted); font: 600 .8125rem var(--font-family-ui); cursor: pointer; }
+.rg-discussion__heart .rg-discussion__icon { font-size: 1.05rem; }
+.rg-discussion__heart[aria-pressed="true"] { color: var(--palette-tangerine-tango); }
+.rg-discussion__heart[aria-pressed="true"] .rg-discussion__icon { fill: currentColor; }
+.rg-discussion__liked-by { color: var(--rg-page-muted); font-size: .8125rem; }
+.rg-discussion__liked-by a { color: inherit; font-weight: 600; }
+@media (hover: hover) and (pointer: fine) {
+  .rg-discussion__heart:hover { background: var(--rg-discussion-sunk); color: var(--rg-page-ink); }
+  .rg-discussion__heart[aria-pressed="true"]:hover { color: var(--palette-tangerine-tango); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rg-discussion__heart { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .rg-discussion__heart:active { transform: scale(0.97); }
+}
+@media (forced-colors: active) {
+  .rg-discussion__heart[aria-pressed="true"] { color: Highlight; }
+}
+
+/* Compact replies: no pictures, small close-set plain-text type, headings and code
+   marked the way Markdown writes them, so a long conversation fits a screen or two. */
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__post { grid-template-columns: minmax(0, 1fr); padding-block: .5rem 0; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies :is(.rg-discussion__avatar, .rg-discussion__body img) { display: none; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__main { padding-block-start: .35rem; font: .75rem/1.55 var(--font-family-mono); }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__post-head { min-block-size: 0; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body { margin-block-start: .2rem; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body :is(p, ul, ol, pre, blockquote, table) { margin-block: .2rem; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body :is(h1, h2, h3, h4, h5, h6) { margin: .35rem 0 .1rem; font: 600 .75rem/1.55 var(--font-family-mono); }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body h1::before { content: "# "; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body h2::before { content: "## "; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body :is(h3, h4, h5, h6)::before { content: "### "; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body :not(pre) > code::before,
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body :not(pre) > code::after { content: "`"; color: var(--rg-page-muted); }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body pre { max-block-size: 10rem; overflow: auto; font-size: .6875rem; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__body blockquote { padding: .15rem .6rem; }
+.rg-discussion:has([data-rg-discussion-compact]:checked) .rg-discussion__replies .rg-discussion__actions { margin-block-start: 0; }
+
+@media (max-width: 36rem) {
+  .rg-discussion__post { grid-template-columns: 2.25rem minmax(0, 1fr); gap: .75rem; }
+  .rg-discussion__avatar { inline-size: 2.25rem; block-size: 2.25rem; }
+}
