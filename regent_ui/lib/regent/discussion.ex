@@ -51,7 +51,7 @@ defmodule Regent.Discussion do
       data-regent-discussion
     >
       <header class="rg-discussion__head">
-        <h1 id={"#{@id}-title"}>
+        <h1 id={"#{@id}-title"} class="rg-discussion__title">
           <span :if={@solved} class="rg-discussion__solved-mark" title="Solved">
             <.icon name={:check} /><span class="rg-discussion__hidden">Solved: </span>
           </span>{@title}
@@ -158,7 +158,7 @@ defmodule Regent.Discussion do
   def solved(assigns) do
     ~H"""
     <section id={@id} class="rg-discussion__solved" aria-labelledby={"#{@id}-title"}>
-      <h2 id={"#{@id}-title"}><.icon name={:check} /> Solved</h2>
+      <h2 id={"#{@id}-title"} class="rg-discussion__solved-title"><.icon name={:check} /> Solved</h2>
       <p class="rg-discussion__solved-by">
         Answer by <a :if={@author_href} href={@author_href}><bdi>{@author}</bdi></a>
         <bdi :if={!@author_href}>{@author}</bdi>
@@ -187,7 +187,9 @@ defmodule Regent.Discussion do
   def replies(assigns) do
     ~H"""
     <section id={@id} class="rg-discussion__conversation" aria-labelledby={"#{@id}-title"}>
-      <h2 id={"#{@id}-title"}>Replies <span>{@count}</span></h2>
+      <h2 id={"#{@id}-title"} class="rg-discussion__replies-title">
+        Replies <span>{@count}</span>
+      </h2>
       <nav :if={@filters != []} class="rg-discussion__filters" aria-label="Filter replies">
         <a :for={filter <- @filters} href={filter.href} aria-current={filter.current && "page"}>
           {filter.label}

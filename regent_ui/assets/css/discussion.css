@@ -8,13 +8,13 @@
   max-inline-size: 78ch; margin-inline: auto; padding: 1.75rem clamp(1rem, 3vw, 2rem);
   font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere;
 }
-.rg-discussion :where(h1, h2, h3) { font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
-.rg-discussion h1 { display: flex; align-items: baseline; gap: .5rem; margin: 0 0 .5rem; font-size: clamp(1.35rem, 1.7vw, 1.85rem); line-height: 1.3; }
-.rg-discussion h2 { font-size: 1.0625rem; line-height: 1.4; }
+.rg-discussion :is(.rg-discussion__title, .rg-discussion__solved-title, .rg-discussion__replies-title) { font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; letter-spacing: normal; }
+.rg-discussion .rg-discussion__title { display: flex; align-items: baseline; gap: .5rem; margin: 0 0 .5rem; font-size: clamp(1.35rem, 1.7vw, 1.85rem); line-height: 1.3; }
+.rg-discussion :is(.rg-discussion__solved-title, .rg-discussion__replies-title) { font-size: 1.0625rem; line-height: 1.4; }
 .rg-discussion__icon { inline-size: 1em; block-size: 1em; flex: none; }
 .rg-discussion__hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.rg-discussion__solved-mark { display: inline-flex; flex: none; color: var(--rg-discussion-good); font-size: .85em; }
-.rg-discussion__solved-mark .rg-discussion__icon, .rg-discussion__solved h2 .rg-discussion__icon { stroke-width: 2.25; }
+.rg-discussion .rg-discussion__solved-mark { display: inline-flex; flex: none; color: var(--rg-discussion-good); font-size: .85em; }
+.rg-discussion__solved-mark .rg-discussion__icon, .rg-discussion__solved-title .rg-discussion__icon { stroke-width: 2.25; }
 .rg-discussion__context, .rg-discussion__caption { color: var(--rg-page-muted); font-size: .8125rem; line-height: 1.6; }
 .rg-discussion__context { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; margin: 0; }
 
@@ -53,7 +53,7 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 
 /* The Solved box under the question: who answered, when, the opening lines fading out. */
 .rg-discussion__solved { margin: 1rem 0 0; padding: .875rem 1rem; border: 1px solid var(--rg-discussion-rule); border-inline-start: 3px solid var(--rg-discussion-good); background: var(--color-surface); }
-.rg-discussion__solved h2 { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--rg-discussion-good); }
+.rg-discussion .rg-discussion__solved-title { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--rg-discussion-good); }
 .rg-discussion__solved-by { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .35rem 0 0; color: var(--rg-page-muted); font-size: .8125rem; }
 .rg-discussion__solved-by a { color: var(--rg-page-ink); font-weight: 600; }
 .rg-discussion__excerpt { max-block-size: 7.5em; overflow: hidden; margin: .5rem 0 0; font-size: .9375rem; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
@@ -63,8 +63,8 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 
 /* Replies, their filters and the empty line. */
 .rg-discussion__conversation { margin-block-start: 1.5rem; }
-.rg-discussion__conversation > h2 { margin: 0; }
-.rg-discussion__conversation > h2 span { color: var(--rg-page-muted); }
+.rg-discussion .rg-discussion__replies-title { margin: 0; }
+.rg-discussion__replies-title span { color: var(--rg-page-muted); }
 .rg-discussion__filters { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: .75rem 0 0; border-block-end: 1px solid var(--rg-discussion-rule); }
 .rg-discussion__filters a { display: inline-flex; align-items: center; min-block-size: 2.75rem; color: var(--rg-page-muted); font-size: .75rem; text-decoration: none; }
 .rg-discussion__filters a[aria-current="page"] { color: var(--rg-page-ink); box-shadow: inset 0 -2px var(--palette-tangerine-tango); }
