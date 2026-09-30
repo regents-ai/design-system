@@ -241,11 +241,12 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
 | `Regent.Blog.not_found` | Missing-post page | Regents, Autolaunch, Patchbay, Techtree |
-| `Regent.Discussion.thread` | Forum thread: title, Solved mark, counts and the Compact replies switch | Ash Template (showcase) |
+| `Regent.Discussion.thread` | Forum thread: title, Solved mark, counts and the Compact replies switch | Ash Template (showcase), Patchbay |
 | `Regent.Discussion.post` | Opening post or reply with picture, name, time, words and actions | Ash Template (showcase) |
 | `Regent.Discussion.solved` | Solved box quoting the marked answer under the opening post | Ash Template (showcase) |
 | `Regent.Discussion.replies` | Replies heading, filters, list and empty line | Ash Template (showcase) |
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
+| `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |

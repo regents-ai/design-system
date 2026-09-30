@@ -22,7 +22,8 @@ defmodule Regent.Discussion do
       </Regent.Discussion.thread>
 
   `discussion.mjs` (copied by `mix regent_ui.assets`) remembers the Compact replies
-  choice in the browser; the switch works without it.
+  choice in the browser; the switch works without it. `posts/1` lists posts outside a
+  thread, such as one person's replies across threads.
   """
   use Phoenix.Component
 
@@ -39,6 +40,10 @@ defmodule Regent.Discussion do
     doc: "The product's words for it, e.g. \"2 hours ago\"."
 
   attr :class, :any, default: nil
+
+  attr :rest, :global,
+    doc: "The product's own attributes on the thread, such as a hook or data mark."
+
   slot :context, doc: "A line under the title: where it was asked, its kind."
   slot :inner_block, required: true
 
@@ -49,6 +54,7 @@ defmodule Regent.Discussion do
       class={["rg-discussion rg-sheet", @class]}
       aria-labelledby={"#{@id}-title"}
       data-regent-discussion
+      {@rest}
     >
       <header class="rg-discussion__head">
         <h1 id={"#{@id}-title"} class="rg-discussion__title">
@@ -201,6 +207,19 @@ defmodule Regent.Discussion do
       <p :if={@shown == 0} class="rg-discussion__caption">{@empty}</p>
       {render_slot(@footer)}
     </section>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true, doc: "The posts, each a `post/1`."
+
+  def posts(assigns) do
+    ~H"""
+    <div id={@id} class={["rg-discussion rg-sheet", @class]} data-regent-discussion {@rest}>
+      <ol class="rg-discussion__replies" role="list">{render_slot(@inner_block)}</ol>
+    </div>
     """
   end
 

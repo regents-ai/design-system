@@ -55,7 +55,9 @@ never clears either. There is no copy hook.
 `thread` (title, Solved mark, reply, view and like counts, Compact replies switch),
 `post` (opening post or reply: picture slot, name, time, words, `solved` and `actions`
 slots), `solved`, `replies` (filters as `%{label, href, current}`, the list and its empty
-line), `like` and `label`. The product owns the records, routes, sign-in, pictures, the
+line), `like`, `label`, and `posts` (posts listed outside a thread, such as one person's
+replies across threads). `thread` and `posts` take the product's own attributes. The
+product owns the records, routes, sign-in, pictures, the
 words for times, and the like press: pass `phx-click` and its values to `like`, or wrap it
 in the product's form with `type="submit"`. Import `discussion.mjs` (copied by
 `mix regent_ui.assets`) once to remember the Compact replies choice; the switch works
