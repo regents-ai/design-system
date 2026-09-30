@@ -72,7 +72,7 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 
 /* A heart and its count; a like the reader gave is filled in. */
 .rg-discussion__like { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .15rem; }
-.rg-discussion__heart { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: .25rem .6rem; border: 0; background: transparent; color: var(--rg-page-muted); font: 600 .8125rem var(--font-family-ui); cursor: pointer; }
+.rg-discussion .rg-discussion__heart { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: .25rem .6rem; border: 0; background: transparent; color: var(--rg-page-muted); font: 600 .8125rem var(--font-family-ui); cursor: pointer; }
 .rg-discussion__heart .rg-discussion__icon { font-size: 1.05rem; }
 .rg-discussion__heart[aria-pressed="true"] { color: var(--palette-tangerine-tango); }
 .rg-discussion__heart[aria-pressed="true"] .rg-discussion__icon { fill: currentColor; }
