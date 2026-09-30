@@ -34,6 +34,9 @@ click stay product-owned: the click sets `data-theme` and the saved choice to th
 opposite of the theme showing, which is `data-theme` when set, otherwise `light`
 when `matchMedia("(prefers-color-scheme: light)")` matches and `dark` when it does
 not. Its styles ship through `primitives.css`; reduced motion disables rotation.
+The button is a borderless 2.75rem press target with the prism as a 1.75rem square in its
+middle, and pointing at it shows the other theme's colours. A product header gives it
+no border, background or height of its own; it only sets the gap to the icons beside it.
 
 `Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, either the
 `text` to copy or the `target` id of an element on the page whose text it copies, and

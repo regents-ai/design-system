@@ -1,4 +1,7 @@
-/* Shared Techtree prism motif. The application owns theme state and events. */
+/* Shared Techtree prism motif. The application owns theme state and events.
+   The button is a borderless 2.75rem press target; the prism shows as a 1.75rem square in
+   its middle, so it sits beside header icons at their height instead of filling the bar.
+   Pointing at it shows the other theme's colours, which is what a press switches to. */
 .rg-theme-toggle.rg-button {
   width: 2.75rem;
   height: 2.75rem;
@@ -6,23 +9,33 @@
   min-height: 2.75rem;
   flex: 0 0 auto;
   padding: 0;
+  border: 0;
+  background: transparent;
   perspective: 5rem;
 }
 .rg-theme-toggle .theme-toggle__stage {
   position: relative;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 1.75rem;
+  height: 1.75rem;
   overflow: hidden;
   background: var(--rg-p-surface);
   transform-style: preserve-3d;
   --prism-laser: var(--palette-tangerine-tango);
+  --prism-laser-next: var(--palette-powder-blue);
   --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--rg-p-accent));
+  --prism-edge-next: color-mix(in oklch, var(--rg-p-surface) 55%, var(--rg-p-accent));
   --prism-face: color-mix(in oklch, var(--rg-p-accent) 28%, transparent);
 }
-:root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-powder-blue); }
+:root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle .theme-toggle__stage {
+  --prism-laser: var(--palette-powder-blue);
+  --prism-laser-next: var(--palette-tangerine-tango);
+}
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .rg-theme-toggle .theme-toggle__stage { --prism-laser: var(--palette-tangerine-tango); }
+  :root:not([data-theme]) .rg-theme-toggle .theme-toggle__stage {
+    --prism-laser: var(--palette-tangerine-tango);
+    --prism-laser-next: var(--palette-powder-blue);
+  }
 }
 .rg-theme-toggle .theme-toggle__laser {
   position: absolute;
@@ -73,8 +86,19 @@
   :root:not([data-theme]) .rg-theme-toggle__state--light { display: block; }
   :root:not([data-theme]) .rg-theme-toggle__state--dark { display: none; }
 }
+@media (hover: hover) and (forced-colors: none) {
+  .rg-theme-toggle:hover .theme-toggle__stage { background: var(--rg-p-text); }
+  .rg-theme-toggle:hover .theme-toggle__laser {
+    background: var(--prism-laser-next);
+    box-shadow: 0 0 .3rem var(--prism-laser-next);
+  }
+  .rg-theme-toggle:hover .theme-toggle__face { border-color: var(--prism-edge-next); }
+}
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
   .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 14s linear infinite; }
+  .rg-theme-toggle :is(.theme-toggle__stage, .theme-toggle__laser, .theme-toggle__face) {
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  }
 }
 @keyframes regent-theme-prism {
   from { transform: translate3d(-50%, -50%, 0) rotateX(-19deg) rotateY(28deg); }
