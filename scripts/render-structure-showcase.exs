@@ -60,6 +60,10 @@ defmodule Regent.StructureShowcase do
           <.disclosure id="principle-3" index="03" summary="Details remain available">
             <p>
               Native disclosure keeps supporting content in the document. Errors and action outcomes stay visible.
+              Few words on screen
+              <.tip id="principle-3-tip" label="About few words">
+                Explanations wait in a tip like this one, a dropdown or their own dialog.
+              </.tip>
             </p>
           </.disclosure>
           <.technical_figure class="showcase-hero-figure rg-support-figure">

@@ -152,6 +152,38 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
+  attr :label, :string, required: true, doc: ~s(The button's name, such as "About approving".)
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @doc """
+  A small "i" button that opens a short explanation beside it, so the words a
+  person rarely needs stay off the screen. The explanation stays in the page and
+  describes the button, so screen readers and agents read it without opening it.
+  The browser's own popover opens it on a click or tap and closes it on Escape
+  or a press elsewhere; no JavaScript.
+  """
+  def tip(assigns) do
+    ~H"""
+    <span class={["rg-tip", @class]} {@rest}>
+      <button
+        type="button"
+        class="rg-tip-button"
+        popovertarget={@id}
+        aria-label={@label}
+        aria-describedby={@id}
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.5" /><path d="M8 7.25v4M8 4.75v.01" />
+        </svg>
+      </button>
+      <span id={@id} class="rg-tip-body" popover role="tooltip">{render_slot(@inner_block)}</span>
+    </span>
+    """
+  end
+
+  attr :id, :string, required: true
   attr :summary, :string, required: true
   attr :index, :string, default: nil
   attr :open, :boolean, default: false

@@ -39,6 +39,21 @@ defmodule Regent.PrimitivesTest do
     assert html =~ ">01</span>"
   end
 
+  test "a tip keeps its words in the page and names them as the button's description" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.tip id="about-approve" label="About approving">Lets REGENT staking take the USDC.</.tip>
+      """)
+
+    assert html =~ ~s(popovertarget="about-approve")
+    assert html =~ ~s(aria-describedby="about-approve")
+    assert html =~ ~s(aria-label="About approving")
+    assert html =~ ~s(id="about-approve" class="rg-tip-body" popover)
+    assert html =~ "Lets REGENT staking take the USDC."
+  end
+
   test "buttons pass application events through without implicit disabling or submission" do
     assigns = %{}
 

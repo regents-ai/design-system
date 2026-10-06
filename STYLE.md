@@ -326,15 +326,34 @@ Each product chooses document scrolling, panels, rails and navigation to fit its
 There is no required universal shell or landing-page theme. Shared components do not own
 routes, authentication, persistence, wallet admission, or product workflows.
 
-Keep pages text-light: show the object, current state and primary action first. Put supporting
-explanation, provenance and technical detail behind a labeled chevron using native details
-and summary. Keep errors, transaction outcomes, costs and information needed to choose an
-action visible. Collapsed content stays rendered. Authorized agent tools return the same
-complete detail independently of visual expansion; DOM hiding is not access control.
-
 Shared CSS reads only the shared `--color-*` semantic tokens; a product's own color names stay
 in that product's CSS. Do not recolor a product or replace its layout merely to consume a
 common button or disclosure.
+
+### Few words on screen
+
+Design like a Coinbase deposit dialog (founder, 2026-10-06): the figures, the input, the
+choice and the button, and nothing else until someone asks. Too much text is a defect.
+
+- **What stays visible:** a short title or the figure that matters, labels of one to
+  three words, the amount and what it costs or buys, the primary action, and anything
+  needed to choose it. Errors, refusals and outcomes stay visible too, one short line
+  each. A disabled button keeps a reason of a few words beside it.
+- **What goes one level down:** how something works, why a step exists, timings,
+  provenance, technical detail and reassurance. Put a short explanation in a tip
+  (`Regent.Primitives.tip`: an "i" beside the label that opens a popover), a longer one
+  in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
+  or page behind a link. Legal and policy text are links at the foot, never paragraphs.
+- **Show state with marks, not sentences:** a tick that draws in when a step is done, a
+  dashed box while it waits, the changed number flashing. Words appear only when
+  something went wrong or the person must act.
+- **One idea per line.** No paragraph under a button, no sentence that repeats a label,
+  no "you can" or "this lets you" lines. Cut every word a person would not miss.
+
+Hidden words stay in the page. A tip's words describe its button and a closed dropdown's
+body stays rendered, so screen readers and agents read the full detail without opening
+anything. Authorized agent tools return the same detail independently of visual
+expansion; DOM hiding is not access control.
 
 ## Motion
 

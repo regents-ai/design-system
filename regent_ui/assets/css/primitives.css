@@ -3,7 +3,7 @@
 @import "./holographic_card.css";
 
 /* Opt-in primitives: no body reset, product shell, or global color replacement. */
-:where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure) {
+:where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure, .rg-tip) {
   --rg-p-text: var(--rg-local-ink, var(--color-fg, inherit));
   --rg-p-muted: var(--rg-local-ink, var(--color-fg-muted, currentColor));
   --rg-p-surface: var(--rg-local-fill, var(--color-surface, transparent));
@@ -147,6 +147,30 @@
 .rg-disclosure-body { padding-block: var(--space-1) var(--space-3); overflow-wrap: anywhere; }
 .rg-disclosure--indexed > .rg-disclosure-body { padding-inline-start: calc(2rem + var(--space-2)); }
 :where(.rg-notice, .rg-disclosure-body, .rg-profile) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* A tip: an "i" beside a label that opens a few words in the browser's popover.
+   Two classes deep, so a site's plain-button look does not reach it. */
+.rg-tip { display: inline-flex; vertical-align: middle; }
+.rg-tip .rg-tip-button {
+  display: inline-grid; place-items: center; inline-size: 2rem; block-size: 2rem;
+  min-width: 0; min-height: 0; margin: -0.25rem; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--rg-p-muted); cursor: pointer;
+}
+.rg-tip .rg-tip-button svg { inline-size: 1.125rem; block-size: 1.125rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.rg-tip .rg-tip-button:focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 0; }
+@media (hover: hover) { .rg-tip .rg-tip-button:hover { color: var(--rg-p-text); } }
+@media (pointer: coarse) { .rg-tip .rg-tip-button { inline-size: 2.75rem; block-size: 2.75rem; margin: -0.625rem; } }
+.rg-tip-body {
+  max-inline-size: min(18rem, calc(100vw - 2rem)); margin: auto; padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--rg-p-border); border-radius: var(--radius);
+  background: var(--color-surface-elevated, var(--rg-p-surface)); color: var(--rg-p-text);
+  font-family: var(--font-family-ui, inherit); font-size: .875rem; font-weight: 400; line-height: 1.4;
+  text-align: start; overflow-wrap: anywhere;
+}
+/* Beside its button where the browser can place it there; centred otherwise. */
+@supports (position-area: block-end) {
+  .rg-tip-body { inset: auto; margin: var(--space-1) 0; position-area: block-end span-inline-end; position-try-fallbacks: flip-block, flip-inline; }
+}
+
 /* Product-wide reduced-motion rules may use !important durations. */
 .rg-disclosure > summary:focus-visible .rg-chevron { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .rg-chevron { transition: none !important; } }
