@@ -160,6 +160,7 @@
 @media (hover: hover) { .rg-tip .rg-tip-button:hover { color: var(--rg-p-text); } }
 @media (pointer: coarse) { .rg-tip .rg-tip-button { inline-size: 2.75rem; block-size: 2.75rem; margin: -0.625rem; } }
 .rg-tip-body {
+  inline-size: max-content;
   max-inline-size: min(18rem, calc(100vw - 2rem)); margin: auto; padding: var(--space-1) var(--space-2);
   border: 1px solid var(--rg-p-border); border-radius: var(--radius);
   background: var(--color-surface-elevated, var(--rg-p-surface)); color: var(--rg-p-text);
