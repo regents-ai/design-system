@@ -370,6 +370,15 @@ line that one option uses and another does not keeps its space, unseen
 row sits after the rows in use, so the rest close up at the top and the empty space falls
 at the end. Check every option at desktop and phone width; the height must match.
 
+### Text never moves the boxes below it
+
+A line of text that shows in one state and not another — a tab's description, a hint, a
+status, an error — never pushes a card, list or panel below it up or down (founder,
+2026-10-07). Its line keeps its space in every state: give every option its own line, or
+keep the space with the line unseen (`visibility: hidden`) rather than adding and
+removing it. Switching tabs above a list must leave the list's top edge where it was.
+Check every state at desktop and phone width; the box below must not move.
+
 ## Motion
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
