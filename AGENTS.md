@@ -14,7 +14,7 @@ Repository ownership is documented below and in the local `repo.yaml`. Follow th
 
 This repo owns the shared Regent visual language: tokens, fonts, palettes, logos and the
 `regent_ui` Phoenix component package consumed by the Regents, Autolaunch, Patchbay, Techtree,
-Ash Template and KeyFleet platforms and the `elixir-utils/erc8004` components.
+Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
 
 ## Start here
 

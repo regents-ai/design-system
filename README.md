@@ -44,7 +44,7 @@ node scripts/generate-tokens-json.mjs
     patchbay                 broken-tool reports and bounded repairs
     techtree                 agent Skill improvement and shared evidence
     ash-template             quickstart monorepo: website, HTTP API and CLI
-    keyfleet                 KeyFleet website, HTTP API and CLI
+    keyfleet                 Keyfleet website, HTTP API and CLI
 
   shared libraries
     elixir-utils/erc8004     ERC-8004 components built on Regent.Structure.panel

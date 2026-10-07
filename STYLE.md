@@ -20,6 +20,12 @@ Regent is systematic restraint with a printed-machine character:
   micro-labels, mono readouts, halftone/print artwork, a flat saturated ground. The result
   should read like precision print on stock, not like a generic SaaS theme.
 
+### Product names
+
+Write each product's name exactly as its brand spells it: Regents, Autolaunch,
+Patchbay, Techtree and Keyfleet. Keyfleet has one capital letter, never
+"KeyFleet", in page text, menus, labels, documentation and code comments alike.
+
 ## Color
 
 ### Four colors carry everything
@@ -218,24 +224,24 @@ Patterns that generalize:
 This table is the complete public component catalog of `regent_ui/lib`. "Used by" is
 checked against each consumer's own source; "(showcase)" means only that app's component
 showcase page renders it. Consumers are Regents, Autolaunch, Patchbay, Techtree,
-Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
+Ash Template and Keyfleet (each `platform/`), plus the ERC-8004 components in
 `elixir-utils/erc8004`.
 
 | Component | Purpose | Used by |
 | --- | --- | --- |
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
 | `Regent.Primitives.copy_button` | Copies a value or an element's text and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
-| `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and KeyFleet (showcase) |
-| `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and KeyFleet (showcase) |
-| `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |
-| `Regent.Primitives.empty_state` | Titled empty result with an optional action | Patchbay; Regents, Ash Template and KeyFleet (showcase) |
-| `Regent.Primitives.disclosure` | Native details/summary with an optional index | Regents, Autolaunch, Patchbay, Techtree; Ash Template and KeyFleet (showcase) |
+| `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
+| `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
+| `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
+| `Regent.Primitives.empty_state` | Titled empty result with an optional action | Patchbay; Regents, Ash Template and Keyfleet (showcase) |
+| `Regent.Primitives.disclosure` | Native details/summary with an optional index | Regents, Autolaunch, Patchbay, Techtree; Ash Template and Keyfleet (showcase) |
 | `Regent.Structure.frame` | Ruled page frame | All six apps |
 | `Regent.Structure.row` | Row with the optional rail and main column | All six apps |
-| `Regent.Structure.section_bar` | Section heading bar with diamond and leader | Regents, Autolaunch, Techtree; Ash Template and KeyFleet (showcase) |
-| `Regent.Structure.panel` | Flat cut-corner panel, `surface` or `accent` | Regents, Autolaunch, Patchbay, Techtree, ERC-8004; Ash Template and KeyFleet (showcase) |
-| `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and KeyFleet (showcase) |
-| `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, KeyFleet |
+| `Regent.Structure.section_bar` | Section heading bar with diamond and leader | Regents, Autolaunch, Techtree; Ash Template and Keyfleet (showcase) |
+| `Regent.Structure.panel` | Flat cut-corner panel, `surface` or `accent` | Regents, Autolaunch, Patchbay, Techtree, ERC-8004; Ash Template and Keyfleet (showcase) |
+| `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and Keyfleet (showcase) |
+| `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, Keyfleet |
 | `Regent.Structure.ratio_card` | Read-only basis-point allocation sheet | Regents |
 | `Regent.Blog.gallery` | Blog index | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
@@ -250,9 +256,9 @@ Ash Template and KeyFleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
-| `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, KeyFleet |
-| `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, KeyFleet |
-| `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, KeyFleet |
+| `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
+| `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, Keyfleet |
+| `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
 
 The foil's WebGPU renderer is `regent_ui/assets/js/holographic_card.mjs`; `Regent.Discussion`
 remembers Compact replies with `discussion.mjs`; `Regent.Blog`'s
