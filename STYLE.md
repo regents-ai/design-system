@@ -355,6 +355,15 @@ body stays rendered, so screen readers and agents read the full detail without o
 anything. Authorized agent tools return the same detail independently of visual
 expansion; DOM hiding is not access control.
 
+### Choices never change the height
+
+Picking an option — a chain, a tab, a mode, a toggle — never makes a dialog, panel or card
+grow or shrink, and never moves what sits below it (founder, 2026-10-07). A row, button or
+line that one option uses and another does not keeps its space, unseen
+(`visibility: hidden`, made `inert`), rather than appearing and disappearing. An unused
+row sits after the rows in use, so the rest close up at the top and the empty space falls
+at the end. Check every option at desktop and phone width; the height must match.
+
 ## Motion
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
