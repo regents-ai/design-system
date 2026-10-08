@@ -1,21 +1,27 @@
 defmodule Regent.Blog do
-  @moduledoc "Stateless blog presentation. Supply validated RegentBlog catalog data; products own headers and routes."
+  @moduledoc """
+  Stateless blog presentation. Supply validated RegentBlog catalog data; products own
+  headers and routes. Each product names its page and its address, for example
+  `name="Articles" path="/articles"`.
+  """
   use Phoenix.Component
 
   attr :posts, :list, required: true
   attr :site, :string, required: true
+  attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
+  attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
 
   def gallery(assigns) do
     ~H"""
     <section class="rg-blog rg-sheet rg-blog--gallery" data-regent-blog aria-labelledby="blog-title">
       <header class="rg-blog__intro">
-        <p class="rg-blog__eyebrow">Blog</p>
+        <p class="rg-blog__eyebrow">{@name}</p>
         <h1 id="blog-title">Latest updates from {@site}.</h1>
       </header>
       <ol :if={@posts != []} class="rg-blog__grid" role="list">
         <li :for={post <- @posts}>
           <article class="rg-blog__card">
-            <a href={"/blog/#{post.slug}"} class="rg-blog__card-link">
+            <a href={"#{@path}/#{post.slug}"} class="rg-blog__card-link">
               <img
                 src={post.image}
                 alt={post.image_alt}
@@ -38,7 +44,7 @@ defmodule Regent.Blog do
         </li>
       </ol>
       <div :if={@posts == []} class="rg-blog__empty">
-        <h2>No posts yet.</h2>
+        <h2>Nothing here yet.</h2>
         <p>Updates will appear here, newest first.</p>
       </div>
     </section>
@@ -46,12 +52,14 @@ defmodule Regent.Blog do
   end
 
   attr :post, :map, required: true
+  attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
+  attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
 
   def article(assigns) do
     ~H"""
     <article class="rg-blog rg-sheet rg-blog--article" data-regent-blog aria-labelledby="blog-title">
       <header class="rg-blog__heading">
-        <a href="/blog" class="rg-blog__back">← All posts</a>
+        <a href={@path} class="rg-blog__back">← Back to {@name}</a>
         <h1 id="blog-title">{@post.title}</h1>
         <div class="rg-blog__byline">
           <span>{@post.author}</span>
@@ -82,7 +90,7 @@ defmodule Regent.Blog do
           </details>
           <div class="rg-blog__prose">{Phoenix.HTML.raw(@post.html)}</div>
           <footer class="rg-blog__article-footer">
-            <a href="/blog" class="rg-blog__back">← All posts</a>
+            <a href={@path} class="rg-blog__back">← Back to {@name}</a>
           </footer>
         </div>
       </div>
@@ -105,14 +113,17 @@ defmodule Regent.Blog do
     """
   end
 
+  attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
+  attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
+
   def not_found(assigns) do
     ~H"""
     <section class="rg-blog rg-sheet" aria-labelledby="blog-title">
       <header class="rg-blog__intro">
-        <p class="rg-blog__eyebrow">Blog · 404</p>
-        <h1 id="blog-title">Post not found.</h1>
-        <p>This post is not available.</p>
-        <a href="/blog" class="rg-blog__back">← All posts</a>
+        <p class="rg-blog__eyebrow">{@name} · 404</p>
+        <h1 id="blog-title">Not found.</h1>
+        <p>This page is not available.</p>
+        <a href={@path} class="rg-blog__back">← Back to {@name}</a>
       </header>
     </section>
     """

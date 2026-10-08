@@ -9,6 +9,10 @@ standard editorial layout for Regents, Techtree, Autolaunch and Patchbay.
 Data must come from the validated `regent_blog` catalog in `elixir-utils/blog`;
 never pass request-supplied HTML into the article component.
 
+Each product names its page and its address: `gallery/1`, `article/1` and
+`not_found/1` take `name` and `path` (Regents: `name="Articles" path="/articles"`).
+The components link only to that address and use no other word for the page.
+
 - Gallery: generous heading, two image-led ruled columns on desktop, one on mobile.
   No categories; order is supplied by the catalog, newest publication date first.
 - Article: centered title, author/X/date, wide cover, readable prose, sticky left
