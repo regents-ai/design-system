@@ -2,6 +2,14 @@
 
 ## Current contract
 
+The standalone local Touch ID shell is `standalone/agent-key.html`. SIWA's
+`scripts/build_agent_page.py` embeds this shell, the canonical tokens, three regular
+Geist fonts and the crown marks into its Python/Node clients and the Regents CLI.
+The shell owns presentation only; SIWA owns passkey behavior and state messages in
+`assets/agent/passkey.js`. No remote assets are loaded on the local credential page.
+Ash Template and the sites link to the shared SIWA guide and client instead of
+maintaining copies of this page.
+
 `Regent.AgentMetadata.head` owns canonical, sharing and agent-discovery head tags,
 including JSON-LD encoding with script-safe escaping. Call it once from the root
 layout, replacing the corresponding local tags; keep the document title, viewport,
