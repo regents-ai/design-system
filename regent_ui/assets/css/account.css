@@ -1,0 +1,80 @@
+.rg-account {
+  min-inline-size: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+}
+
+.rg-account h2,
+.rg-account h3 {
+  margin: 0;
+  font-family: var(--font-family-title);
+  font-weight: 400;
+  font-synthesis: none;
+  overflow-wrap: anywhere;
+}
+
+.rg-account h2 { font-size: var(--type-title-size); }
+.rg-account h3 { font-size: var(--type-body-size); }
+
+.rg-account__status {
+  min-block-size: 1.5em;
+  margin: var(--space-1) 0 var(--space-2);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.rg-account__status[data-unseen="true"] { visibility: hidden; }
+.rg-account__status[data-state="error"] { color: var(--color-error); }
+.rg-account__status[data-state="stale"] { color: var(--color-warning); }
+
+.rg-account__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.rg-account__metrics > div { min-inline-size: 0; }
+.rg-account__metrics dt { line-height: 1.5; }
+.rg-account__metrics dd {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--type-title-size);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.rg-account__allowances {
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+}
+.rg-account__allowances h3 { margin-block-end: var(--space-2); }
+.rg-account__allowances dd { font-size: var(--type-body-size); }
+
+.rg-account__empty { margin: 0; }
+.rg-account__history { list-style: none; margin: 0; padding: 0; }
+.rg-account__history li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-2);
+  padding-block: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+}
+.rg-account__history p { margin: 0; overflow-wrap: anywhere; }
+.rg-account__amount { font-family: var(--font-family-mono); font-variant-numeric: tabular-nums; }
+.rg-account__when { grid-column: 1 / -1; font-size: var(--type-label-size); }
+
+@media (max-width: 30rem) {
+  .rg-account { padding: var(--space-2); }
+  .rg-account__history li { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (forced-colors: active) {
+  .rg-account { background: Canvas; color: CanvasText; border-color: CanvasText; }
+  .rg-account__allowances, .rg-account__history li { border-color: CanvasText; }
+  .rg-account__status[data-state] { color: CanvasText; }
+}

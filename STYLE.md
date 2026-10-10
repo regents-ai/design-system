@@ -254,6 +254,9 @@ Ash Template and Keyfleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
+| `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
+| `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
+| `Regent.Account.history` | Read-only formatted Credits or Points activity | Awaiting consumer adoption |
 | `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
@@ -310,6 +313,34 @@ Orange notes mix 55% Tangerine with local ink on a 12% Tangerine/local-surface t
 never use raw orange as small badge ink in light mode. Content stays unclipped,
 metrics stack at a 30rem container width, and forced colors retain system borders
 and a solid Highlight meter fill. No shimmer or idle animation applies.
+
+`Regent.Account` renders private, read-only account figures. The product must authorize
+and load the account before rendering it; the package has no routes, domain dependencies,
+wallet operations, purchase controls or grant controls. Credits are distinct from the
+Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
+
+- `credits_summary` requires a unique string `id`; `available` and `held` are already
+  formatted strings or `nil`.
+- `points_summary` requires `id`; `confirmed`, `today` and `pending` are formatted
+  strings or `nil`. `pending` counts activity being verified, not spendable Points.
+  Optional `allowances` is a list of `%{label: string, value: string_or_nil}`; callers
+  label activity and Credits-purchase pools separately and include the unit and
+  remaining-period wording. The component never merges allowances or computes limits.
+- `history` requires `id` and `title`. `rows` defaults to `[]`, with each row shaped
+  `%{label: string, amount: string_or_nil, occurred_at: string, status: optional_string}`.
+  Include units in `amount` and the timezone in `occurred_at`. Products supply the
+  authorized order and attribution. `empty_message` defaults to `"No activity yet."`.
+
+All three accept `state` (`:ready`, `:loading`, `:stale`, `:error`, default `:ready`)
+and optional short `message`. Map an idle read to `:loading`; an empty successful read
+is `:ready`. Loading/error hide supplied figures and history; stale retains them with
+an explicit warning. Missing/empty amounts say `Unavailable`, never zero. Only a
+successful empty history shows the empty message. Keep allowance labels stable while
+loading. Products clear old-account data when ownership changes; `:stale` is only for
+previously authorized data from the same account. Status text has a reserved line;
+long custom messages may wrap. Semantics use named sections, definition lists and
+ordered history; values wrap at narrow widths. No animation or JavaScript is required.
+Package checks and synthetic rendering do not establish real consumer acceptance.
 
 Feature groups remain small HTML compositions, not a page-builder API.
 Use three/two/one feature columns and 1px gaps; an odd final card never spans a whole row.
