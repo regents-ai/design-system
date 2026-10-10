@@ -136,7 +136,7 @@ defmodule Regent.Account do
     <p
       class="rg-account__status"
       data-state={@state}
-      data-unseen={is_nil(@text)}
+      data-unseen={if is_nil(@text), do: "true", else: "false"}
       role={if @state == :error, do: "alert", else: "status"}
     >
       {@text || "Current figures"}
