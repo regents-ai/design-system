@@ -24,6 +24,7 @@ code_map:
     owns: structural_showcase
 shared_api:
   catalog: "STYLE.md, section Shared compositions: every public regent_ui component, its purpose and its consumers"
+  blog_authors: "Regent.Blog.article accepts optional post.authors: ordered maps with name and HTTPS X profile x. Absent or empty uses legacy author/author_x."
 local_path_dependencies: []
 acceptance_commands:
   - cwd: design-system/regent_ui
