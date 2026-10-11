@@ -11,6 +11,7 @@ body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-fami
 .showcase-hero-figure { aspect-ratio: auto; padding-inline: 0; }
 .showcase-stack { display: grid; gap: var(--space-3); align-content: start; }
 .showcase-stack > p { margin: 0; }
+.showcase-account { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
 .showcase-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .showcase-menu { position: relative; }
 .showcase-menu > summary { min-height: 44px; cursor: pointer; }

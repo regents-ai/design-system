@@ -214,6 +214,44 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
+        <section id="account" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Account / every state</h2>
+          </.section_bar>
+          <div class="showcase-account">
+            <Regent.Account.signed_out id="account-signed-out">
+              <:sign_in><.button type="button">Sign in</.button></:sign_in>
+            </Regent.Account.signed_out>
+            <Regent.Account.signed_out id="account-expired" reason={:expired}>
+              <:sign_in><.button type="button">Sign in</.button></:sign_in>
+            </Regent.Account.signed_out>
+            <Regent.Account.agents id="account-agents" agents={sample_agents()}>
+              <:about>What a paired agent may do on this site.</:about>
+              <:actions :let={agent}>
+                <.button type="button" variant="quiet" aria-label={"Unpair #{agent.name}"}>
+                  Unpair
+                </.button>
+              </:actions>
+              <:footer><.button type="button" variant="secondary">Pair an agent</.button></:footer>
+            </Regent.Account.agents>
+            <Regent.Account.agents id="account-agents-none" agents={[]}>
+              <:footer><a href="#account">Pair or unpair agents on regents.sh</a></:footer>
+            </Regent.Account.agents>
+            <Regent.Account.agents id="account-agents-loading" agents={:loading} />
+            <Regent.Account.agents id="account-agents-failed" agents={:unavailable} />
+            <Regent.Account.credits_summary id="account-credits" available="12.50" held="2.00" />
+            <Regent.Account.credits_summary id="account-credits-loading" state={:loading} />
+            <Regent.Account.credits_summary id="account-credits-failed" state={:error} />
+            <Regent.Account.points_summary
+              id="account-points"
+              confirmed="1,240"
+              today="35"
+              pending="2"
+              allowances={[%{label: "Activity", value: "35 of 100"}, %{label: "Credits", value: "0 of 100"}]}
+              state={:stale}
+            />
+          </div>
+        </section>
       </.row>
     </.frame>
     <dialog id="sample-dialog" aria-labelledby="dialog-title">
@@ -222,6 +260,27 @@ defmodule Regent.StructureShowcase do
       <form method="dialog"><.button type="submit">Close dialog</.button></form>
     </dialog>
     """
+  end
+
+  defp sample_agents do
+    [
+      %{
+        id: "a1",
+        name: "Pira",
+        harness: "Muse",
+        backed: true,
+        last_contact_iso: "2026-10-11T08:00:00Z",
+        last_contact: "2 hours ago"
+      },
+      %{
+        id: "a2",
+        name: "An agent with a deliberately long name that has to wrap",
+        harness: "Codex",
+        backed: false,
+        last_contact_iso: "2026-10-09T08:00:00Z",
+        last_contact: "2 days ago"
+      }
+    ]
   end
 
   defp features do

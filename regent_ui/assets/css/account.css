@@ -55,6 +55,23 @@
 .rg-account__allowances h3 { margin-block-end: var(--space-2); }
 .rg-account__allowances dd { font-size: var(--type-body-size); }
 
+.rg-account__lead { margin: var(--space-1) 0 var(--space-3); line-height: 1.5; }
+
+.rg-account__agents { list-style: none; margin: 0; padding: 0; }
+.rg-account__agents li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  padding-block: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+}
+.rg-account__agents p { margin: 0; overflow-wrap: anywhere; }
+.rg-account__agent { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.rg-account__agents .rg-account__when { grid-column: 1; }
+.rg-account__actions { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: var(--space-2); }
+.rg-account__footer { margin-block-start: var(--space-3); }
+
 .rg-account__empty { margin: 0; }
 .rg-account__history { list-style: none; margin: 0; padding: 0; }
 .rg-account__history li {
@@ -70,11 +87,13 @@
 
 @media (max-width: 30rem) {
   .rg-account { padding: var(--space-2); }
-  .rg-account__history li { grid-template-columns: minmax(0, 1fr); }
+  .rg-account__history li,
+  .rg-account__agents li { grid-template-columns: minmax(0, 1fr); }
+  .rg-account__actions { grid-column: 1; grid-row: auto; }
 }
 
 @media (forced-colors: active) {
   .rg-account { background: Canvas; color: CanvasText; border-color: CanvasText; }
-  .rg-account__allowances, .rg-account__history li { border-color: CanvasText; }
+  .rg-account__allowances, .rg-account__history li, .rg-account__agents li { border-color: CanvasText; }
   .rg-account__status[data-state] { color: CanvasText; }
 }
