@@ -56,16 +56,20 @@ defmodule Regent.Blog do
   attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
 
   def article(assigns) do
+    assigns = assign(assigns, :authors, authors(assigns.post))
+
     ~H"""
     <article class="rg-blog rg-sheet rg-blog--article" data-regent-blog aria-labelledby="blog-title">
       <header class="rg-blog__heading">
         <a href={@path} class="rg-blog__back">← Back to {@name}</a>
         <h1 id="blog-title">{@post.title}</h1>
         <div class="rg-blog__byline">
-          <span>{@post.author}</span>
-          <a href={@post.author_x} rel="me noopener noreferrer" aria-label={"#{@post.author} on X"}>
-            @{x_handle(@post.author_x)}
-          </a>
+          <span :for={author <- @authors}>
+            {author.name}
+            <a href={author.x} rel="me noopener noreferrer" aria-label={"#{author.name} on X"}>
+              @{x_handle(author.x)}
+            </a>
+          </span>
           <time datetime={Date.to_iso8601(@post.date)}>{date(@post.date)}</time>
         </div>
       </header>
@@ -130,5 +134,13 @@ defmodule Regent.Blog do
   end
 
   defp date(date), do: Calendar.strftime(date, "%B %-d, %Y")
+
+  defp authors(post) do
+    case Map.get(post, :authors, []) do
+      [] -> [%{name: post.author, x: post.author_x}]
+      authors -> authors
+    end
+  end
+
   defp x_handle(url), do: url |> URI.parse() |> Map.fetch!(:path) |> String.trim("/")
 end

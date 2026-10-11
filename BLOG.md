@@ -17,6 +17,9 @@ The components link only to that address and use no other word for the page.
   No categories; order is supplied by the catalog, newest publication date first.
 - Article: centered title, author/X/date, wide cover, readable prose, sticky left
   contents rail with active section on desktop and a native disclosure on mobile.
+- An article may supply `authors`, an ordered list of maps with `name` and `x`
+  (a validated HTTPS X profile URL). Every author gets its own byline link. If
+  absent or empty, the existing `author` and `author_x` fields supply one author.
 - Typography follows the shared contract: Geist Pixel Square headings, Sans body,
   Mono code. Surfaces/ink inherit the active product and light/dark palette.
 - Native fragment links work without JavaScript. The small `blog.mjs` enhancement
