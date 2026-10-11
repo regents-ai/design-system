@@ -1,5 +1,5 @@
 // The holographic card's foil, drawn with WebGPU through vgpu. The consuming
-// application pins `vgpu` 0.3.1, mounts this renderer on the card's canvas and
+// application pins `vgpu` (0.3.1 to 0.5.0), mounts this renderer on the card's canvas and
 // owns every browser concern: when to load it, the frame loop, reduced motion,
 // device loss and the pointer. This module only draws.
 //

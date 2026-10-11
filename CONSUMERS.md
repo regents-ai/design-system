@@ -76,7 +76,9 @@ product's hook attribute and the content that sits on the face; the component re
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
 `mix regent_ui.assets` copies `holographic_card.mjs` and its `.d.mts` next to the styles;
 `createHolographicCardRenderer(canvas, size, onDeviceLost)` draws the foil with `vgpu`,
-which the consumer pins at exactly `0.3.1`. The product owns the mount: when to load the
+which the consumer pins itself. The sites pin 0.3.1, 0.4.0 or 0.5.0; each provides the
+`init`, `surface`, `effect` and `frame` this module uses, and each site's typecheck proves
+its own pin. The product owns the mount: when to load the
 chunk, the frame loop, reduced motion, device loss and the pointer. It calls
 `point(card, light)` with the pointer as fractions of the card that turns and of the canvas
 the light falls on, `rest()` on leave, writes `tilt()` to
@@ -156,20 +158,41 @@ are verified first; consumer rollout follows visual acceptance and each app's ow
 
 ## Release builds
 
-There is one way to get `regent_ui` into an app's release image: copy the source the app
-already resolves into the build context, laid out as it is in the workspace.
+Each app pins one design-system commit in `platform/mix.exs`:
 
-1. A release script assembles one context directory holding the app's checkout as
-   `platform/` and the resolved package (`REGENT_UI_PATH`, otherwise
-   `$REGENT_DEPS_ROOT/design-system/regent_ui`) as `design-system/regent_ui/`, leaving out
-   `.git`, `_build/`, `deps/` and `node_modules/`.
-2. The Dockerfile copies `design-system/regent_ui` to `/workspace/design-system/regent_ui`,
-   builds from `/workspace/platform` and sets `REGENT_DEPS_ROOT=/workspace`, so Mix resolves
-   the same path dependency inside the image as in the workspace.
+```elixir
+@design_system "https://github.com/regents-ai/design-system.git"
+@design_system_ref "<full commit>"
+{:regent_ui, git: @design_system, ref: @design_system_ref, sparse: "regent_ui"}
+```
 
-Regents is the reference: `platform/scripts/build-release-context.sh` and
-`platform/Dockerfile`. Nothing is copied into the app's own tree, so there is no `vendor/`
-copy to ignore.
+`mix.lock` records the same commit. The release image runs `mix deps.get`, which fetches
+exactly that commit; the repository is public, so the build takes no credentials. Only a
+commit published on GitHub can be pinned, and a pin never names a branch.
+
+## Taking a new release
+
+Publishing a design-system commit starts the sites' updates; nothing moves on its own.
+After the commit is on GitHub, run from an ash-template checkout:
+
+```bash
+scripts/regent-ui-update <full design-system commit>
+```
+
+For each of Regents, Autolaunch, Patchbay, Keyfleet and Techtree, the script works in that
+site's standing update checkout (`worktrees/ui-standardization/update-<site>`), starts a new
+branch from the site's `origin/main`, or from the branch given with
+`--base <site>=<branch>` when a site releases from a release branch, sets the pin, updates
+`mix.lock` for `regent_ui` alone, and runs `mix compile --warnings-as-errors`,
+`mix assets.build` (which runs `mix regent_ui.assets`) and the site's `npm run typecheck`.
+It commits the pin and lock on that branch and pushes nothing. It refuses a commit that
+would drop design-system changes the site already has.
+
+It ends with a table: each site is either **updated** (branch and commit named) or
+**blocked** (the step that failed and its log). A blocked site stays on its old pin until
+its owner fixes it; nothing is hidden. Each site's owner then reviews, pushes and releases
+the branch as usual. Ash Template is updated first, by hand, as the place a shared change
+is tried before the sites take it.
 
 ## Reproduce the build
 
@@ -182,5 +205,5 @@ keyboard focus. Do not copy generated assets from another application's checkout
 
 The consumers are `repos/regents/platform`, `repos/autolaunch/platform`,
 `repos/patchbay/platform`, `repos/techtree/platform`, `repos/ash-template/platform` and
-`repos/keyfleet/platform`, plus the `repos/elixir-utils/erc8004` component library. Each
-resolves `regent_ui` as a path dependency, honoring `REGENT_UI_PATH` for pinned checkouts.
+`repos/keyfleet/platform`. Each pins `regent_ui` to one design-system commit, as under
+"Release builds".

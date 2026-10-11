@@ -224,8 +224,7 @@ Patterns that generalize:
 This table is the complete public component catalog of `regent_ui/lib`. "Used by" is
 checked against each consumer's own source; "(showcase)" means only that app's component
 showcase page renders it. Consumers are Regents, Autolaunch, Patchbay, Techtree,
-Ash Template and Keyfleet (each `platform/`), plus the ERC-8004 components in
-`elixir-utils/erc8004`.
+Ash Template and Keyfleet (each `platform/`).
 
 | Component | Purpose | Used by |
 | --- | --- | --- |
@@ -239,7 +238,7 @@ Ash Template and Keyfleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Structure.frame` | Ruled page frame | All six apps |
 | `Regent.Structure.row` | Row with the optional rail and main column | All six apps |
 | `Regent.Structure.section_bar` | Section heading bar with diamond and leader | Regents, Autolaunch, Techtree; Ash Template and Keyfleet (showcase) |
-| `Regent.Structure.panel` | Flat cut-corner panel, `surface` or `accent` | Regents, Autolaunch, Patchbay, Techtree, ERC-8004; Ash Template and Keyfleet (showcase) |
+| `Regent.Structure.panel` | Flat cut-corner panel, `surface` or `accent` | Regents, Autolaunch, Patchbay, Techtree; Ash Template and Keyfleet (showcase) |
 | `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and Keyfleet (showcase) |
 | `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, Keyfleet |
 | `Regent.Structure.ratio_card` | Read-only basis-point allocation sheet | Regents |
@@ -254,6 +253,8 @@ Ash Template and Keyfleet (each `platform/`), plus the ERC-8004 components in
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
+| `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
+| `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
 | `Regent.Account.history` | Read-only formatted Credits or Points activity | Awaiting consumer adoption |
@@ -314,10 +315,21 @@ never use raw orange as small badge ink in light mode. Content stays unclipped,
 metrics stack at a 30rem container width, and forced colors retain system borders
 and a solid Highlight meter fill. No shimmer or idle animation applies.
 
-`Regent.Account` renders private, read-only account figures. The product must authorize
+`Regent.Account` renders the account page's shared sections. The product must authorize
 and load the account before rendering it; the package has no routes, domain dependencies,
 wallet operations, purchase controls or grant controls. Credits are distinct from the
 Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
+
+- `signed_out` requires `id` and a `sign_in` slot holding the product's own button,
+  labelled "Sign in". `reason` is `:signed_out` (default) or `:expired`, which says the
+  session ended. It never shows figures, so a sign-in problem never reads as zero.
+- `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
+  `%{id, name, harness, backed, last_contact_iso, last_contact}` with `last_contact`
+  already formatted. `:unavailable` says the agents couldn't be read; only an empty
+  list says "No agents paired yet." Optional `notice` reports the last action. Slots:
+  `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
+  such as Unpair, given the agent; leave out when the site cannot change pairings) and
+  `footer` (pairing controls, or a link to where agents are managed).
 
 - `credits_summary` requires a unique string `id`; `available` and `held` are already
   formatted strings or `nil`.
@@ -356,6 +368,37 @@ selects and textareas inside `rg-field` use `max(1em, 16px)` and a 44px height f
 larger inherited text remains larger. Never disable page zoom to compensate for a
 small input. Product-owned native controls and stronger legacy overrides still
 need deliberate adoption; this is not a universal form reset.
+
+## Shared base and local additions
+
+Every site keeps the shared base. A site may add to it; an addition is not a defect.
+
+- **The base:** the tokens and semantic colours, the `Regent.*` components with their
+  markup and states, a visible, unclipped focus ring on every control, 44px touch targets
+  on phones, reduced motion winning over every animation, forced-colours borders and
+  readable pairs, the account page (below) and the motion rules in Motion.
+- **Allowed additions:** a site's own layout, navigation, homepage, pages, palette choice,
+  artwork, product components and extra motion, as long as the base still holds on them.
+- **Not allowed:** a local override that removes part of the base, such as clipping the
+  focus ring, hiding focus in forced colours, moving a control on focus, shrinking a touch
+  target or animating when reduced motion is on. Fix the local CSS rather than the shared
+  component, unless the shared component is wrong for every site; then fix it here.
+
+### The account page
+
+Every site that signs people in has one page called **Account** at `/account`.
+The words are fixed: **Sign in** and **Sign out** (never "Sign In", "Log out" or
+"Disconnect"), **Account** for the page and its header link, and **Profile** for the
+profile section inside it. The header's account control stays site-owned, since it
+holds the site's sign-in wiring, but uses these words.
+
+The page shows, in order: `Regent.Account.signed_out` until the person is signed in;
+then `Regent.Profile.panel`, `Regent.Account.agents`, and, where the site offers them,
+`credits_summary`, `points_summary` and their `history`. A site adds its own sections
+after these. Each section shows its own state: loading, could not be read, or a session
+that ended. A site that cannot change pairings shows the agents read-only with a link to
+where they are managed. Showing these sections never turns on spending Credits or
+earning Points.
 
 ## Product layouts and disclosure
 
@@ -496,9 +539,9 @@ the marks; pick the correct scheme instead.
   `assets/vendor/regent_ui/` and `priv/static/fonts/regent-ui/` directories. Import the
   canonical tokens and then `primitives.css`; the package has no global body or page
   stylesheet.
-- Dependency paths resolve through Mix, including pinned isolated checkouts.
-- Release builds copy the resolved `regent_ui` source into the build context; the one method
-  is described under "Release builds" in [CONSUMERS.md](CONSUMERS.md).
+- Each site pins one reviewed design-system commit in `platform/mix.exs`; Mix fetches it,
+  in development and in release images alike. How a new release reaches the sites is
+  under "Taking a new release" in [CONSUMERS.md](CONSUMERS.md).
 - The package requires LiveView 1.2, which every consumer locks. Verify representative
   consuming pages; do not upgrade frameworks incidentally.
 - Change shared token values at their source and regenerate the JSON/package mirrors.
