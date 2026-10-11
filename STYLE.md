@@ -321,7 +321,8 @@ wallet operations, purchase controls or grant controls. Credits are distinct fro
 Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 
 - `signed_out` requires `id` and a `sign_in` slot holding the product's own button,
-  labelled "Sign in". `reason` is `:signed_out` (default) or `:expired`, which says the
+  labelled "Sign in". It is one line and the button, with no heading of its own: it sits
+  under the page's title. `reason` is `:signed_out` (default) or `:expired`, which says the
   session ended. It never shows figures, so a sign-in problem never reads as zero.
 - `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
   `%{id, name, harness, backed, last_contact_iso, last_contact}` with `last_contact`

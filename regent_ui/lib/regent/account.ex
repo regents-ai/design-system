@@ -21,11 +21,8 @@ defmodule Regent.Account do
 
   def signed_out(assigns) do
     ~H"""
-    <section id={@id} class="rg-account" aria-labelledby={"#{@id}-title"}>
-      <h2 id={"#{@id}-title"}>Account</h2>
-      <p class="rg-account__lead" role={@reason == :expired && "status"}>
-        {signed_out_text(@reason)}
-      </p>
+    <section id={@id} class="rg-account rg-account--signed-out">
+      <p role={@reason == :expired && "status"}>{signed_out_text(@reason)}</p>
       {render_slot(@sign_in)}
     </section>
     """
