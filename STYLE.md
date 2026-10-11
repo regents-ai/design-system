@@ -332,7 +332,8 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `footer` (pairing controls, or a link to where agents are managed).
 
 - `credits_summary` requires a unique string `id`; `available` and `held` are already
-  formatted strings or `nil`.
+  formatted strings or `nil`. The site's own lines and links under the figures go in
+  its inner block, inside the same box; never wrap the section in a second framed panel.
 - `points_summary` requires `id`; `confirmed`, `today` and `pending` are formatted
   strings or `nil`. `pending` counts activity being verified, not spendable Points.
   Optional `allowances` is a list of `%{label: string, value: string_or_nil}`; callers

@@ -101,6 +101,7 @@ defmodule Regent.Account do
   attr :held, :string, default: nil
   attr :state, :atom, default: :ready, values: [:ready, :loading, :stale, :error]
   attr :message, :string, default: nil
+  slot :inner_block, doc: "the product's own lines and links under the figures, in the same box"
 
   def credits_summary(assigns) do
     ~H"""
@@ -116,6 +117,7 @@ defmodule Regent.Account do
         <.metric label="Available" value={@available} state={@state} />
         <.metric label="Held" value={@held} state={@state} />
       </dl>
+      {render_slot(@inner_block)}
     </section>
     """
   end

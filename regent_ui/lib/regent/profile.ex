@@ -17,7 +17,7 @@ defmodule Regent.Profile do
     ~H"""
     <section id={@id} class={["rg-profile", @class]} data-regent-profile>
       <header>
-        <h1>Profile</h1>
+        <h2>Profile</h2>
       </header>
       <p data-profile-status role="status" aria-live="polite">Loading profile…</p>
       <.button :if={!@signed_in} data-profile-action="sign-in">Sign in</.button>

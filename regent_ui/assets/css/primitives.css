@@ -192,7 +192,7 @@
   margin-inline: auto;
   padding: var(--container-padding);
 }
-.rg-profile h1 { margin-block: 0 var(--space-3); }
+.rg-profile h2 { margin-block: 0 var(--space-3); }
 .rg-profile form { display: grid; gap: var(--space-3); }
 .rg-profile form[hidden], .rg-profile [hidden] { display: none; }
 .rg-profile input, .rg-profile select { width: 100%; min-width: 0; }
