@@ -97,7 +97,9 @@
   .rg-theme-toggle:hover .theme-toggle__face { border-color: var(--prism-edge-next); }
 }
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
-  .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 14s linear infinite; }
+  /* The prism turns only while the button is pointed at or focused, and stays where it stopped. */
+  .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 6s linear infinite paused; }
+  .rg-theme-toggle:is(:hover, :focus-visible) .theme-toggle__cube { animation-play-state: running; }
   .rg-theme-toggle :is(.theme-toggle__stage, .theme-toggle__laser, .theme-toggle__face) {
     transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
   }
