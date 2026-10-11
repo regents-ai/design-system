@@ -393,9 +393,11 @@ profile section inside it. The header's account control stays site-owned, since 
 holds the site's sign-in wiring, but uses these words.
 
 The page shows, in order: `Regent.Account.signed_out` until the person is signed in;
-then `Regent.Profile.panel`, `Regent.Account.agents`, and, where the site offers them,
-`credits_summary`, `points_summary` and their `history`. A site adds its own sections
-after these. Each section shows its own state: loading, could not be read, or a session
+then a **Profile** section (who the site knows the person as; `Regent.Profile.panel`
+where they can change their name here), `Regent.Account.agents`, and, where the site
+offers them, `credits_summary` and `points_summary` with their `history`. A site may give
+a long section its own tab under Account, such as Points, and adds its own sections after
+these. Each section shows its own state: loading, could not be read, or a session
 that ended. A site that cannot change pairings shows the agents read-only with a link to
 where they are managed. Showing these sections never turns on spending Credits or
 earning Points.
