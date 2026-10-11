@@ -76,9 +76,11 @@ product's hook attribute and the content that sits on the face; the component re
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
 `mix regent_ui.assets` copies `holographic_card.mjs` and its `.d.mts` next to the styles;
 `createHolographicCardRenderer(canvas, size, onDeviceLost)` draws the foil with `vgpu`,
-which the consumer pins itself. The sites pin 0.3.1, 0.4.0 or 0.5.0; each provides the
-`init`, `surface`, `effect` and `frame` this module uses, and each site's typecheck proves
-its own pin. The product owns the mount: when to load the
+which the consumer pins itself. The sites pin 0.3.1, 0.4.0 or 0.5.0. On 11 October 2026
+the card was drawn in Chrome with each of the three: a full frame, lit by the pointer, the
+same picture each time. A typecheck does not prove this, because the renderer is plain
+JavaScript; a site moving to another vgpu version draws the card before it releases. The
+product owns the mount: when to load the
 chunk, the frame loop, reduced motion, device loss and the pointer. It calls
 `point(card, light)` with the pointer as fractions of the card that turns and of the canvas
 the light falls on, `rest()` on leave, writes `tilt()` to
