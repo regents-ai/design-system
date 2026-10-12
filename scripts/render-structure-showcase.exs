@@ -237,6 +237,59 @@ defmodule Regent.StructureShowcase do
             <Regent.Account.agents id="account-agents-none" agents={[]}>
               <:footer><a href="#account">Pair or unpair agents on regents.sh</a></:footer>
             </Regent.Account.agents>
+            <Regent.Account.agents id="account-pair-list" agents={[]}>
+              <:footer>
+                <Regent.Account.pairing
+                  id="account-pairing"
+                  site="Regents"
+                  harnesses={sample_harnesses()}
+                  messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}
+                />
+              </:footer>
+            </Regent.Account.agents>
+            <Regent.Account.agents id="account-pair-list-issued" agents={[]}>
+              <:footer>
+                <Regent.Account.pairing
+                  id="account-pairing-issued"
+                  site="Regents"
+                  harnesses={sample_harnesses()}
+                  chosen="codex"
+                  messages={sample_messages("K7Q2-M9XR-4TWD-P8LC")}
+                  message={hd(sample_messages("K7Q2-M9XR-4TWD-P8LC"))}
+                  expires_iso="2026-10-12T14:05:00Z"
+                  expires="14:05 UTC"
+                />
+              </:footer>
+            </Regent.Account.agents>
+            <Regent.Account.agents id="account-pair-list-paired" agents={[]}>
+              <:footer>
+                <Regent.Account.pairing
+                  id="account-pairing-paired"
+                  site="Regents"
+                  harnesses={sample_harnesses()}
+                  chosen="codex"
+                  messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}
+                  outcome={{:paired, "Pira"}}
+                />
+              </:footer>
+            </Regent.Account.agents>
+            <div>
+              <.button id="open-agent" type="button" variant="secondary">Open an agent</.button>
+            </div>
+            <Regent.Account.agent_detail
+              id="account-agent"
+              agent={sample_detail()}
+              verified={true}
+              same_person_count={3}
+              same_person={[%{id: "a3", name: "Wren"}, %{id: "a4", name: "Ilex"}]}
+              activity={sample_activity()}
+              more={:idle}
+              notice={{:status, "Pira is paired."}}
+              open_event="open_agent"
+              more_event="load_more_activity"
+            >
+              <:actions><.button type="button" variant="secondary">Unpair</.button></:actions>
+            </Regent.Account.agent_detail>
             <Regent.Account.agents id="account-agents-loading" agents={:loading} />
             <Regent.Account.agents id="account-agents-failed" agents={:unavailable} />
             <Regent.Account.credits_summary id="account-credits" available="12.50" held="2.00" />
@@ -247,7 +300,10 @@ defmodule Regent.StructureShowcase do
               confirmed="1,240"
               today="35"
               pending="2"
-              allowances={[%{label: "Activity", value: "35 of 100"}, %{label: "Credits", value: "0 of 100"}]}
+              allowances={[
+                %{label: "Activity", value: "35 of 100"},
+                %{label: "Credits", value: "0 of 100"}
+              ]}
               state={:stale}
             />
           </div>
@@ -279,6 +335,52 @@ defmodule Regent.StructureShowcase do
         backed: false,
         last_contact_iso: "2026-10-09T08:00:00Z",
         last_contact: "2 days ago"
+      }
+    ]
+  end
+
+  @sample_logo "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E" <>
+                 "%3Ccircle cx='24' cy='24' r='14' fill='%23888'/%3E%3C/svg%3E"
+
+  defp sample_harnesses do
+    for {value, label} <- [{"muse", "Muse"}, {"codex", "Codex"}, {"other", "Something else"}],
+        do: %{value: value, label: label, logo: @sample_logo}
+  end
+
+  defp sample_messages(code) do
+    [
+      "Pair with my Regents account.\nPairing code: #{code}\n" <>
+        "Follow the \"Pair with a person's account\" steps at https://regents.sh/llms.txt"
+    ]
+  end
+
+  defp sample_detail do
+    %{
+      id: "a1",
+      name: "Pira",
+      harness: "Muse",
+      logo: @sample_logo,
+      paired_at: "3 October 2026, 09:12 UTC",
+      last_contact: "2 hours ago",
+      last_contact_at: "11 October 2026, 08:00 UTC",
+      wallet: "0x2222222222222222222222222222222222222222",
+      listing: %{url: "https://8004scan.io/agents/base/42", number: 42}
+    }
+  end
+
+  defp sample_activity do
+    [
+      %{
+        action: "Posted a note",
+        site: "regents.sh",
+        occurred_at_iso: "2026-10-11T08:00:00Z",
+        occurred_at: "11 October 2026, 08:00 UTC"
+      },
+      %{
+        action: "Read the account's Credits",
+        site: "autolaunch.sh",
+        occurred_at_iso: "2026-10-10T17:42:00Z",
+        occurred_at: "10 October 2026, 17:42 UTC"
       }
     ]
   end

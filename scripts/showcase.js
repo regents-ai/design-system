@@ -47,6 +47,8 @@ for (const button of document.querySelectorAll("[data-scroll-to]")) {
   });
 }
 const dialog = document.querySelector("#sample-dialog");
+document.querySelector("#open-agent").addEventListener("click", () =>
+  document.querySelector("#account-agent").showModal());
 document.querySelector("#open-dialog").addEventListener("click", () => dialog.showModal());
 document.querySelector("#menu-close").addEventListener("click", () => {
   document.querySelector(".showcase-menu").open = false;

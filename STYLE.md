@@ -255,6 +255,9 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
+| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it | Ash Template |
+| `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, activity across the sites | Ash Template |
+| `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
 | `Regent.Account.history` | Read-only formatted Credits or Points activity | Awaiting consumer adoption |
@@ -331,6 +334,25 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
   `footer` (pairing controls, or a link to where agents are managed).
+- `pairing` goes in the `agents` footer. It requires `id`, `site` (the account's name),
+  `harnesses` (`%{value, label, logo}` for every agent a person may choose) and
+  `messages`: every agent's message with a stand-in code, so the box keeps one size.
+  `chosen` is the chosen value; `message` is that agent's message once a code is made,
+  with `expires_iso` and `expires` (such as "14:05 UTC"); `outcome` is
+  `{:paired, name}` once the code is used or `:unavailable` when none could be made.
+  The product's events sit on the form: `phx-change` (choosing) and `phx-submit`
+  ("Make a new code") both carry `harness`. What a state lacks keeps its space
+  unseen, so choosing an agent never changes the height.
+- `agent_detail` is a `<dialog>` the product renders while one agent is open, with its
+  own hook to open it and report the close. It requires `id`, `agent`
+  (`%{id, name, harness, logo, wallet, listing, paired_at, last_contact,
+  last_contact_at}`, dates formatted; `listing` is `nil` or `%{url, number}`),
+  `verified`, `activity` (`:loading`, `:unavailable`, or rows of
+  `%{action, site, occurred_at_iso, occurred_at}`), `open_event` and `more_event`
+  (each carries `id`). Optional: `same_person_count`, `same_person` (`%{id, name}`),
+  `more` (`nil` when there is nothing older, else `:idle`, `:loading` or
+  `:unavailable`), `notice` (`{:status | :alert, text}`), `target`, and an `actions`
+  slot for the product's buttons beside Done, such as Unpair.
 
 - `credits_summary` requires a unique string `id`; `available` and `held` are already
   formatted strings or `nil`. The site's own lines and links under the figures go in
