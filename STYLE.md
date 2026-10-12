@@ -393,6 +393,11 @@ larger inherited text remains larger. Never disable page zoom to compensate for 
 small input. Product-owned native controls and stronger legacy overrides still
 need deliberate adoption; this is not a universal form reset.
 
+Filter and toolbar dropdowns use `rg-pill-select`: a label (or a `details` whose summary
+opens a menu) wrapping the control. It is fully rounded with a 1px border, its text inset
+18px and a drawn arrow 16px in from the right, in the text's colour in both themes. A
+dropdown inside a form stays an `rg-field` select, so its corners match the inputs beside it.
+
 ## Shared base and local additions
 
 Every site keeps the shared base. A site may add to it; an addition is not a defect.

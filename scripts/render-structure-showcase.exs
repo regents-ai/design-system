@@ -177,6 +177,14 @@ defmodule Regent.StructureShowcase do
                   </select>
                 </.field>
                 <div class="showcase-actions">
+                  <label class="rg-pill-select">
+                    <select id="sample-pill-select" aria-label="Sort">
+                      <option>Newest</option>
+                      <option>Most raised</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="showcase-actions">
                   <.button variant="secondary" id="open-dialog">Open dialog</.button>
                   <.button disabled aria-busy="true">Pending example</.button>
                 </div>

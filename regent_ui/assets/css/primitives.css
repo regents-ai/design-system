@@ -3,7 +3,7 @@
 @import "./holographic_card.css";
 
 /* Opt-in primitives: no body reset, product shell, or global color replacement. */
-:where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure, .rg-tip) {
+:where(.rg-button, .rg-field, .rg-status, .rg-notice, .rg-empty, .rg-disclosure, .rg-tip, .rg-pill-select) {
   --rg-p-text: var(--rg-local-ink, var(--color-fg, inherit));
   --rg-p-muted: var(--rg-local-ink, var(--color-fg-muted, currentColor));
   --rg-p-surface: var(--rg-local-fill, var(--color-surface, transparent));
@@ -186,6 +186,26 @@
   background-size: 6px 6px; background-repeat: no-repeat;
 }
 
+/* A pill dropdown for filter and toolbar rows: fully rounded, its arrow drawn 16px in,
+   in the text's colour. Wrap a select in it, or put the class on a details whose summary
+   opens a menu. Form fields keep `.rg-field select`, with corners that match their inputs. */
+.rg-pill-select { position: relative; display: inline-flex; }
+.rg-pill-select > :is(select, summary) {
+  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px;
+  padding: 8px 40px 8px 18px; border: 1px solid var(--rg-p-control-border); border-radius: 999px;
+  background: var(--rg-p-surface); color: var(--rg-p-text); font: inherit; cursor: pointer;
+  appearance: none; -webkit-appearance: none; list-style: none;
+}
+.rg-pill-select > summary { position: relative; }
+.rg-pill-select > summary::-webkit-details-marker { display: none; }
+.rg-pill-select:not(details)::after, .rg-pill-select > summary::after {
+  content: ""; position: absolute; top: 50%; right: 16px; width: 12px; height: 8px; margin-top: -4px;
+  background: currentColor; pointer-events: none;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1.5 1.75 6 6.25l4.5-4.5' fill='none' stroke='%23000' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.rg-pill-select:not(details) { color: var(--rg-p-text); }
+.rg-pill-select > :is(select, summary):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 2px; }
+
 .rg-profile {
   width: min(100%, 38rem);
   box-sizing: border-box;
@@ -222,6 +242,9 @@
   .rg-button:disabled { color: GrayText; opacity: 1; }
   .rg-field :is(input, select, textarea) { border-color: CanvasText; }
   .rg-field select { appearance: auto; background-image: none; }
+  .rg-pill-select > select { appearance: auto; padding-right: 18px; }
+  .rg-pill-select:not(details)::after { display: none; }
+  .rg-pill-select > summary::after { background: ButtonText; }
   .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
   .rg-field :is(input, select, textarea):focus-visible { outline-color: Highlight; }
 }
