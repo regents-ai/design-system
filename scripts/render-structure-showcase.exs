@@ -241,7 +241,6 @@ defmodule Regent.StructureShowcase do
               <:footer>
                 <Regent.Account.pairing
                   id="account-pairing"
-                  site="Regents"
                   harnesses={sample_harnesses()}
                   messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}
                 />
@@ -251,7 +250,6 @@ defmodule Regent.StructureShowcase do
               <:footer>
                 <Regent.Account.pairing
                   id="account-pairing-issued"
-                  site="Regents"
                   harnesses={sample_harnesses()}
                   chosen="codex"
                   messages={sample_messages("K7Q2-M9XR-4TWD-P8LC")}
@@ -265,7 +263,6 @@ defmodule Regent.StructureShowcase do
               <:footer>
                 <Regent.Account.pairing
                   id="account-pairing-paired"
-                  site="Regents"
                   harnesses={sample_harnesses()}
                   chosen="codex"
                   messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}

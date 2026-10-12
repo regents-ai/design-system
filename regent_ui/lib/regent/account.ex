@@ -106,7 +106,6 @@ defmodule Regent.Account do
   end
 
   attr :id, :string, required: true
-  attr :site, :string, required: true, doc: "the account's name, as in \"your Regents account\""
 
   attr :harnesses, :list,
     required: true,
@@ -145,7 +144,7 @@ defmodule Regent.Account do
     <form id={@id} class="rg-account__pair" {@rest}>
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
         <legend id={"#{@id}-title"}>
-          Select your personal agent you will pair to your {@site} account
+          Choose the agent to pair
         </legend>
         <label :for={harness <- @harnesses} class="rg-account__choice">
           <input
@@ -377,6 +376,7 @@ defmodule Regent.Account do
   end
 
   attr :id, :string, required: true
+  attr :title, :string, default: "Points", doc: "\"Balance\" on a page already titled Points"
   attr :confirmed, :string, default: nil
   attr :today, :string, default: nil
   attr :pending, :string, default: nil, doc: "formatted count of activity being verified"
@@ -396,7 +396,7 @@ defmodule Regent.Account do
       aria-labelledby={"#{@id}-title"}
       aria-busy={@state == :loading && "true"}
     >
-      <h2 id={"#{@id}-title"}>Points</h2>
+      <h2 id={"#{@id}-title"}>{@title}</h2>
       <.read_status state={@state} message={@message} />
       <dl class="rg-account__metrics">
         <.metric label="Confirmed" value={@confirmed} state={@state} />
