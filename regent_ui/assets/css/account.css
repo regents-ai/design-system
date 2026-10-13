@@ -66,19 +66,50 @@
 .rg-account--signed-out p { margin: 0; line-height: 1.5; }
 
 .rg-account__agents { list-style: none; margin: 0; padding: 0; }
+/* Every row has one shape: picture, name over a quieter line, then the row's
+   actions. Nothing wraps, so a short or long name never changes a row's height. */
 .rg-account__agents li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "mark name actions" "mark meta actions";
   align-items: center;
-  gap: var(--space-1) var(--space-2);
+  gap: 2px var(--space-2);
   padding-block: var(--space-2);
   border-block-start: 1px solid var(--color-border);
 }
-.rg-account__agents p { margin: 0; overflow-wrap: anywhere; }
-.rg-account__agent { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
-.rg-account__agents .rg-account__when { grid-column: 1; }
-.rg-account__actions { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: var(--space-2); }
+.rg-account__agents p { margin: 0; }
+.rg-account__agents .rg-account__mark { grid-area: mark; inline-size: 2.5rem; block-size: 2.5rem; }
+.rg-account__agent { grid-area: name; display: flex; align-items: center; gap: var(--space-2); min-inline-size: 0; }
+.rg-account__agent strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-account__meta {
+  grid-area: meta;
+  overflow: hidden;
+  color: var(--color-fg-muted);
+  font-size: var(--type-label-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rg-account__meta span + span::before { content: " · "; }
+.rg-account__actions { grid-area: actions; display: flex; gap: var(--space-2); }
+/* A row's quiet controls stay secondary to the agent's name until pointed at. */
+.rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); font-weight: 400; }
+.rg-account__agents .rg-account__actions .rg-button--quiet:is(:hover, :focus-visible) { color: var(--color-fg); }
+
+/* World's mark, as World supplies it, beside the words. */
+.rg-account__world {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-fg);
+  font-size: var(--type-label-size);
+  white-space: nowrap;
+}
+.rg-account__world img { inline-size: 16px; block-size: 16px; }
 .rg-account__footer { display: grid; justify-items: start; gap: var(--space-2); margin-block-start: var(--space-3); }
+
+.rg-account__tip-line { display: block; }
+.rg-account__tip-line[data-after] { margin-block-start: var(--space-1); }
 
 .rg-account__empty { margin: 0; }
 .rg-account__history { list-style: none; margin: 0; padding: 0; }
@@ -213,9 +244,7 @@
 }
 .rg-account__facts dd { display: grid; gap: 4px; margin: 0; overflow-wrap: anywhere; }
 .rg-account__facts dd > span { color: var(--color-fg-muted); font-size: var(--type-label-size); }
-.rg-account__facts dd > .rg-account__human { display: inline-flex; align-items: center; gap: 6px; }
-.rg-account__facts dd > .rg-account__human[data-verified="true"] { color: var(--color-fg); font-size: inherit; }
-.rg-account__check { color: var(--color-success); font-weight: 700; }
+.rg-account__facts dd > .rg-account__human { display: inline-flex; align-items: center; gap: 6px; color: var(--color-fg); }
 
 .rg-account__others { display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .rg-account__others button {
@@ -261,9 +290,34 @@
 
 @media (max-width: 30rem) {
   .rg-account { padding: var(--space-2); }
-  .rg-account__history li,
-  .rg-account__agents li { grid-template-columns: minmax(0, 1fr); }
-  .rg-account__actions { grid-column: 1; grid-row: auto; }
+  .rg-account__history li { grid-template-columns: minmax(0, 1fr); }
+  .rg-account__agents li {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "mark name" "mark meta" ". actions";
+  }
+}
+
+/* With a mouse, a row's actions show only on the row being pointed at or focused,
+   laid over the row's end, so one quiet control isn't repeated down the list and
+   the words keep the full width. Touch screens always show them in their column. */
+@media (hover: hover) and (pointer: fine) {
+  .rg-account__agents li {
+    position: relative;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "mark name" "mark meta";
+  }
+  .rg-account__agents .rg-account__actions {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    align-items: center;
+    padding-inline-start: var(--space-4);
+    background: linear-gradient(to right, transparent, var(--color-surface) var(--space-4));
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+  .rg-account__agents li:hover .rg-account__actions,
+  .rg-account__agents li:focus-within .rg-account__actions { opacity: 1; }
 }
 
 @media (forced-colors: active) {

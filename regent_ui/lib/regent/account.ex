@@ -5,6 +5,10 @@ defmodule Regent.Account do
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
 
+  Agent pictures and World's mark ship with this package: `mix regent_ui.assets`
+  copies them to `priv/static/images/regent-ui/`, so the product serves `images`.
+  An agent is named by its `kind`, the harness value the agents library gives it.
+
   `state` is `:ready`, `:loading`, `:stale` or `:error`. Map an idle read to
   `:loading`; a successful empty read is `:ready`. Only `:ready` and `:stale`
   display supplied values. Missing values stay unavailable, never zero.
@@ -12,6 +16,25 @@ defmodule Regent.Account do
   use Phoenix.Component
 
   alias Regent.Primitives
+
+  @agent_pictures %{
+    "hermes" => "hermes.png",
+    "grok_bot" => "grok-bot.png",
+    "muse" => "muse.png",
+    "openclaw" => "openclaw.png",
+    "nemoclaw" => "nemoclaw.png",
+    "ironclaw" => "ironclaw.png",
+    "pi" => "pi.svg",
+    "claude_code" => "claude-code.png",
+    "codex" => "codex.png",
+    "cursor" => "cursor.png",
+    "gemini_cli" => "gemini-cli.png",
+    "dots" => "dots.png",
+    "other" => "other.svg"
+  }
+
+  # Shown only when the agent's person has connected World ID; nothing is said otherwise.
+  @world_id_words "World ID Connected"
 
   attr :id, :string, required: true
   attr :reason, :atom, default: :signed_out, values: [:signed_out, :expired]
@@ -34,19 +57,23 @@ defmodule Regent.Account do
   attr :agents, :any,
     required: true,
     doc:
-      "`:loading`, `:unavailable`, or a list of maps with id, name, harness, backed, " <>
-        "last_contact_iso and last_contact (formatted)"
+      "`:loading`, `:unavailable`, or a list of maps with id, name, kind, harness (label), " <>
+        "backed, last_contact_iso and last_contact (formatted)"
 
   attr :notice, :string, default: nil, doc: "the result of the last action, read out politely"
 
   slot :about, doc: "tip text: what a paired agent may do on this site"
 
   slot :actions,
-    doc: "per-agent controls, such as Unpair; receives the agent. Leave out when read-only"
+    doc:
+      "per-agent controls, such as Unpair, as quiet buttons; receives the agent. They show " <>
+        "when the row is hovered or focused, and stay in view on touch screens"
 
   slot :footer, doc: "pairing controls, or where to manage agents when this site cannot"
 
   def agents(assigns) do
+    assigns = assign(assigns, :world_id_words, @world_id_words)
+
     ~H"""
     <section
       id={@id}
@@ -56,8 +83,14 @@ defmodule Regent.Account do
     >
       <h2 id={"#{@id}-title"}>
         Agents
-        <Primitives.tip :if={@about != []} id={"#{@id}-about"} label="About paired agents">
+        <Primitives.tip id={"#{@id}-about"} label="About paired agents">
           {render_slot(@about)}
+          <span class="rg-account__tip-line" data-after={@about != [] && "true"}>
+            An agent shows {@world_id_words} once its person verifies with World ID.
+            <a href="https://siwa.regents.sh/skill.md" target="_blank" rel="noopener noreferrer">
+              How to connect (step 7)
+            </a>
+          </span>
         </Primitives.tip>
       </h2>
       <p
@@ -71,18 +104,16 @@ defmodule Regent.Account do
       <p :if={@agents == []} class="rg-account__empty">No agents paired yet.</p>
       <ul :if={is_list(@agents) and @agents != []} class="rg-account__agents">
         <li :for={agent <- @agents} id={"#{@id}-agent-#{agent.id}"}>
+          <.agent_mark kind={agent.kind} />
           <p class="rg-account__agent">
             <strong>{agent.name}</strong>
+            <.world_id :if={agent.backed} />
+          </p>
+          <p class="rg-account__meta">
             <span>{agent.harness}</span>
             <span>
-              {if agent.backed, do: "Human-backed", else: "No World ID backing"}
-              <Primitives.tip id={"#{@id}-backing-#{agent.id}"} label="About World ID backing">
-                {backing_text(agent.backed)}
-              </Primitives.tip>
+              Last contact <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
             </span>
-          </p>
-          <p class="rg-account__when">
-            Last contact <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
           </p>
           <div :if={@actions != []} class="rg-account__actions">
             {render_slot(@actions, agent)}
@@ -94,13 +125,31 @@ defmodule Regent.Account do
     """
   end
 
-  attr :logo, :string, required: true, doc: "the agent's picture, square"
+  attr :kind, :string, required: true, doc: "the agent's harness value, which picks its picture"
   attr :class, :any, default: nil
 
   def agent_mark(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :src,
+        "/images/regent-ui/agents/" <> Map.fetch!(@agent_pictures, assigns.kind)
+      )
+
     ~H"""
     <span class={["rg-account__mark", @class]} aria-hidden="true">
-      <img src={@logo} alt="" width="48" height="48" />
+      <img src={@src} alt="" width="48" height="48" />
+    </span>
+    """
+  end
+
+  @doc "World's mark and \"#{@world_id_words}\": the agent's person connected World ID."
+  def world_id(assigns) do
+    assigns = assign(assigns, :words, @world_id_words)
+
+    ~H"""
+    <span class="rg-account__world">
+      <img src="/images/regent-ui/world/logomark.svg" alt="" width="16" height="16" />{@words}
     </span>
     """
   end
@@ -109,7 +158,7 @@ defmodule Regent.Account do
 
   attr :harnesses, :list,
     required: true,
-    doc: "every agent a person may choose, as %{value, label, logo}"
+    doc: "every agent a person may choose, as %{value, label}; value is the harness value"
 
   attr :chosen, :string, default: nil, doc: "the chosen agent's value"
 
@@ -154,7 +203,7 @@ defmodule Regent.Account do
             checked={harness.value == @chosen}
             class="rg-account__radio"
           />
-          <.agent_mark logo={harness.logo} />{harness.label}
+          <.agent_mark kind={harness.value} />{harness.label}
         </label>
       </fieldset>
       <ol class="rg-account__steps">
@@ -203,10 +252,10 @@ defmodule Regent.Account do
   attr :agent, :map,
     required: true,
     doc:
-      "id, name, harness (label), logo, wallet, listing (nil or %{url, number}), and " <>
+      "id, name, kind (harness value), harness (label), wallet, listing (nil or %{url, number}), and " <>
         "paired_at, last_contact (relative) and last_contact_at, formatted"
 
-  attr :verified, :boolean, required: true, doc: "a person verified with World ID backs it"
+  attr :verified, :boolean, required: true, doc: "its person connected World ID"
   attr :same_person_count, :integer, default: 0, doc: "agents that person runs, this one included"
 
   attr :same_person, :list,
@@ -237,7 +286,7 @@ defmodule Regent.Account do
     ~H"""
     <dialog id={@id} class="rg-account__dialog" aria-labelledby={"#{@id}-title"} {@rest}>
       <header class="rg-account__dialog-head">
-        <.agent_mark logo={@agent.logo} />
+        <.agent_mark kind={@agent.kind} />
         <div>
           <p>{@agent.harness}</p>
           <h2 id={"#{@id}-title"}>{@agent.name}</h2>
@@ -265,30 +314,19 @@ defmodule Regent.Account do
             </a>
           </dd>
         </div>
-        <div>
+        <div :if={@verified}>
           <dt>Person</dt>
           <dd>
-            <span class="rg-account__human" data-verified={to_string(@verified)}>
-              <span :if={@verified} class="rg-account__check" aria-hidden="true">✓</span>
-              {if @verified, do: "Verified human", else: "No verified human"}
-              <Primitives.tip
-                id={"#{@id}-human"}
-                label={if @verified, do: "About Verified human", else: "About No verified human"}
-              >
-                <%= if @verified do %>
-                  A real person verified with World ID stands behind this agent. Who they are stays private.
-                <% else %>
-                  The agent's person can vouch for it with World ID.
-                  <a href="https://siwa.regents.sh/skill.md" target="_blank" rel="noopener noreferrer">
-                    Step 7
-                  </a>
-                <% end %>
+            <span class="rg-account__human">
+              <.world_id />
+              <Primitives.tip id={"#{@id}-human"} label="About World ID">
+                A real person verified with World ID stands behind this agent. Who they are stays private.
               </Primitives.tip>
             </span>
-            <span :if={@verified and @same_person_count >= 2}>
+            <span :if={@same_person_count >= 2}>
               1 of {@same_person_count} agents run by the same person
             </span>
-            <span :if={@verified and @same_person != []} class="rg-account__others">
+            <span :if={@same_person != []} class="rg-account__others">
               <button
                 :for={other <- @same_person}
                 type="button"
@@ -516,12 +554,4 @@ defmodule Regent.Account do
   defp agents_text(:loading, _notice), do: "Loading…"
   defp agents_text(:unavailable, _notice), do: "Your agents couldn’t be read. Try refreshing."
   defp agents_text(_agents, notice), do: notice
-
-  defp backing_text(true),
-    do:
-      "A person verified with World ID stands behind this agent. This optional check " <>
-        "does not change what it may do."
-
-  defp backing_text(false),
-    do: "World ID backing is optional. This agent already has its paired access."
 end

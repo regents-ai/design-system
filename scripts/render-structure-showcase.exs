@@ -323,33 +323,31 @@ defmodule Regent.StructureShowcase do
     """
   end
 
+  # Most agents have no World ID, as on the live sites; one name is short, one long.
   defp sample_agents do
-    [
+    for {id, name, kind, harness, backed, ago} <- [
+          {"a1", "Pira", "muse", "Muse", true, "2 hours ago"},
+          {"a2", "Night shift", "claude_code", "Claude Code", false, "5 hours ago"},
+          {"a3", "An agent with a deliberately long name that has to stay on one line", "codex",
+           "Codex", false, "2 days ago"},
+          {"a4", "Wren", "hermes", "Hermes", false, "3 days ago"},
+          {"a5", "Ilex", "other", "Something else", false, "9 days ago"}
+        ] do
       %{
-        id: "a1",
-        name: "Pira",
-        harness: "Muse",
-        backed: true,
+        id: id,
+        name: name,
+        kind: kind,
+        harness: harness,
+        backed: backed,
         last_contact_iso: "2026-10-11T08:00:00Z",
-        last_contact: "2 hours ago"
-      },
-      %{
-        id: "a2",
-        name: "An agent with a deliberately long name that has to wrap",
-        harness: "Codex",
-        backed: false,
-        last_contact_iso: "2026-10-09T08:00:00Z",
-        last_contact: "2 days ago"
+        last_contact: ago
       }
-    ]
+    end
   end
-
-  @sample_logo "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E" <>
-                 "%3Ccircle cx='24' cy='24' r='14' fill='%23888'/%3E%3C/svg%3E"
 
   defp sample_harnesses do
     for {value, label} <- [{"muse", "Muse"}, {"codex", "Codex"}, {"other", "Something else"}],
-        do: %{value: value, label: label, logo: @sample_logo}
+        do: %{value: value, label: label}
   end
 
   defp sample_messages(code) do
@@ -363,8 +361,8 @@ defmodule Regent.StructureShowcase do
     %{
       id: "a1",
       name: "Pira",
+      kind: "muse",
       harness: "Muse",
-      logo: @sample_logo,
       paired_at: "3 October 2026, 09:12 UTC",
       last_contact: "2 hours ago",
       last_contact_at: "11 October 2026, 08:00 UTC",
@@ -429,6 +427,9 @@ File.rm_rf!(Path.join(out, "css"))
 File.cp_r!(Path.join(root, "regent_ui/assets/css"), Path.join(out, "css"))
 File.mkdir_p!(Path.join(out, "fonts"))
 File.cp_r!(Path.join(root, "regent_ui/priv/static/fonts"), Path.join(out, "fonts/regent-ui"))
+File.rm_rf!(Path.join(out, "images"))
+File.mkdir_p!(Path.join(out, "images"))
+File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "images/regent-ui"))
 
 for name <- ~w(showcase.css showcase.js),
     do: File.cp!(Path.join(root, "scripts/" <> name), Path.join(out, name))
