@@ -1,5 +1,5 @@
 // The holographic card's foil, drawn with WebGPU through vgpu. The consuming
-// application pins `vgpu` (0.3.1, 0.4.0 or 0.5.0), mounts this renderer on the card's canvas and
+// application pins `vgpu` and `@vgpu/wgsl` (both 0.6.0), mounts this renderer on the card's canvas and
 // owns every browser concern: when to load it, the frame loop, reduced motion,
 // device loss and the pointer. This module only draws.
 //
@@ -12,6 +12,7 @@
 // graphite face, with or without the crown, or the ink of a line drawing the
 // application masks the canvas to. See THIRD_PARTY_NOTICES.md at the
 // repository root.
+import {prepareShader} from "@vgpu/wgsl/prepare"
 import {effect, frame, init, surface} from "vgpu"
 
 /** Radians of tilt at the card's edge, on both axes. */
@@ -456,7 +457,9 @@ async function equip(gpu, canvas, size) {
     label: "holographic-card",
   })
   canvasSurface.resize(size)
-  const foil = effect(gpu, foilWgsl, {label: "holographic-card.foil"})
+  const foil = effect(gpu, prepareShader(foilWgsl, "holographic_card.wgsl"), {
+    label: "holographic-card.foil",
+  })
   await foil.compile({colors: [canvasSurface.format]})
   return {canvasSurface, foil}
 }

@@ -29,7 +29,7 @@ canvas is the card face itself and the consuming application's markup carries th
 so the engraved mark moved to the right of a wide face and the guide ticks follow the
 face's own edges.
 
-The consumer pins `vgpu` itself (0.3.1, 0.4.0 or 0.5.0 today); this package ships no copy of it.
+The consumer pins `vgpu` and `@vgpu/wgsl` itself (both 0.6.0 today); this package ships no copy of either.
 
 ### License
 

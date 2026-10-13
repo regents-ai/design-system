@@ -77,9 +77,10 @@ product's hook attribute and the content that sits on the face; the component re
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
 `mix regent_ui.assets` copies `holographic_card.mjs` and its `.d.mts` next to the styles;
 `createHolographicCardRenderer(canvas, size, onDeviceLost)` draws the foil with `vgpu`,
-which the consumer pins itself. The sites pin 0.3.1, 0.4.0 or 0.5.0. On 11 October 2026
-the card was drawn in Chrome with each of the three: a full frame, lit by the pointer, the
-same picture each time. A typecheck does not prove this, because the renderer is plain
+which the consumer pins itself, together with `@vgpu/wgsl`: both at 0.6.0. vgpu 0.6 only
+accepts a prepared shader, so the renderer prepares the foil's WGSL as it loads. On
+13 October 2026 the card was drawn in Chrome with 0.6.0: a full frame, lit by the pointer,
+crown engraved. A typecheck does not prove this, because the renderer is plain
 JavaScript; a site moving to another vgpu version draws the card before it releases. The
 product owns the mount: when to load the
 chunk, the frame loop, reduced motion, device loss and the pointer. It calls
