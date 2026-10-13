@@ -289,6 +289,8 @@ defmodule Regent.StructureShowcase do
               same_person={[%{id: "a3", name: "Wren"}, %{id: "a4", name: "Ilex"}]}
               activity={sample_activity()}
               more={:idle}
+              may={["Read and search your notes", "Pin a note for 1 Credit, within the spending you allow"]}
+              spent="3.00 Credits"
               notice={{:status, "Pira is paired."}}
               open_event="open_agent"
               more_event="load_more_activity"

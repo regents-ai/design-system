@@ -256,7 +256,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it | Ash Template |
-| `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, activity across the sites | Ash Template |
+| `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
@@ -347,9 +347,13 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   own hook to open it and report the close. It requires `id`, `agent`
   (`%{id, name, harness, logo, wallet, listing, paired_at, last_contact,
   last_contact_at}`, dates formatted; `listing` is `nil` or `%{url, number}`),
-  `verified`, `activity` (`:loading`, `:unavailable`, or rows of
+  `verified`, `may` (what a paired agent may do on this site, a line each),
+  `spent` (`:loading`, `:unavailable`, or the Credits it has spent for its person,
+  formatted), `activity` (`:loading`, `:unavailable`, or rows of
   `%{action, site, occurred_at_iso, occurred_at}`), `open_event` and `more_event`
-  (each carries `id`). Optional: `same_person_count`, `same_person` (`%{id, name}`),
+  (each carries `id`). After the facts it answers the three questions every Regent
+  site asks in the same words: "What may happen next", "What it cost", then the
+  recent activity. Optional: `same_person_count`, `same_person` (`%{id, name}`),
   `more` (`nil` when there is nothing older, else `:idle`, `:loading` or
   `:unavailable`), `notice` (`{:status | :alert, text}`), `target`, and an `actions`
   slot for the product's buttons beside Done, such as Unpair.

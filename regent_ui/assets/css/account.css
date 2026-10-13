@@ -267,6 +267,11 @@
   cursor: pointer;
 }
 
+/* What may happen next and what it cost. */
+.rg-account__part { display: grid; gap: 8px; margin-block-end: var(--space-3); }
+.rg-account__part > .rg-account__aside { color: var(--color-fg-muted); font-size: var(--type-label-size); }
+.rg-account__part ul { display: grid; gap: 4px; margin: 0; padding-inline-start: 1.2em; }
+
 .rg-account__log { display: grid; gap: 12px; margin-block-end: var(--space-3); }
 .rg-account__log > p { color: var(--color-fg-muted); font-size: var(--type-label-size); }
 .rg-account__log ol {

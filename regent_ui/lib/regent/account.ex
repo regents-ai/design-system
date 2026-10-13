@@ -284,6 +284,12 @@ defmodule Regent.Account do
     values: [nil, :idle, :loading, :unavailable],
     doc: "nil when there is no older activity"
 
+  attr :may, :list, required: true, doc: "what a paired agent may do on this site, a line each"
+
+  attr :spent, :any,
+    required: true,
+    doc: "`:loading`, `:unavailable`, or the Credits it has spent for its person, formatted"
+
   attr :notice, :any, default: nil, doc: "`{:status | :alert, text}`: how the last action ended"
   attr :target, :any, default: nil, doc: "phx-target for the presses below"
   attr :open_event, :string, required: true, doc: "opens another agent; carries `id`"
@@ -292,8 +298,10 @@ defmodule Regent.Account do
   slot :actions, doc: "the product's buttons beside Done, such as Unpair"
 
   @doc """
-  One agent: who it is, when it paired, who stands behind it and what it has done
-  across the Regent sites. "Done" closes the dialog in the browser.
+  One agent: who it is, when it paired, who stands behind it, then the three
+  questions every Regent site answers in the same words: what may happen next,
+  what it cost and what it has done across the Regent sites. "Done" closes the
+  dialog in the browser.
   """
   def agent_detail(assigns) do
     ~H"""
@@ -354,6 +362,20 @@ defmodule Regent.Account do
         </div>
       </dl>
 
+      <section class="rg-account__part" aria-labelledby={"#{@id}-may"}>
+        <h3 id={"#{@id}-may"}>What may happen next</h3>
+        <p>While it stays paired, {@agent.name} may:</p>
+        <ul>
+          <li :for={line <- @may}>{line}</li>
+        </ul>
+        <p class="rg-account__aside">It never uses your wallet.</p>
+      </section>
+
+      <section class="rg-account__part" aria-labelledby={"#{@id}-cost"}>
+        <h3 id={"#{@id}-cost"}>What it cost</h3>
+        <p role="status">{spent_words(@spent)}</p>
+      </section>
+
       <section class="rg-account__log" aria-labelledby={"#{@id}-activity"}>
         <h3 id={"#{@id}-activity"}>Recent activity</h3>
         <p>
@@ -399,6 +421,13 @@ defmodule Regent.Account do
     </dialog>
     """
   end
+
+  defp spent_words(:loading), do: "Reading what it has spent…"
+
+  defp spent_words(:unavailable),
+    do: "What it has spent couldn’t be read right now. Refresh to try again."
+
+  defp spent_words(spent), do: "#{spent} spent for you on Regent sites."
 
   attr :id, :string, required: true
   attr :available, :string, default: nil
