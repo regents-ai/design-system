@@ -153,7 +153,7 @@ and crossfades these into a continuous cut outline, with **150ms base transition
 both directions**, including native reversal from an interrupted state. Set inherited
 `--rg-button-border-color` to override the outline; it falls back to shimmer color,
 then Tangerine. No JavaScript or additional markup is required. The
-`span.rg-button__label` that `Regent.Primitives.button` renders is transparent;
+`span.rg-button__label` that `Regent.Primitives.button` renders for every variant is transparent;
 plain-text primary links work.
 Primary text does not underline, including under consumer `.sc a:hover` rules.
 

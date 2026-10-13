@@ -31,7 +31,7 @@
   text-decoration: none;
 }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { border: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); }
-/* The primary label span stays transparent so the sheen passes behind the text. */
+/* The label span stays transparent so the sheen passes behind the text. */
 .rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background: transparent; }
 .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -63,7 +63,8 @@
     clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
     /* Base transitions reverse from the current paint on leave/interruption. */
     transition: background-size 150ms ease, --rg-button-edge-ink 150ms ease,
-      --rg-button-cut-ink 150ms ease, --rg-button-cut-gap 150ms ease;
+      --rg-button-cut-ink 150ms ease, --rg-button-cut-gap 150ms ease,
+      transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   }
   /* Dark marks when dark is showing: chosen, or no choice made and the device does not ask for light. */
   :root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after {
@@ -98,10 +99,15 @@
 @media (prefers-reduced-motion: reduce) {
   .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after { transition: none !important; }
 }
-/* A press answers at once: every enabled button gives a little under the pointer. */
+/* A press answers at once: what an enabled button draws gives a little under the
+   pointer. The button's own box never moves, so a press held at its edge still
+   ends on the button and the click always reaches the page. */
 @media (prefers-reduced-motion: no-preference) {
-  .rg-button { transition: transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)); }
-  .rg-button:not(:disabled):not([aria-disabled="true"]):active { transform: scale(var(--active-scale, 0.97)); }
+  .rg-button > .rg-button__label,
+  .rg-button::before { transition: transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)); }
+  .rg-button:not(:disabled):not([aria-disabled="true"]):active > .rg-button__label,
+  .rg-button:not(:disabled):not([aria-disabled="true"]):active::before,
+  .rg-button:not(:disabled):not([aria-disabled="true"]):active::after { transform: scale(var(--active-scale, 0.97)); }
 }
 .rg-button[hidden] { display: none; }
 .rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-control-border); }

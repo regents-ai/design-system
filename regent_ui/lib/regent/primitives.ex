@@ -15,10 +15,7 @@ defmodule Regent.Primitives do
   def button(assigns) do
     ~H"""
     <button type={@type} class={["rg-button", "rg-button--#{@variant}", @class]} {@rest}>
-      <span :if={@variant == "primary"} class="rg-button__label">{render_slot(@inner_block)}</span>
-      <%= if @variant != "primary" do %>
-        {render_slot(@inner_block)}
-      <% end %>
+      <span class="rg-button__label">{render_slot(@inner_block)}</span>
     </button>
     """
   end

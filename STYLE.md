@@ -494,10 +494,14 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
 - Shared structural controls retain clear focus. No card lift, pointer-following shine,
   perspective or idle decorative animation is enabled, except `Regent.HolographicCard`,
   which tilts and lights under the pointer (see Shape and spacing).
-- Every enabled `.rg-button` (primary, secondary and quiet) gives under a press:
-  `scale(var(--active-scale))` on `:active`, a `var(--duration-fast)` `var(--ease-out)`
-  transition on `transform` only, and none under reduced motion. Disabled and
-  `aria-disabled="true"` buttons stay still. The press never stops a click reaching the page.
+- Every enabled `.rg-button` (primary, secondary and quiet) gives under a press: on
+  `:active` its `rg-button__label` span and its drawn `::before`/`::after` layers take
+  `scale(var(--active-scale))`, with a `var(--duration-fast)` `var(--ease-out)` transition
+  on `transform` only, and none under reduced motion. The button's own box never scales,
+  so a press held at its edge still ends on the button: the press never stops a click
+  reaching the page. `Regent.Primitives.button` renders the label span for every variant;
+  a hand-written `.rg-button` gives only where it has one. Disabled and
+  `aria-disabled="true"` buttons stay still.
 - Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
   opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
   and `aria-disabled="true"` controls do not shimmer. Buttons use `rg-shimmer`: a
@@ -518,8 +522,8 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
   `--rg-shimmer-duration` defaults to `1.15s` for buttons; the card edge ripple takes
   `calc(var(--rg-shimmer-duration, 1.15s) * 2)` per turn (default `2.3s`).
   Button `::before` remains the clipped accent fill/sweep, while `::after` owns the outline.
-  The `rg-button__label` span that `Regent.Primitives.button` renders is transparent;
-  CSS-only primary links need no label span.
+  The `rg-button__label` span that `Regent.Primitives.button` renders for every variant
+  is transparent; CSS-only primary links need no label span.
   Primary text never underlines, including under later consumer `.sc a:hover` rules.
   Cards carry no media overlay: the art box holds art and nothing else, and heading,
   caption and actions keep their paired ink. External focus rings are never clipped.
