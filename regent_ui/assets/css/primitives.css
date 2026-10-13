@@ -98,6 +98,11 @@
 @media (prefers-reduced-motion: reduce) {
   .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after { transition: none !important; }
 }
+/* A press answers at once: every enabled button gives a little under the pointer. */
+@media (prefers-reduced-motion: no-preference) {
+  .rg-button { transition: transform var(--duration-fast, 140ms) var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)); }
+  .rg-button:not(:disabled):not([aria-disabled="true"]):active { transform: scale(var(--active-scale, 0.97)); }
+}
 .rg-button[hidden] { display: none; }
 .rg-button--secondary { background: var(--rg-p-surface); color: var(--rg-p-text); border-color: var(--rg-p-control-border); }
 .rg-button--quiet { background: transparent; color: var(--rg-p-text); }

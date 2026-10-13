@@ -494,6 +494,10 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
 - Shared structural controls retain clear focus. No card lift, pointer-following shine,
   perspective or idle decorative animation is enabled, except `Regent.HolographicCard`,
   which tilts and lights under the pointer (see Shape and spacing).
+- Every enabled `.rg-button` (primary, secondary and quiet) gives under a press:
+  `scale(var(--active-scale))` on `:active`, a `var(--duration-fast)` `var(--ease-out)`
+  transition on `transform` only, and none under reduced motion. Disabled and
+  `aria-disabled="true"` buttons stay still. The press never stops a click reaching the page.
 - Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
   opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
   and `aria-disabled="true"` controls do not shimmer. Buttons use `rg-shimmer`: a
