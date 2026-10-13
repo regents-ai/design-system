@@ -151,8 +151,9 @@ are verified first; consumer rollout follows visual acceptance and each app's ow
 - `node scripts/generate-tokens-json.mjs` regenerates the JSON, the packaged token CSS and the
   packaged fonts; `--check` reports stale generated copies without editing files.
 - Every consumer runs `mix regent_ui.assets` before its asset build. It copies the resolved
-  package's CSS, JSON and browser modules into ignored `assets/vendor/regent_ui/` and its fonts
-  into ignored `priv/static/fonts/regent-ui/`. Never hand-edit those outputs.
+  package's CSS, JSON and browser modules into ignored `assets/vendor/regent_ui/`, its fonts
+  into ignored `priv/static/fonts/regent-ui/` and its pictures (agent pictures, World's mark)
+  into ignored `priv/static/images/regent-ui/`. Never hand-edit those outputs.
 - Build each app after updating the shared revision. Production bundles are local assets, so
   deployed sites receive a change only after their own builds and deployments.
 - Shared component edits reach every app that renders that component (see the Shared
