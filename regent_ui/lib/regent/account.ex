@@ -149,7 +149,20 @@ defmodule Regent.Account do
 
     ~H"""
     <span class="rg-account__world">
-      <img src="/images/regent-ui/world/logomark.svg" alt="" width="16" height="16" />{@words}
+      <img
+        class="rg-account__world-dark"
+        src="/images/regent-ui/world/logomark-off-white.svg"
+        alt=""
+        width="22"
+        height="22"
+      />
+      <img
+        class="rg-account__world-light"
+        src="/images/regent-ui/world/logomark-off-black.svg"
+        alt=""
+        width="22"
+        height="22"
+      />{@words}
     </span>
     """
   end

@@ -95,17 +95,25 @@
 .rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); font-weight: 400; }
 .rg-account__agents .rg-account__actions .rg-button--quiet:is(:hover, :focus-visible) { color: var(--color-fg); }
 
-/* World's mark, as World supplies it, beside the words. */
+/* World's mark, unchanged from World's brand kit (https://world.org/brand),
+   beside the words: its off-white file on dark, its off-black file on light. The file's own margin spaces the words. */
 .rg-account__world {
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   color: var(--color-fg);
   font-size: var(--type-label-size);
   white-space: nowrap;
 }
-.rg-account__world img { inline-size: 16px; block-size: 16px; }
+.rg-account__world img { inline-size: 22px; block-size: 22px; }
+.rg-account__world-light { display: none; }
+:root[data-theme="light"] .rg-account__world-light { display: block; }
+:root[data-theme="light"] .rg-account__world-dark { display: none; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-account__world-light { display: block; }
+  :root:not([data-theme]) .rg-account__world-dark { display: none; }
+}
 .rg-account__footer { display: grid; justify-items: start; gap: var(--space-2); margin-block-start: var(--space-3); }
 
 .rg-account__tip-line { display: block; }
