@@ -94,7 +94,7 @@ action color.
 
 | Product | Identity | Token |
 | --- | --- | --- |
-| Regents Labs / Platform | Charcoal ground, Powder Blue action | — |
+| Regents Labs / Platform | Charcoal ground; Charcoal action in dark, white action with Charcoal text in light | — |
 | Agent Formation | Tangerine Tango | `--product-formation` |
 | Autolaunch | Tangerine Tango | `--product-autolaunch` |
 | Techtree | Powder Blue | `--product-techtree` |
