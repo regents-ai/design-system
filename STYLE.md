@@ -260,7 +260,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
-| `Regent.Account.history` | Read-only formatted Credits or Points activity | Awaiting consumer adoption |
+| `Regent.Account.history` | Read-only formatted Credits or Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |

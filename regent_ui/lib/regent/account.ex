@@ -504,7 +504,9 @@ defmodule Regent.Account do
   attr :rows, :list,
     default: [],
     doc:
-      "formatted maps with label, amount, occurred_at and optional status; no raw domain records"
+      "formatted maps with label, amount, occurred_at, optional status and optional link " <>
+        "(`%{href, label, description}`, opened in a new tab, `description` read aloud); " <>
+        "no raw domain records"
 
   attr :empty_message, :string, default: "No activity yet."
   attr :state, :atom, default: :ready, values: [:ready, :loading, :stale, :error]
@@ -528,6 +530,17 @@ defmodule Regent.Account do
             <p class="rg-account__amount">{display_value(row.amount, @state)}</p>
             <p class="rg-account__when">
               <span :if={Map.get(row, :status)}>{row.status} · </span>{row.occurred_at}
+              <span :if={Map.get(row, :link)}>
+                ·
+                <a
+                  href={row.link.href}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={row.link.description}
+                >
+                  {row.link.label}
+                </a>
+              </span>
             </p>
           </li>
         </ol>
