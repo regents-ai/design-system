@@ -1,6 +1,6 @@
 # Mobile web design and acceptance
 
-Use this with `STYLE.md` for the four Phoenix products. This is an iPhone-oriented
+Use this with `STYLE.md` for all five Phoenix products and ash-template. This is an iPhone-oriented
 web contract, not a request to replace the sites with native iOS UI or one common
 marketing layout. Keep the approved palettes, ruled geometry and Pixel/Sans roles.
 
@@ -47,6 +47,11 @@ native sizes; WCAG has separate thresholds and exceptions. Inspect the actual hi
 area, spacing, semantics and any expanded pseudo-element target.
 
 ## Product-owned controls and reading order
+
+Controls must retain an accessible name when narrow layouts hide their visible text.
+Give icon-only home links and search buttons an explicit name; `display: none` on
+their only label also removes that label from the accessibility tree. Verify names
+at the phone breakpoint, not only in the desktop layout.
 
 - Keep text-entry controls at least 16 CSS px on iOS; do not disable zoom or use
   `maximum-scale=1` to work around focus zoom. Choose `inputmode`, `autocomplete`,
