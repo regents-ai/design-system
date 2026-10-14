@@ -28,6 +28,10 @@ The components link only to that address and use no other word for the page.
 - Products compose their existing header and light/dark control. Autolaunch's blog
   preference is separate from its market's existing OS-following behavior.
 - Images are author-owned assets, not automatically generated product artwork.
+- Prose table cells keep a 10rem minimum width so narrow pages do not break words
+  into single letters. The catalog renderer's `.rg-blog-table` region contains
+  horizontal scrolling and carries a name and `tabindex="0"`. Custom Markdown
+  compositions must retain that wrapper; do not hide page overflow to mask a table.
 - `structure.css` includes `blog.css`; `mix regent_ui.assets` stages `blog.mjs`.
   Consumers import the staged module and invoke `mix regent_blog.assets` before
   bundling. Do not edit generated vendor copies or fork these styles per product.
