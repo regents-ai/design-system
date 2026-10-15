@@ -43,11 +43,16 @@ identity color.
 The approved September 5 palettes use distinct light and dark surfaces. Dark is the
 default: until a person chooses on the site, pages are dark unless their device asks
 for light (founder, 2026-09-28). A choice made on the site always wins. Regents
-emphasizes charcoal, Autolaunch tangerine, Patchbay platinum, and Techtree powder
-blue. Exact values come from the supplied `site color palettes/` images and are
-implemented in `design_system_tokens.css`. The earlier fixed-ground palettes are retired.
-Patchbay light is the exception to its image: a Platinum ground, Powder Blue surfaces,
-a Tangerine action colour and Charcoal ink and panels.
+emphasizes charcoal, Autolaunch tangerine, and Techtree powder blue. Patchbay uses
+the Porcelain / cobalt palette Sean selected on 15 October 2026. Values live in
+`design_system_tokens.css`; the older source images remain historical references. The earlier fixed-ground palettes are retired.
+Patchbay uses cool neutral surfaces and cobalt actions: light canvas `#F6F7FA`,
+surface `#FFFFFF`, raised `#EAEDF4`, text `#192239`, muted `#536078`, essential
+border `#7B869B`, accent `#294EC3`, accent text `#FFFFFF`, tint `#E5EBFF`.
+Dark uses canvas `#111726`, surface `#1B2335`, raised `#252F45`, text `#EEF2FF`,
+muted `#ABB8D1`, essential border `#6D7D99`, accent `#9BB4FF`, accent text `#142247`,
+tint `#273853`. Semantic status colors retain their own meaning. Other brands and
+canonical logo artwork remain unchanged.
 
 Page background SVGs are retired; the package ships no background component and no
 background images. The eight source assets stay in `site svg backgrounds/` for potential
