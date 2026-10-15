@@ -88,6 +88,13 @@
    * resolves to one of these four; black is a contrast utility, not a fifth color. */
   --palette-tangerine-tango: #FF5B19;
   --palette-charcoal: #161616;
+  --utility-action-fill: var(--rg-cta-fill);
+  --utility-action-ink: var(--rg-cta-ink);
+  --utility-bg: #141516;
+  --utility-surface: #1C1D1F;
+  --utility-ink: #F2F2F0;
+  --utility-muted: #B0B1B4;
+  --utility-rule: #393B3E;
   --rg-cta-fill: #F5F5F5;
   --rg-cta-ink: var(--palette-charcoal);
   --palette-platinum: #E5E3D2;
@@ -198,6 +205,8 @@
 }
 
 :root[data-brand="platform"][data-theme="light"] {
+  --utility-action-fill: var(--palette-charcoal);
+  --utility-action-ink: #FFFFFF;
   color-scheme: light;
 
   --brand-accent: #FF5B19;
@@ -458,16 +467,28 @@ samp {
  * Each block repeats its brand's [data-theme="light"] block above. */
 /* CTA hierarchy follows the product palette only in light mode. */
 :root[data-theme="light"] {
+  --utility-bg: #FAFAF8;
+  --utility-surface: #FFFFFF;
+  --utility-ink: #222326;
+  --utility-muted: #60636A;
+  --utility-rule: #DCDDE0;
   --rg-cta-fill: var(--color-accent);
   --rg-cta-ink: var(--color-fg-on-accent);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
+  --utility-bg: #FAFAF8;
+  --utility-surface: #FFFFFF;
+  --utility-ink: #222326;
+  --utility-muted: #60636A;
+  --utility-rule: #DCDDE0;
     --rg-cta-fill: var(--color-accent);
     --rg-cta-ink: var(--color-fg-on-accent);
   }
 
   :root[data-brand="platform"]:not([data-theme]) {
+    --utility-action-fill: var(--palette-charcoal);
+    --utility-action-ink: #FFFFFF;
     color-scheme: light;
 
     --brand-accent: #FF5B19;

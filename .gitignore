@@ -8,3 +8,5 @@ logos/experimental/
 
 # Generated real-component showcase and local browser evidence.
 .showcase/
+
+.utility-preview/

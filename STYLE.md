@@ -141,7 +141,7 @@ beside the files.
 
 | Face | Canonical `font-family` name | Token | Use |
 | --- | --- | --- | --- |
-| Geist Pixel Square | `"Geist Pixel Square"` | `--font-family-title` | All titles and subtitles, headings, section bars, disclosure titles, empty-state titles and wordmarks |
+| Geist Pixel Square | `"Geist Pixel Square"` | `--font-family-title` | Deliberate brand headlines, wordmarks and editorial display moments; never routine account, settings, connection or error headings |
 | Geist UI Sans | `"Geist UI Sans"` | `--font-family-sans`, `--font-family-ui`, `--font-family-paragraph` | Body, forms, navigation, labels, captions, legal text and other UI |
 | Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, technical indices, addresses and readouts |
 
@@ -557,3 +557,14 @@ Use its long-label toggle, expanded errors, disabled state, native select/dialog
 options for desktop, 320px reflow, 200% text, keyboard, reduced-motion and forced-colors review.
 Do not treat this as completed adoption in every product. Verify a bounded consumer after
 the shared visual direction is accepted, before rolling pinned revisions to the other apps.
+
+## Utility screens
+
+Account, settings, connection and recovery screens use Geist Sans, including headings.
+Use `Regent.Utility.page` for standalone messages and `rg-utility` for account content.
+The shared utility palette has neutral light and dark surfaces, readable secondary text,
+and a restrained rule color. Product accents still belong to actions. Use open sections
+and single separators, not chamfered or nested decorative frames. Titles are 24–28px,
+body text 16px, context and supporting notes 14px. Do not animate errors or consent panels.
+Identity, expiry, permission and recovery wording must remain accurate. Never invent a
+return URL or change a consent action while changing presentation.

@@ -1,8 +1,9 @@
 .rg-account {
   min-inline-size: 0;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  padding: 1.5rem 0;
+  border: 0;
+  border-block-start: 1px solid var(--color-border);
+  background: transparent;
   color: var(--color-fg);
   font-family: var(--font-family-ui);
 }
@@ -10,13 +11,13 @@
 .rg-account h2,
 .rg-account h3 {
   margin: 0;
-  font-family: var(--font-family-title);
-  font-weight: 400;
+  font-family: var(--font-family-ui);
+  font-weight: 600;
   font-synthesis: none;
   overflow-wrap: anywhere;
 }
 
-.rg-account h2 { font-size: var(--type-title-size); }
+.rg-account h2 { font-size: 1.125rem; line-height: 1.35; }
 .rg-account h3 { font-size: var(--type-body-size); }
 
 .rg-account__status {
@@ -92,7 +93,7 @@
 .rg-account__meta span + span::before { content: " · "; }
 .rg-account__actions { grid-area: actions; display: flex; gap: var(--space-2); }
 /* A row's quiet controls stay secondary to the agent's name until pointed at. */
-.rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); font-weight: 400; }
+.rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); font-weight: 600; }
 .rg-account__agents .rg-account__actions .rg-button--quiet:is(:hover, :focus-visible) { color: var(--color-fg); }
 
 /* World's mark, unchanged from World's brand kit (https://world.org/brand),
@@ -156,7 +157,7 @@
   inline-size: 100%;
   margin-block-end: var(--space-2);
   padding: 0;
-  font-family: var(--font-family-title);
+  font-family: var(--font-family-ui);
   font-size: var(--type-body-size);
 }
 .rg-account__choice {
@@ -223,8 +224,8 @@
 }
 .rg-account__dialog::backdrop { background: color-mix(in oklab, var(--color-fg) 30%, transparent); }
 .rg-account__dialog h2,
-.rg-account__dialog h3 { margin: 0; font-family: var(--font-family-title); font-weight: 400; }
-.rg-account__dialog h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.05; overflow-wrap: anywhere; }
+.rg-account__dialog h3 { margin: 0; font-family: var(--font-family-ui); font-weight: 600; }
+.rg-account__dialog h2 { font-size: 1.5rem; line-height: 1.25; overflow-wrap: anywhere; }
 .rg-account__dialog h3 { font-size: var(--type-headline-size); }
 .rg-account__dialog p { margin: 0; }
 
@@ -302,7 +303,7 @@
 .rg-account__dialog-actions form { margin: 0; }
 
 @media (max-width: 30rem) {
-  .rg-account { padding: var(--space-2); }
+  .rg-account { padding: 1.5rem 0; }
   .rg-account__history li { grid-template-columns: minmax(0, 1fr); }
   .rg-account__agents li {
     grid-template-columns: auto minmax(0, 1fr);

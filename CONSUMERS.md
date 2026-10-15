@@ -211,3 +211,13 @@ The consumers are `repos/regents/platform`, `repos/autolaunch/platform`,
 `repos/patchbay/platform`, `repos/techtree/platform`, `repos/ash-template/platform` and
 `repos/keyfleet/platform`. Each pins `regent_ui` to one design-system commit, as under
 "Release builds".
+
+### Utility pages
+
+Use `Regent.Utility.page` for standalone errors and recovery messages. Use `rg-utility`
+on account/settings content; `Regent.Account` sections and dialogs share the same
+Sans typography and neutral palette. Keep Pixel for deliberate brand moments.
+Shared OAuth consent markup must adopt the utility classes alongside this package;
+release the shared CSS first. No consent policy, status or callback behavior changes.
+Render `mix run ../scripts/render-utility-showcase.exs` from regent_ui for local
+light/dark examples with synthetic account data. These are not live account sessions.
