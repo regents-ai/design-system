@@ -145,9 +145,9 @@ beside the files.
 | Geist UI Sans | `"Geist UI Sans"` | `--font-family-sans`, `--font-family-ui`, `--font-family-paragraph` | Body, forms, navigation, labels, captions, legal text and other UI |
 | Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, technical indices, addresses and readouts |
 
-`--font-family-ui` and `--font-family-paragraph` resolve to Geist UI Sans. Headings
-(`h1`–`h6`) use Pixel Square. Mono is reserved for technical/code roles rather than
-general UI text.
+`--font-family-ui` and `--font-family-paragraph` resolve to Geist UI Sans. Routine
+account, settings, connection and error headings use Sans; Pixel Square is reserved
+for deliberate brand and editorial display headings. Mono is reserved for technical/code roles.
 
 Pixel Square is genuine upright **400 only**, with `font-synthesis: none`; never fake
 bold or italic Pixel. Sans and Mono support 400 and 600 with genuine italics, using

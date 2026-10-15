@@ -35,17 +35,17 @@ Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
 
 - Shared components render; products decide. No routes, authentication, persistence, wallet
   admission, money movement or product workflow state lives in this package.
-- Typography: Geist Pixel Square 400 for titles, subtitles and headings; Geist UI Sans 400/600
-  for body and interface text; Geist Mono for code, addresses and technical identifiers. Never
+- Typography: Geist Pixel Square 400 for deliberate brand and editorial display headings;
+  Geist UI Sans 400/600 for utility headings, body and interface text; Geist Mono for code, addresses and technical identifiers. Never
   synthesize bold or italic Pixel. Fonts are served same-origin from `/fonts/regent-ui/`.
-- Shape: a ruled technical sheet. `--radius` is 0; panels use fixed 45-degree cuts and primary
-  buttons cut two corners. Only inert CSS skins clip; content, menus and focus rings never do.
+- Shape: a ruled technical sheet. `--radius` is 0; brand panels may use fixed 45-degree cuts; utility sections use quiet separators
+  and CTA buttons are rectangular. Only inert CSS skins clip; content, menus and focus rings never do.
   Flat, opaque surfaces with paired surface/ink roles; no glass, blur, glow, lift or idle motion.
 - Palette: preserve the eight brand/mode definitions (`platform`, `autolaunch`, `patchbay`,
   `techtree` × `light`, `dark`). Shared CSS reads only the shared `--color-*` names. Status
   colors report state, never identity.
-- Motion: transform and opacity only, plus the interaction-only primary/card sheen and the
-  150ms outline transitions defined in `STYLE.md`. Reduced motion and forced colors are honored.
+- Motion: transform and opacity only, with pointer-driven CTA chevron/press feedback,
+  interaction-only card effects and the outline transitions defined in `STYLE.md`. Reduced motion and forced colors are honored.
 - Keep examples public-safe: no private user data, billing data, wallet secrets or support details.
 - Never read `.env` files. `.env.example` is allowed.
 
