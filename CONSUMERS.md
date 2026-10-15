@@ -110,24 +110,23 @@ Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` fr
 roles expose the other three palette constants per brand; use their paired utility
 classes coherently, not random per-card accents.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
-forced-colors appearance. Enabled primaries use a restrained orange 1.15s hover/focus
-area sheen; feature cards ripple a single band along their panel edge at 2.3s per turn. `--rg-shimmer-color` is an
-inherited source override (default Tangerine, mixed 75% with Platinum at 24% strength).
-`--rg-shimmer-duration` controls base speed; the card edge ripple doubles it. Custom colors
-and fill/ink overrides require caller contrast review. Labels are transparent; CSS-only
-primary links need no label wrapper and never underline, even under `.sc a:hover`.
-Dark rest has blue opposite square corners plus orange cut accents; light rest has
-two opposite orange L-edges. Enabled hover/focus grows a continuous cut outline with
-150ms base transitions on entry and exit, naturally reversing interruptions.
-`--rg-button-border-color` overrides the outline, falling back to shimmer color then
-Tangerine. Reduced motion means instant outline states and no sweep; forced colors
-retain a system border. No new markup, JS, semantic changes or clipped host/content.
+forced-colors appearance. Primary CTAs use near-white fill and dark ink in dark
+mode, and the site's accent pair in light mode. Secondary CTAs use the site's
+surface and foreground with a visible border. CTA skins are rectangular.
+Local CTA paint overrides use `--rg-cta-fill` and `--rg-cta-ink` as a pair.
+The template's `hooks/motion/buttons.ts` supplies a single chevron nudge on pointer
+entry and a small press response on pointer-down through Anime.js. Copy that module
+and its `mountMotion` integration when adopting this package. CSS-only consumers
+receive the same static appearance. Quiet, copy, theme and tab controls do not gain
+CTA chevrons. Reduced motion and keyboard activation stay still. Hit areas never
+scale and actions are never delayed. Disabled controls stay still.
+Feature-card edge ripples remain independent and retain their existing overrides.
 Import canonical token CSS then
 `primitives.css`, which now includes `structure.css`. Use `Regent.Structure` for the
 optional ruled frame, section bars, cut panels and technical figures, and existing
 `Regent.Primitives` for primary/secondary/quiet buttons and indexed native disclosures.
 The old universal 24px radius is retired: plain cells are square; panel skins cut
-16px/12px and primary-action skins cut 12px/8px (desktop/mobile).
+16px/12px (desktop/mobile); CTA skins stay rectangular.
 
 Page background SVGs are no longer used; the package ships no background component and no
 background images. The source SVGs stay in `site svg backgrounds/` for future smaller

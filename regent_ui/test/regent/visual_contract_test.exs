@@ -119,94 +119,18 @@ defmodule Regent.VisualContractTest do
     assert css =~ ".rg-field select { appearance: auto; background-image: none; }"
   end
 
-  test "primary corners retain finite rest strokes and grow only their decorative skin" do
+  test "buttons preserve forced-color focus and text reflow" do
     css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
-
-    # The root theme owns decoration, including inside locally colored panels.
-    selector =
-      ".rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::after"
-
-    assert [_, decoration] =
-             Regex.run(~r/#{Regex.escape(selector)}\s*\{([^}]+)\}/, css)
-
-    assert decoration =~ ~s(content: "")
-    assert decoration =~ "pointer-events: none"
-    assert decoration =~ "position: absolute"
-    assert decoration =~ "inset: 0"
-    assert decoration =~ "z-index: -1"
-    assert decoration =~ "background-repeat: no-repeat"
-
-    # The two diagonal strips are inset from the existing 45-degree cuts;
-    # square corners get only two short edge strokes each, never a full border.
-    for angle <- [135, 315] do
-      assert decoration =~ "linear-gradient(#{angle}deg,"
-    end
-
-    assert decoration =~ "--rg-button-cut-gap: 1px"
-    assert decoration =~ "--rg-button-cut-ink: transparent"
-    assert decoration =~ "transition: background-size 150ms ease"
-    assert css =~ "--rg-button-edge-ink: var(--palette-powder-blue, #aecacd)"
-    assert css =~ "--rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19)"
-
-    for corner <- ["left top", "right bottom"] do
-      assert decoration =~ "#{corner} / var(--rg-cut-control) var(--rg-cut-control)"
-    end
-
-    for corner <- ["right top", "left bottom"] do
-      assert decoration =~ "#{corner} / var(--rg-cut-control) 1px"
-      assert decoration =~ "#{corner} / 1px var(--rg-cut-control)"
-    end
-
-    refute decoration =~ ~r/(?:^|[;\s])border:/
-
-    for forbidden <- ["animation:", "url("] do
-      refute decoration =~ forbidden
-    end
-  end
-
-  test "primary decoration is absent in forced colors without clipping focus or changing reflow" do
-    css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
-
-    assert css =~
-             ~r/@media \(forced-colors: none\)\s*\{\s*\.rg-button[^}]+::after\s*\{/s
 
     [_, host] = Regex.run(~r/\.rg-button \{([^}]+)\}/, css)
     assert host =~ "overflow: visible"
     assert host =~ "overflow-wrap: anywhere"
     assert host =~ "white-space: normal"
     refute host =~ "clip-path"
-    assert css =~ ".rg-button { --rg-cut-control: 8px; }"
     assert css =~ "border: 1px solid ButtonText; color: ButtonText; background: ButtonFace;"
     assert css =~ ".rg-button:disabled { color: GrayText; opacity: 1; }"
     assert css =~ "outline: 2px solid var(--rg-p-text); outline-offset: 4px;"
     assert css =~ "outline-color: Highlight;"
-  end
-
-  test "enabled primary shimmer shares an inherited color, source shape and interaction-only motion" do
-    css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
-    primitives = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
-
-    selector =
-      ~s|.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before|
-
-    assert css =~ selector
-    assert css =~ "@media (prefers-reduced-motion: no-preference) and (forced-colors: none)"
-
-    assert css =~
-             "linear-gradient(100deg, transparent 30%, color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) 50%, transparent 70%)"
-
-    assert css =~ "background-size: 300% 100%"
-    assert css =~ "from { background-position: 160% 0; }"
-    assert css =~ "to { background-position: -60% 0; }"
-
-    assert css =~
-             "animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite"
-
-    assert primitives =~ "background-color: var(--rg-p-accent)"
-
-    # Public overrides must inherit from any ancestor, not be reset by a host default.
-    refute css =~ ~r/--rg-shimmer-(color|duration):/
-    refute primitives =~ ~r/--rg-shimmer-(color|duration):/
   end
 
   test "feature cards ripple the panel edge on interaction" do

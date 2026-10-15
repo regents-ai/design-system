@@ -181,24 +181,11 @@ Patterns that generalize:
 - The former universal 24px radius is replaced, not layered over. `--radius: 0px`
   keeps frames, navigation, fields, statuses, tables, secondary controls and disclosures square.
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
-  12px below 768px. Primary buttons cut top-left and bottom-right only, 12px desktop
-  and 8px mobile. Secondary actions are square outlines; quiet actions are text.
-  A disabled primary action fills inert gray (`--rg-p-disabled-fill`) with muted text and a
-  matching gray edge; it never reads as a dimmed accent.
-- Across **all four brands**, dark primary controls rest with 1px Powder Blue L-strokes
-  at the top-right/bottom-left square corners and Tangerine accents inset 1px along
-  the top-left/bottom-right cuts. Light controls rest with two opposite Tangerine
-  L-edges and no diagonal marks. Rest marks occupy cut-sized tiles (12px/8px).
-- Enabled primary hover/focus-visible grows the four straight edges to full length
-  and crossfades the cut accents into a continuous matching cut outline in **150ms**.
-  Base transitions reverse on leave, including an interrupted entrance, without JS
-  or additional markup. CSS reversal shortening applies to interrupted transitions;
-  complete rest-to-hover and hover-to-rest transitions each take 150ms.
-  `--rg-button-border-color` overrides the active outline and light rest edges,
-  falling back to `--rg-shimmer-color`, then Tangerine. Dark rest marks keep their
-  canonical blue/orange pairing. Only `::after` clips; hit areas remain rectangular.
-  Reduced motion swaps outline states instantly. Forced colors omit decoration and
-  retain a rectangular system border plus the distinct external keyboard focus ring.
+  12px below 768px. CTA buttons are rectangular: near-white with dark ink for
+  primary actions in dark mode, and a bordered dark surface for secondary actions.
+  Light mode uses each site's accent/on-accent and surface/foreground pairs.
+  Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons.
+  Disabled actions use inert gray. External keyboard focus rings remain visible.
 - Clip visual pseudo-elements only. Panel and button hosts have no clipping or hidden
   overflow, so menus, focus rings and expanded validation remain visible. Two inset
   skins supply the diagonal perimeter. Never fake a diagonal stroke with a clipped CSS border.
@@ -492,50 +479,19 @@ Check every state at desktop and phone width; the box below must not move.
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
 
-- Animate only `transform` and `opacity` except the shared interaction-only background
-  shimmer and 150ms primary-outline paint transitions below. Enters use ease-out;
-  on-screen moves use ease-in-out.
-- Shared structural controls retain clear focus. No card lift, pointer-following shine,
-  perspective or idle decorative animation is enabled, except `Regent.HolographicCard`,
-  which tilts and lights under the pointer (see Shape and spacing).
-- Every enabled `.rg-button` (primary, secondary and quiet) gives under a press: on
-  `:active` its `rg-button__label` span and its drawn `::before`/`::after` layers take
-  `scale(var(--active-scale))`, with a `var(--duration-fast)` `var(--ease-out)` transition
-  on `transform` only, and none under reduced motion. The button's own box never scales,
-  so a press held at its edge still ends on the button: the press never stops a click
-  reaching the page. `Regent.Primitives.button` renders the label span for every variant;
-  a hand-written `.rg-button` gives only where it has one. Disabled and
-  `aria-disabled="true"` buttons stay still.
-- Every enabled primary `.rg-button` shimmers on hover/focus-visible, with no per-use
-  opt-in and no palette-specific gating. Secondary, quiet, native disabled, `[disabled]`
-  and `aria-disabled="true"` controls do not shimmer. Buttons use `rg-shimmer`: a
-  100-degree linear gradient, transparent stops at 30%/70%, restrained orange highlight
-  at 50%, `300% 100%` size, moving from `160% 0` to `-60% 0` with `var(--ease-out)`.
-  Feature cards ripple instead: on hover/focus-within a single conic band travels the
-  panel edge layer (`.rg-panel::before`, chamfers included) driven by the registered
-  `--rg-edge-angle` property; the media stays still. Loops exist only for the active interaction. Coarse/no-hover
-  devices suppress pointer-only sticky hover sweeps after a tap; keyboard
-  `:focus-visible` remains supported, including a focus-visible descendant in cards.
-- `--rg-shimmer-color` is an inherited optional source-color override, defaulting to
-  Tangerine (`--palette-tangerine-tango`, fallback `#ff5b19`), never paired gray/blue ink.
-  The highlight mixes 75% of that source with canonical Platinum, then applies 24% strength against
-  transparent. This preserves warmth on pale fills, remains visible on Tangerine itself,
-  and keeps default text contrast without an opaque label rectangle. Custom colors,
-  local fill/ink overrides and opacity remain the caller's contrast responsibility;
-  there is no runtime color validator or conditional recoloring.
-  `--rg-shimmer-duration` defaults to `1.15s` for buttons; the card edge ripple takes
-  `calc(var(--rg-shimmer-duration, 1.15s) * 2)` per turn (default `2.3s`).
-  Button `::before` remains the clipped accent fill/sweep, while `::after` owns the outline.
-  The `rg-button__label` span that `Regent.Primitives.button` renders for every variant
-  is transparent; CSS-only primary links need no label span.
-  Primary text never underlines, including under later consumer `.sc a:hover` rules.
-  Cards carry no media overlay: the art box holds art and nothing else, and heading,
-  caption and actions keep their paired ink. External focus rings are never clipped.
+- CTA motion uses Anime.js in the template's shared motion kit. A pointer entering
+  a primary or secondary CTA nudges its chevron once, then returns it to rest.
+  Pointer-down gives immediate, small press feedback; keyboard activation stays still.
+  Only transform changes: the label and paint scale, never the clickable box.
+  Motion never delays, stops or repeats the underlying action, including wallet actions.
+  Disabled controls and reduced-motion contexts stay still. Button fills do not shimmer.
+- Feature-card edge ripples remain independent of CTA motion. Their existing
+  interaction-only treatment must not be applied to button backgrounds.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a
   brief color/opacity dissolve. A later Account opt-in cannot override the OS preference.
-- Keyboard-triggered UI never animates except this explicit focus shimmer. Reduced
+- Keyboard-triggered buttons never animate. Reduced
   motion and forced colors disable shimmer entirely (no static area gradient); reduced
   motion keeps only the static faint card edge, and forced colors keep system-color borders.
 

@@ -6,10 +6,6 @@
 /* Shared ruled-sheet structure. Import tokens first; palettes remain product-owned. */
 /* The shared sweep is interaction-only and never replaces a content/focus host.
  * Keep public shimmer properties unset here so ancestor overrides inherit. */
-@keyframes rg-shimmer {
-  from { background-position: 160% 0; }
-  to { background-position: -60% 0; }
-}
 @property --rg-edge-angle {
   syntax: "<angle>";
   inherits: false;
@@ -19,14 +15,6 @@
   to { --rg-edge-angle: 1turn; }
 }
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
-  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
-    /* Warm even on pale fills; the small Platinum mix makes the sweep visible on
-       Tangerine itself. Restrained alpha protects default paired label ink. */
-    background-image: linear-gradient(100deg, transparent 30%, color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) 50%, transparent 70%);
-    background-size: 300% 100%;
-    background-repeat: no-repeat;
-    animation: rg-shimmer var(--rg-shimmer-duration, 1.15s) var(--ease-out) infinite;
-  }
   /* A feature card keeps its art still; on interaction a single sweep travels
      the panel edge layer, which is exactly the visible border, chamfers
      included. The conic band overlays the base edge color; the rest of the
@@ -41,7 +29,6 @@
   /* Mobile Safari can retain :hover after a tap. Do not leave a paint loop
      running; an actual keyboard focus indicator remains available on touch. */
   @media (hover: none), (pointer: coarse) {
-    .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):not(:focus-visible)::before,
     .rg-feature:not(:has(:focus-visible)) > .rg-panel::before {
       background-image: none;
       animation: none;
