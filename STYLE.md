@@ -408,9 +408,6 @@ opens a menu) wrapping the control. It is fully rounded with a 1px border, its t
 dropdown inside a form stays an `rg-field` select, so its corners match the inputs beside it.
 An open `details` pill closes on Escape, handing focus back to its summary, and on a press
 outside it, through `pill_select.mjs` (copied by `mix regent_ui.assets`, imported once).
-Its menu sits over the page (`position: absolute` below the pill), so closing it never
-moves what is under the press.
-
 ## Shared base and local additions
 
 Every site keeps the shared base. A site may add to it; an addition is not a defect.
