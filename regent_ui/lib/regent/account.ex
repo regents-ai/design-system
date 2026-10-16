@@ -234,6 +234,12 @@ defmodule Regent.Account do
 
   attr :chosen, :string, default: nil, doc: "the chosen agent's value"
 
+  attr :guide, :string,
+    default: nil,
+    doc:
+      "`:icons` layout: the chosen agent's own page on the site, such as /agents/dots, " <>
+        "linked by a help icon under the other two"
+
   attr :messages, :list,
     default: [],
     doc:
@@ -269,7 +275,9 @@ defmodule Regent.Account do
   """
   def pairing(assigns) do
     assigns =
-      assign(assigns, :words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
+      assigns
+      |> assign(:words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
+      |> assign(:guide_label, guide_label(assigns.harnesses, assigns.chosen))
 
     ~H"""
     <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
@@ -302,6 +310,25 @@ defmodule Regent.Account do
               <path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" />
             </svg>
           </button>
+          <a
+            class="rg-account__guide"
+            href={@guide}
+            aria-label={@guide_label}
+            title={@guide_label}
+            data-unused={is_nil(@guide)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="square"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="8" />
+              <path d="M9.75 9.75a2.25 2.25 0 1 1 3.4 1.93c-.7.42-1.15.9-1.15 1.72M12 16v.5" />
+            </svg>
+          </a>
         </div>
       </div>
       <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
@@ -366,6 +393,13 @@ defmodule Regent.Account do
       The code works once, until <time datetime={@iso}>{@at || "00:00 UTC"}</time>.
     </p>
     """
+  end
+
+  defp guide_label(harnesses, chosen) do
+    case Enum.find(harnesses, &(&1.value == chosen)) do
+      %{label: label} -> "How #{label} pairs"
+      nil -> nil
+    end
   end
 
   defp paired?({:paired, _name}), do: "true"

@@ -73,3 +73,16 @@ Changes before 16 October 2026 are in the commit history.
   ink at all times, darkening to the heading's own ink on hover. It had underlined
   only on hover, so on a phone it did not read as a link (Sentinel's Patchbay panel
   read). The heading's size, weight and position are unchanged.
+
+## 2026-10-16 — The pairing box links to the chosen agent's page
+
+- `Regent.Account.pairing` takes an optional `guide`: the chosen agent's own page on
+  the site, such as `/agents/dots`. In the side panel (`layout={:icons}`) a help icon
+  under the copy and new-code icons links to it, named "How Dots pairs" on hover and to
+  screen readers. It keeps its space until an agent is chosen, so choosing never moves
+  anything. Ash Template and Keyfleet now give each agent its own page (Sean, 16 Oct:
+  "each harness needs a custom page / skill / faq / link to its patchbay.help for
+  troubleshooting").
+- The message box grows from 5.5rem to 6.75rem so the three icons fit in its corner,
+  which also shows more of the message before it scrolls.
+- `STYLE.md` names the option.

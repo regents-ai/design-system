@@ -291,13 +291,13 @@
   white-space: nowrap;
 }
 
-/* The narrow panel's message: a short box that scrolls, its two icons in the corner. */
+/* The narrow panel's message: a short box that scrolls, its three icons in the corner. */
 .rg-account__prompt {
   position: relative;
   display: grid;
   grid-template-rows: minmax(0, 1fr);
   inline-size: 100%;
-  block-size: 5.5rem;
+  block-size: 6.75rem;
   border: 1px solid var(--color-border);
   background: var(--color-bg);
 }
@@ -320,7 +320,7 @@
   display: grid;
   gap: 2px;
 }
-.rg-account__renew {
+.rg-account__renew, .rg-account__guide {
   display: inline-grid;
   place-items: center;
   inline-size: 2rem;
@@ -334,10 +334,10 @@
   cursor: pointer;
   transition: color 120ms ease, border-color 120ms ease;
 }
-.rg-account__renew svg { inline-size: 1.125rem; block-size: 1.125rem; transition: transform 120ms ease; }
-.rg-account__renew:is(:hover, :focus-visible) { border-color: var(--color-border); color: var(--color-fg); }
+.rg-account__renew svg, .rg-account__guide svg { inline-size: 1.125rem; block-size: 1.125rem; transition: transform 120ms ease; }
+:is(.rg-account__renew, .rg-account__guide):is(:hover, :focus-visible) { border-color: var(--color-border); color: var(--color-fg); }
 .rg-account__renew:active svg { transform: rotate(-60deg); }
-.rg-account__renew:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+:is(.rg-account__renew, .rg-account__guide):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   .rg-account__renew, .rg-account__renew svg { transition: none; }
   .rg-account__renew:active svg { transform: none; }

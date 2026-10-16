@@ -343,9 +343,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - `pairing` goes in the side panel, on every page for someone signed in. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
   the harness value, which picks its picture). `layout={:icons}` is for the narrow
-  side panel: the message first, in a short box that scrolls with a copy icon and a
-  new-code icon in its corner, then the expiry line, then the pictures alone, five to
-  a row, each named above it on hover or keyboard focus. The default `:list` names
+  side panel: the message first, in a short box that scrolls with a copy icon, a
+  new-code icon and a help icon in its corner, then the expiry line, then the pictures
+  alone, five to a row, each named above it on hover or keyboard focus. Its optional
+  `guide` is the chosen agent's own page on the site, such as `/agents/dots`, which the
+  help icon links to, named "How Dots pairs"; the icon keeps its space until an agent is
+  chosen. The default `:list` names
   each agent beside its picture, numbers the steps and also requires `messages`:
   every agent's message with a stand-in code, so the box keeps one size.
   `chosen` is the chosen value; `message` is that agent's message once a code is made,
