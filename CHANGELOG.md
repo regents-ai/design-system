@@ -12,3 +12,8 @@ Changes before 16 October 2026 are in the commit history.
 - `mix regent_ui.assets` copies it next to the other browser modules; a site imports it
   once from its `app.ts`. `STYLE.md` and `CONSUMERS.md` say so.
 - This file starts here.
+
+## 2026-10-16 — An Escape that closes a pill stops there
+
+- `pill_select.mjs`: an Escape that closes an open pill goes no further, so a dialog
+  holding the pill stays open until the next Escape, as Patchbay's own fix did.
