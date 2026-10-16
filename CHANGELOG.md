@@ -32,3 +32,12 @@ Changes before 16 October 2026 are in the commit history.
   sends a tap on plain text there, and the pointerdown close brought back a layout
   shift when one pill is swapped for another (Sentinel's WebKit iPhone read). This
   replaces the previous entry's pointerdown close and drops its `STYLE.md` line.
+
+## 2026-10-16 — Touch ID page names who opened it and says when to close it
+
+- `standalone/agent-key.html` gains a bold "Opened by …" line at the top of the card
+  (`#opener`) and a bold "You can safely close this page" line under the Touch ID
+  button (`#done`). SIWA's `assets/agent/passkey.js` fills the first and shows the
+  second once Touch ID succeeds. The closing line keeps its space while hidden, so
+  nothing below it moves. SIWA v61 shipped this by editing its generated copy; this
+  moves the layout to its source so `build_agent_page.py --check` matches again.
