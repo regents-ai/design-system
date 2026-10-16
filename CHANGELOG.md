@@ -24,3 +24,11 @@ Changes before 16 October 2026 are in the commit history.
   on its click: iPhone Safari sends no click for a tap on plain text, so the menu stayed
   open there. `STYLE.md` says the menu sits over the page, so closing it moves nothing
   under the press.
+
+## 2026-10-16 — Outside taps: a click on the root element
+
+- `pill_select.mjs` goes back to closing a pill on a click outside it, now heard on the
+  root element (`document.documentElement`) instead of the document: iPhone Safari
+  sends a tap on plain text there, and the pointerdown close brought back a layout
+  shift when one pill is swapped for another (Sentinel's WebKit iPhone read). This
+  replaces the previous entry's pointerdown close and drops its `STYLE.md` line.
