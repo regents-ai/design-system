@@ -103,6 +103,13 @@
   transform: translateX(var(--rg-chevron-x, 0px)) rotate(45deg) scale(var(--rg-press-scale, 1));
   margin-inline: .25em; pointer-events: none;
 }
+/* A button that opens another site in a new tab points its arrow up and right, and
+   the hover nudge follows it. */
+.rg-button[target="_blank"]::after {
+  flex-basis: .75em; width: .75em; height: .75em; border: 0; background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M2 10 10 2M3.5 2H10v6.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  transform: translate(var(--rg-chevron-x, 0px), calc(-1 * var(--rg-chevron-x, 0px))) scale(var(--rg-press-scale, 1));
+}
 .rg-button.rg-button, .rg-button.rg-button:is(:hover, :focus-visible) { text-decoration: none; }
 .rg-button--secondary, .rg-button--quiet { color: var(--rg-p-text); }
 .rg-button--secondary::before { background: var(--rg-p-surface); border: 1px solid var(--rg-p-control-border); border-radius: var(--radius); }
@@ -116,6 +123,7 @@
   .rg-button::before { transition: none !important; }
   .rg-button::before, .rg-button__label { transform: none !important; }
   .rg-button::after { transform: rotate(45deg) !important; }
+  .rg-button[target="_blank"]::after { transform: none !important; }
 }
 /* A copy button keeps the width of its widest word, so its answer never moves the row. */
 .rg-copy__words { display: inline-grid; }

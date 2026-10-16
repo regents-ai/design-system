@@ -193,6 +193,9 @@ Patterns that generalize:
   Hover and keyboard focus grow these into a continuous cut outline in 150ms.
   Secondary actions are a bordered square surface.
   Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons.
+  A button that opens another site in a new tab (`target="_blank"`) shows a
+  diagonal arrow up and to the right in place of its chevron, nudged the same way on
+  hover; nothing else is added to its label.
   Disabled actions use inert gray. External keyboard focus rings remain visible.
 - Clip visual pseudo-elements only. Panel and button hosts have no clipping or hidden
   overflow, so menus, focus rings and expanded validation remain visible. Two inset
