@@ -329,9 +329,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
   `footer` (pairing controls, or a link to where agents are managed).
-- `pairing` goes in the `agents` footer. It requires `id`, `site` (the account's name),
-  `harnesses` (`%{value, label, logo}` for every agent a person may choose) and
-  `messages`: every agent's message with a stand-in code, so the box keeps one size.
+- `pairing` goes in the side panel, on every page for someone signed in. It requires
+  `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
+  the harness value, which picks its picture) and `messages`: every agent's message
+  with a stand-in code, so the box keeps one size. `layout={:icons}` shows the
+  pictures alone, each named when pointed at, and leaves out the numbered steps, for
+  the narrow side panel; the default `:list` names each agent beside its picture.
   `chosen` is the chosen value; `message` is that agent's message once a code is made,
   with `expires_iso` and `expires` (such as "14:05 UTC"); `outcome` is
   `{:paired, name}` once the code is used or `:unavailable` when none could be made.

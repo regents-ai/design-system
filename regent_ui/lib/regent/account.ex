@@ -188,6 +188,13 @@ defmodule Regent.Account do
   attr :expires_iso, :string, default: nil
   attr :expires, :string, default: nil, doc: "when the code stops working, such as \"14:05 UTC\""
 
+  attr :layout, :atom,
+    default: :list,
+    values: [:list, :icons],
+    doc:
+      "`:list` names each agent beside its picture and lists the steps; `:icons` shows " <>
+        "pictures only, each named when pointed at, for a narrow panel"
+
   attr :rest, :global,
     doc:
       "the product's own events on the form: phx-change and phx-submit, both carrying " <>
@@ -203,12 +210,16 @@ defmodule Regent.Account do
       assign(assigns, :words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
 
     ~H"""
-    <form id={@id} class="rg-account__pair" {@rest}>
+    <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
         <legend id={"#{@id}-title"}>
           Choose the agent to pair
         </legend>
-        <label :for={harness <- @harnesses} class="rg-account__choice">
+        <label
+          :for={harness <- @harnesses}
+          class="rg-account__choice"
+          title={@layout == :icons && harness.label}
+        >
           <input
             type="radio"
             name="harness"
@@ -216,10 +227,11 @@ defmodule Regent.Account do
             checked={harness.value == @chosen}
             class="rg-account__radio"
           />
-          <.agent_mark kind={harness.value} />{harness.label}
+          <.agent_mark kind={harness.value} />
+          <span class="rg-account__choice-name">{harness.label}</span>
         </label>
       </fieldset>
-      <ol class="rg-account__steps">
+      <ol :if={@layout == :list} class="rg-account__steps">
         <li>Copy this message.</li>
         <li>Paste it to your agent wherever you chat with it.</li>
         <li>Your agent appears here once it pairs. This page updates on its own.</li>
