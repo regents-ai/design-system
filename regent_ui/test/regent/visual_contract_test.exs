@@ -34,7 +34,7 @@ defmodule Regent.VisualContractTest do
     for {brand, light, dark} <- [
           {"platform", "#F6F4EA", "#0B0B0B"},
           {"autolaunch", "#E5E3D2", "#0E0E0E"},
-          {"patchbay", "#E5E3D2", "#0F0F10"},
+          {"patchbay", "#F6F7FA", "#111726"},
           {"techtree", "#F6F4EA", "#161616"}
         ],
         {mode, ground} <- [{"light", light}, {"dark", dark}] do
@@ -83,7 +83,7 @@ defmodule Regent.VisualContractTest do
     assert File.exists?(Path.join(@package_root, "priv/static/fonts/OFL.txt"))
   end
 
-  test "supporting roles use the other three identities as readable surface and ink pairs" do
+  test "supporting roles use the other identities, or Patchbay's own cobalt roles, as readable pairs" do
     selectors =
       File.read!(Path.join(@repository_root, "design_system_tokens.json"))
       |> Jason.decode!()
@@ -92,7 +92,6 @@ defmodule Regent.VisualContractTest do
     for {brand, primary} <- [
           {"platform", "charcoal"},
           {"autolaunch", "tangerine-tango"},
-          {"patchbay", "platinum"},
           {"techtree", "powder-blue"}
         ] do
       roles = Map.get(selectors, ~s(:root[data-brand="#{brand}"]), %{})
@@ -109,6 +108,23 @@ defmodule Regent.VisualContractTest do
         assert roles["--support-#{role}-ink"] == "var(--palette-#{ink})"
       end
     end
+
+    # Patchbay's Porcelain and cobalt palette (Sean, 15 Oct 2026) pairs its own roles.
+    assert Map.take(selectors[~s(:root[data-brand="patchbay"])], [
+             "--support-figure-surface",
+             "--support-figure-ink",
+             "--support-band-surface",
+             "--support-band-ink",
+             "--support-panel-surface",
+             "--support-panel-ink"
+           ]) == %{
+             "--support-figure-surface" => "var(--color-surface-elevated)",
+             "--support-figure-ink" => "var(--color-fg)",
+             "--support-band-surface" => "var(--color-accent)",
+             "--support-band-ink" => "var(--color-fg-on-accent)",
+             "--support-panel-surface" => "var(--color-surface)",
+             "--support-panel-ink" => "var(--color-fg)"
+           }
   end
 
   test "selects reserve the shared 24px chevron gap and keep a forced-colors native affordance" do
