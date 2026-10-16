@@ -254,8 +254,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
-| `Regent.Account.agents_brief` | The person's agents in a narrow panel: a short list that scrolls, each with what it last did and how long ago | Ash Template |
-| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons | Ash Template |
+| `Regent.Account.agents_brief` | The person's agents in a narrow panel: a list at most a quarter of the panel's height that scrolls, each with what it last did and how long ago | Ash Template |
+| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons, then the agents five to a row, each named on hover | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
@@ -336,11 +336,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `footer` (pairing controls, or a link to where agents are managed).
 - `pairing` goes in the side panel, on every page for someone signed in. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
-  the harness value, which picks its picture) and `messages`: every agent's message
-  with a stand-in code, so the box keeps one size. `layout={:icons}` shows the
-  pictures alone, each named above it on hover or keyboard focus, the chosen agent's
-  name below them ("Pairing Hermes") for touch, and leaves out the numbered steps, for
-  the narrow side panel; the default `:list` names each agent beside its picture.
+  the harness value, which picks its picture). `layout={:icons}` is for the narrow
+  side panel: the message first, in a short box that scrolls with a copy icon and a
+  new-code icon in its corner, then the expiry line, then the pictures alone, five to
+  a row, each named above it on hover or keyboard focus. The default `:list` names
+  each agent beside its picture, numbers the steps and also requires `messages`:
+  every agent's message with a stand-in code, so the box keeps one size.
   `chosen` is the chosen value; `message` is that agent's message once a code is made,
   with `expires_iso` and `expires` (such as "14:05 UTC"); `outcome` is
   `{:paired, name}` once the code is used or `:unavailable` when none could be made.

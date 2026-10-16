@@ -148,15 +148,16 @@
 }
 .rg-account__mark img { inline-size: 100%; block-size: 100%; object-fit: contain; }
 
-/* The person's agents in a narrow panel: three rows show and the rest scroll. A
-   last action not yet read keeps its line, so reading it never moves a row. */
+/* The person's agents in a narrow panel: at most a quarter of the panel's height
+   (of the screen's, outside a size container), and the rest scroll. A last
+   action not yet read keeps its line, so reading it never moves a row. */
 .rg-account__brief { display: grid; gap: var(--space-1); color: var(--color-fg); font-family: var(--font-family-ui); }
 .rg-account__brief h2 { margin: 0; font-size: .95rem; font-weight: 600; }
 .rg-account__brief p { margin: 0; color: var(--color-fg-muted); font-size: .875rem; }
 .rg-account__brief-list {
   display: grid;
   gap: 0;
-  max-block-size: 8.25rem;
+  max-block-size: 25cqb;
   margin: 0;
   padding: 0;
   overflow-y: auto;
@@ -232,9 +233,14 @@
   white-space: nowrap;
 }
 
-/* Pictures only: each agent's name shows above its picture on hover or keyboard
-   focus, kept in place at the panel's edges, and the chosen one's name below. */
-.rg-account__pair[data-layout="icons"] .rg-account__choices { justify-content: space-between; }
+/* Pictures only, five to a row: each agent's name shows above its picture on hover
+   or keyboard focus, kept inside the panel at each row's ends. */
+.rg-account__pair[data-layout="icons"] .rg-account__choices {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  justify-content: space-between;
+  inline-size: 100%;
+}
 .rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 3px; }
 .rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark { inline-size: 2.5rem; block-size: 2.5rem; }
 .rg-account__pair[data-layout="icons"] .rg-account__choice-name {
@@ -254,11 +260,11 @@
   transform: translateX(-50%);
   transition: opacity 120ms ease;
 }
-.rg-account__pair[data-layout="icons"] .rg-account__choice:first-of-type .rg-account__choice-name {
+.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(5n + 1) .rg-account__choice-name {
   inset-inline-start: 0;
   transform: none;
 }
-.rg-account__pair[data-layout="icons"] .rg-account__choice:last-of-type .rg-account__choice-name {
+.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(5n) .rg-account__choice-name {
   inset-inline: auto 0;
   transform: none;
 }
@@ -310,6 +316,7 @@
   place-items: center;
   inline-size: 2rem;
   block-size: 2rem;
+  min-block-size: 2rem;
   padding: 0;
   border: 1px solid transparent;
   border-radius: 0;
