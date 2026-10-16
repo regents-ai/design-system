@@ -191,7 +191,7 @@
   --support-panel-surface: var(--color-surface);
   --support-panel-ink: var(--color-fg);
   --rg-shimmer-color: var(--color-accent);
-  --rg-button-border-color: var(--color-accent);
+  --rg-button-border-color: var(--palette-tangerine-tango);
 }
 :root[data-brand="techtree"] {
   --support-figure-surface: var(--palette-platinum);
