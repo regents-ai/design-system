@@ -193,7 +193,8 @@ defmodule Regent.Account do
     values: [:list, :icons],
     doc:
       "`:list` names each agent beside its picture and lists the steps; `:icons` shows " <>
-        "pictures only, each named when pointed at, for a narrow panel"
+        "pictures only, each named on hover or keyboard focus, and the chosen one's name below " <>
+        "them, for a narrow panel"
 
   attr :rest, :global,
     doc:
@@ -215,11 +216,7 @@ defmodule Regent.Account do
         <legend id={"#{@id}-title"}>
           Choose the agent to pair
         </legend>
-        <label
-          :for={harness <- @harnesses}
-          class="rg-account__choice"
-          title={@layout == :icons && harness.label}
-        >
+        <label :for={harness <- @harnesses} class="rg-account__choice">
           <input
             type="radio"
             name="harness"
@@ -231,6 +228,9 @@ defmodule Regent.Account do
           <span class="rg-account__choice-name">{harness.label}</span>
         </label>
       </fieldset>
+      <p :if={@layout == :icons} class="rg-account__chosen" data-unused={is_nil(@chosen)}>
+        Pairing {chosen_label(@harnesses, @chosen)}
+      </p>
       <ol :if={@layout == :list} class="rg-account__steps">
         <li>Copy this message.</li>
         <li>Paste it to your agent wherever you chat with it.</li>
@@ -613,6 +613,9 @@ defmodule Regent.Account do
 
   defp pairing_words(nil, nil, nil), do: "Choose your agent to get its message."
   defp pairing_words(nil, _message, _chosen), do: nil
+
+  defp chosen_label(harnesses, chosen),
+    do: Enum.find_value(harnesses, "", &(&1.value == chosen && &1.label))
 
   defp agents_state(:loading), do: :loading
   defp agents_state(:unavailable), do: :error

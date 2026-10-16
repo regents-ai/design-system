@@ -185,18 +185,41 @@
   white-space: nowrap;
 }
 
-/* Pictures only: each agent's name is read out and shown when pointed at. */
+/* Pictures only: each agent's name shows above its picture on hover or keyboard
+   focus, kept in place at the panel's edges, and the chosen one's name below. */
 .rg-account__pair[data-layout="icons"] .rg-account__choices { gap: var(--space-2); }
-.rg-account__pair[data-layout="icons"] .rg-account__choice { padding: 3px; }
+.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 3px; }
 .rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark { inline-size: 2.5rem; block-size: 2.5rem; }
 .rg-account__pair[data-layout="icons"] .rg-account__choice-name {
   position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
+  inset-block-end: calc(100% + 6px);
+  inset-inline-start: 50%;
+  z-index: 1;
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-elevated, var(--color-surface));
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+  font-size: .8125rem;
   white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity 120ms ease;
 }
+.rg-account__pair[data-layout="icons"] .rg-account__choice:first-of-type .rg-account__choice-name {
+  inset-inline-start: 0;
+  transform: none;
+}
+.rg-account__pair[data-layout="icons"] .rg-account__choice:last-of-type .rg-account__choice-name {
+  inset-inline: auto 0;
+  transform: none;
+}
+.rg-account__pair[data-layout="icons"] .rg-account__choice:has(input:focus-visible) .rg-account__choice-name { opacity: 1; }
+@media (hover: hover) {
+  .rg-account__pair[data-layout="icons"] .rg-account__choice:hover .rg-account__choice-name { opacity: 1; }
+}
+.rg-account__chosen { margin: var(--space-1) 0 0; color: var(--color-fg-muted); font-size: .875rem; }
 
 .rg-account__steps { display: grid; gap: 6px; margin: 0; padding-inline-start: 1.25rem; }
 .rg-account__steps li::marker { color: var(--color-fg-muted); }
@@ -356,5 +379,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rg-account__choice { transition: none; }
+  .rg-account__choice, .rg-account__choice-name { transition: none; }
 }

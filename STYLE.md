@@ -333,7 +333,8 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
   the harness value, which picks its picture) and `messages`: every agent's message
   with a stand-in code, so the box keeps one size. `layout={:icons}` shows the
-  pictures alone, each named when pointed at, and leaves out the numbered steps, for
+  pictures alone, each named above it on hover or keyboard focus, the chosen agent's
+  name below them ("Pairing Hermes") for touch, and leaves out the numbered steps, for
   the narrow side panel; the default `:list` names each agent beside its picture.
   `chosen` is the chosen value; `message` is that agent's message once a code is made,
   with `expires_iso` and `expires` (such as "14:05 UTC"); `outcome` is
