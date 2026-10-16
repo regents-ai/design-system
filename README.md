@@ -56,6 +56,7 @@ node scripts/generate-tokens-json.mjs
 | Path | What is in it |
 | --- | --- |
 | `STYLE.md` | The canonical style guide: color, typography, shape, motion, artwork, logos. Read this first. |
+| `CHANGELOG.md` | What changed and when, newest at the end. Every change adds its entry. |
 | `design_system_tokens.css` | Source of truth for every design token. |
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
 | `regent_ui/` | The Phoenix component library: primitives, ruled-sheet structure, blog, profile, theme toggle, holographic card and agent metadata, with their CSS, fonts and small browser modules. `STYLE.md` lists every component and which apps use it. |

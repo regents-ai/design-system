@@ -72,6 +72,10 @@ in the product's form with `type="submit"`. Import `discussion.mjs` (copied by
 `mix regent_ui.assets`) once to remember the Compact replies choice; the switch works
 without it and survives LiveView patches.
 
+Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
+`app.ts`: an open `details.rg-pill-select` menu then closes on Escape, handing focus back
+to its summary, and on a press outside it. A `select` pill needs nothing.
+
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
 product's hook attribute and the content that sits on the face; the component renders the
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.
