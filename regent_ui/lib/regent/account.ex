@@ -125,6 +125,54 @@ defmodule Regent.Account do
     """
   end
 
+  attr :id, :string, required: true
+
+  attr :agents, :any,
+    required: true,
+    doc:
+      "`:loading`, `:unavailable`, or a list of maps with id, name, kind, and last_action, " <>
+        "last_action_iso and last_action_at (short, such as \"3m\"), each nil until read"
+
+  @doc """
+  The person's agents in a narrow panel: a short list that scrolls past three,
+  each agent's picture and name over what it last did and how long ago. A last
+  action not yet read keeps its line's space, so reading it never moves a row.
+  """
+  def agents_brief(assigns) do
+    ~H"""
+    <section
+      id={@id}
+      class="rg-account__brief"
+      aria-labelledby={"#{@id}-title"}
+      aria-busy={@agents == :loading && "true"}
+    >
+      <h2 id={"#{@id}-title"}>Your agents</h2>
+      <p :if={@agents == :loading} role="status">Loading…</p>
+      <p :if={@agents == :unavailable} role="alert">
+        Your agents couldn’t be read. Try refreshing.
+      </p>
+      <p :if={@agents == []}>No agents paired yet.</p>
+      <ul
+        :if={is_list(@agents) and @agents != []}
+        class="rg-account__brief-list"
+        tabindex="0"
+        aria-labelledby={"#{@id}-title"}
+      >
+        <li :for={agent <- @agents} id={"#{@id}-agent-#{agent.id}"}>
+          <.agent_mark kind={agent.kind} />
+          <strong>{agent.name}</strong>
+          <span class="rg-account__brief-last">
+            <span>{agent.last_action}</span>
+            <time :if={agent.last_action_at} datetime={agent.last_action_iso}>
+              {agent.last_action_at}
+            </time>
+          </span>
+        </li>
+      </ul>
+    </section>
+    """
+  end
+
   attr :kind, :string, required: true, doc: "the agent's harness value, which picks its picture"
   attr :class, :any, default: nil
 
@@ -176,8 +224,10 @@ defmodule Regent.Account do
   attr :chosen, :string, default: nil, doc: "the chosen agent's value"
 
   attr :messages, :list,
-    required: true,
-    doc: "every agent's message, with a stand-in code before one is made; the box keeps one size"
+    default: [],
+    doc:
+      "`:list` layout: every agent's message, with a stand-in code before one is made, so " <>
+        "the box keeps one size"
 
   attr :message, :string, default: nil, doc: "the chosen agent's message once its code is made"
 
@@ -192,9 +242,9 @@ defmodule Regent.Account do
     default: :list,
     values: [:list, :icons],
     doc:
-      "`:list` names each agent beside its picture and lists the steps; `:icons` shows " <>
-        "pictures only, each named on hover or keyboard focus, and the chosen one's name below " <>
-        "them, for a narrow panel"
+      "`:list` names each agent beside its picture and lists the steps; `:icons`, for a " <>
+        "narrow panel, puts the message first in a short box that scrolls, with icons to copy " <>
+        "it and make a new code, then the pictures alone, each named on hover or keyboard focus"
 
   attr :rest, :global,
     doc:
@@ -212,6 +262,38 @@ defmodule Regent.Account do
 
     ~H"""
     <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
+      <div :if={@layout == :icons} class="rg-account__prompt" role="status">
+        <pre :if={@message}><code>{@message}</code></pre>
+        <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
+        <div class="rg-account__prompt-tools">
+          <Primitives.copy_icon
+            id={"#{@id}-copy"}
+            text={@message || ""}
+            label="Copy message"
+            data-unused={is_nil(@message)}
+          />
+          <button
+            id={"#{@id}-new"}
+            type="submit"
+            class="rg-account__renew"
+            aria-label="Make a new code"
+            title="Make a new code"
+            data-unused={is_nil(@chosen)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="square"
+              aria-hidden="true"
+            >
+              <path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
         <legend id={"#{@id}-title"}>
           Choose the agent to pair
@@ -228,54 +310,55 @@ defmodule Regent.Account do
           <span class="rg-account__choice-name">{harness.label}</span>
         </label>
       </fieldset>
-      <p
-        :if={@layout == :icons}
-        class="rg-account__chosen"
-        data-unused={is_nil(@chosen)}
-        aria-hidden="true"
-      >
-        Pairing {chosen_label(@harnesses, @chosen)}
-      </p>
-      <ol :if={@layout == :list} class="rg-account__steps">
-        <li>Copy this message.</li>
-        <li>Paste it to your agent wherever you chat with it.</li>
-        <li>Your agent appears here once it pairs. This page updates on its own.</li>
-      </ol>
-      <div class="rg-account__message" role="status">
-        <pre :for={message <- @messages} data-unused={message != @message}><code>{message}</code></pre>
-        <p
-          :if={@words}
-          class="rg-account__words"
-          data-paired={match?({:paired, _name}, @outcome) && "true"}
-        >
-          {@words}
-        </p>
-      </div>
-      <div class="rg-account__pair-actions">
-        <Primitives.copy_button
-          id={"#{@id}-copy"}
-          text={@message || ""}
-          variant="primary"
-          data-unused={is_nil(@message)}
-        >
-          Copy message
-        </Primitives.copy_button>
-        <Primitives.button
-          id={"#{@id}-new"}
-          type="submit"
-          variant="secondary"
-          phx-disable-with="Making a code…"
-          data-unused={is_nil(@chosen)}
-        >
-          Make a new code
-        </Primitives.button>
-      </div>
-      <p class="rg-account__expiry" data-unused={is_nil(@message)}>
-        The code works once, until <time datetime={@expires_iso}>{@expires || "00:00 UTC"}</time>.
-      </p>
+      <%= if @layout == :list do %>
+        <ol class="rg-account__steps">
+          <li>Copy this message.</li>
+          <li>Paste it to your agent wherever you chat with it.</li>
+          <li>Your agent appears here once it pairs. This page updates on its own.</li>
+        </ol>
+        <div class="rg-account__message" role="status">
+          <pre :for={message <- @messages} data-unused={message != @message}><code>{message}</code></pre>
+          <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
+        </div>
+        <div class="rg-account__pair-actions">
+          <Primitives.copy_button
+            id={"#{@id}-copy"}
+            text={@message || ""}
+            variant="primary"
+            data-unused={is_nil(@message)}
+          >
+            Copy message
+          </Primitives.copy_button>
+          <Primitives.button
+            id={"#{@id}-new"}
+            type="submit"
+            variant="secondary"
+            phx-disable-with="Making a code…"
+            data-unused={is_nil(@chosen)}
+          >
+            Make a new code
+          </Primitives.button>
+        </div>
+        <.expiry message={@message} iso={@expires_iso} at={@expires} />
+      <% end %>
     </form>
     """
   end
+
+  attr :message, :string, required: true
+  attr :iso, :string, required: true
+  attr :at, :string, required: true
+
+  defp expiry(assigns) do
+    ~H"""
+    <p class="rg-account__expiry" data-unused={is_nil(@message)}>
+      The code works once, until <time datetime={@iso}>{@at || "00:00 UTC"}</time>.
+    </p>
+    """
+  end
+
+  defp paired?({:paired, _name}), do: "true"
+  defp paired?(_outcome), do: nil
 
   attr :id, :string, required: true
 
@@ -618,9 +701,6 @@ defmodule Regent.Account do
 
   defp pairing_words(nil, nil, nil), do: "Choose your agent to get its message."
   defp pairing_words(nil, _message, _chosen), do: nil
-
-  defp chosen_label(harnesses, chosen),
-    do: Enum.find_value(harnesses, "", &(&1.value == chosen && &1.label))
 
   defp agents_state(:loading), do: :loading
   defp agents_state(:unavailable), do: :error

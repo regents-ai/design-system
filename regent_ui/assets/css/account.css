@@ -148,6 +148,53 @@
 }
 .rg-account__mark img { inline-size: 100%; block-size: 100%; object-fit: contain; }
 
+/* The person's agents in a narrow panel: three rows show and the rest scroll. A
+   last action not yet read keeps its line, so reading it never moves a row. */
+.rg-account__brief { display: grid; gap: var(--space-1); color: var(--color-fg); font-family: var(--font-family-ui); }
+.rg-account__brief h2 { margin: 0; font-size: .95rem; font-weight: 600; }
+.rg-account__brief p { margin: 0; color: var(--color-fg-muted); font-size: .875rem; }
+.rg-account__brief-list {
+  display: grid;
+  gap: 0;
+  max-block-size: 8.25rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  scrollbar-width: thin;
+}
+.rg-account__brief-list:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.rg-account__brief-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "mark name" "mark last";
+  align-items: center;
+  column-gap: var(--space-2);
+  block-size: 2.75rem;
+}
+.rg-account__brief-list .rg-account__mark { grid-area: mark; inline-size: 2rem; block-size: 2rem; }
+.rg-account__brief-list strong {
+  grid-area: name;
+  overflow: hidden;
+  font-size: .875rem;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rg-account__brief-last {
+  grid-area: last;
+  display: flex;
+  gap: 6px;
+  min-inline-size: 0;
+  min-block-size: 1.3em;
+  color: var(--color-fg-muted);
+  font-size: var(--type-label-size);
+  line-height: 1.3;
+}
+.rg-account__brief-last > span { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-account__brief-last time { flex: none; font-variant-numeric: tabular-nums; }
+
 .rg-account__pair { display: grid; justify-items: start; gap: var(--space-2); inline-size: 100%; }
 .rg-account__pair [data-unused] { visibility: hidden; }
 
@@ -219,7 +266,66 @@
 @media (hover: hover) {
   .rg-account__pair[data-layout="icons"] .rg-account__choice:hover .rg-account__choice-name { opacity: 1; }
 }
-.rg-account__chosen { margin: var(--space-1) 0 0; color: var(--color-fg-muted); font-size: .875rem; }
+/* Its question is read out, not shown: the pictures under the message answer it. */
+.rg-account__pair[data-layout="icons"] legend {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The narrow panel's message: a short box that scrolls, its two icons in the corner. */
+.rg-account__prompt {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  inline-size: 100%;
+  block-size: 5.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+.rg-account__prompt > * { grid-area: 1 / 1; margin: 0; }
+.rg-account__prompt pre {
+  padding: 8px 2.75rem 8px 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-family: var(--font-family-mono);
+  font-size: .75rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.rg-account__prompt .rg-account__words { padding: 8px 2.75rem 8px 12px; font-size: .875rem; }
+.rg-account__prompt-tools {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  display: grid;
+  gap: 2px;
+}
+.rg-account__renew {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.rg-account__renew svg { inline-size: 1.125rem; block-size: 1.125rem; transition: transform 120ms ease; }
+.rg-account__renew:is(:hover, :focus-visible) { border-color: var(--color-border); color: var(--color-fg); }
+.rg-account__renew:active svg { transform: rotate(-60deg); }
+.rg-account__renew:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .rg-account__renew, .rg-account__renew svg { transition: none; }
+  .rg-account__renew:active svg { transform: none; }
+}
 
 .rg-account__steps { display: grid; gap: 6px; margin: 0; padding-inline-start: 1.25rem; }
 .rg-account__steps li::marker { color: var(--color-fg-muted); }

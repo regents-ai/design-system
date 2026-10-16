@@ -72,6 +72,59 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
+  attr :text, :string, default: nil, doc: "What the icon copies. Give this or `target`."
+
+  attr :target, :string,
+    default: nil,
+    doc: "The id of the element on the page whose text the icon copies. Give this or `text`."
+
+  attr :label, :string, required: true, doc: "what a press copies, read out and shown on hover"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  `copy_button/1` as an icon alone, for a box that holds what it copies. The same
+  page-wide listener copies on press; the icon turns to a tick once copied, or a
+  cross when the browser refuses, and the polite status after it says so.
+  """
+  def copy_icon(%{text: text, target: target} = assigns)
+      when is_nil(text) == is_nil(target) do
+    raise ArgumentError, "copy_icon #{assigns.id} takes exactly one of text or target"
+  end
+
+  def copy_icon(assigns) do
+    ~H"""
+    <button
+      id={@id}
+      type="button"
+      class={["rg-copy", "rg-copy--icon", @class]}
+      aria-label={@label}
+      title={@label}
+      phx-mounted={Phoenix.LiveView.JS.ignore_attributes(["data-copy-state"])}
+      data-copy-text={@text}
+      data-copy-target={@target}
+      data-copy-status={"#{@id}-status"}
+      {@rest}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="square"
+        aria-hidden="true"
+      >
+        <path class="rg-copy__idle" d="M8 8h12v12H8zM16 8V4H4v12h4" />
+        <path class="rg-copy__copied" d="m5 12.5 4.5 4.5L19 7.5" />
+        <path class="rg-copy__selected" d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3" />
+        <path class="rg-copy__failed" d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+    <span id={"#{@id}-status"} class="rg-copy__status" role="status" phx-update="ignore"></span>
+    """
+  end
+
+  attr :id, :string, required: true
   attr :label, :string, required: true
   attr :errors, :list, default: []
   attr :class, :any, default: nil

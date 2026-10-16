@@ -228,6 +228,7 @@ Ash Template and Keyfleet (each `platform/`).
 | --- | --- | --- |
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
 | `Regent.Primitives.copy_button` | Copies a value or an element's text and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
+| `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
@@ -253,7 +254,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
-| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it | Ash Template |
+| `Regent.Account.agents_brief` | The person's agents in a narrow panel: a short list that scrolls, each with what it last did and how long ago | Ash Template |
+| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
