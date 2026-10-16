@@ -594,7 +594,7 @@ defmodule Regent.Account do
   defp signed_out_text(:expired), do: "Your session ended. Sign in again to see your account."
 
   defp pairing_words({:paired, name}, _message, _chosen),
-    do: "#{name} paired with your account. It is listed above."
+    do: "#{name} paired with your account."
 
   defp pairing_words(:unavailable, _message, _chosen),
     do: "A pairing code couldn’t be made right now. Try again in a moment."
