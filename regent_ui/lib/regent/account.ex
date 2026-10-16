@@ -228,7 +228,12 @@ defmodule Regent.Account do
           <span class="rg-account__choice-name">{harness.label}</span>
         </label>
       </fieldset>
-      <p :if={@layout == :icons} class="rg-account__chosen" data-unused={is_nil(@chosen)}>
+      <p
+        :if={@layout == :icons}
+        class="rg-account__chosen"
+        data-unused={is_nil(@chosen)}
+        aria-hidden="true"
+      >
         Pairing {chosen_label(@harnesses, @chosen)}
       </p>
       <ol :if={@layout == :list} class="rg-account__steps">
