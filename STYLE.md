@@ -328,7 +328,8 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   under the page's title. `reason` is `:signed_out` (default) or `:expired`, which says the
   session ended. It never shows figures, so a sign-in problem never reads as zero.
 - `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
-  `%{id, name, harness, backed, last_contact_iso, last_contact}` with `last_contact`
+  `%{id, name, kind, harness, backed, last_contact_iso, last_contact}`, all required:
+  `kind` is the harness value, which picks the agent's picture, and `last_contact` is
   already formatted. `:unavailable` says the agents couldn't be read; only an empty
   list says "No agents paired yet." Optional `notice` reports the last action. Slots:
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
@@ -355,8 +356,9 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   unseen, so choosing an agent never changes the height.
 - `agent_detail` is a `<dialog>` the product renders while one agent is open, with its
   own hook to open it and report the close. It requires `id`, `agent`
-  (`%{id, name, harness, logo, wallet, listing, paired_at, last_contact,
-  last_contact_at}`, dates formatted; `listing` is `nil` or `%{url, number}`),
+  (`%{id, name, kind, harness, wallet, listing, paired_at, last_contact,
+  last_contact_at}`, all required, dates formatted; `kind` is the harness value and
+  `listing` is `nil` or `%{url, number}`),
   `verified`, `may` (what a paired agent may do on this site, a line each),
   `spent` (`:loading`, `:unavailable`, or the Credits it has spent for its person,
   formatted), `activity` (`:loading`, `:unavailable`, or a line for each site and
