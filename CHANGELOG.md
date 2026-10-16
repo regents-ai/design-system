@@ -50,3 +50,12 @@ Changes before 16 October 2026 are in the commit history.
   Patchbay hid the shared heading and placed its own link to `/account` over it; it can
   now pass `href` instead (Sentinel's request).
 - `STYLE.md` lists `agents_brief`'s options.
+
+## 2026-10-16 — The ratio card no longer crashes WebKit
+
+- `ratio.css`: the header and footer badge border is now written as one flat colour
+  mix. It was a mix of two other mixes (note ink at 35% over note fill), and WebKit
+  crashes the page on a `color-mix()` whose two colours are both `color-mix()` values.
+  Headless WebKit (Playwright build 2311) crashed on the regents.sh stake page because
+  of it, as Sentinel found. The colour is the same to the pixel in Chromium and WebKit,
+  light and dark.
