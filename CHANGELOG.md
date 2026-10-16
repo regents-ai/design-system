@@ -66,3 +66,10 @@ Changes before 16 October 2026 are in the commit history.
   `kind`, the harness value that picks the agent's picture, and say every field is
   required; both components read it directly. `agent_detail`'s list drops `logo`, which
   it never reads (Sentinel's docs note on d653c0a).
+
+## 2026-10-16 — The "Your agents" heading link is underlined at rest
+
+- With `href`, `agents_brief`'s heading now carries a quiet underline in the muted
+  ink at all times, darkening to the heading's own ink on hover. It had underlined
+  only on hover, so on a phone it did not read as a link (Sentinel's Patchbay panel
+  read). The heading's size, weight and position are unchanged.

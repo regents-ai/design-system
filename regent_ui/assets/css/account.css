@@ -153,8 +153,14 @@
    action not yet read keeps its line, so reading it never moves a row. */
 .rg-account__brief { display: grid; gap: var(--space-1); color: var(--color-fg); font-family: var(--font-family-ui); }
 .rg-account__brief h2 { margin: 0; font-size: .95rem; font-weight: 600; }
-.rg-account__brief h2 a { color: inherit; text-decoration: none; }
-.rg-account__brief h2 a:hover { text-decoration: underline; text-underline-offset: .2em; }
+.rg-account__brief h2 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--color-fg-muted);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+.rg-account__brief h2 a:hover { text-decoration-color: currentColor; }
 .rg-account__brief h2 a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .rg-account__brief p { margin: 0; color: var(--color-fg-muted); font-size: .875rem; }
 .rg-account__brief-list {
