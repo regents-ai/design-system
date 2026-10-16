@@ -354,14 +354,14 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   last_contact_at}`, dates formatted; `listing` is `nil` or `%{url, number}`),
   `verified`, `may` (what a paired agent may do on this site, a line each),
   `spent` (`:loading`, `:unavailable`, or the Credits it has spent for its person,
-  formatted), `activity` (`:loading`, `:unavailable`, or rows of
-  `%{action, site, occurred_at_iso, occurred_at}`), `open_event` and `more_event`
-  (each carries `id`). After the facts it answers the three questions every Regent
-  site asks in the same words: "What may happen next", "What it cost", then the
-  recent activity. Optional: `same_person_count`, `same_person` (`%{id, name}`),
-  `more` (`nil` when there is nothing older, else `:idle`, `:loading` or
-  `:unavailable`), `notice` (`{:status | :alert, text}`), `target`, and an `actions`
-  slot for the product's buttons beside Done, such as Unpair.
+  formatted), `activity` (`:loading`, `:unavailable`, or a line for each site and
+  day, newest first: `%{site, day_iso, day, hours}`, `hours` saying when the first
+  and last request that day came) and `open_event` (carries `id`). After the facts
+  it answers the three questions every Regent site asks in the same words: "What
+  may happen next", "What it cost", then the recent activity. Optional:
+  `same_person_count`, `same_person` (`%{id, name}`), `notice`
+  (`{:status | :alert, text}`), `target`, and an `actions` slot for the product's
+  buttons beside Done, such as Unpair.
 
 - `credits_summary` requires a unique string `id`; `available` and `held` are already
   formatted strings or `nil`. The site's own lines and links under the figures go in

@@ -288,12 +288,10 @@ defmodule Regent.StructureShowcase do
               same_person_count={3}
               same_person={[%{id: "a3", name: "Wren"}, %{id: "a4", name: "Ilex"}]}
               activity={sample_activity()}
-              more={:idle}
               may={["Read and search your notes", "Pin a note for 1 Credit, within the spending you allow"]}
               spent="3.00 Credits"
               notice={{:status, "Pira is paired."}}
               open_event="open_agent"
-              more_event="load_more_activity"
             >
               <:actions><.button type="button" variant="secondary">Unpair</.button></:actions>
             </Regent.Account.agent_detail>
@@ -376,17 +374,12 @@ defmodule Regent.StructureShowcase do
   defp sample_activity do
     [
       %{
-        action: "Posted a note",
-        site: "regents.sh",
-        occurred_at_iso: "2026-10-11T08:00:00Z",
-        occurred_at: "11 October 2026, 08:00 UTC"
+        site: "Regents Labs",
+        day_iso: "2026-10-11",
+        day: "11 October 2026",
+        hours: "08:00 to 09:14 UTC"
       },
-      %{
-        action: "Read the account's Credits",
-        site: "autolaunch.sh",
-        occurred_at_iso: "2026-10-10T17:42:00Z",
-        occurred_at: "10 October 2026, 17:42 UTC"
-      }
+      %{site: "Autolaunch", day_iso: "2026-10-10", day: "10 October 2026", hours: "17:42 UTC"}
     ]
   end
 

@@ -441,8 +441,6 @@
 .rg-account__log li > span:nth-child(2),
 .rg-account__log time { color: var(--color-fg-muted); font-size: var(--type-label-size); }
 .rg-account__log time { grid-column: 1 / -1; }
-.rg-account__more { display: grid; justify-items: start; gap: var(--space-1); }
-.rg-account__more p { color: var(--color-fg-muted); font-size: var(--type-label-size); }
 
 /* How the last action on this agent ended. */
 .rg-account__dialog .rg-account__notice { margin-block-end: var(--space-2); padding-inline-start: 12px; border-inline-start: 3px solid var(--color-success); }

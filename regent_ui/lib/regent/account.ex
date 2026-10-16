@@ -377,12 +377,9 @@ defmodule Regent.Account do
 
   attr :activity, :any,
     required: true,
-    doc: "`:loading`, `:unavailable`, or a list of %{action, site, occurred_at_iso, occurred_at}"
-
-  attr :more, :atom,
-    default: nil,
-    values: [nil, :idle, :loading, :unavailable],
-    doc: "nil when there is no older activity"
+    doc:
+      "`:loading`, `:unavailable`, or a list of %{site, day_iso, day, hours}: a line for each " <>
+        "site and day, newest first, `hours` saying when its first and last request came"
 
   attr :may, :list, required: true, doc: "what a paired agent may do on this site, a line each"
 
@@ -393,7 +390,6 @@ defmodule Regent.Account do
   attr :notice, :any, default: nil, doc: "`{:status | :alert, text}`: how the last action ended"
   attr :target, :any, default: nil, doc: "phx-target for the presses below"
   attr :open_event, :string, required: true, doc: "opens another agent; carries `id`"
-  attr :more_event, :string, required: true, doc: "reads older activity; carries `id`"
   attr :rest, :global, doc: "the product's dialog hook, which opens it and reports its close"
   slot :actions, doc: "the product's buttons beside Done, such as Unpair"
 
@@ -479,35 +475,20 @@ defmodule Regent.Account do
       <section class="rg-account__log" aria-labelledby={"#{@id}-activity"}>
         <h3 id={"#{@id}-activity"}>Recent activity</h3>
         <p>
-          Every request this agent signed on a Regent site since it paired, newest first. Kept for 30 days.
+          The Regent sites this agent signed requests on since it paired, a line for each site and day, newest first. Kept for 30 days.
         </p>
         <p :if={@activity == :loading} role="status">Reading this agent’s activity…</p>
         <p :if={@activity == :unavailable} role="status">
           This agent’s activity couldn’t be read right now. Refresh to try again.
         </p>
-        <ol :if={is_list(@activity)}>
+        <p :if={@activity == []} role="status">No requests yet since it paired.</p>
+        <ol :if={is_list(@activity) and @activity != []}>
           <li :for={entry <- @activity}>
-            <span>{entry.action}</span>
             <span>{entry.site}</span>
-            <time datetime={entry.occurred_at_iso}>{entry.occurred_at}</time>
+            <span>{entry.hours}</span>
+            <time datetime={entry.day_iso}>{entry.day}</time>
           </li>
         </ol>
-        <div :if={is_list(@activity) and @more} class="rg-account__more">
-          <Primitives.button
-            id={"#{@id}-more"}
-            type="button"
-            variant="secondary"
-            phx-click={@more_event}
-            phx-value-id={@agent.id}
-            phx-target={@target}
-            disabled={@more == :loading}
-          >
-            {if @more == :loading, do: "Loading…", else: "Load more"}
-          </Primitives.button>
-          <p :if={@more == :unavailable} role="status">
-            Older activity couldn’t be read right now. Try again.
-          </p>
-        </div>
       </section>
 
       <p :if={@notice} class="rg-account__notice" role={elem(@notice, 0)}>{elem(@notice, 1)}</p>
