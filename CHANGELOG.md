@@ -41,3 +41,12 @@ Changes before 16 October 2026 are in the commit history.
   second once Touch ID succeeds. The closing line keeps its space while hidden, so
   nothing below it moves. SIWA v61 shipped this by editing its generated copy; this
   moves the layout to its source so `build_agent_page.py --check` matches again.
+
+## 2026-10-16 — The side panel's "Your agents" heading can be a link
+
+- `Regent.Account.agents_brief` takes an optional `href`. With it, the "Your agents"
+  heading itself is the link, in the heading's own colour and size, underlined on hover
+  and ringed on keyboard focus. Without it the heading is plain text, as before.
+  Patchbay hid the shared heading and placed its own link to `/account` over it; it can
+  now pass `href` instead (Sentinel's request).
+- `STYLE.md` lists `agents_brief`'s options.

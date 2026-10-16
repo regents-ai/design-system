@@ -133,10 +133,15 @@ defmodule Regent.Account do
       "`:loading`, `:unavailable`, or a list of maps with id, name, kind, and last_action, " <>
         "last_action_iso and last_action_at (short, such as \"3m\"), each nil until read"
 
+  attr :href, :string,
+    default: nil,
+    doc: "where the \"Your agents\" heading leads, such as the site's account page"
+
   @doc """
   The person's agents in a narrow panel: a short list that scrolls past three,
   each agent's picture and name over what it last did and how long ago. A last
   action not yet read keeps its line's space, so reading it never moves a row.
+  With `href`, the heading itself is the link.
   """
   def agents_brief(assigns) do
     ~H"""
@@ -146,7 +151,13 @@ defmodule Regent.Account do
       aria-labelledby={"#{@id}-title"}
       aria-busy={@agents == :loading && "true"}
     >
-      <h2 id={"#{@id}-title"}>Your agents</h2>
+      <h2 id={"#{@id}-title"}>
+        <%= if @href do %>
+          <a href={@href}>Your agents</a>
+        <% else %>
+          Your agents
+        <% end %>
+      </h2>
       <p :if={@agents == :loading} role="status">Loading…</p>
       <p :if={@agents == :unavailable} role="alert">
         Your agents couldn’t be read. Try refreshing.

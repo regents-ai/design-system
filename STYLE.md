@@ -254,7 +254,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
-| `Regent.Account.agents_brief` | The person's agents in a narrow panel: a list at most a quarter of the panel's height that scrolls, each with what it last did and how long ago | Ash Template |
+| `Regent.Account.agents_brief` | The person's agents in a narrow panel: a list at most a quarter of the panel's height that scrolls, each with what it last did and how long ago; the heading may link to the account page | Ash Template |
 | `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons, then the agents five to a row, each named on hover | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
@@ -334,6 +334,11 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
   `footer` (pairing controls, or a link to where agents are managed).
+- `agents_brief` goes in the side panel. It requires `id` and `agents`: `:loading`,
+  `:unavailable`, or a list of `%{id, name, kind, last_action, last_action_iso,
+  last_action_at}`, the last three `nil` until read. Optional `href` makes the
+  "Your agents" heading itself a link, such as to the site's account page; without it
+  the heading is plain text.
 - `pairing` goes in the side panel, on every page for someone signed in. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
   the harness value, which picks its picture). `layout={:icons}` is for the narrow
