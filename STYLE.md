@@ -186,9 +186,12 @@ Patterns that generalize:
 - The former universal 24px radius is replaced, not layered over. `--radius: 0px`
   keeps frames, navigation, fields, statuses, tables, secondary controls and disclosures square.
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
-  12px below 768px. CTA buttons are rectangular: near-white with dark ink for
-  primary actions in dark mode, and a bordered dark surface for secondary actions.
-  Light mode uses each site's accent/on-accent and surface/foreground pairs.
+  12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
+  8px below 768px, filled with the site's own accent/on-accent pair in both themes.
+  Dark primaries rest with Powder Blue marks at the square corners and Tangerine
+  accents along the cuts; light primaries rest with two opposite Tangerine L-edges.
+  Hover and keyboard focus grow these into a continuous cut outline in 150ms.
+  Secondary actions are a bordered square surface.
   Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons.
   Disabled actions use inert gray. External keyboard focus rings remain visible.
 - Clip visual pseudo-elements only. Panel and button hosts have no clipping or hidden

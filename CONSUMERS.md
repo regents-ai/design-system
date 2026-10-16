@@ -110,10 +110,10 @@ Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` fr
 roles expose the other three palette constants per brand; use their paired utility
 classes coherently, not random per-card accents.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
-forced-colors appearance. Primary CTAs use near-white fill and dark ink in dark
-mode, and the site's accent pair in light mode. Secondary CTAs use the site's
-surface and foreground with a visible border. CTA skins are rectangular.
-Local CTA paint overrides use `--rg-cta-fill` and `--rg-cta-ink` as a pair.
+forced-colors appearance. Primary CTAs cut two corners and use the site's accent
+pair in both themes, with Powder Blue and Tangerine marks in dark mode and Tangerine
+L-edges in light mode that grow into a cut outline on hover and focus. Secondary CTAs
+use the site's surface and foreground with a visible border.
 The template's `hooks/motion/buttons.ts` supplies a single chevron nudge on pointer
 entry and a small press response on pointer-down through Anime.js. Copy that module
 and its `mountMotion` integration when adopting this package. CSS-only consumers
@@ -126,7 +126,7 @@ Import canonical token CSS then
 optional ruled frame, section bars, cut panels and technical figures, and existing
 `Regent.Primitives` for primary/secondary/quiet buttons and indexed native disclosures.
 The old universal 24px radius is retired: plain cells are square; panel skins cut
-16px/12px (desktop/mobile); CTA skins stay rectangular.
+16px/12px (desktop/mobile); primary button skins cut 12px/8px.
 
 Page background SVGs are no longer used; the package ships no background component and no
 background images. The source SVGs stay in `site svg backgrounds/` for future smaller

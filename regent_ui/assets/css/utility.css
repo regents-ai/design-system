@@ -1,7 +1,5 @@
 /* Account, connection and recovery surfaces. Marketing keeps its own grammar. */
 :where(.rg-utility, .rg-account, .rg-account__dialog) {
-  --rg-cta-fill: var(--utility-action-fill);
-  --rg-cta-ink: var(--utility-action-ink);
   --color-bg: var(--utility-bg);
   --color-surface: var(--utility-surface);
   --color-surface-elevated: var(--utility-surface);

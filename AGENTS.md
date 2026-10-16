@@ -39,7 +39,7 @@ Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
   Geist UI Sans 400/600 for utility headings, body and interface text; Geist Mono for code, addresses and technical identifiers. Never
   synthesize bold or italic Pixel. Fonts are served same-origin from `/fonts/regent-ui/`.
 - Shape: a ruled technical sheet. `--radius` is 0; brand panels may use fixed 45-degree cuts; utility sections use quiet separators
-  and CTA buttons are rectangular. Only inert CSS skins clip; content, menus and focus rings never do.
+  and primary buttons cut two corners. Only inert CSS skins clip; content, menus and focus rings never do.
   Flat, opaque surfaces with paired surface/ink roles; no glass, blur, glow, lift or idle motion.
 - Palette: preserve the eight brand/mode definitions (`platform`, `autolaunch`, `patchbay`,
   `techtree` × `light`, `dark`). Shared CSS reads only the shared `--color-*` names. Status
