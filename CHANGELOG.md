@@ -17,3 +17,10 @@ Changes before 16 October 2026 are in the commit history.
 
 - `pill_select.mjs`: an Escape that closes an open pill goes no further, so a dialog
   holding the pill stays open until the next Escape, as Patchbay's own fix did.
+
+## 2026-10-16 — Outside taps close a pill on iPhones too
+
+- `pill_select.mjs` closes an open pill on the pointerdown of a press outside it, not
+  on its click: iPhone Safari sends no click for a tap on plain text, so the menu stayed
+  open there. `STYLE.md` says the menu sits over the page, so closing it moves nothing
+  under the press.
