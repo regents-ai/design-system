@@ -86,3 +86,10 @@ Changes before 16 October 2026 are in the commit history.
 - The message box grows from 5.5rem to 6.75rem so the three icons fit in its corner,
   which also shows more of the message before it scrolls.
 - `STYLE.md` names the option.
+
+## 2026-10-16 — X reads the share picture's alt text
+
+- `Regent.AgentMetadata.head` writes `twitter:image:alt` from the same `image_alt` it
+  already writes as `og:image:alt`. X reads only the twitter tag, so shared pictures
+  showed there with no alt text (Sentinel's regents.sh v196 read). Sites pick it up on
+  their next repin; callers change nothing.

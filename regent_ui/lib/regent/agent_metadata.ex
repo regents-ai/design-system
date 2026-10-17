@@ -66,6 +66,7 @@ defmodule Regent.AgentMetadata do
     <meta name="twitter:title" content={@title} />
     <meta name="twitter:description" content={@description} />
     <meta name="twitter:image" content={@image} />
+    <meta name="twitter:image:alt" content={@image_alt} />
     <script type="application/ld+json" nonce={@nonce}>
       <%= Phoenix.HTML.raw(@json_ld) %>
     </script>
