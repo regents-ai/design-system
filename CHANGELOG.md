@@ -126,3 +126,6 @@ Changes before 16 October 2026 are in the commit history.
   theme switch's beam (`theme_toggle.css`). Techtree sets them with
   `--rg-button-border-color`.
 - `STYLE.md` and `README.md` describe Canopy and the hooks.
+- `README.md`'s token table now names Powder Blue as Techtree's mark where other sites
+  name it, with Patchbay and Techtree carrying their own palettes, and `STYLE.md`'s
+  artwork list gives Techtree's crown in Canopy greens instead of the old dot orbit.

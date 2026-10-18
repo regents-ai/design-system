@@ -556,7 +556,7 @@ Existing product artwork (not defaults for new structural compositions):
 - **Halftone CMYK** over generated dark source art: hero and section-band backgrounds.
 - **Mesh gradient** in forge tones: Agent Formation.
 - **God rays** in Tangerine Tango: Autolaunch.
-- **Dot orbit** constellation (Powder Blue + Tangerine Tango): Techtree.
+- **Crown** in Canopy greens: Techtree.
 
 Use static SVG technical figures in dedicated compartments: sparse circles, wireframes,
 triangles and leader lines, 1–1.5px non-scaling strokes. Informative art needs a text
