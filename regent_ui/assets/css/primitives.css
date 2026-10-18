@@ -23,8 +23,9 @@
   color: var(--rg-p-text); box-sizing: border-box;
 }
 /* A main button cuts two corners and carries Powder Blue and Tangerine marks in
-   the site's own colour. Every button but a quiet one, a copy button, the theme
-   toggle and a tab carries an arrow. The site's motion kit nudges the arrow on
+   the site's own colour, or the brand's --rg-button-mark-color when it sets one.
+   Every button but a quiet one, a copy button, the theme toggle and a tab
+   carries an arrow. The site's motion kit nudges the arrow on
    hover (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
@@ -74,8 +75,8 @@
 }
 /* Dark marks when dark is showing: chosen, or no choice made and the device does not ask for light. */
 :root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
-  --rg-button-edge-ink: var(--palette-powder-blue, #aecacd);
-  --rg-button-cut-ink: var(--palette-tangerine-tango, #ff5b19);
+  --rg-button-edge-ink: var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd));
+  --rg-button-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
