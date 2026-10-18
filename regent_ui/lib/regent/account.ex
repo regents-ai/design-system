@@ -261,7 +261,8 @@ defmodule Regent.Account do
     doc:
       "`:list` names each agent beside its picture and lists the steps; `:icons`, for a " <>
         "narrow panel, puts the message first in a short box that scrolls, with icons to copy " <>
-        "it and make a new code, then the pictures alone, each named on hover or keyboard focus"
+        "it and make a new code, then the pictures alone, each named on hover or keyboard focus, " <>
+        "then when the code stops working"
 
   attr :rest, :global,
     doc:
@@ -331,7 +332,6 @@ defmodule Regent.Account do
           </a>
         </div>
       </div>
-      <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
         <legend id={"#{@id}-title"}>
           Choose the agent to pair
@@ -348,6 +348,7 @@ defmodule Regent.Account do
           <span class="rg-account__choice-name">{harness.label}</span>
         </label>
       </fieldset>
+      <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
       <%= if @layout == :list do %>
         <ol class="rg-account__steps">
           <li>Copy this message.</li>
@@ -725,7 +726,7 @@ defmodule Regent.Account do
   defp pairing_words(:unavailable, _message, _chosen),
     do: "A pairing code couldn’t be made right now. Try again in a moment."
 
-  defp pairing_words(nil, nil, nil), do: "Choose your agent to get its message."
+  defp pairing_words(nil, nil, nil), do: "Choose type of agent below to get pairing message."
   defp pairing_words(nil, _message, _chosen), do: nil
 
   defp agents_state(:loading), do: :loading

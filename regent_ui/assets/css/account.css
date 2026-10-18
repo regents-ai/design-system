@@ -135,7 +135,9 @@
 
 /* Pairing: choose an agent, then copy the message it needs. Every state's message
    and words share one place, and what a state lacks keeps its space unseen, so
-   choosing an agent never changes the height. */
+   choosing an agent never changes the height. The agents' pictures are drawn for a
+   light ground, such as NVIDIA's black lettering, so each sits on white in both
+   themes. */
 .rg-account__mark {
   display: grid;
   flex: none;
@@ -144,7 +146,7 @@
   block-size: 3rem;
   overflow: hidden;
   border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  background: #fff;
 }
 .rg-account__mark img { inline-size: 100%; block-size: 100%; object-fit: contain; }
 
@@ -206,6 +208,7 @@
 .rg-account__brief-last time { flex: none; font-variant-numeric: tabular-nums; }
 
 .rg-account__pair { display: grid; justify-items: start; gap: var(--space-2); inline-size: 100%; }
+.rg-account__pair[data-layout="icons"] { gap: var(--space-1); }
 .rg-account__pair [data-unused] { visibility: hidden; }
 
 .rg-account__choices { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; border: 0; }
@@ -242,19 +245,24 @@
   white-space: nowrap;
 }
 
-/* Pictures only, five to a row: each agent's name shows above its picture on hover
-   or keyboard focus, kept inside the panel at each row's ends. */
+/* Pictures only, five to a row, each in one frame: the agent's name shows on hover
+   or keyboard focus, under a first-row picture and over a second-row one, so it
+   only ever covers other pictures, and kept inside the panel at each row's ends. */
 .rg-account__pair[data-layout="icons"] .rg-account__choices {
   display: grid;
   grid-template-columns: repeat(5, auto);
   justify-content: space-between;
   inline-size: 100%;
 }
-.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 3px; }
-.rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark { inline-size: 2.5rem; block-size: 2.5rem; }
+.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 4px; }
+.rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border: 0;
+}
 .rg-account__pair[data-layout="icons"] .rg-account__choice-name {
   position: absolute;
-  inset-block-end: calc(100% + 6px);
+  inset-block-start: calc(100% + 6px);
   inset-inline-start: 50%;
   z-index: 1;
   padding: 2px 8px;
@@ -268,6 +276,9 @@
   pointer-events: none;
   transform: translateX(-50%);
   transition: opacity 120ms ease;
+}
+.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(n + 6) .rg-account__choice-name {
+  inset-block: auto calc(100% + 6px);
 }
 .rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(5n + 1) .rg-account__choice-name {
   inset-inline-start: 0;
@@ -291,10 +302,11 @@
   white-space: nowrap;
 }
 
-/* The narrow panel's message: a short box that scrolls, its three icons in the corner. */
+/* The narrow panel's message: a short box that scrolls, its three icons in their
+   own column at the right, so the message never runs under them. */
 .rg-account__prompt {
-  position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: minmax(0, 1fr);
   inline-size: 100%;
   block-size: 6.75rem;
@@ -303,7 +315,7 @@
 }
 .rg-account__prompt > * { grid-area: 1 / 1; margin: 0; }
 .rg-account__prompt pre {
-  padding: 8px 2.75rem 8px 10px;
+  padding: 8px 10px;
   overflow-y: auto;
   overscroll-behavior: contain;
   font-family: var(--font-family-mono);
@@ -312,13 +324,13 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.rg-account__prompt .rg-account__words { padding: 8px 2.75rem 8px 12px; font-size: .875rem; }
-.rg-account__prompt-tools {
-  position: absolute;
-  inset-block-start: 4px;
-  inset-inline-end: 4px;
+.rg-account__prompt .rg-account__words { padding: 8px 10px; font-size: .875rem; }
+.rg-account__prompt > .rg-account__prompt-tools {
+  grid-area: 1 / 2;
   display: grid;
+  align-content: start;
   gap: 2px;
+  padding: 4px;
 }
 .rg-account__renew, .rg-account__guide {
   display: inline-grid;

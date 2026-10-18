@@ -93,3 +93,20 @@ Changes before 16 October 2026 are in the commit history.
   already writes as `og:image:alt`. X reads only the twitter tag, so shared pictures
   showed there with no alt text (Sentinel's regents.sh v196 read). Sites pick it up on
   their next repin; callers change nothing.
+
+## 2026-10-18 — The side panel's pairing box: one frame per picture, tighter, clearer
+
+- Before a person chooses, the box now reads "Choose type of agent below to get
+  pairing message." in place of "Choose your agent to get its message." (Sean, 18 Oct,
+  on regents.sh: the old words sent people to "Your agents" above).
+- Each picture in the side panel sits in one frame, not a frame inside a frame, and
+  every agent picture (here and in agent lists) sits on white in both themes, so
+  NVIDIA's black lettering and the other pictures drawn for a light ground read in
+  the dark theme too.
+- The copy, new-code and help icons have their own column at the right of the
+  message, so no site's text styles can run the message under them.
+- The pictures follow the box after a smaller gap, and "The code works once, until
+  …" moves under them, so the space it keeps before a code exists no longer opens a
+  gap above the pictures. A picture's name shows under a first-row picture and over a
+  second-row one, so it covers only other pictures, never that line.
+- `STYLE.md` describes the new order.
