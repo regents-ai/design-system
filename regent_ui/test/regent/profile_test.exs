@@ -3,22 +3,14 @@ defmodule Regent.ProfileTest do
   import Phoenix.Component
   import Phoenix.LiveViewTest
 
-  test "a signed-in visitor is never shown Sign in" do
+  test "the form shows the person's Public Display Name, ready to change" do
     assigns = %{}
-    html = rendered_to_string(~H"<Regent.Profile.panel signed_in />")
+    html = rendered_to_string(~H|<Regent.Profile.panel display_name="Ada" />|)
 
+    assert html =~ "Public Display Name"
+    assert html =~ ~s(value="Ada")
+    assert html =~ ~s(maxlength="80")
+    assert html =~ "Save"
     refute html =~ "Sign in"
-    refute html =~ ~s(data-profile-action="sign-in")
-    assert html =~ "Set up your profile"
-    assert html =~ "Refresh linked accounts"
-    assert html =~ "Your name on every Regent site."
-  end
-
-  test "a signed-out visitor is offered Sign in" do
-    assigns = %{}
-    html = rendered_to_string(~H"<Regent.Profile.panel signed_in={false} />")
-
-    assert html =~ ~s(data-profile-action="sign-in")
-    assert html =~ "Sign in"
   end
 end

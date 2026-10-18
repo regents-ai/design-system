@@ -186,7 +186,7 @@
 .rg-disclosure[open] > summary .rg-chevron { transform: rotate(180deg); }
 .rg-disclosure-body { padding-block: var(--space-1) var(--space-3); overflow-wrap: anywhere; }
 .rg-disclosure--indexed > .rg-disclosure-body { padding-inline-start: calc(2rem + var(--space-2)); }
-:where(.rg-notice, .rg-disclosure-body, .rg-profile) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+:where(.rg-notice, .rg-disclosure-body) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 /* A tip: an "i" beside a label that opens a few words in the browser's popover.
    Two classes deep, so a site's plain-button look does not reach it. */
 .rg-tip { display: inline-flex; vertical-align: middle; }
@@ -254,14 +254,13 @@
 }
 .rg-profile h2 { margin-block: 0 var(--space-3); }
 .rg-profile form { display: grid; gap: var(--space-3); }
-.rg-profile form[hidden], .rg-profile [hidden] { display: none; }
-.rg-profile input, .rg-profile select { width: 100%; min-width: 0; }
-.rg-profile-connection, .rg-profile-actions { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-.rg-profile-connection > div { flex: 1 1 12rem; min-width: 0; display: grid; gap: var(--space-1); }
-.rg-profile-connection strong, .rg-profile [data-profile-status], .rg-profile [data-profile-wallet-status] { overflow-wrap: anywhere; }
-.rg-profile dl { display: grid; gap: var(--space-1); margin: 0; }
-.rg-profile dd { margin: 0 0 var(--space-2); overflow-wrap: anywhere; }
-.rg-profile .rg-disclosure p { margin-bottom: 0; }
+.rg-profile input { width: 100%; min-width: 0; }
+/* The status sits beside Save in a smaller size, so two lines of it stay within
+   the button's height and a message never moves what is below. */
+.rg-profile-actions { display: flex; align-items: center; gap: var(--space-3); }
+.rg-profile [data-profile-status] {
+  flex: 1; min-width: 0; margin: 0; font-size: 0.875rem; line-height: 1.35; overflow-wrap: anywhere;
+}
 
 @media (max-width: 47.99rem) {
   .rg-button { --rg-cut-control: 8px; }
