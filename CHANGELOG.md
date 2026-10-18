@@ -119,9 +119,13 @@ Changes before 16 October 2026 are in the commit history.
   `display_name` and is shown only to a signed-in person, so it no longer offers
   Sign in, Set up your profile, a wallet choice, Connect X, Refresh linked
   accounts or Account details. Wallets and connections have their own Account tabs.
-- `mountProfile` takes `profile` and an optional `onSaved`. Save makes the person's
-  profile from their sign-in the first time, then saves the name. `saveName` is the
-  same step without a page, for checks.
+- `mountProfile` takes `openProfile` and an optional `onSaved`. Each Save opens one
+  profile client from the product, so every step of one save is one person's. Save
+  makes the person's profile from their sign-in the first time, then saves the name
+  to the profile it read. Saves run one after another, so two quick presses keep
+  the name pressed last. A save that fails outright says so instead of staying on
+  "Saving…", and the form is marked busy while it saves. `saveName` is the same step
+  without a page, for checks.
 - The note beside Save is smaller, so two lines of it stay inside the button's
   height and never move what is below.
 - The form no longer sets its own width, padding or heading margin: the page that
