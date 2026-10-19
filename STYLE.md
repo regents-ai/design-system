@@ -225,8 +225,9 @@ Patterns that generalize:
   Pair `--rg-panel-fill` and `--rg-panel-ink`; the `accent` variant consumes the existing
   accent/on-accent pair. Local rules and texture use local ink.
   The one exception is `Regent.HolographicCard.card` (founder, 2026-09-19): a graphite foil
-  card whose foil lights up under the pointer, and only then; the card itself never moves
-  (founder, 2026-10-19). It keeps its own graphite ground and platinum ink in both themes,
+  card whose foil lights up under the pointer, and only then, and only on a thick frame
+  round its edge; inside the frame the face stays still graphite, and the card itself never
+  moves (founder, 2026-10-19). It keeps its own graphite ground and platinum ink in both themes,
   cuts its corners like every panel, and shows its still foil under reduced motion and
   forced colors.
 - Real circles remain valid for geometric avatars, indicators and spinners.

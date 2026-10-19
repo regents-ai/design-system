@@ -268,3 +268,16 @@ Changes before 16 October 2026 are in the commit history.
   `label`, so a page passes only the full address unless it has an ENS name; the new
   `Regent.Primitives.short_address/1` gives that form. `Regent.Account.identity`
   takes no `wallet_label`.
+
+## 2026-10-19 — The card's shine keeps to a thick frame
+
+- `Regent.HolographicCard`'s light and foil now show only on a thick frame round a
+  face's edge, 12px wide (`--rg-holo-frame`); inside the frame the face stays still
+  graphite, with the crown's outline still engraved on it (founder, 19 Oct). The
+  frame's inner corners are cut like its outer ones, and the registration ticks sit on
+  it. The still picture shown before the light is drawn has its pearl wash on the
+  same frame. Foil ink still lights wherever it is.
+- The renderer reads the frame's width from the canvas on every resize; no new
+  argument.
+- `CONSUMERS.md` and `THIRD_PARTY_NOTICES.md` no longer describe the card's turn,
+  which ended on 19 Oct.

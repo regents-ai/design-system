@@ -5,8 +5,9 @@
 //
 // Adapted from the Vercel vgpu "Holographic Card" example. The material — the
 // diffraction grating, the pearlescence, the etched contours, the grain and the
-// guide marks — is that example's; the card silhouette, its lettering, its
-// projection and its triangular fractal engraving were left behind, because
+// guide marks — is that example's, though on a face it lights only on a thick
+// frame round the edge. The card silhouette, its lettering, its projection and
+// its triangular fractal engraving were left behind, because
 // here the canvas is the surface, the application's own markup carries the
 // text and the engraved mark is the Regents crown. A surface is either a
 // graphite face, with or without the crown, or the ink of a line drawing the
@@ -34,6 +35,8 @@ struct Params {
   crown: f32,
   // 1 when the ink sits on a light ground, so its spectrum is kept deep.
   deep: f32,
+  // The width of the frame a face's light keeps to, in card units.
+  frame: f32,
 }
 @group(0) @binding(0) var<uniform> params: Params;
 
@@ -159,6 +162,15 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let halfSize = vec2f(aspect, 1.0) * ${CARD_HEIGHT / 2};
   let p = (uv - 0.5) * halfSize * 2.0;
   let aa = max(length(fwidth(p)), 0.0006);
+  // A face lights only on a thick frame round its edge, its inner corners cut like
+  // its outer ones; inside the frame it stays still graphite (founder, 2026-10-19).
+  // Ink lights wherever it is.
+  let fromEdge = halfSize - abs(p);
+  let inner = min(
+    min(fromEdge.x, fromEdge.y) - params.frame,
+    (fromEdge.x + fromEdge.y - params.frame * 2.4142136) * 0.70710678
+  );
+  let lit = max(1.0 - smoothstep(-aa * 0.5, aa * 0.5, inner), params.ink.a);
 
   // The face lies flat; only the light moves across it.
   let right = vec3f(1, 0, 0);
@@ -241,21 +253,22 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let foilTint = outerPearl * 0.8 + vec3f(0.2) + diffraction(blockAcross, lightAndView, 1.65) * illumination * 0.15;
   color += stroke(crown.band - bandWidth, 0.0007, aa * 0.5) * params.crown * foilTint * hover * (0.12 + light * 0.5);
 
-  // Sparse microdots and registration ticks emerge in the surrounding foil.
+  // Sparse microdots emerge in the surrounding foil, and registration ticks on the
+  // frame's centre line at each corner.
   let grid = (fract((p + 1.0) * 20.0) - 0.5) / 20.0;
   let dots = stroke(length(grid), 0.0008, aa * 0.4);
   color += dots * outside * reveal * 0.17;
-  let guide = abs(p) - halfSize + vec2f(0.15, 0.13);
+  let guide = abs(p) - halfSize + vec2f(params.frame * 0.5);
   let horizontal = stroke(guide.y, 0.0006, aa * 0.5) * (1.0 - smoothstep(0.012, 0.017, abs(guide.x)));
   let vertical = stroke(guide.x, 0.0006, aa * 0.5) * (1.0 - smoothstep(0.012, 0.017, abs(guide.y)));
   color += max(horizontal, vertical) * hover * (0.12 + light * 0.22);
 
-  color = atRest + (color - atRest) * params.shine;
+  color = atRest + (color - atRest) * params.shine * lit;
 
   // Always-visible outline of every square: its baseline contrast does not
   // depend on hover or light.
   let outline = stroke(crown.edge, 0.0012, aa * 0.65) * params.crown;
-  color = mix(color, vec3f(0.29, 0.32, 0.36) + tint * light * 0.16 * params.shine, outline);
+  color = mix(color, vec3f(0.29, 0.32, 0.36) + tint * light * 0.16 * params.shine * lit, outline);
 
   // Ink: the application masks the canvas to a line drawing, so the whole
   // surface is the ink. It rests as the plain ink colour and turns spectral
@@ -281,6 +294,15 @@ const PALETTE = [
 function inkLights(ground) {
   const apart = colour => Math.hypot(...colour.map((channel, index) => channel - ground[index]))
   return [...PALETTE].sort((a, b) => apart(b) - apart(a)).slice(0, 2)
+}
+
+/**
+ * The width of the frame a face lights on, in card units: the canvas's
+ * `--rg-holo-frame` against its height.
+ */
+function frameWidth(canvas) {
+  const width = parseFloat(getComputedStyle(canvas).getPropertyValue("--rg-holo-frame"))
+  return (width / canvas.getBoundingClientRect().height) * CARD_HEIGHT
 }
 
 /** The narrowest face, in widths per height, whose crown stands clear of the content beside it. */
@@ -369,10 +391,12 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
 
   const target = {pointer: [0, 0], hover: 0}
   const state = {pointer: [0, 0], hover: 0}
+  let frameUnits = frameWidth(canvas)
 
   return {
     resize(width, height) {
       canvasSurface.resize([width, height])
+      frameUnits = frameWidth(canvas)
     },
     /** Eases every value toward its target; true while something still moved. */
     step(snap) {
@@ -401,6 +425,7 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
           inkLightB: [...inkLightB, 1],
           crown: crown && room && !ink ? 1 : 0,
           deep: ink && inkLuminance < 0.5 ? 1 : 0,
+          frame: frameUnits,
         },
       })
       frame(gpu, current => current.pass(canvasSurface, foil))

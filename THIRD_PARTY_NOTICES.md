@@ -18,16 +18,17 @@ grating approximation (after the diffraction-order model in GPU Gems chapter 8, 
 the pearlescent wash, the surface-locked grain, the warped etched contours, the recursive
 triangular engraving with its grooves, the spectral echo, the microdots and registration
 ticks, and the sweep, glint and spotlight that reveal them under the pointer. The renderer's
-shape — a `vgpu` surface, one `effect`, the tilt/pointer/hover parameters and their easing —
+shape — a `vgpu` surface, one `effect`, the pointer and hover parameters and their easing —
 follows the example's `renderer.ts` and `scene.ts`.
 
 ### What was left behind
 
 The React wrapper, the projected card silhouette with its rounded box, halo and shadow,
-the baked Geist lettering and its texture, the cross mark and the rim light. Here the
-canvas is the card face itself and the consuming application's markup carries the text,
-so the engraved mark moved to the right of a wide face and the guide ticks follow the
-face's own edges.
+the baked Geist lettering and its texture, the cross mark, the rim light and the card's
+turn under the pointer. Here the canvas is the card face itself and the consuming
+application's markup carries the text, so the engraved mark moved to the right of a wide
+face, the light keeps to a thick frame round the face's edge and the guide ticks sit on
+that frame.
 
 The consumer pins `vgpu` and `@vgpu/wgsl` itself (both 0.6.0 today); this package ships no copy of either.
 
