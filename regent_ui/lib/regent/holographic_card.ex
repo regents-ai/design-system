@@ -6,15 +6,14 @@ defmodule Regent.HolographicCard do
   renderer and the caller's content on top. Without a renderer the static foil
   in `holographic_card.css` stands, so the card reads the same on every visitor's
   screen. Applications own the mount: `assets/js/holographic_card.mjs` exports the
-  renderer, and the consumer binds it to `[data-holo-canvas]` with its own hook,
-  writes the tilt to `--rg-holo-tilt-x` / `--rg-holo-tilt-y` and marks the root
-  `data-holo-ready="true"` once the GPU has drawn.
+  renderer, and the consumer binds it to `[data-holo-canvas]` with its own hook
+  and marks the root `data-holo-ready="true"` once the GPU has drawn. The card
+  never moves; only the light on its foil follows the pointer.
 
   `foil/1` is the same stage for a surface that is not the whole card: the face
   of a panel (`class="rg-holo-foil--face"` inside a panel marked
   `rg-holo-ground`) or the ink of a line drawing (`class="rg-holo-foil--ink"`
-  beside the drawing in a technical figure). The element the application mounts
-  carries `rg-holo-tilt` when it should turn with the pointer.
+  beside the drawing in a technical figure).
   """
   use Phoenix.Component
 

@@ -1,6 +1,3 @@
-/** Radians of tilt at the card's edge, on both axes. */
-export const HOLOGRAPHIC_CARD_TILT: number;
-
 export type HolographicCardRenderer = {
   resize(width: number, height: number): void;
   /** Eases every value toward its target; true while something still moved. */
@@ -10,14 +7,12 @@ export type HolographicCardRenderer = {
   settled(): Promise<void>;
   dispose(): void;
   /**
-   * The pointer, as fractions of two boxes: the card that turns, and the canvas
-   * the light falls on. The light may stand a little outside the canvas.
+   * The pointer, as fractions of the canvas the light falls on. The light may
+   * stand a little outside the canvas.
    */
-  point(card: readonly [number, number], light: readonly [number, number]): void;
-  /** The pointer has left: the light fades and the face settles flat. */
+  point(light: readonly [number, number]): void;
+  /** The pointer has left: the light fades. */
   rest(): void;
-  /** The eased tilt in radians: about the vertical axis, then the horizontal. */
-  tilt(): readonly [number, number];
 };
 
 export type HolographicCardLook = {
@@ -30,8 +25,6 @@ export type HolographicCardLook = {
   ink?: readonly [number, number, number];
   /** The colour the drawing sits on (0..1 sRGB); the ink lights in the palette colours that stand out from it. */
   ground?: readonly [number, number, number];
-  /** Scales the turn against the account card's. Default 1. */
-  tilt?: number;
   /** Scales the light against the account card's. Default 1. */
   shine?: number;
 };

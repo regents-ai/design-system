@@ -367,6 +367,7 @@ defmodule Regent.StructureShowcase do
       last_contact: "2 hours ago",
       last_contact_at: "11 October 2026, 08:00 UTC",
       wallet: "0x2222222222222222222222222222222222222222",
+      wallet_label: "0x2222..2222",
       listing: %{url: "https://8004scan.io/agents/base/42", number: 42}
     }
   end

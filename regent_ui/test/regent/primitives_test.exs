@@ -122,4 +122,20 @@ defmodule Regent.PrimitivesTest do
     refute html =~ "data-copy-text"
     assert html =~ "Selected"
   end
+
+  # Invariant: an ENS name or short address always copies the full address it stands for.
+  test "an address shows its name and copies the full address it points to" do
+    full = "0x1234567890abcdef1234567890abcdef12345678"
+    assigns = %{full: full}
+
+    html =
+      rendered_to_string(~H"""
+      <.address id="owner" address={@full} label="ada.eth" />
+      """)
+
+    assert html =~ ~s(title="#{full}")
+    assert html =~ ">ada.eth</span>"
+    assert html =~ ~s(data-copy-text="#{full}")
+    assert html =~ ~s(aria-label="Copy the full address")
+  end
 end

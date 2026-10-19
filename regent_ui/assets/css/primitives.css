@@ -153,6 +153,11 @@
 .rg-copy--icon:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 .rg-copy--icon[data-copy-state="copied"] { color: var(--color-success, currentColor); }
 .rg-copy--icon[data-copy-state="failed"] { color: var(--color-error, currentColor); }
+/* An address, ENS name or short address, with its copy icon right after it. */
+.rg-address { display: inline-flex; align-items: center; gap: .25rem; max-inline-size: 100%; vertical-align: middle; }
+.rg-address__label { min-inline-size: 0; font-family: var(--font-family-mono, monospace); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rg-address .rg-copy--icon { inline-size: 1.75rem; block-size: 1.75rem; min-block-size: 1.75rem; }
+.rg-address .rg-copy--icon svg { inline-size: 1rem; block-size: 1rem; }
 @media (prefers-reduced-motion: reduce) {
   .rg-copy--icon, .rg-copy--icon svg { transition: none; }
   .rg-copy--icon:active svg { transform: none; }

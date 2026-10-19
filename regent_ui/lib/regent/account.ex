@@ -411,7 +411,8 @@ defmodule Regent.Account do
   attr :agent, :map,
     required: true,
     doc:
-      "id, name, kind (harness value), harness (label), wallet, listing (nil or %{url, number}), and " <>
+      "id, name, kind (harness value), harness (label), wallet (the full address), wallet_label " <>
+        "(its ENS name or short form), listing (nil or %{url, number}), and " <>
         "paired_at, last_contact (relative) and last_contact_at, formatted"
 
   attr :verified, :boolean, required: true, doc: "its person connected World ID"
@@ -467,7 +468,13 @@ defmodule Regent.Account do
         </div>
         <div>
           <dt>Agent address</dt>
-          <dd><code>{@agent.wallet}</code></dd>
+          <dd>
+            <Primitives.address
+              id={"#{@id}-wallet"}
+              address={@agent.wallet}
+              label={@agent.wallet_label}
+            />
+          </dd>
         </div>
         <div :if={@agent.listing}>
           <dt>Registry listing</dt>

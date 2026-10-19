@@ -1,19 +1,30 @@
 // Presentation only. The product adapter owns authentication and persistence:
-// `openProfile` gives one save its profile client, so one save is one person's.
-// Saves run one after another, so the name pressed last is the name kept.
+// `openProfile` gives one save its profile client at the press of Save, so one
+// save is the person's signed in then, even while it waits its turn. Saves run
+// one after another, so the name pressed last is the name kept.
 export function mountProfile(root, {openProfile, onSaved}) {
   const controller = new AbortController();
   const form = root.querySelector("[data-profile-form]");
   const status = root.querySelector("[data-profile-status]");
   const name = form.elements.namedItem("display_name");
+  const failed = {ok: false, message: "Your name could not be saved. Try again."};
   let generation = 0;
   let previous = Promise.resolve();
 
-  const save = async displayName => {
+  const open = () => {
     try {
-      return await saveName(openProfile(), displayName, {signal: controller.signal});
+      return openProfile();
     } catch {
-      return {ok: false, message: "Your name could not be saved. Try again."};
+      return null;
+    }
+  };
+
+  const save = async (profile, displayName) => {
+    if (!profile) return failed;
+    try {
+      return await saveName(profile, displayName, {signal: controller.signal});
+    } catch {
+      return failed;
     }
   };
 
@@ -21,9 +32,10 @@ export function mountProfile(root, {openProfile, onSaved}) {
     event.preventDefault();
     const current = ++generation;
     const displayName = name.value;
+    const profile = open();
     form.setAttribute("aria-busy", "true");
     status.textContent = "Saving…";
-    const saving = previous.then(() => save(displayName));
+    const saving = previous.then(() => save(profile, displayName));
     previous = saving;
     const result = await saving;
     if (controller.signal.aborted || current !== generation) return;
@@ -63,6 +75,8 @@ function refusal(result) {
       return "Sign in again to save your name.";
     case "identity_evidence_conflict":
       return "Your sign-in changed. Refresh and try again.";
+    case "invalid_display_name":
+      return "That name can't be used. Remove any hidden characters.";
     default:
       return "Your name could not be saved. Try again.";
   }
