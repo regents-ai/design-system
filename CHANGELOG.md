@@ -264,4 +264,7 @@ Changes before 16 October 2026 are in the commit history.
   repeats beneath it; a name they chose has the wallet beneath it, as its ENS name if
   it has one, else its short address. Patchbay's card showed the ENS name twice
   (founder, 19 Oct); every site now uses this one.
-
+- `Regent.Primitives.address` shows the short form `0x1234..abcd` when given no
+  `label`, so a page passes only the full address unless it has an ENS name; the new
+  `Regent.Primitives.short_address/1` gives that form. `Regent.Account.identity`
+  takes no `wallet_label`.

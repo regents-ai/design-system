@@ -128,8 +128,8 @@ defmodule Regent.Primitives do
   attr :address, :string, required: true, doc: "the full `0x` address"
 
   attr :label, :string,
-    required: true,
-    doc: "what shows: the ENS name that points to `address`, or its short form `0x1234..abcd`"
+    default: nil,
+    doc: "what shows: the ENS name that points to `address`; its short form `0x1234..abcd` if nil"
 
   attr :class, :any, default: nil
   attr :rest, :global
@@ -140,6 +140,8 @@ defmodule Regent.Primitives do
   copies the full address. For an ENS name both give the address it points to.
   """
   def address(assigns) do
+    assigns = assign(assigns, label: assigns.label || short_address(assigns.address))
+
     ~H"""
     <span id={@id} class={["rg-address", @class]} {@rest}>
       <button type="button" class="rg-address__label" popovertarget={"#{@id}-full"}>
@@ -150,6 +152,16 @@ defmodule Regent.Primitives do
     </span>
     """
   end
+
+  @doc """
+  An address's short form, `0x`, its first four and last four characters joined by
+  `..`, as every Regent page shows one.
+
+      iex> Regent.Primitives.short_address("0x1234567890abcdef1234567890abcdef12345678")
+      "0x1234..5678"
+  """
+  def short_address(<<"0x", head::binary-size(4), rest::binary>>) when byte_size(rest) > 4,
+    do: "0x" <> head <> ".." <> binary_part(rest, byte_size(rest) - 4, 4)
 
   attr :id, :string, required: true
   attr :label, :string, required: true
