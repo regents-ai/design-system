@@ -272,6 +272,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
+| `Regent.Account.identity` | The card at the top of the Account page: the person's picture, the name the site calls them and their wallet, each said once; an ENS name or short address in it opens and copies the full address | Ash Template |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.agents_brief` | The person's agents in a narrow panel: a list at most a quarter of the panel's height that scrolls, each with what it last did and how long ago; the heading may link to the account page | Ash Template |
 | `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons, then the agents five to a row, each named on hover | Ash Template |
@@ -469,7 +470,7 @@ profile section inside it. The header's account control stays site-owned, since 
 holds the site's sign-in wiring, but uses these words.
 
 The page shows, in order: `Regent.Account.signed_out` until the person is signed in;
-then a **Profile** section (`Regent.Profile.panel`, where the person sets their
+then the account card (`Regent.Account.identity`), a **Profile** section (`Regent.Profile.panel`, where the person sets their
 **Public Display Name**, the name people see for them), `Regent.Account.agents`, and, where the site
 offers them, `credits_summary` and `points_summary` with their `history`. A site may give
 a long section its own tab under Account, such as Points, and adds its own sections after
