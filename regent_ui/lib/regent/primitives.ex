@@ -136,13 +136,16 @@ defmodule Regent.Primitives do
 
   @doc """
   Every ENS name, address and short address a Regent page shows (founder, 2026-10-19):
-  the words, with the full address on hover, and an icon that copies the full
-  address. For an ENS name the icon copies the address it points to.
+  the words, which open the full address on a click, tap or Enter, and an icon that
+  copies the full address. For an ENS name both give the address it points to.
   """
   def address(assigns) do
     ~H"""
     <span id={@id} class={["rg-address", @class]} {@rest}>
-      <span class="rg-address__label" title={@address}>{@label}</span>
+      <button type="button" class="rg-address__label" popovertarget={"#{@id}-full"}>
+        {@label}
+      </button>
+      <span id={"#{@id}-full"} class="rg-tip-body rg-address__full" popover>{@address}</span>
       <.copy_icon id={"#{@id}-copy"} text={@address} label="Copy the full address" />
     </span>
     """
