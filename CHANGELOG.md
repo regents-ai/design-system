@@ -145,3 +145,14 @@ Changes before 16 October 2026 are in the commit history.
   this repo yet) · proofs: regent_ui `mix check` 36 tests, token copies in sync, Techtree
   `make check` and a 96-load headless Chromium walk on the consuming site · gaps: WebKit
   not run on the Mac.
+
+## 2026-10-19 — Techtree's button marks are a darker green
+
+- Techtree's `--rg-button-border-color` and `--rg-button-mark-color` move from
+  `#2FA866` to `#238450`, so a lime button's corner marks and its hover outline stand
+  out at least 3:1 from the pale page (4.26:1), the card surface (4.50:1), the lime
+  they sit on (3.63:1) and the dark page (3.94:1). `#2FA866` gave 2.77:1 on the pale
+  page. Sentinel's Canopy read, 19 Oct: the edge and the corner marks must each reach
+  3:1, without making the buttons blockier. Button size and shape are unchanged.
+- The rest of Canopy keeps `#2FA866` (secondary accent, theme switch beam). `STYLE.md`
+  gives the new mark green.

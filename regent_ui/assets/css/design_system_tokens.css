@@ -198,8 +198,8 @@
 }
 :root[data-brand="techtree"] {
   --rg-shimmer-color: var(--color-accent);
-  --rg-button-border-color: #2FA866;
-  --rg-button-mark-color: #2FA866;
+  --rg-button-border-color: #238450;
+  --rg-button-mark-color: #238450;
   --rg-theme-laser-light: #2FA866;
   --rg-theme-laser-dark: #C8F25C;
 }
