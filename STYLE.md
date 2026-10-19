@@ -57,9 +57,9 @@ tint `#273853`. Semantic status colors retain their own meaning. Other brands an
 canonical logo artwork remain unchanged.
 Techtree's Canopy light uses canvas `#F3F5EF`, surface `#FAFBF7`, border `#DCE3D6`,
 text `#0F1B14`, action `#C8F25C` with `#0F1B14` text (`#B4E03F` on hover), marks
-`#2FA866`, focus `#1E6B45`, info `#2E5E45`. Dark uses canvas `#0D1611`, surface
+`#238450`, focus `#1E6B45`, info `#2E5E45`. Dark uses canvas `#0D1611`, surface
 `#142019`, border `#2A3B30`, text `#E4EEE6`, the same lime action with `#0D1611` text,
-marks `#2FA866`, focus and links `#C8F25C`, info `#CFE2D2`. Its status colors are the
+marks `#238450`, focus and links `#C8F25C`, info `#CFE2D2`. Its status colors are the
 shared ones. Other sites still show Techtree's product mark in Powder Blue
 (`--product-techtree`).
 
@@ -205,7 +205,7 @@ Patterns that generalize:
   accents along the cuts; light primaries rest with two opposite Tangerine L-edges.
   A brand may set `--rg-button-mark-color` for both dark marks and
   `--rg-button-border-color` for the light edges and hover outline; Techtree sets both
-  to `#2FA866`. The theme switch's beam follows `--rg-theme-laser-light` and
+  to `#238450`. The theme switch's beam follows `--rg-theme-laser-light` and
   `--rg-theme-laser-dark` the same way.
   Hover and keyboard focus grow these into a continuous cut outline in 150ms.
   Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
