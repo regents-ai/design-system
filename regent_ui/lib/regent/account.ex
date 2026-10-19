@@ -61,7 +61,6 @@ defmodule Regent.Account do
       "what the site calls the person: their chosen name, their ENS name or their short address"
 
   attr :wallet, :string, default: nil, doc: "the account's full `0x` wallet address"
-  attr :wallet_label, :string, default: nil, doc: "its short form, such as `0x1234..abcd`"
   attr :ens_name, :string, default: nil, doc: "the ENS name that points to `wallet`"
   attr :class, :any, default: nil
   attr :rest, :global
@@ -78,7 +77,8 @@ defmodule Regent.Account do
     assigns =
       assign(assigns,
         name_is_wallet:
-          assigns.wallet != nil and assigns.name in [assigns.wallet_label, assigns.ens_name]
+          assigns.wallet != nil and
+            assigns.name in [Primitives.short_address(assigns.wallet), assigns.ens_name]
       )
 
     ~H"""
@@ -95,7 +95,7 @@ defmodule Regent.Account do
             <Primitives.address
               id={"#{@id}-wallet"}
               address={@wallet}
-              label={@ens_name || @wallet_label}
+              label={@ens_name}
             />
           </p>
         </div>

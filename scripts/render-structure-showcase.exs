@@ -231,21 +231,18 @@ defmodule Regent.StructureShowcase do
               id="account-identity-ens"
               name="seanwbren.eth"
               wallet={"0x" <> String.duplicate("a", 40)}
-              wallet_label="0xaaaa..aaaa"
               ens_name="seanwbren.eth"
             />
             <Regent.Account.identity
               id="account-identity-chosen"
               name="Ada Lovelace"
               wallet={"0x" <> String.duplicate("a", 40)}
-              wallet_label="0xaaaa..aaaa"
               ens_name="seanwbren.eth"
             />
             <Regent.Account.identity
               id="account-identity-unnamed"
               name="0xaaaa..aaaa"
               wallet={"0x" <> String.duplicate("a", 40)}
-              wallet_label="0xaaaa..aaaa"
             />
             <Regent.Account.signed_out id="account-signed-out">
               <:sign_in><.button type="button">Sign in</.button></:sign_in>

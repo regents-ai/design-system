@@ -89,7 +89,6 @@ defmodule Regent.AccountTest do
       id="who"
       name={@name}
       wallet={@wallet}
-      wallet_label={@wallet && "0xaaaa..aaaa"}
       ens_name={@ens_name}
     />
     """)

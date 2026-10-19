@@ -4,6 +4,8 @@ defmodule Regent.PrimitivesTest do
   import Phoenix.LiveViewTest
   import Regent.Primitives
 
+  doctest Regent.Primitives, only: [short_address: 1]
+
   test "fields connect supplied inputs to labels, hints and escaped errors" do
     assigns = %{}
 
@@ -139,5 +141,9 @@ defmodule Regent.PrimitivesTest do
     assert html =~ ~r{<button[^>]*rg-address__label[^>]*>\s*ada.eth\s*</button>}
     assert html =~ ~s(data-copy-text="#{full}")
     assert html =~ ~s(aria-label="Copy the full address")
+
+    short = rendered_to_string(~H|<.address id="owner" address={@full} />|)
+    assert short =~ ~r{<button[^>]*rg-address__label[^>]*>\s*0x1234..5678\s*</button>}
+    assert short =~ ~s(data-copy-text="#{full}")
   end
 end
