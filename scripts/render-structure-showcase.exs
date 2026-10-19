@@ -292,6 +292,7 @@ defmodule Regent.StructureShowcase do
               spent="3.00 Credits"
               notice={{:status, "Pira is paired."}}
               open_event="open_agent"
+              rename_event="rename_agent"
             >
               <:actions><.button type="button" variant="secondary">Unpair</.button></:actions>
             </Regent.Account.agent_detail>
