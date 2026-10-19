@@ -278,7 +278,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
 | `Regent.Account.history` | Read-only formatted Credits or Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
-| `Regent.Profile.panel` | Shared profile form, one name on every Regent site; `signed_in` hides Sign in | Patchbay |
+| `Regent.Profile.panel` | The Public Display Name form, one name on every Regent site, for a signed-in person | Patchbay, Ash Template |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, Keyfleet |
@@ -461,8 +461,8 @@ profile section inside it. The header's account control stays site-owned, since 
 holds the site's sign-in wiring, but uses these words.
 
 The page shows, in order: `Regent.Account.signed_out` until the person is signed in;
-then a **Profile** section (who the site knows the person as; `Regent.Profile.panel`
-where they can change their name here), `Regent.Account.agents`, and, where the site
+then a **Profile** section (`Regent.Profile.panel`, where the person sets their
+**Public Display Name**, the name every Regent site shows for them), `Regent.Account.agents`, and, where the site
 offers them, `credits_summary` and `points_summary` with their `history`. A site may give
 a long section its own tab under Account, such as Points, and adds its own sections after
 these. Each section shows its own state: loading, could not be read, or a session

@@ -8,9 +8,12 @@ export type ProfileResult = {
 };
 export type ProfileAction = (operation: ProfileOperation, input?: ProfileInput,
   options?: {signal?: AbortSignal; expectedProfileId?: string}) => Promise<ProfileResult>;
+export type SavedName =
+  | {ok: true; displayName: string | null; message: string}
+  | {ok: false; message: string};
 export function mountProfile(root: HTMLElement, adapter: {
   profile: ProfileAction;
-  signIn: () => Promise<void>;
-  linkX: () => Promise<void>;
-  onIdentityChange?: (callback: () => void) => (() => void);
+  onSaved?: (displayName: string | null) => void;
 }): () => void;
+export function saveName(profile: ProfileAction, displayName: string,
+  options?: {signal?: AbortSignal}): Promise<SavedName>;

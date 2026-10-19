@@ -134,3 +134,17 @@ Changes before 16 October 2026 are in the commit history.
   this repo yet) · proofs: regent_ui `mix check` 36 tests, token copies in sync, Techtree
   `make check` and a 96-load headless Chromium walk on the consuming site · gaps: WebKit
   not run on the Mac.
+
+## 2026-10-18 — The profile form is one Public Display Name field
+
+- `Regent.Profile.panel` is now one field, **Public Display Name**, with Save and a
+  short note beside it saying whether the name saved (Sean, 18 Oct: "in account
+  'Public Display Name'"). It takes the name the server already read as
+  `display_name` and is shown only to a signed-in person, so it no longer offers
+  Sign in, Set up your profile, a wallet choice, Connect X, Refresh linked
+  accounts or Account details. Wallets and connections have their own Account tabs.
+- `mountProfile` takes `profile` and an optional `onSaved`. Save makes the person's
+  profile from their sign-in the first time, then saves the name. `saveName` is the
+  same step without a page, for checks.
+- The note beside Save is smaller, so two lines of it stay inside the button's
+  height and never move what is below.
