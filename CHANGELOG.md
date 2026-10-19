@@ -173,3 +173,10 @@ Changes before 16 October 2026 are in the commit history.
 - A name the profile service refuses for a control or text-direction character
   (`invalid_display_name`) says "That name can't be used. Remove any hidden
   characters."
+
+## 2026-10-19 — The full address opens on a tap
+
+- `Regent.Primitives.address` shows the full address when its words are clicked,
+  tapped or opened with Enter, in the same box as a tip, not only on hover: a phone
+  has no hover (Sentinel's read of 19 Oct). On a touch screen the words and the
+  copy icon each take a 44 px target without making the line taller.
