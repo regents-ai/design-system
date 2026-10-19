@@ -78,4 +78,55 @@ defmodule Regent.AccountTest do
 
     assert html =~ "Your session ended. Sign in again to see your account."
   end
+
+  @wallet "0x" <> String.duplicate("a", 40)
+
+  defp identity(name, ens_name, wallet \\ @wallet) do
+    assigns = %{name: name, ens_name: ens_name, wallet: wallet}
+
+    rendered_to_string(~H"""
+    <Regent.Account.identity
+      id="who"
+      name={@name}
+      wallet={@wallet}
+      wallet_label={@wallet && "0xaaaa..aaaa"}
+      ens_name={@ens_name}
+    />
+    """)
+  end
+
+  defp count(html, text), do: length(String.split(html, text)) - 1
+
+  # Invariant: the account card says each of the name, the ENS name and the short
+  # address at most once, and whichever wallet words show open and copy the full
+  # address (founder, 2026-10-19).
+  test "the account card says the name and the wallet once each" do
+    ens_named = identity("seanwbren.eth", "seanwbren.eth")
+    assert count(ens_named, "seanwbren.eth") == 1
+    refute ens_named =~ "0xaaaa..aaaa"
+    refute ens_named =~ "<p>"
+
+    chosen = identity("Ada", "seanwbren.eth")
+    assert count(chosen, ">Ada<") == 1
+    assert count(chosen, "seanwbren.eth") == 1
+    refute chosen =~ "0xaaaa..aaaa"
+
+    chosen_no_ens = identity("Ada", nil)
+    assert count(chosen_no_ens, ">Ada<") == 1
+    assert count(chosen_no_ens, "0xaaaa..aaaa") == 1
+
+    unnamed = identity("0xaaaa..aaaa", nil)
+    assert count(unnamed, "0xaaaa..aaaa") == 1
+    refute unnamed =~ "<p>"
+
+    for html <- [ens_named, chosen, chosen_no_ens, unnamed] do
+      assert count(html, ~s(aria-label="Copy the full address")) == 1
+      assert html =~ ~s(data-copy-text="#{@wallet}")
+      assert html =~ @wallet
+    end
+
+    no_wallet = identity("Ada", nil, nil)
+    assert no_wallet =~ ">Ada<"
+    refute no_wallet =~ "Copy the full address"
+  end
 end

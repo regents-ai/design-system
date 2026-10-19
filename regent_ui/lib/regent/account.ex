@@ -1,7 +1,8 @@
 defmodule Regent.Account do
   @moduledoc """
-  The account page's shared sections: the signed-out panel, paired agents with
-  the pairing box and one agent's own view, and read-only Credits and Points.
+  The account page's shared sections: the signed-out panel, the account card,
+  paired agents with the pairing box and one agent's own view, and read-only
+  Credits and Points.
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
 
@@ -48,6 +49,57 @@ defmodule Regent.Account do
     <section id={@id} class="rg-account rg-account--signed-out">
       <p role={@reason == :expired && "status"}>{signed_out_text(@reason)}</p>
       {render_slot(@sign_in)}
+    </section>
+    """
+  end
+
+  attr :id, :string, required: true
+
+  attr :name, :string,
+    required: true,
+    doc:
+      "what the site calls the person: their chosen name, their ENS name or their short address"
+
+  attr :wallet, :string, default: nil, doc: "the account's full `0x` wallet address"
+  attr :wallet_label, :string, default: nil, doc: "its short form, such as `0x1234..abcd`"
+  attr :ens_name, :string, default: nil, doc: "the ENS name that points to `wallet`"
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :picture, doc: "the person's picture, 64 px square"
+
+  @doc """
+  The card at the top of the Account page: the person's picture, the name the site
+  calls them and their wallet, each said once. When the site calls them by their ENS
+  name or short address, that name is the wallet: it opens the full address and copies
+  it (`Regent.Primitives.address`), and nothing repeats beneath it. A name they chose
+  has their wallet beneath it, as its ENS name if it has one, else its short address.
+  """
+  def identity(assigns) do
+    assigns =
+      assign(assigns,
+        name_is_wallet:
+          assigns.wallet != nil and assigns.name in [assigns.wallet_label, assigns.ens_name]
+      )
+
+    ~H"""
+    <section id={@id} class={["rg-account-identity", @class]} aria-label="Your account" {@rest}>
+      <p class="rg-account-identity__kicker">Your account</p>
+      <div class="rg-account-identity__who">
+        <div :if={@picture != []} class="rg-account-identity__picture">{render_slot(@picture)}</div>
+        <div class="rg-account-identity__name">
+          <h2 :if={!@name_is_wallet}>{@name}</h2>
+          <h2 :if={@name_is_wallet}>
+            <Primitives.address id={"#{@id}-wallet"} address={@wallet} label={@name} />
+          </h2>
+          <p :if={@wallet && !@name_is_wallet}>
+            <Primitives.address
+              id={"#{@id}-wallet"}
+              address={@wallet}
+              label={@ens_name || @wallet_label}
+            />
+          </p>
+        </div>
+      </div>
     </section>
     """
   end

@@ -254,3 +254,14 @@ Changes before 16 October 2026 are in the commit history.
   person and the agent see it, and that opening an agent renames it.
 - `Regent.Profile.panel`'s hint gains a tip: people see the Public Display Name beside
   what the person posts on every Regent site, and it is the same on all of them.
+
+## 2026-10-19 — One account card for every Account page
+
+- New `Regent.Account.identity`: the card at the top of the Account page, with the
+  person's picture, the name the site calls them and their wallet, each said once.
+  When the name is their ENS name or short address it is drawn as
+  `Regent.Primitives.address`, which opens and copies the full address, and nothing
+  repeats beneath it; a name they chose has the wallet beneath it, as its ENS name if
+  it has one, else its short address. Patchbay's card showed the ENS name twice
+  (founder, 19 Oct); every site now uses this one.
+
