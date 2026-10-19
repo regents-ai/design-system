@@ -121,3 +121,19 @@ Changes before 16 October 2026 are in the commit history.
 - On touch screens every button stays at least 44px each way.
 - The cut corners, each site's colours, the hover arrow and the press motion are
   unchanged. `STYLE.md` and `MOBILE.md` give the new size.
+
+## 2026-10-18 — Techtree moves to the Canopy palette
+
+- Techtree's light and dark colors in `design_system_tokens.css` (and its generated
+  copies) are now Canopy, the forest green and lime palette Sean chose from the palette
+  mockups: lime `#C8F25C` actions, `#2FA866` button marks, green grounds, surfaces,
+  borders, links, focus and info. Status colors stay the shared ones. Every text pair
+  clears 4.5:1.
+- Techtree's figure, band and panel compartments now change with the theme, so they
+  sit in its theme blocks.
+- Two brand hooks, unset for every other brand so they draw exactly as before:
+  `--rg-button-mark-color` colors a primary button's dark resting marks
+  (`primitives.css`), and `--rg-theme-laser-light` / `--rg-theme-laser-dark` color the
+  theme switch's beam (`theme_toggle.css`). Techtree sets them with
+  `--rg-button-border-color`.
+- `STYLE.md` and `README.md` describe Canopy and the hooks.

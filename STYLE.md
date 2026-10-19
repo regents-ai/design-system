@@ -43,8 +43,10 @@ identity color.
 The approved September 5 palettes use distinct light and dark surfaces. Dark is the
 default: until a person chooses on the site, pages are dark unless their device asks
 for light (founder, 2026-09-28). A choice made on the site always wins. Regents
-emphasizes charcoal, Autolaunch tangerine, and Techtree powder blue. Patchbay uses
-the Porcelain / cobalt palette Sean selected on 15 October 2026. Values live in
+emphasizes charcoal and Autolaunch tangerine. Patchbay uses
+the Porcelain / cobalt palette Sean selected on 15 October 2026, and Techtree the
+Canopy palette (forest green with a lime action) he chose from the palette mockups in
+October 2026. Values live in
 `design_system_tokens.css`; the older source images remain historical references. The earlier fixed-ground palettes are retired.
 Patchbay uses cool neutral surfaces and cobalt actions: light canvas `#F6F7FA`,
 surface `#FFFFFF`, raised `#EAEDF4`, text `#192239`, muted `#536078`, essential
@@ -53,6 +55,13 @@ Dark uses canvas `#111726`, surface `#1B2335`, raised `#252F45`, text `#EEF2FF`,
 muted `#ABB8D1`, essential border `#6D7D99`, accent `#9BB4FF`, accent text `#142247`,
 tint `#273853`. Semantic status colors retain their own meaning. Other brands and
 canonical logo artwork remain unchanged.
+Techtree's Canopy light uses canvas `#F3F5EF`, surface `#FAFBF7`, border `#DCE3D6`,
+text `#0F1B14`, action `#C8F25C` with `#0F1B14` text (`#B4E03F` on hover), marks
+`#2FA866`, focus `#1E6B45`, info `#2E5E45`. Dark uses canvas `#0D1611`, surface
+`#142019`, border `#2A3B30`, text `#E4EEE6`, the same lime action with `#0D1611` text,
+marks `#2FA866`, focus and links `#C8F25C`, info `#CFE2D2`. Its status colors are the
+shared ones. Other sites still show Techtree's product mark in Powder Blue
+(`--product-techtree`).
 
 Page background SVGs are retired; the package ships no background component and no
 background images. The eight source assets stay in `site svg backgrounds/` for potential
@@ -102,12 +111,13 @@ action color.
 | Regents Labs / Platform | Charcoal ground; Charcoal action in dark, white action with Charcoal text in light | — |
 | Agent Formation | Tangerine Tango | `--product-formation` |
 | Autolaunch | Tangerine Tango | `--product-autolaunch` |
-| Techtree | Powder Blue | `--product-techtree` |
+| Techtree | Canopy on its own site; Powder Blue where other sites name it | `--product-techtree` |
 
 Rules:
 
 - One action color per surface. `--color-accent-secondary` carries the product's highlight;
-  it is a note, not a second button color. `--brand-accent` is Tangerine in every theme.
+  it is a note, not a second button color. `--brand-accent` is Tangerine in every theme,
+  except on Patchbay (cobalt) and Techtree (lime).
 - On Autolaunch, `--color-accent-secondary` is Powder Blue and is for non-text highlights only —
   chips, rules, fills, and marker shapes. Never set it as text color on Tangerine (1.8:1), and
   keep the text inside any highlighted element black or Charcoal.
@@ -125,9 +135,12 @@ identity constants in both modes, without changing base/semantic values:
 | Regents (Charcoal) | Powder Blue | Tangerine | Platinum |
 | Autolaunch (Tangerine) | Powder Blue | Charcoal | Platinum |
 | Patchbay (Platinum) | Powder Blue | Tangerine | Charcoal |
-| Techtree (Powder Blue) | Platinum | Tangerine | Charcoal |
+| Techtree (Canopy) | Pale green / deep green | Forest green / lime | Green-black |
 
-Charcoal surfaces use Platinum ink; the other surfaces use Charcoal ink. Opt into
+Charcoal surfaces use Platinum ink; the other surfaces use Charcoal ink. Techtree's
+compartments change with the theme (light, then dark): figure `#E6EBDF` / `#1A2820`,
+band `#1E6B45` with `#F3F5EF` ink / `#C8F25C` with `#0D1611` ink, panel `#0F1B14` /
+`#142019` with pale green ink. Opt into
 `rg-support-figure` on technical figures, `rg-support-band` on narrow section bars,
 and `rg-support-panel` on secondary panels. Keep main surfaces/actions dominant;
 do not assign arbitrary colors per card. The showcase demonstrates these as the overview
@@ -190,6 +203,10 @@ Patterns that generalize:
   8px below 768px, filled with the site's own accent/on-accent pair in both themes.
   Dark primaries rest with Powder Blue marks at the square corners and Tangerine
   accents along the cuts; light primaries rest with two opposite Tangerine L-edges.
+  A brand may set `--rg-button-mark-color` for both dark marks and
+  `--rg-button-border-color` for the light edges and hover outline; Techtree sets both
+  to `#2FA866`. The theme switch's beam follows `--rg-theme-laser-light` and
+  `--rg-theme-laser-dark` the same way.
   Hover and keyboard focus grow these into a continuous cut outline in 150ms.
   Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
   `.rg-button__label` too long for its row ends in an ellipsis rather than wrapping.
