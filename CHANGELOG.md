@@ -124,7 +124,8 @@ Changes before 16 October 2026 are in the commit history.
   `--rg-button-mark-color` colors a primary button's dark resting marks
   (`primitives.css`), and `--rg-theme-laser-light` / `--rg-theme-laser-dark` color the
   theme switch's beam (`theme_toggle.css`). Techtree sets them with
-  `--rg-button-border-color`.
+  `--rg-button-border-color`, and sets `--rg-shimmer-color` to its accent so a feature
+  panel's hover sweep is lime rather than the Tangerine default.
 - `STYLE.md` and `README.md` describe Canopy and the hooks.
 - `README.md`'s token table now names Powder Blue as Techtree's mark where other sites
   name it, with Patchbay and Techtree carrying their own palettes, and `STYLE.md`'s
