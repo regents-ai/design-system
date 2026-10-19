@@ -6,7 +6,10 @@ The standalone local Touch ID shell is `standalone/agent-key.html`. SIWA's
 `scripts/build_agent_page.py` embeds this shell, the canonical tokens, three regular
 Geist fonts and the crown marks into its Python/Node clients and the Regents CLI.
 The shell owns presentation only; SIWA owns passkey behavior and state messages in
-`assets/agent/passkey.js`. No remote assets are loaded on the local credential page.
+`assets/agent/passkey.js`. No remote assets are loaded on the local credential page. Whatever serves the page
+replaces `__NONCE__` in its `<style>` and `<script>` with a new random value per page
+and sends a Content-Security-Policy that allows only that nonce, `data:` images and
+fonts, and requests back to the page's own address.
 Ash Template and the sites link to the shared SIWA guide and client instead of
 maintaining copies of this page.
 

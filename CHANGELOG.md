@@ -180,3 +180,19 @@ Changes before 16 October 2026 are in the commit history.
   and both cuts for Techtree light (desktop, phone width, device light) and not for
   Techtree dark, disabled, secondary, or the other three sites · gaps: WebKit not run
   on the Mac.
+## 2026-10-19 — Touch ID page: no box around the crown, larger links, its own content only
+
+- The crown files carry their own square, white for light and near-black for dark,
+  which showed as a box on the page's cream or black. Each mark now blends its square
+  into the page colour, so only the 13 blocks show. The crown files are unchanged.
+- The two footer links are at least 44px tall, so each is a full tap target on a
+  phone. The footer's paragraphs lose their 8px gap, which the taller links replace.
+- The page's `<style>` and `<script>` carry `nonce="__NONCE__"`. The program serving
+  the page puts a new random value there for each page and names it in its
+  Content-Security-Policy, so the page runs only its own style and script.
+- Evidence: level protected (the sign-in page) · features: siwa-server touch-id-page and
+  agent-helpers · proofs: siwa-server `mix precommit` from a fresh copy (156 tests, 7
+  properties, 51 headless Chromium checks: the crown corner equals the page colour in
+  light and dark, both links 44px or taller, no policy refusals, both real helpers serve
+  the page under their own policy), `build_agent_page.py --check` · gaps: WebKit not run
+  on the Mac; regent_ui `mix check` not run (nothing under regent_ui changed).
