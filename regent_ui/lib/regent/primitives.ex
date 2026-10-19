@@ -125,7 +125,12 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
-  attr :address, :string, required: true, doc: "the full `0x` address"
+  attr :address, :string, required: true, doc: "the full `0x` address, or transaction hash"
+
+  attr :kind, :string,
+    default: "address",
+    values: ~w(address tx),
+    doc: "`tx` for a transaction hash"
 
   attr :label, :string,
     default: nil,
@@ -135,12 +140,19 @@ defmodule Regent.Primitives do
   attr :rest, :global
 
   @doc """
-  Every ENS name, address and short address a Regent page shows (founder, 2026-10-19):
-  the words, which open the full address on a click, tap or Enter, and an icon that
-  copies the full address. For an ENS name both give the address it points to.
+  Every ENS name, address, short address and transaction hash a Regent page shows
+  (founder, 2026-10-19): the words, which open the full address on a click, tap or
+  Enter, then, tight together, an icon that copies it and a diagonal arrow that opens
+  it on Basescan in a new tab. For an ENS name all three give the address it points to.
   """
   def address(assigns) do
-    assigns = assign(assigns, label: assigns.label || short_address(assigns.address))
+    assigns =
+      assign(assigns,
+        label: assigns.label || short_address(assigns.address),
+        copy:
+          if(assigns.kind == "tx", do: "Copy the transaction hash", else: "Copy the full address"),
+        href: "https://basescan.org/#{assigns.kind}/#{assigns.address}"
+      )
 
     ~H"""
     <span id={@id} class={["rg-address", @class]} {@rest}>
@@ -148,7 +160,27 @@ defmodule Regent.Primitives do
         {@label}
       </button>
       <span id={"#{@id}-full"} class="rg-tip-body rg-address__full" popover>{@address}</span>
-      <.copy_icon id={"#{@id}-copy"} text={@address} label="Copy the full address" />
+      <.copy_icon id={"#{@id}-copy"} text={@address} label={@copy} />
+      <a
+        id={"#{@id}-explorer"}
+        class="rg-address__explorer"
+        href={@href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open on Basescan"
+        title="Open on Basescan"
+      >
+        <svg
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="square"
+          aria-hidden="true"
+        >
+          <path d="M2 10 10 2M3.5 2H10v6.5" />
+        </svg>
+      </a>
     </span>
     """
   end

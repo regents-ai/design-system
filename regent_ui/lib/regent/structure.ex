@@ -204,4 +204,25 @@ defmodule Regent.Structure do
     </div>
     """
   end
+
+  attr :id, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global, doc: "the product's dialog hook, its events and `aria-labelledby`"
+  slot :inner_block, required: true
+
+  @doc """
+  Every modal or window on a Regent site (founder, 2026-10-19): a native `<dialog>`
+  in the shared cut-corner frame, never a plain square box. Like a primary button,
+  its top-left and bottom-right corners are cut with an accent along each cut, and
+  the other two are square with a mark drawn in. The application opens and closes
+  it and owns everything inside; its contents scroll inside the frame, so the
+  frame's corners stay put on a short screen.
+  """
+  def dialog(assigns) do
+    ~H"""
+    <dialog id={@id} class={["rg-dialog", @class]} {@rest}>
+      <div class="rg-dialog__body">{render_slot(@inner_block)}</div>
+    </dialog>
+    """
+  end
 end

@@ -433,16 +433,9 @@
 
 /* One agent's own view: who it is, when it paired, and what it has done. */
 .rg-account__dialog {
-  inline-size: min(52rem, calc(100vw - 2rem));
-  max-block-size: calc(100vh - 2rem);
-  overflow: auto;
-  padding: clamp(18px, 4vw, var(--space-4));
-  border: 1px solid var(--color-fg-muted);
-  background: var(--color-surface);
-  color: var(--color-fg);
+  --rg-dialog-size: 52rem;
   font-family: var(--font-family-ui);
 }
-.rg-account__dialog::backdrop { background: color-mix(in oklab, var(--color-fg) 30%, transparent); }
 .rg-account__dialog h2,
 .rg-account__dialog h3 { margin: 0; font-family: var(--font-family-ui); font-weight: 600; }
 .rg-account__dialog h2 { font-size: 1.5rem; line-height: 1.25; overflow-wrap: anywhere; }
@@ -567,7 +560,6 @@
   .rg-account__allowances, .rg-account__history li, .rg-account__agents li { border-color: CanvasText; }
   .rg-account__status[data-state] { color: CanvasText; }
   .rg-account__choice:has(input:checked) { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }
-  .rg-account__dialog { background: Canvas; color: CanvasText; border-color: CanvasText; }
 }
 
 @media (prefers-reduced-motion: reduce) {

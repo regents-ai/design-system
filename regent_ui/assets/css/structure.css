@@ -90,6 +90,66 @@
 .rg-panel::before { z-index: -2; inset: 0; background: var(--rg-panel-edge); clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut)); }
 .rg-panel::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - .585786 * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
 .rg-panel__body { padding: var(--rg-panel-padding); }
+/* Every modal or window: a native dialog in the shared frame. Two opposite corners
+   are cut, each with an accent along its cut, and the other two are square with a
+   mark drawn in: in dark, Powder Blue marks and Tangerine cuts; in light, both in
+   Tangerine; a brand may set --rg-button-mark-color and --rg-button-border-color.
+   Only the skin is clipped; the contents scroll inside it. */
+.rg-dialog {
+  --rg-dialog-cut: var(--rg-cut-panel, 16px);
+  --rg-dialog-mark-length: 1.5rem;
+  --rg-dialog-fill: var(--color-surface);
+  --rg-dialog-edge: color-mix(in srgb, var(--color-fg) 28%, var(--rg-dialog-fill));
+  --rg-dialog-cut-ink: var(--rg-button-border-color, var(--palette-tangerine-tango, #ff5b19));
+  --rg-dialog-mark-ink: var(--rg-dialog-cut-ink);
+  isolation: isolate; box-sizing: border-box;
+  inline-size: min(var(--rg-dialog-size, 32rem), calc(100vw - 2rem)); max-inline-size: none; max-block-size: calc(100dvh - 2rem);
+  margin: auto; padding: 0; border: 0; border-radius: 0; overflow: visible;
+  background: transparent; color: var(--color-fg);
+}
+:root:is([data-theme="dark"], :not([data-theme])) .rg-dialog {
+  --rg-dialog-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
+  --rg-dialog-mark-ink: var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd));
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-dialog {
+    --rg-dialog-cut-ink: var(--rg-button-border-color, var(--palette-tangerine-tango, #ff5b19));
+    --rg-dialog-mark-ink: var(--rg-dialog-cut-ink);
+  }
+}
+.rg-dialog[open] { display: flex; flex-direction: column; }
+.rg-dialog::backdrop { background: color-mix(in oklab, var(--color-fg) 30%, transparent); }
+.rg-dialog::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  /* From the top: the two square corners' marks, the two cuts' accents, the four
+     edges, then the fill. */
+  background-image:
+    linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
+    linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
+    linear-gradient(135deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+    linear-gradient(315deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+    linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0),
+    linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0);
+  background-position:
+    right top, right top, left bottom, left bottom,
+    left top, right bottom,
+    left top, left bottom, left top, right top;
+  background-size:
+    var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
+    var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
+    var(--rg-dialog-cut) var(--rg-dialog-cut), var(--rg-dialog-cut) var(--rg-dialog-cut),
+    100% 1px, 100% 1px, 1px 100%, 1px 100%;
+  background-repeat: no-repeat;
+  background-color: var(--rg-dialog-fill);
+  clip-path: polygon(var(--rg-dialog-cut) 0, 100% 0, 100% calc(100% - var(--rg-dialog-cut)), calc(100% - var(--rg-dialog-cut)) 100%, 0 100%, 0 var(--rg-dialog-cut));
+}
+.rg-dialog__body {
+  min-block-size: 0; overflow: auto; overscroll-behavior: contain;
+  padding: clamp(var(--space-2), 4vw, var(--space-4));
+}
+@media (max-width: 47.99rem) {
+  .rg-dialog { --rg-dialog-cut: 12px; }
+}
 .rg-panel:focus-within { z-index: 2; }
 .rg-panel__heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding: var(--rg-panel-padding); border-block-end: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
 .rg-panel__heading h3 { margin: 0; min-inline-size: 0; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
@@ -137,6 +197,8 @@
 @media (forced-colors: active) {
   .rg-support-band, .rg-support-figure .rg-technical-figure__art { background: Canvas; color: CanvasText; }
   .rg-panel::before, .rg-panel::after, .rg-technical-figure__art::before, .rg-section-bar__leader { display: none; }
+  .rg-dialog::before { display: none; }
+  .rg-dialog { background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
   .rg-panel { --rg-local-ink: CanvasText; --rg-local-fill: Canvas; color: CanvasText; background: Canvas; border: 1px solid CanvasText; }
   .rg-sheet :where(a, button, summary, input, select, textarea):focus-visible { outline-color: Highlight; }
 }

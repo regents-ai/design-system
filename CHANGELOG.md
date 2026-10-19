@@ -309,3 +309,9 @@ Changes before 16 October 2026 are in the commit history.
 ## 2026-10-19 — Pairing message sample names the Regents Labs account
 
 - The structure showcase's sample pairing message opens "Pair with my Regents Labs account on regents.sh", the words every site now gives (Sean, 19 Oct 2026; elixir-utils `62d3d040`).
+
+## 2026-10-19 — Shared window frame, address arrow and the new button hover
+
+- `Regent.Structure.dialog` is the one window every site uses (founder, 19 Oct): a native `<dialog>` whose top-left and bottom-right corners are cut with a Tangerine accent along each cut, and whose other two corners are square with a mark drawn in (Powder Blue in dark, Tangerine in light). Its contents scroll inside the frame, and `--rg-dialog-size` sets its width (32rem when unset). The account page's agent window uses it; sites move their own windows onto it.
+- `Regent.Primitives.address` adds a diagonal arrow that opens the address on Basescan in a new tab, right after the copy icon, and takes `kind="tx"` for a transaction hash. On hover the copy icon grows a little and the arrow leans up and right; a press gives both a little; reduced motion keeps them still.
+- Primary buttons rest as their plain fill and bring in their marks on hover and keyboard focus (founder, 19 Oct): dark shows Powder Blue square-corner marks and Tangerine cut accents, light two Tangerine L-edges. The README describes the new hover.

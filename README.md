@@ -149,23 +149,42 @@ This restrained orange mix preserves default label contrast without an opaque pa
 custom color/fill/ink overrides require caller contrast review. `--rg-shimmer-duration`
 defaults to `1.15s`; the card edge ripple doubles it (`2.3s` per turn).
 
-Dark primaries rest with blue TR/BL square corners and orange TL/BR cut accents;
-light primaries have two opposite orange L-edges. Enabled hover/focus-visible grows
-and crossfades these into a continuous cut outline, with **150ms base transitions in
-both directions**, including native reversal from an interrupted state. Set inherited
-`--rg-button-border-color` to override the outline; it falls back to shimmer color,
-then Tangerine. Set `--rg-button-mark-color` to draw both dark resting marks in one
-color instead of blue and orange. Techtree's light primaries rest with the whole
-cut outline, since its lime is too pale on the light page for the L-edges alone. No JavaScript or additional markup is required. The
+Primaries rest as their plain fill. Enabled hover/focus-visible brings in their marks:
+dark primaries show blue TR/BL square-corner marks and orange TL/BR cut accents; light
+primaries show two opposite orange L-edges. Hover never takes a mark away, with **150ms
+base transitions in both directions**, including native reversal from an interrupted
+state. Set inherited `--rg-button-border-color` to override the light edges; it falls
+back to shimmer color, then Tangerine. Set `--rg-button-mark-color` to draw both dark
+marks in one color instead of blue and orange. Techtree's light primaries rest with the
+whole cut outline, since its lime is too pale on the light page for its fill alone. No JavaScript or additional markup is required. The
 `span.rg-button__label` that `Regent.Primitives.button` renders for every variant is transparent;
 plain-text primary links work.
 Primary text does not underline, including under consumer `.sc a:hover` rules.
 
 Only visual skins clip; content, rectangular hit areas and external focus remain intact.
 The card ripple travels only the panel edge; the media, title, caption and actions carry
-no overlay. Reduced motion removes the sweep and the ripple, swaps the button outline
+no overlay. Reduced motion removes the sweep and the ripple, swaps the button marks
 instantly, and retains only a static faint card edge. Forced colors use system
 borders; nothing loops at idle.
+
+### Windows and addresses
+
+Every modal or window is `Regent.Structure.dialog`, a native `<dialog>` in the shared
+cut-corner frame; the site passes its own hook, events and `aria-labelledby`, and its
+contents scroll inside the frame. A window sets its width with `--rg-dialog-size`
+(32rem when it sets none); everything else about its contents goes on
+`.rg-dialog__body`. Every address, ENS name and transaction hash is
+`Regent.Primitives.address` (`kind="tx"` for a hash): its short form, then a copy icon
+and an arrow to Basescan, tight together.
+
+```heex
+<Regent.Structure.dialog id="buy-key" phx-hook="ModalDialog" aria-labelledby="buy-key-title">
+  <h2 id="buy-key-title">Buy Key</h2>
+</Regent.Structure.dialog>
+
+<Regent.Primitives.address id="treasury" address={@treasury} />
+<Regent.Primitives.address id="sent" address={@tx_hash} kind="tx" />
+```
 
 ### Read-only ratio cards
 

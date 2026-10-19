@@ -22,11 +22,14 @@
   font-family: var(--font-family-ui, inherit); font-size: inherit; line-height: 1.5;
   color: var(--rg-p-text); box-sizing: border-box;
 }
-/* A main button cuts two corners and carries Powder Blue and Tangerine marks in
-   the site's own colour, or the brand's --rg-button-mark-color when it sets one.
-   Every button but a quiet one, a copy button, the theme toggle and a tab
-   carries an arrow. The site's motion kit nudges the arrow on
-   hover (--rg-chevron-x) and gives the paint and label a little on press
+/* A main button cuts two corners and rests as its plain fill. Hover and keyboard
+   focus bring in its marks in the site's own colours, or the brand's
+   --rg-button-mark-color and --rg-button-border-color when it sets them: in dark,
+   Powder Blue marks at the two square corners and Tangerine along the two cuts; in
+   light, two opposite Tangerine L-edges. Hover never takes a mark away (founder,
+   2026-10-19). Every button but a quiet one, a copy button, the theme toggle and a
+   tab carries an arrow. The site's motion kit nudges the arrow on hover
+   (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
 /* About 40px tall with its label on one line. A row never squeezes a button below
@@ -55,8 +58,8 @@
   --rg-button-edge-ink: var(--rg-button-active-border);
   --rg-button-cut-ink: transparent;
   --rg-button-cut-gap: 1px;
-  /* Four edge tiles grow from opposite square corners; the two fixed-size
-     diagonals close the cut outline. 1px edge overlap prevents endpoint gaps. */
+  /* Four edge tiles grow from the two square corners; the two fixed-size
+     diagonals draw the cut accents. At rest every edge tile is empty. */
   background-image:
     linear-gradient(135deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
     linear-gradient(315deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
@@ -65,8 +68,7 @@
   background-position: left top, right bottom, right top, right top, left bottom, left bottom;
   background-size:
     var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
-    var(--rg-cut-control) 1px, 1px var(--rg-cut-control),
-    var(--rg-cut-control) 1px, 1px var(--rg-cut-control);
+    0 1px, 1px 0, 0 1px, 1px 0;
   background-repeat: no-repeat;
   background-color: var(--rg-p-accent);
   clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
@@ -74,34 +76,41 @@
   transition: background-size 150ms ease, --rg-button-edge-ink 150ms ease,
     --rg-button-cut-ink 150ms ease, --rg-button-cut-gap 150ms ease;
 }
-/* Dark marks when dark is showing: chosen, or no choice made and the device does not ask for light. */
-:root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
-  --rg-button-edge-ink: var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd));
-  --rg-button-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
-    --rg-button-edge-ink: var(--rg-button-active-border);
-    --rg-button-cut-ink: transparent;
-  }
-}
 :root .rg-button.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):is(:disabled, [disabled], [aria-disabled="true"])::before {
   --rg-button-edge-ink: var(--rg-p-disabled-fill);
   --rg-button-cut-ink: transparent;
   background-color: var(--rg-p-disabled-fill);
 }
+/* Light: two opposite L-edges, each running from its square corner to the cuts. */
 :root .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
-  --rg-button-edge-ink: var(--rg-button-active-border);
-  --rg-button-cut-ink: var(--rg-button-active-border);
-  --rg-button-cut-gap: 0px;
   background-size:
     var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
     calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
     calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
 }
-/* Techtree's lime is too pale on its light page for the corner marks alone, so
-   in light its main buttons draw the whole cut outline at rest, the one hover
-   draws, in its own mark green (3:1 on the page). */
+/* Dark when dark is showing (chosen, or no choice made and the device does not ask
+   for light): Powder Blue marks at the square corners, Tangerine along the cuts. */
+:root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
+  --rg-button-edge-ink: var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd));
+  --rg-button-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
+  background-size:
+    var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
+    var(--rg-cut-control) 1px, 1px var(--rg-cut-control),
+    var(--rg-cut-control) 1px, 1px var(--rg-cut-control);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
+    --rg-button-edge-ink: var(--rg-button-active-border);
+    --rg-button-cut-ink: transparent;
+    background-size:
+      var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
+  }
+}
+/* Techtree's lime is too pale on its light page for its fill alone, so in light
+   its main buttons rest with the whole cut outline in its own mark green (3:1 on
+   the page), and keep it on hover. */
 :root[data-brand="techtree"][data-theme="light"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before {
   --rg-button-cut-ink: var(--rg-button-active-border);
   --rg-button-cut-gap: 0px;
@@ -169,14 +178,19 @@
   cursor: pointer;
   transition: color 120ms ease, border-color 120ms ease;
 }
-.rg-copy--icon svg { inline-size: 1.125rem; block-size: 1.125rem; transition: transform 120ms ease; }
+.rg-copy--icon svg { inline-size: 1.125rem; block-size: 1.125rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }
 .rg-copy--icon:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
-.rg-copy--icon:active svg { transform: scale(.88); }
+@media (hover: hover) and (pointer: fine) {
+  .rg-copy--icon:hover svg { transform: scale(1.08); }
+}
+.rg-copy--icon:active svg { transform: scale(.88); transition-duration: 100ms; }
 .rg-copy--icon:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 .rg-copy--icon[data-copy-state="copied"] { color: var(--color-success, currentColor); }
 .rg-copy--icon[data-copy-state="failed"] { color: var(--color-error, currentColor); }
-/* An address, ENS name or short address, with its copy icon right after it. */
-.rg-address { display: inline-flex; align-items: center; gap: .25rem; max-inline-size: 100%; vertical-align: middle; }
+/* An address, ENS name, short address or transaction hash, then its copy icon and
+   its arrow to Basescan, the three tight together. */
+.rg-address { display: inline-flex; align-items: center; gap: .125rem; max-inline-size: 100%; vertical-align: middle; }
+.rg-address .rg-address__label { margin-inline-end: .125rem; }
 /* The words open the full address. Two classes deep, so a site's plain-button look
    does not reach them. */
 .rg-address .rg-address__label {
@@ -187,19 +201,41 @@
 }
 .rg-address .rg-address__label:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 .rg-address__full { font-family: var(--font-family-mono, monospace); }
-.rg-address .rg-copy--icon { inline-size: 1.75rem; block-size: 1.75rem; min-block-size: 1.75rem; }
+/* The copy icon is two classes deep too, so it stays a bare icon beside the words. */
+.rg-address .rg-copy--icon {
+  inline-size: 1.75rem; block-size: 1.75rem; min-block-size: 1.75rem; padding: 0;
+  border: 1px solid transparent; background: transparent; color: var(--color-fg-muted, currentColor);
+}
+.rg-address .rg-copy--icon:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
+.rg-address .rg-copy--icon[data-copy-state="copied"] { color: var(--color-success, currentColor); }
+.rg-address .rg-copy--icon[data-copy-state="failed"] { color: var(--color-error, currentColor); }
 .rg-address .rg-copy--icon svg { inline-size: 1rem; block-size: 1rem; }
+/* The arrow looks and moves like the copy icon beside it: quiet until pointed at,
+   then it leans up and right toward where it goes, and gives a little on a press. */
+.rg-address .rg-address__explorer {
+  display: inline-grid; place-items: center; flex: none;
+  inline-size: 1.75rem; block-size: 1.75rem; border: 1px solid transparent;
+  color: var(--color-fg-muted, currentColor); text-decoration: none;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.rg-address__explorer svg { inline-size: .75rem; block-size: .75rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }
+.rg-address__explorer:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
+@media (hover: hover) and (pointer: fine) {
+  .rg-address__explorer:hover svg { transform: translate(1.5px, -1.5px); }
+}
+.rg-address__explorer:active svg { transform: scale(.88); transition-duration: 100ms; }
+.rg-address__explorer:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 /* A finger's 44 px around the words and the icon, apart from each other, without
    making the line taller. */
 @media (hover: none), (pointer: coarse) {
   .rg-address .rg-address__label { min-block-size: max(2.75rem, 44px); margin-block: -0.5rem; }
-  .rg-address .rg-copy--icon {
+  .rg-address :is(.rg-copy--icon, .rg-address__explorer) {
     inline-size: max(2.75rem, 44px); block-size: max(2.75rem, 44px); min-block-size: max(2.75rem, 44px); margin-block: -0.5rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rg-copy--icon, .rg-copy--icon svg { transition: none; }
-  .rg-copy--icon:active svg { transform: none; }
+  .rg-copy--icon, .rg-copy--icon svg, .rg-address__explorer, .rg-address__explorer svg { transition: none; }
+  :is(.rg-copy--icon, .rg-address__explorer):is(:hover, :active) svg { transform: none; }
 }
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
 .rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 4px; }

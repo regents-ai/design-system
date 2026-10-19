@@ -146,4 +146,21 @@ defmodule Regent.PrimitivesTest do
     assert short =~ ~r{<button[^>]*rg-address__label[^>]*>\s*0x1234..5678\s*</button>}
     assert short =~ ~s(data-copy-text="#{full}")
   end
+
+  # Invariant: every address and transaction hash opens on Basescan, in a new tab,
+  # beside its copy icon (founder, 19 Oct).
+  test "an address and a transaction hash each open on Basescan" do
+    address = "0x1234567890abcdef1234567890abcdef12345678"
+    hash = "0x" <> String.duplicate("ab", 32)
+    assigns = %{address: address, hash: hash}
+
+    html = rendered_to_string(~H|<.address id="owner" address={@address} />|)
+    assert html =~ ~s(href="https://basescan.org/address/#{address}")
+    assert html =~ ~s(target="_blank")
+
+    sent = rendered_to_string(~H|<.address id="sent" address={@hash} kind="tx" />|)
+    assert sent =~ ~s(href="https://basescan.org/tx/#{hash}")
+    assert sent =~ ~r{rg-address__label[^>]*>\s*0xabab..abab\s*</button>}
+    assert sent =~ ~s(aria-label="Copy the transaction hash")
+  end
 end

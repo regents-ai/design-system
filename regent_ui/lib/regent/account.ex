@@ -519,7 +519,12 @@ defmodule Regent.Account do
   """
   def agent_detail(assigns) do
     ~H"""
-    <dialog id={@id} class="rg-account__dialog" aria-labelledby={"#{@id}-title"} {@rest}>
+    <Regent.Structure.dialog
+      id={@id}
+      class="rg-account__dialog"
+      aria-labelledby={"#{@id}-title"}
+      {@rest}
+    >
       <header class="rg-account__dialog-head">
         <.agent_mark kind={@agent.kind} />
         <div>
@@ -651,7 +656,7 @@ defmodule Regent.Account do
           <Primitives.button type="submit" value="close">Done</Primitives.button>
         </form>
       </div>
-    </dialog>
+    </Regent.Structure.dialog>
     """
   end
 

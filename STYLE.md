@@ -251,14 +251,18 @@ Patterns that generalize:
 No modal or window ships as a default square box (founder, 2026-10-19). Every one uses
 the shared cut-corner shell: like a primary button, two opposite corners are cut with
 their accents and the other two are square with decorated corner marks, at panel size.
-The shell is one shared component; a site never draws its own.
+The shell is one shared component, `Regent.Structure.dialog`; a site never draws its
+own. Dark windows mark their square corners in Powder Blue, light ones in Tangerine; the
+cuts carry Tangerine in both.
 
 ### Addresses and transaction hashes
 
 A contract address or transaction hash always shows its short form, then a copy icon and
 a diagonal arrow up and to the right that opens it on Basescan in a new tab, the three
 tight together, with the shared hover and press motion (founder, 2026-10-19). One shared
-component draws it everywhere; a page never places the icons by hand.
+component, `Regent.Primitives.address` (`kind="tx"` for a hash), draws it everywhere;
+a page never places the icons by hand. On hover the copy icon grows a little and the
+arrow leans up and right; a press gives both a little.
 
 ### Shared compositions
 
@@ -272,7 +276,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
 | `Regent.Primitives.copy_button` | Copies a value or an element's text and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
-| `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, and a copy icon for the full address, each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd` | Ash Template |
+| `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan, each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd` | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
