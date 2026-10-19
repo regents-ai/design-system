@@ -148,3 +148,5 @@ Changes before 16 October 2026 are in the commit history.
   same step without a page, for checks.
 - The note beside Save is smaller, so two lines of it stay inside the button's
   height and never move what is below.
+- The form no longer sets its own width, padding or heading margin: the page that
+  holds it places it like its other panels.
