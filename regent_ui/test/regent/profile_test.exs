@@ -3,14 +3,15 @@ defmodule Regent.ProfileTest do
   import Phoenix.Component
   import Phoenix.LiveViewTest
 
-  test "the form shows the person's Public Display Name, ready to change" do
+  # The form opens on the name the server read, holds it to the profile's own limit,
+  # and offers nothing but saving it.
+  test "the form opens on the person's name, ready to change and save" do
     assigns = %{}
     html = rendered_to_string(~H|<Regent.Profile.panel display_name="Ada" />|)
 
-    assert html =~ "Public Display Name"
-    assert html =~ ~s(value="Ada")
-    assert html =~ ~s(maxlength="80")
-    assert html =~ "Save"
-    refute html =~ "Sign in"
+    assert html =~ ~r/<input[^>]*name="display_name"[^>]*value="Ada"/
+    assert html =~ ~r/<input[^>]*name="display_name"[^>]*maxlength="80"/
+    assert [_] = Regex.scan(~r/<button\b/, html)
+    assert html =~ ~r/<button[^>]*type="submit"/
   end
 end

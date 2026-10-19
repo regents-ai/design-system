@@ -1,17 +1,33 @@
-// Presentation only. The product adapter owns authentication and persistence.
-export function mountProfile(root, {profile, onSaved}) {
+// Presentation only. The product adapter owns authentication and persistence:
+// `openProfile` gives one save its profile client, so one save is one person's.
+// Saves run one after another, so the name pressed last is the name kept.
+export function mountProfile(root, {openProfile, onSaved}) {
   const controller = new AbortController();
   const form = root.querySelector("[data-profile-form]");
   const status = root.querySelector("[data-profile-status]");
   const name = form.elements.namedItem("display_name");
   let generation = 0;
+  let previous = Promise.resolve();
+
+  const save = async displayName => {
+    try {
+      return await saveName(openProfile(), displayName, {signal: controller.signal});
+    } catch {
+      return {ok: false, message: "Your name could not be saved. Try again."};
+    }
+  };
 
   form.addEventListener("submit", async event => {
     event.preventDefault();
     const current = ++generation;
+    const displayName = name.value;
+    form.setAttribute("aria-busy", "true");
     status.textContent = "Saving…";
-    const result = await saveName(profile, name.value, {signal: controller.signal});
+    const saving = previous.then(() => save(displayName));
+    previous = saving;
+    const result = await saving;
     if (controller.signal.aborted || current !== generation) return;
+    form.removeAttribute("aria-busy");
     status.textContent = result.message;
     if (result.ok) {
       name.value = result.displayName ?? "";
@@ -23,8 +39,8 @@ export function mountProfile(root, {profile, onSaved}) {
 }
 
 // A person who has never saved a name has no profile yet: it is made from their
-// sign-in first. The name is saved to the profile just read, so a change of
-// sign-in in between saves nothing.
+// sign-in first. `profile` is one save's client, kept to one person by the
+// product, and the name is saved to the profile just read.
 export async function saveName(profile, displayName, options = {}) {
   let read = await profile("get", {}, options);
   if (code(read) === "profile_not_created") read = await profile("sync", {}, options);

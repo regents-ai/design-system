@@ -12,7 +12,7 @@ export type SavedName =
   | {ok: true; displayName: string | null; message: string}
   | {ok: false; message: string};
 export function mountProfile(root: HTMLElement, adapter: {
-  profile: ProfileAction;
+  openProfile: () => ProfileAction;
   onSaved?: (displayName: string | null) => void;
 }): () => void;
 export function saveName(profile: ProfileAction, displayName: string,
