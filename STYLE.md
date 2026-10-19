@@ -201,15 +201,21 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
   8px below 768px, filled with the site's own accent/on-accent pair in both themes.
-  Dark primaries rest with Powder Blue marks at the square corners and Tangerine
-  accents along the cuts; light primaries rest with two opposite Tangerine L-edges.
+  A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
+  150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show
+  Powder Blue marks at the square corners and Tangerine accents along the cuts; light
+  primaries show two opposite Tangerine L-edges.
   A brand may set `--rg-button-mark-color` for both dark marks and
-  `--rg-button-border-color` for the light edges and hover outline; Techtree sets both
+  `--rg-button-border-color` for the light edges; Techtree sets both
   to `#238450`. The theme switch's beam follows `--rg-theme-laser-light` and
   `--rg-theme-laser-dark` the same way.
-  Hover and keyboard focus grow these into a continuous cut outline in 150ms.
-  Techtree's lime is too pale on its light page for the marks alone, so in light its
-  primaries already rest with that whole outline in `#238450`.
+  Techtree's lime is too pale on its light page for the fill alone, so in light its
+  primaries rest with a whole cut outline in `#238450`.
+  Two buttons side by side in a header never look the same: one is primary, the other
+  secondary (founder, 2026-10-19).
+  An Approve button and the button it unlocks (Buy, Stake) are the same size. Once the
+  approval's transaction succeeds, Approve turns grey with a green border; it stays
+  enabled, unlike the inert gray of a disabled action (founder, 2026-10-19).
   Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
   `.rg-button__label` too long for its row ends in an ellipsis rather than wrapping.
   Secondary actions are a bordered square surface.
@@ -239,6 +245,20 @@ Patterns that generalize:
   focus stay unclipped. No lift, idle animation or moving reduced-motion state.
 - Active navigation has a visible structural indicator and text emphasis, not a pill or
   color alone. Essential field/control boundaries are stronger than decorative hairlines.
+
+### Dialogs
+
+No modal or window ships as a default square box (founder, 2026-10-19). Every one uses
+the shared cut-corner shell: like a primary button, two opposite corners are cut with
+their accents and the other two are square with decorated corner marks, at panel size.
+The shell is one shared component; a site never draws its own.
+
+### Addresses and transaction hashes
+
+A contract address or transaction hash always shows its short form, then a copy icon and
+a diagonal arrow up and to the right that opens it on Basescan in a new tab, the three
+tight together, with the shared hover and press motion (founder, 2026-10-19). One shared
+component draws it everywhere; a page never places the icons by hand.
 
 ### Shared compositions
 
