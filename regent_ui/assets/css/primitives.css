@@ -192,8 +192,10 @@
 /* A finger's 44 px around the words and the icon, apart from each other, without
    making the line taller. */
 @media (hover: none), (pointer: coarse) {
-  .rg-address .rg-address__label { min-block-size: 2.75rem; margin-block: -0.5rem; }
-  .rg-address .rg-copy--icon { inline-size: 2.75rem; block-size: 2.75rem; min-block-size: 2.75rem; margin-block: -0.5rem; }
+  .rg-address .rg-address__label { min-block-size: max(2.75rem, 44px); margin-block: -0.5rem; }
+  .rg-address .rg-copy--icon {
+    inline-size: max(2.75rem, 44px); block-size: max(2.75rem, 44px); min-block-size: max(2.75rem, 44px); margin-block: -0.5rem;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .rg-copy--icon, .rg-copy--icon svg { transition: none; }

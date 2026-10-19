@@ -281,3 +281,9 @@ Changes before 16 October 2026 are in the commit history.
   argument.
 - `CONSUMERS.md` and `THIRD_PARTY_NOTICES.md` no longer describe the card's turn,
   which ended on 19 Oct.
+
+## 2026-10-19 — An address's touch targets are never under 44px
+
+- On a touch screen, `Regent.Primitives.address`'s words and copy icon are at least
+  44px tall (`max(2.75rem, 44px)`), as buttons and fields already are, so a site with
+  a smaller root font size cannot shrink them below a finger's 44px.
