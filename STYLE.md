@@ -225,9 +225,10 @@ Patterns that generalize:
   Pair `--rg-panel-fill` and `--rg-panel-ink`; the `accent` variant consumes the existing
   accent/on-accent pair. Local rules and texture use local ink.
   The one exception is `Regent.HolographicCard.card` (founder, 2026-09-19): a graphite foil
-  card that tilts with the pointer and lights up under it, and only then. It keeps its own
-  graphite ground and platinum ink in both themes, cuts its corners like every panel, and
-  stands still under reduced motion and forced colors.
+  card whose foil lights up under the pointer, and only then; the card itself never moves
+  (founder, 2026-10-19). It keeps its own graphite ground and platinum ink in both themes,
+  cuts its corners like every panel, and shows its still foil under reduced motion and
+  forced colors.
 - Real circles remain valid for geometric avatars, indicators and spinners.
 - Connected features have 1px seams and separate heading, near-square figure and caption
   bands. CSS subgrid aligns bands across a row; captions grow with content. The cuts themselves
@@ -250,6 +251,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
 | `Regent.Primitives.copy_button` | Copies a value or an element's text and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
+| `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, the full address on hover, and a copy icon for the full address (founder, 2026-10-19) | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |

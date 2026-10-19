@@ -215,3 +215,22 @@ Changes before 16 October 2026 are in the commit history.
   height and never move what is below.
 - The form no longer sets its own width, padding or heading margin: the page that
   holds it places it like its other panels.
+
+## 2026-10-19 — No tilting cards, a copy icon on every address, one person per press
+
+- `Regent.HolographicCard` no longer tilts toward the pointer (founder, 19 Oct): the
+  light still follows it, and `point(light)` takes the light's position alone.
+  `HOLOGRAPHIC_CARD_TILT`, the renderer's `tilt()`, the look's `tilt` and the
+  `rg-holo-tilt` class are gone, so a site's hook drops its own tilt.
+- New `Regent.Primitives.address`: every ENS name, address or short address a page
+  shows (founder, 19 Oct). It shows the words, the full address on hover, and an
+  icon that copies the full address; for an ENS name, the address it points to.
+  `Regent.Account.agent_detail` uses it for the agent's address, so the agent map
+  gains `wallet_label`, the ENS name or short form the site shows.
+- `mountProfile` opens a save's profile client at the press of Save, not when the
+  save's turn comes. A save pressed before a switch of account, still waiting
+  behind another, now belongs to the person who pressed it, so it saves to neither
+  account (Sentinel's read of 19 Oct).
+- A name the profile service refuses for a control or text-direction character
+  (`invalid_display_name`) says "That name can't be used. Remove any hidden
+  characters."

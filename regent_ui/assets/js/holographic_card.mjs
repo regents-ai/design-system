@@ -15,16 +15,12 @@
 import {prepareShader} from "@vgpu/wgsl/prepare"
 import {effect, frame, init, surface} from "vgpu"
 
-/** Radians of tilt at the card's edge, on both axes. */
-export const HOLOGRAPHIC_CARD_TILT = 0.2
-
 /** Card units per canvas height; the example's card is 1.82 units tall. */
 const CARD_HEIGHT = 1.82
 
 const foilWgsl = /* wgsl */ `
 struct Params {
   resolution: vec2f,
-  tilt: vec2f,
   pointer: vec2f,
   hover: f32,
   // How much of the light's effect is kept; 1 is the account card's shine.
@@ -164,13 +160,9 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let p = (uv - 0.5) * halfSize * 2.0;
   let aa = max(length(fwidth(p)), 0.0006);
 
-  // The face is tilted in place, so light and view are read off the tilted plane.
-  let sx = sin(params.tilt.y);
-  let cx = cos(params.tilt.y);
-  let sy = sin(params.tilt.x);
-  let cy = cos(params.tilt.x);
-  let right = vec3f(cy, 0, -sy);
-  let down = vec3f(sy * sx, cx, cy * sx);
+  // The face lies flat; only the light moves across it.
+  let right = vec3f(1, 0, 0);
+  let down = vec3f(0, 1, 0);
   let normal = cross(right, down);
   let eye = vec3f(0, 0, 4.5);
   let hit = right * p.x + down * p.y;
@@ -240,7 +232,7 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   color += (contours * 0.65 * outside * outerFoil + 0.16 * inside * innerFoil) * reveal;
 
   // A delicate spectral echo stays clipped to the same engraving regions.
-  let foilOffset = vec2f(0.007, -0.004) + params.tilt * 0.012;
+  let foilOffset = vec2f(0.007, -0.004);
   let foilPoint = p - foilOffset;
   let foilPhase = etchedPhase(foilPoint);
   let foilLines = stroke(sin(foilPhase), 0.025, min(fwidth(foilPhase), 1.0));
@@ -295,7 +287,7 @@ function inkLights(ground) {
 const CROWN_BESIDE_ASPECT = 2.4
 
 /** How far each eased value travels toward its target per frame. */
-const EASE = {tilt: 0.14, pointer: 0.18, hover: 0.12}
+const EASE = {pointer: 0.18, hover: 0.12}
 
 const approach = (current, target, rate, snap) =>
   snap ? target : current + (target - current) * rate
@@ -346,15 +338,15 @@ export function holographicInkMask(drawing) {
  * @param {HTMLCanvasElement} canvas
  * @param {readonly [number, number]} size
  * @param {() => void} onDeviceLost
- * @param {{crown?: boolean | "beside", ink?: readonly [number, number, number], ground?: readonly [number, number, number], tilt?: number, shine?: number}} [look]
+ * @param {{crown?: boolean | "beside", ink?: readonly [number, number, number], ground?: readonly [number, number, number], shine?: number}} [look]
  *   `crown` engraves the Regents crown (default true); `"beside"` engraves it only
  *   while the face is wide enough for it to stand clear of the content. `ink` makes the surface
  *   the ink of a masked line drawing, in that resting colour, and `ground` is the colour
- *   the drawing sits on, so the ink lights in the palette colours that stand out from it. `tilt` and `shine`
- *   scale the turn and the light against the account card's, which is 1 for both.
+ *   the drawing sits on, so the ink lights in the palette colours that stand out from it. `shine`
+ *   scales the light against the account card's, which is 1.
  */
 export async function createHolographicCardRenderer(canvas, size, onDeviceLost, look = {}) {
-  const {crown = true, ink, ground = GRAPHITE, tilt: tiltScale = 1, shine = 1} = look
+  const {crown = true, ink, ground = GRAPHITE, shine = 1} = look
   const inkLuminance = ink ? 0.2126 * ink[0] + 0.7152 * ink[1] + 0.0722 * ink[2] : 0
   const [inkLightA, inkLightB] = inkLights(ground)
   const held = acquireDevice()
@@ -375,8 +367,8 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
     if (!disposed) onDeviceLost()
   })
 
-  const target = {tilt: [0, 0], pointer: [0, 0], hover: 0}
-  const state = {tilt: [0, 0], pointer: [0, 0], hover: 0}
+  const target = {pointer: [0, 0], hover: 0}
+  const state = {pointer: [0, 0], hover: 0}
 
   return {
     resize(width, height) {
@@ -385,12 +377,10 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
     /** Eases every value toward its target; true while something still moved. */
     step(snap) {
       let moved = false
-      for (const key of ["tilt", "pointer"]) {
-        for (const axis of [0, 1]) {
-          const next = approach(state[key][axis], target[key][axis], EASE[key], snap)
-          if (Math.abs(next - state[key][axis]) > 0.0005) moved = true
-          state[key][axis] = next
-        }
+      for (const axis of [0, 1]) {
+        const next = approach(state.pointer[axis], target.pointer[axis], EASE.pointer, snap)
+        if (Math.abs(next - state.pointer[axis]) > 0.0005) moved = true
+        state.pointer[axis] = next
       }
       const hover = approach(state.hover, target.hover, EASE.hover, snap)
       if (Math.abs(hover - state.hover) > 0.0005) moved = true
@@ -403,7 +393,6 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
       foil.set({
         params: {
           resolution: canvasSurface.size,
-          tilt: state.tilt,
           pointer: state.pointer,
           hover: state.hover,
           shine,
@@ -427,25 +416,16 @@ export async function createHolographicCardRenderer(canvas, size, onDeviceLost, 
       releaseDevice(held)
     },
     /**
-     * The pointer, as fractions of two boxes: the card that turns, and the
-     * canvas the light falls on. They differ when the foil is only part of the
-     * card, and the light may then stand a little outside the canvas.
+     * The pointer, as fractions of the canvas the light falls on. When the foil
+     * is only part of the card the light may stand a little outside the canvas.
      */
-    point(card, light) {
-      const px = clamp((card[0] - 0.5) * 2, 1)
-      const py = clamp((card[1] - 0.5) * 2, 1)
-      target.tilt = [px * HOLOGRAPHIC_CARD_TILT * tiltScale, -py * HOLOGRAPHIC_CARD_TILT * tiltScale]
+    point(light) {
       target.pointer = [clamp((light[0] - 0.5) * 2, 1.8), clamp((light[1] - 0.5) * 2, 1.8)]
       target.hover = 1
     },
-    /** The pointer has left: the light fades and the face settles flat. */
+    /** The pointer has left: the light fades. */
     rest() {
-      target.tilt = [0, 0]
       target.hover = 0
-    },
-    /** The eased tilt in radians: about the vertical axis, then the horizontal. */
-    tilt() {
-      return [state.tilt[0], state.tilt[1]]
     },
   }
 }

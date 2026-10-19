@@ -125,6 +125,30 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
+  attr :address, :string, required: true, doc: "the full `0x` address"
+
+  attr :label, :string,
+    required: true,
+    doc: "what shows: the ENS name that points to `address`, or its short form `0x1234..abcd`"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Every ENS name, address and short address a Regent page shows (founder, 2026-10-19):
+  the words, with the full address on hover, and an icon that copies the full
+  address. For an ENS name the icon copies the address it points to.
+  """
+  def address(assigns) do
+    ~H"""
+    <span id={@id} class={["rg-address", @class]} {@rest}>
+      <span class="rg-address__label" title={@address}>{@label}</span>
+      <.copy_icon id={"#{@id}-copy"} text={@address} label="Copy the full address" />
+    </span>
+    """
+  end
+
+  attr :id, :string, required: true
   attr :label, :string, required: true
   attr :errors, :list, default: []
   attr :class, :any, default: nil
