@@ -25,8 +25,8 @@ real token images or site logos with generic marketing illustrations.
 
 On `(hover: none)` or `(pointer: coarse)`:
 
-- `.rg-button` has a minimum 44 CSS px hit box in both dimensions, retaining larger
-  rem-based sizing and the primary 3rem minimum. Do not clip the hit/focus host.
+- `.rg-button` has a minimum 44 CSS px hit box in both dimensions (about 40px
+  elsewhere). Do not clip the hit/focus host.
 - Text-like inputs, selects and textareas within `.rg-field` use
   `font-size: max(1em, 16px)` and a 44px height floor. Larger inherited type stays
   larger. Checkbox/radio/file/hidden inputs are deliberately excluded.
@@ -59,7 +59,8 @@ at the phone breakpoint, not only in the desktop layout.
 - Keep primary navigation and named account controls reachable and at the preferred
   touch size. Reflow tabs or provide a visibly scrollable labeled strip. Do not make
   business actions hover-only, or add positive tabindex values.
-- Let long names, addresses, errors and translated labels wrap. Keep only genuinely
+- Let long names, addresses, errors and translated text wrap. A button keeps its
+  label on one line, so keep button labels short. Keep only genuinely
   two-dimensional data in a bounded local scroller with a label and keyboard access.
   Do not hide document overflow to conceal content loss.
 - Evaluate drawers, menus and forms with the keyboard open and text enlarged.

@@ -28,17 +28,18 @@
    hover (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
+/* About 40px tall with its label on one line. A row never squeezes a button below
+   its label; a `.rg-button__label` wider than the whole row ends in an ellipsis. */
 .rg-button {
-  position: relative; isolation: isolate;
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
-  min-height: 2.75rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
-  max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere; text-align: center;
+  position: relative; isolation: isolate; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  min-height: 2.5rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
+  max-inline-size: 100%; white-space: nowrap; text-align: center;
   border-radius: 0; cursor: pointer; overflow: visible;
   background: transparent; color: var(--rg-p-on-accent); font-weight: 600;
   text-decoration: none;
 }
-.rg-button:where(:not(.rg-button--quiet)) { min-height: 3rem; padding: var(--space-2) var(--space-3); }
-.rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; background: transparent; transform: scale(var(--rg-press-scale, 1)); }
+.rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; overflow-x: clip; text-overflow: ellipsis; background: transparent; transform: scale(var(--rg-press-scale, 1)); }
 .rg-button::before {
   content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
   transform: scale(var(--rg-press-scale, 1));
@@ -266,11 +267,11 @@
 @media (max-width: 47.99rem) {
   .rg-button { --rg-cut-control: 8px; }
 }
-/* Touch defaults are independent of viewport width (including tablets). Keep
-   larger inherited text and primary sizing; never disable Safari page zoom. */
+/* Touch defaults are independent of viewport width (including tablets): every
+   button is at least 44px each way. Keep larger inherited text; never disable
+   Safari page zoom. */
 @media (hover: none), (pointer: coarse) {
-  .rg-button { min-height: max(2.75rem, 44px); min-inline-size: max(2.75rem, 44px); }
-  .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)) { min-height: max(3rem, 44px); }
+  .rg-button { min-height: 44px; min-inline-size: 44px; }
   .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
     min-height: max(2.75rem, 44px);
     font-size: max(1em, 16px);

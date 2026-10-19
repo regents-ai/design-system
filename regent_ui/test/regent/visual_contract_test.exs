@@ -135,14 +135,15 @@ defmodule Regent.VisualContractTest do
     assert css =~ ".rg-field select { appearance: auto; background-image: none; }"
   end
 
-  test "buttons preserve forced-color focus and text reflow" do
+  test "buttons preserve forced-color focus and keep their label on one line" do
     css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
 
     [_, host] = Regex.run(~r/\.rg-button \{([^}]+)\}/, css)
     assert host =~ "overflow: visible"
-    assert host =~ "overflow-wrap: anywhere"
-    assert host =~ "white-space: normal"
+    assert host =~ "white-space: nowrap"
     refute host =~ "clip-path"
+    [_, label] = Regex.run(~r/\.rg-button__label \{([^}]+)\}/, css)
+    assert label =~ "text-overflow: ellipsis"
     assert css =~ "border: 1px solid ButtonText; color: ButtonText; background: ButtonFace;"
     assert css =~ ".rg-button:disabled { color: GrayText; opacity: 1; }"
     assert css =~ "outline: 2px solid var(--rg-p-text); outline-offset: 4px;"

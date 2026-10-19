@@ -110,3 +110,14 @@ Changes before 16 October 2026 are in the commit history.
   gap above the pictures. A picture's name shows under a first-row picture and over a
   second-row one, so it covers only other pictures, never that line.
 - `STYLE.md` describes the new order.
+
+## 2026-10-18 — Slimmer buttons
+
+- Every shared button is about 40px tall (42px with its hairline), 8px by 16px inside,
+  down from 58px and 16px by 24px, with its label on one line: a `.rg-button__label`
+  too long for its row ends in an ellipsis instead of wrapping onto a second line, and
+  a crowded row no longer squeezes a button narrower than its label. The arrow sits a
+  little closer to the label. Sean, 18 Oct: the buttons were "too large and blocky".
+- On touch screens every button stays at least 44px each way.
+- The cut corners, each site's colours, the hover arrow and the press motion are
+  unchanged. `STYLE.md` and `MOBILE.md` give the new size.
