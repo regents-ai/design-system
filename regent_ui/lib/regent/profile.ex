@@ -1,7 +1,7 @@
 defmodule Regent.Profile do
   @moduledoc """
-  The shared profile form: the person's Public Display Name, one name on every
-  Regent site. Products render it only for a signed-in person, with the name the
+  The shared profile form: the person's Public Display Name, the name people see
+  for them. Products render it only for a signed-in person, with the name the
   server already read, and wire the form to their identity adapter with
   `mountProfile`. No authentication or persistence runs in this component.
   """
@@ -28,7 +28,7 @@ defmodule Regent.Profile do
             maxlength="80"
             autocomplete="nickname"
           />
-          <:hint>Your name on every Regent site.</:hint>
+          <:hint>The name people see for you.</:hint>
         </.field>
         <div class="rg-profile-actions">
           <.button type="submit">Save</.button>
