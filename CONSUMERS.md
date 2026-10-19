@@ -88,22 +88,23 @@ crown engraved. A typecheck does not prove this, because the renderer is plain
 JavaScript; a site moving to another vgpu version draws the card before it releases. The
 product owns the mount: when to load the
 chunk, the frame loop, reduced motion, device loss and the pointer. It calls
-`point(card, light)` with the pointer as fractions of the card that turns and of the canvas
-the light falls on, `rest()` on leave, writes `tilt()` to
-`--rg-holo-tilt-x` / `--rg-holo-tilt-y` in radians, and marks the root
-`data-holo-ready="true"` once a frame has drawn. Without a renderer the static foil in
-`holographic_card.css` is the whole picture. Attribution for the foil material is in
+`point(light)` with the pointer as fractions of the canvas the light falls on, `rest()` on
+leave, and marks the root `data-holo-ready="true"` once a frame has drawn. The card never
+moves. On a face the light keeps to a thick frame round the edge, `--rg-holo-frame` wide
+(12px), which the renderer reads from the canvas on every resize; inside the frame the face
+stays still graphite. Without a renderer the static foil in `holographic_card.css` is the
+whole picture. Attribution for the foil material is in
 `THIRD_PARTY_NOTICES.md`.
 
 The same foil covers part of a card through `Regent.HolographicCard.foil`. As a face, pass
 it in `capability_card`'s `foil` slot (or put it first inside any panel marked
-`rg-holo-ground`) with `class="rg-holo-foil--face"`; the mounted element takes `rg-holo-tilt`
-when it should turn. As ink, put it beside an inline line drawing in a technical figure with
+`rg-holo-ground`) with `class="rg-holo-foil--face"`. As ink, put it beside an inline line drawing in a technical figure with
 `class="rg-holo-foil--ink"`, set the canvas's `mask-image` to `holographicInkMask(svg)` and
 pass the drawing's colour as `look.ink` and the colour it sits on as `look.ground`, so the
 ink lights in the two palette colours that stand out from it. The renderer's fourth argument, `look`, also takes
 `crown` (`false`, or `"beside"` to engrave it only where it stands clear of the content) and
-`tilt` / `shine`, which scale the turn and the light against the account card's. Every
+`shine`, which scales the light against the account card's. Ink lights wherever it is,
+with no frame. Every
 surface on a page shares one GPU device.
 
 Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and

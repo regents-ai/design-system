@@ -1,6 +1,7 @@
 defmodule Regent.HolographicCard do
   @moduledoc """
-  A graphite foil card that answers the pointer with pearlescent light.
+  A graphite foil card that answers the pointer with pearlescent light on a thick
+  frame round its edge; inside the frame the face stays still graphite.
 
   The component renders the card's face, a stage for the application's WebGPU
   renderer and the caller's content on top. Without a renderer the static foil
@@ -8,7 +9,7 @@ defmodule Regent.HolographicCard do
   screen. Applications own the mount: `assets/js/holographic_card.mjs` exports the
   renderer, and the consumer binds it to `[data-holo-canvas]` with its own hook
   and marks the root `data-holo-ready="true"` once the GPU has drawn. The card
-  never moves; only the light on its foil follows the pointer.
+  never moves; only the light on its frame follows the pointer.
 
   `foil/1` is the same stage for a surface that is not the whole card: the face
   of a panel (`class="rg-holo-foil--face"` inside a panel marked

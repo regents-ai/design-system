@@ -1,10 +1,16 @@
 /* Holographic card: a graphite foil face that answers the pointer. The one
    founder-approved exception (2026-09-19) to the plain panel: its foil lights
-   up under the pointer, and only then. The card itself never moves (founder,
-   2026-10-19). Every
-   application mounts the renderer itself; without one the static foil below is
-   the whole picture. The card carries its own graphite ground in both themes,
-   like the physical object it stands for, so its ink is fixed platinum. */
+   up under the pointer, and only then, and only on a thick frame round the edge;
+   inside the frame the face stays still graphite. The card itself never moves
+   (founder, 2026-10-19). Every application mounts the renderer itself; without
+   one the static foil below is the whole picture. The card carries its own
+   graphite ground in both themes, like the physical object it stands for, so
+   its ink is fixed platinum. */
+.rg-holo,
+.rg-holo-foil {
+  /* The frame the foil lights on; the renderer reads it from the canvas. */
+  --rg-holo-frame: 12px;
+}
 .rg-holo {
   --rg-holo-cut: var(--rg-cut-panel, 16px);
   --rg-holo-graphite: #101216;
@@ -31,7 +37,8 @@
   background: var(--rg-holo-edge);
   clip-path: var(--rg-holo-clip);
 }
-/* The still foil: graphite with a faint pearl wash, the picture until the GPU draws. */
+/* The still foil: a faint pearl wash on the frame round plain graphite, the
+   picture until the GPU draws. */
 .rg-holo__stage::before,
 .rg-holo__canvas {
   position: absolute;
@@ -52,7 +59,23 @@
   height: calc(100% - 2px);
   background: var(--rg-holo-graphite);
 }
-.rg-holo[data-holo-ready="true"] .rg-holo__stage::before { content: none; }
+/* The plain face inside the frame, its corners cut like the frame's outer ones. */
+.rg-holo__stage::after {
+  --rg-holo-inner-cut: calc(var(--rg-holo-frame) * .414214);
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: calc(1px + var(--rg-holo-frame));
+  background: var(--rg-holo-graphite);
+  clip-path: polygon(
+    var(--rg-holo-inner-cut) 0, calc(100% - var(--rg-holo-inner-cut)) 0,
+    100% var(--rg-holo-inner-cut), 100% calc(100% - var(--rg-holo-inner-cut)),
+    calc(100% - var(--rg-holo-inner-cut)) 100%, var(--rg-holo-inner-cut) 100%,
+    0 calc(100% - var(--rg-holo-inner-cut)), 0 var(--rg-holo-inner-cut)
+  );
+}
+.rg-holo[data-holo-ready="true"] .rg-holo__stage::before,
+.rg-holo[data-holo-ready="true"] .rg-holo__stage::after { content: none; }
 .rg-holo__content {
   position: relative;
   min-inline-size: 0;
@@ -94,5 +117,5 @@
   [data-holo-ready="true"] .rg-technical-figure__art:has(> .rg-holo-foil--ink) > svg { visibility: visible; }
   .rg-holo { color: CanvasText; }
   .rg-holo__stage { background: CanvasText; }
-  .rg-holo__stage::before, .rg-holo__canvas { background: Canvas; }
+  .rg-holo__stage::before, .rg-holo__stage::after, .rg-holo__canvas { background: Canvas; }
 }
