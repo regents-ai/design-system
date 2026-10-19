@@ -123,7 +123,8 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Selected"
   end
 
-  # Invariant: an ENS name or short address always copies the full address it stands for.
+  # Invariant: an ENS name or short address always opens and copies the full address it
+  # stands for, by click, tap or keyboard as well as hover (Sentinel, 19 Oct).
   test "an address shows its name and copies the full address it points to" do
     full = "0x1234567890abcdef1234567890abcdef12345678"
     assigns = %{full: full}
@@ -133,8 +134,9 @@ defmodule Regent.PrimitivesTest do
       <.address id="owner" address={@full} label="ada.eth" />
       """)
 
-    assert html =~ ~s(title="#{full}")
-    assert html =~ ">ada.eth</span>"
+    assert html =~ ~s(popovertarget="owner-full")
+    assert html =~ ~r{<span id="owner-full"[^>]*popover[^>]*>#{full}</span>}
+    assert html =~ ~r{<button[^>]*rg-address__label[^>]*>\s*ada.eth\s*</button>}
     assert html =~ ~s(data-copy-text="#{full}")
     assert html =~ ~s(aria-label="Copy the full address")
   end
