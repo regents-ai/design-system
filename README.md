@@ -67,14 +67,15 @@ node scripts/generate-tokens-json.mjs
 
 ## Design tokens
 
-The whole system is four colors, defined in `design_system_tokens.css`:
+The shared palette is four colors, defined in `design_system_tokens.css`. Patchbay and
+Techtree carry their own palettes in their brand blocks there.
 
 | Token | Value | Used for |
 | --- | --- | --- |
 | `--palette-tangerine-tango` | `#FF5B19` | Formation and Autolaunch product accent |
 | `--palette-charcoal` | `#161616` | Near-black ground |
 | `--palette-platinum` | `#E5E3D2` | Light ground, and text on dark |
-| `--palette-powder-blue` | `#AECACD` | Techtree product accent |
+| `--palette-powder-blue` | `#AECACD` | Techtree's mark where other sites name it |
 
 Spacing, radius, and type scales are defined alongside them. `STYLE.md` explains how to
 apply them; the CSS file is what to read for exact values.
