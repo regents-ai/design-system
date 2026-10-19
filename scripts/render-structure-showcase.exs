@@ -370,7 +370,7 @@ defmodule Regent.StructureShowcase do
 
   defp sample_messages(code) do
     [
-      "Pair with my Regents account.\nPairing code: #{code}\n" <>
+      "Pair with my Regents Labs account on regents.sh\nPairing code: #{code}\n" <>
         "Follow the \"Pair with a person's account\" steps at https://regents.sh/llms.txt"
     ]
   end

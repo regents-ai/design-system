@@ -305,3 +305,7 @@ Changes before 16 October 2026 are in the commit history.
 
 - `STYLE.md` takes Sean's rules of 19 Oct. A primary button rests as its plain fill and shows its corner marks on hover and keyboard focus; hover never takes them away. Two buttons side by side in a header are one primary and one secondary. Approve and the button it unlocks are the same size, and Approve turns grey with a green border once its transaction succeeds. New sections: "Dialogs" (no default square modal; every one uses the shared cut-corner shell) and "Addresses and transaction hashes" (short form, copy icon and a diagonal arrow to Basescan, from one shared component).
 - The button CSS and the README's description of it still show the old hover, where the marks grow into an outline; they change with the shared button work.
+
+## 2026-10-19 — Pairing message sample names the Regents Labs account
+
+- The structure showcase's sample pairing message opens "Pair with my Regents Labs account on regents.sh", the words every site now gives (Sean, 19 Oct 2026; elixir-utils `62d3d040`).
