@@ -121,3 +121,11 @@ Changes before 16 October 2026 are in the commit history.
 - On touch screens every button stays at least 44px each way.
 - The cut corners, each site's colours, the hover arrow and the press motion are
   unchanged. `STYLE.md` and `MOBILE.md` give the new size.
+
+## 2026-10-19 — Buttons are 44px tall at every width
+
+- Every shared button is at least 44px tall on every screen, not only on touch
+  screens: 42px on desktop was below the 44px target size Sentinel holds every site
+  to. Padding stays 8px by 16px and labels stay on one line, so buttons remain much
+  slimmer than the 58px they were. On touch screens they are also at least 44px wide.
+  Sean, 19 Oct: "2. a".

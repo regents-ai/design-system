@@ -28,12 +28,12 @@
    hover (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
-/* About 40px tall with its label on one line. A row never squeezes a button below
-   its label; a `.rg-button__label` wider than the whole row ends in an ellipsis. */
+/* 44px tall at every width with its label on one line. A row never squeezes a button
+   below its label; a `.rg-button__label` wider than the whole row ends in an ellipsis. */
 .rg-button {
   position: relative; isolation: isolate; flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
-  min-height: 2.5rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
+  min-height: 44px; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
   max-inline-size: 100%; white-space: nowrap; text-align: center;
   border-radius: 0; cursor: pointer; overflow: visible;
   background: transparent; color: var(--rg-p-on-accent); font-weight: 600;
@@ -268,10 +268,10 @@
   .rg-button { --rg-cut-control: 8px; }
 }
 /* Touch defaults are independent of viewport width (including tablets): every
-   button is at least 44px each way. Keep larger inherited text; never disable
+   button is also at least 44px wide. Keep larger inherited text; never disable
    Safari page zoom. */
 @media (hover: none), (pointer: coarse) {
-  .rg-button { min-height: 44px; min-inline-size: 44px; }
+  .rg-button { min-inline-size: 44px; }
   .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
     min-height: max(2.75rem, 44px);
     font-size: max(1em, 16px);

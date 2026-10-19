@@ -25,8 +25,8 @@ real token images or site logos with generic marketing illustrations.
 
 On `(hover: none)` or `(pointer: coarse)`:
 
-- `.rg-button` has a minimum 44 CSS px hit box in both dimensions (about 40px
-  elsewhere). Do not clip the hit/focus host.
+- `.rg-button` has a minimum 44 CSS px hit box in both dimensions (44px tall at
+  every width). Do not clip the hit/focus host.
 - Text-like inputs, selects and textareas within `.rg-field` use
   `font-size: max(1em, 16px)` and a 44px height floor. Larger inherited type stays
   larger. Checkbox/radio/file/hidden inputs are deliberately excluded.
