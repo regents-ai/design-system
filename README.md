@@ -153,7 +153,8 @@ light primaries have two opposite orange L-edges. Enabled hover/focus-visible gr
 and crossfades these into a continuous cut outline, with **150ms base transitions in
 both directions**, including native reversal from an interrupted state. Set inherited
 `--rg-button-border-color` to override the outline; it falls back to shimmer color,
-then Tangerine. No JavaScript or additional markup is required. The
+then Tangerine. Set `--rg-button-mark-color` to draw both dark resting marks in one
+color instead of blue and orange. No JavaScript or additional markup is required. The
 `span.rg-button__label` that `Regent.Primitives.button` renders for every variant is transparent;
 plain-text primary links work.
 Primary text does not underline, including under consumer `.sc a:hover` rules.

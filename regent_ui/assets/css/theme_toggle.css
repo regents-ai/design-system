@@ -2,7 +2,9 @@
    The button is a borderless 2.75rem press target; the prism shows as a 1.75rem box with
    slightly rounded corners in its middle, so it sits beside header icons at their height
    instead of filling the bar.
-   Pointing at it shows the other theme's colours, which is what a press switches to. */
+   Pointing at it shows the other theme's colours, which is what a press switches to.
+   Its beam is Tangerine in light and Powder Blue in dark, unless the brand sets
+   --rg-theme-laser-light and --rg-theme-laser-dark. */
 .rg-theme-toggle.rg-button {
   width: 2.75rem;
   height: 2.75rem;
@@ -23,20 +25,20 @@
   border-radius: .25rem;
   background: var(--rg-p-surface);
   transform-style: preserve-3d;
-  --prism-laser: var(--palette-tangerine-tango);
-  --prism-laser-next: var(--palette-powder-blue);
+  --prism-laser: var(--rg-theme-laser-light, var(--palette-tangerine-tango));
+  --prism-laser-next: var(--rg-theme-laser-dark, var(--palette-powder-blue));
   --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--rg-p-accent));
   --prism-edge-next: color-mix(in oklch, var(--rg-p-surface) 55%, var(--rg-p-accent));
   --prism-face: color-mix(in oklch, var(--rg-p-accent) 28%, transparent);
 }
 :root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle .theme-toggle__stage {
-  --prism-laser: var(--palette-powder-blue);
-  --prism-laser-next: var(--palette-tangerine-tango);
+  --prism-laser: var(--rg-theme-laser-dark, var(--palette-powder-blue));
+  --prism-laser-next: var(--rg-theme-laser-light, var(--palette-tangerine-tango));
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) .rg-theme-toggle .theme-toggle__stage {
-    --prism-laser: var(--palette-tangerine-tango);
-    --prism-laser-next: var(--palette-powder-blue);
+    --prism-laser: var(--rg-theme-laser-light, var(--palette-tangerine-tango));
+    --prism-laser-next: var(--rg-theme-laser-dark, var(--palette-powder-blue));
   }
 }
 .rg-theme-toggle .theme-toggle__laser {

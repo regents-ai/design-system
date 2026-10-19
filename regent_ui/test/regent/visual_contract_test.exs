@@ -35,7 +35,7 @@ defmodule Regent.VisualContractTest do
           {"platform", "#F6F4EA", "#0B0B0B"},
           {"autolaunch", "#E5E3D2", "#0E0E0E"},
           {"patchbay", "#F6F7FA", "#111726"},
-          {"techtree", "#F6F4EA", "#161616"}
+          {"techtree", "#F3F5EF", "#0D1611"}
         ],
         {mode, ground} <- [{"light", light}, {"dark", dark}] do
       tokens = Map.fetch!(selectors, ~s(:root[data-brand="#{brand}"][data-theme="#{mode}"]))
@@ -83,7 +83,7 @@ defmodule Regent.VisualContractTest do
     assert File.exists?(Path.join(@package_root, "priv/static/fonts/OFL.txt"))
   end
 
-  test "supporting roles use the other identities, or Patchbay's own cobalt roles, as readable pairs" do
+  test "supporting roles use the other identities, or Patchbay's and Techtree's own roles, as readable pairs" do
     selectors =
       File.read!(Path.join(@repository_root, "design_system_tokens.json"))
       |> Jason.decode!()
@@ -91,8 +91,7 @@ defmodule Regent.VisualContractTest do
 
     for {brand, primary} <- [
           {"platform", "charcoal"},
-          {"autolaunch", "tangerine-tango"},
-          {"techtree", "powder-blue"}
+          {"autolaunch", "tangerine-tango"}
         ] do
       roles = Map.get(selectors, ~s(:root[data-brand="#{brand}"]), %{})
       surfaces = for role <- ~w(figure band panel), do: roles["--support-#{role}-surface"]
@@ -124,6 +123,30 @@ defmodule Regent.VisualContractTest do
              "--support-band-ink" => "var(--color-fg-on-accent)",
              "--support-panel-surface" => "var(--color-surface)",
              "--support-panel-ink" => "var(--color-fg)"
+           }
+
+    # Techtree's Canopy palette changes its roles with the theme.
+    support = fn mode ->
+      selectors[~s(:root[data-brand="techtree"][data-theme="#{mode}"])]
+      |> Map.filter(fn {name, _} -> String.starts_with?(name, "--support-") end)
+    end
+
+    assert support.("light") == %{
+             "--support-figure-surface" => "#E6EBDF",
+             "--support-figure-ink" => "#0F1B14",
+             "--support-band-surface" => "#1E6B45",
+             "--support-band-ink" => "#F3F5EF",
+             "--support-panel-surface" => "#0F1B14",
+             "--support-panel-ink" => "#E8F0EA"
+           }
+
+    assert support.("dark") == %{
+             "--support-figure-surface" => "#1A2820",
+             "--support-figure-ink" => "#E4EEE6",
+             "--support-band-surface" => "#C8F25C",
+             "--support-band-ink" => "#0D1611",
+             "--support-panel-surface" => "#142019",
+             "--support-panel-ink" => "#E4EEE6"
            }
   end
 
