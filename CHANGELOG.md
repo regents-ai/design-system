@@ -241,3 +241,16 @@ Changes before 16 October 2026 are in the commit history.
   tapped or opened with Enter, in the same box as a tip, not only on hover: a phone
   has no hover (Sentinel's read of 19 Oct). On a touch screen the words and the
   copy icon each take a 44 px target without making the line taller.
+
+## 2026-10-19 — Names say where they come from and who sees them
+
+- `Regent.Account.agent_detail` opens on a Name form under its heading: the agent's
+  name, ready to change, with Save. A new required `rename_event` carries `agent_id`
+  and `name`; the optional `name_error` shows why a name was refused in place of the
+  hint, so nothing below moves. The hint says "Only you see this name.", and its tip
+  says the agent chose it when it paired, that only the person and the agent see it,
+  and that a new name shows on every Regent site (founder, 19 Oct).
+- `Regent.Account.agents`' tip adds that each agent chose its own name, that only the
+  person and the agent see it, and that opening an agent renames it.
+- `Regent.Profile.panel`'s hint gains a tip: people see the Public Display Name beside
+  what the person posts on every Regent site, and it is the same on all of them.

@@ -86,6 +86,10 @@ defmodule Regent.Account do
         <Primitives.tip id={"#{@id}-about"} label="About paired agents">
           {render_slot(@about)}
           <span class="rg-account__tip-line" data-after={@about != [] && "true"}>
+            Each agent chose its own name when it paired. Only you and the agent see it;
+            open an agent to rename it.
+          </span>
+          <span class="rg-account__tip-line" data-after="true">
             An agent shows {@world_id_words} once its person verifies with World ID.
             <a href="https://siwa.regents.sh/skill.md" target="_blank" rel="noopener noreferrer">
               How to connect (step 7)
@@ -437,14 +441,23 @@ defmodule Regent.Account do
   attr :notice, :any, default: nil, doc: "`{:status | :alert, text}`: how the last action ended"
   attr :target, :any, default: nil, doc: "phx-target for the presses below"
   attr :open_event, :string, required: true, doc: "opens another agent; carries `id`"
+
+  attr :rename_event, :string,
+    required: true,
+    doc: "saves a new name for this agent; carries `agent_id` and `name`"
+
+  attr :name_error, :string,
+    default: nil,
+    doc: "why the last new name was refused, in a few words, shown in place of the name's hint"
+
   attr :rest, :global, doc: "the product's dialog hook, which opens it and reports its close"
   slot :actions, doc: "the product's buttons beside Done, such as Unpair"
 
   @doc """
-  One agent: who it is, when it paired, who stands behind it, then the three
-  questions every Regent site answers in the same words: what may happen next,
-  what it cost and what it has done across the Regent sites. "Done" closes the
-  dialog in the browser.
+  One agent: who it is and its name, which the person may change, when it paired,
+  who stands behind it, then the three questions every Regent site answers in the
+  same words: what may happen next, what it cost and what it has done across the
+  Regent sites. "Done" closes the dialog in the browser.
   """
   def agent_detail(assigns) do
     ~H"""
@@ -456,6 +469,34 @@ defmodule Regent.Account do
           <h2 id={"#{@id}-title"}>{@agent.name}</h2>
         </div>
       </header>
+
+      <form class="rg-account__name" phx-submit={@rename_event} phx-target={@target}>
+        <input type="hidden" name="agent_id" value={@agent.id} />
+        <Primitives.field :let={field} id={"#{@id}-name"} label="Name">
+          <div class="rg-account__name-row">
+            <input
+              id={field.id}
+              name="name"
+              value={@agent.name}
+              maxlength="80"
+              required
+              autocomplete="off"
+              aria-invalid={@name_error && "true"}
+              aria-describedby={field.described_by}
+            />
+            <Primitives.button type="submit">Save</Primitives.button>
+          </div>
+          <:hint>
+            <span :if={@name_error} role="alert">{@name_error}</span>
+            <span :if={!@name_error}>Only you see this name.</span>
+            <Primitives.tip id={"#{@id}-name-about"} label="About this name">
+              Your agent chose this name when it paired. Only you and the agent see it.
+              A new name shows on your account on every Regent site. It may hold up to
+              80 characters, with no hidden characters.
+            </Primitives.tip>
+          </:hint>
+        </Primitives.field>
+      </form>
 
       <dl class="rg-account__facts">
         <div>
