@@ -191,9 +191,8 @@ Patterns that generalize:
   Dark primaries rest with Powder Blue marks at the square corners and Tangerine
   accents along the cuts; light primaries rest with two opposite Tangerine L-edges.
   Hover and keyboard focus grow these into a continuous cut outline in 150ms.
-  Every button is 44px tall at every width, 8px by 16px inside, with its label on one
-  line; a `.rg-button__label` too long for its row ends in an ellipsis rather than
-  wrapping.
+  Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
+  `.rg-button__label` too long for its row ends in an ellipsis rather than wrapping.
   Secondary actions are a bordered square surface.
   Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons.
   A button that opens another site in a new tab (`target="_blank"`) shows a
@@ -409,8 +408,8 @@ Use approved marks or Geist Pixel Square brand text, never borrowed wordmarks or
 
 Read [MOBILE.md](MOBILE.md) for phone hierarchy, touch targets, input/keyboard and
 safe-area guidance, GPU fallbacks and the WebKit-versus-physical-iPhone evidence boundary.
-Shared buttons are at least 44 CSS px tall at every width, and on coarse-pointer or
-no-hover devices at least 44 CSS px wide too. Text-like inputs, selects and textareas inside `rg-field`
+On coarse-pointer or no-hover devices, shared buttons preserve a 44 CSS px minimum
+hit box in both dimensions. Text-like inputs, selects and textareas inside `rg-field`
 use `max(1em, 16px)` and a 44px height floor;
 larger inherited text remains larger. Never disable page zoom to compensate for a
 small input. Product-owned native controls and stronger legacy overrides still
