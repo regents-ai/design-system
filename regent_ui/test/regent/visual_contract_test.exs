@@ -173,6 +173,30 @@ defmodule Regent.VisualContractTest do
     assert css =~ "outline-color: Highlight;"
   end
 
+  test "Techtree's lime buttons draw the whole cut outline at rest in light, and only in light" do
+    css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
+
+    main_button =
+      ~s|.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before|
+
+    chosen_light = ~s|:root[data-brand="techtree"][data-theme="light"] | <> main_button
+    device_light = ~s|:root[data-brand="techtree"]:not([data-theme]) | <> main_button
+
+    for selector <- [chosen_light, device_light] do
+      [before, rest] = String.split(css, selector <> " {", parts: 2)
+      [rule | _] = String.split(rest, "}", parts: 2)
+
+      assert rule =~ "--rg-button-cut-ink: var(--rg-button-active-border);"
+      assert rule =~ "--rg-button-cut-gap: 0px;"
+      assert rule =~ "calc(100% - var(--rg-cut-control) + 1px) 1px"
+
+      if selector == device_light,
+        do: assert(before =~ ~r/@media \(prefers-color-scheme: light\) \{\s*\z/)
+    end
+
+    refute css =~ ~s|:root[data-brand="techtree"][data-theme="dark"] .rg-button|
+  end
+
   test "feature cards ripple the panel edge on interaction" do
     css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
 

@@ -161,3 +161,22 @@ Changes before 16 October 2026 are in the commit history.
   3:1, without making the buttons blockier. Button size and shape are unchanged.
 - The rest of Canopy keeps `#2FA866` (secondary accent, theme switch beam). `STYLE.md`
   gives the new mark green.
+
+## 2026-10-19 — Techtree's lime buttons show their whole outline in light
+
+- In Techtree's light theme, every main lime button now draws the whole 1px cut
+  outline at rest in its mark green `#238450`, the same outline hover draws, so the
+  lime's edge stands out on the pale page (3:1). Before, only the corner marks showed
+  at rest, and Techtree drew the outline itself for its Sign in and Copy page buttons
+  only, so Buy and Connect/Disconnect still showed just the marks. Size, shape and the
+  arrow are unchanged; dark, disabled and secondary buttons and the other sites are
+  unchanged. Techtree can drop its own outline once it pins this.
+- `STYLE.md` and `README.md` say so; `visual_contract_test.exs` checks the two light
+  rules and that dark has none.
+- Evidence: level ordinary · features: shared main button, Techtree light ·
+  proofs: regent_ui `mix test` 37 tests; the new test fails on three breaks (change
+  removed, outline moved to dark, device-light rule outside its light block); a
+  headless Chromium render of the library's own CSS reads `#238450` on all four edges
+  and both cuts for Techtree light (desktop, phone width, device light) and not for
+  Techtree dark, disabled, secondary, or the other three sites · gaps: WebKit not run
+  on the Mac.

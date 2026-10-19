@@ -99,6 +99,27 @@
     calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
     calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
 }
+/* Techtree's lime is too pale on its light page for the corner marks alone, so
+   in light its main buttons draw the whole cut outline at rest, the one hover
+   draws, in its own mark green (3:1 on the page). */
+:root[data-brand="techtree"][data-theme="light"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before {
+  --rg-button-cut-ink: var(--rg-button-active-border);
+  --rg-button-cut-gap: 0px;
+  background-size:
+    var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
+    calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
+    calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
+}
+@media (prefers-color-scheme: light) {
+  :root[data-brand="techtree"]:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before {
+    --rg-button-cut-ink: var(--rg-button-active-border);
+    --rg-button-cut-gap: 0px;
+    background-size:
+      var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
+      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
+  }
+}
 .rg-button:where(:not(.rg-button--quiet):not(.rg-copy):not(.rg-theme-toggle):not([role="tab"]))::after {
   content: ""; flex: 0 0 .45em; width: .45em; height: .45em;
   border-block-start: 2px solid currentColor; border-inline-end: 2px solid currentColor;

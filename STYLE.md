@@ -208,6 +208,8 @@ Patterns that generalize:
   to `#238450`. The theme switch's beam follows `--rg-theme-laser-light` and
   `--rg-theme-laser-dark` the same way.
   Hover and keyboard focus grow these into a continuous cut outline in 150ms.
+  Techtree's lime is too pale on its light page for the marks alone, so in light its
+  primaries already rest with that whole outline in `#238450`.
   Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
   `.rg-button__label` too long for its row ends in an ellipsis rather than wrapping.
   Secondary actions are a bordered square surface.
