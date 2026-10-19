@@ -23,19 +23,16 @@ export function mountProfile(root, {profile, onSaved}) {
 }
 
 // A person who has never saved a name has no profile yet: it is made from their
-// sign-in first, then the name is saved to it.
+// sign-in first. The name is saved to the profile just read, so a change of
+// sign-in in between saves nothing.
 export async function saveName(profile, displayName, options = {}) {
-  const input = {display_name: displayName};
-  let result = await profile("update", input, options);
-  if (code(result) === "profile_not_created") {
-    const made = await profile("sync", {}, options);
-    if (made.ok) result = await profile("update", input, options);
-    else result = made;
-  }
-  if (result.ok) {
-    return {ok: true, displayName: result.body.profile.display_name, message: "Saved."};
-  }
-  return {ok: false, message: refusal(result)};
+  let read = await profile("get", {}, options);
+  if (code(read) === "profile_not_created") read = await profile("sync", {}, options);
+  if (!read.ok) return {ok: false, message: refusal(read)};
+  const result = await profile("update", {display_name: displayName},
+    {...options, expectedProfileId: read.body.profile.profile_id});
+  if (!result.ok) return {ok: false, message: refusal(result)};
+  return {ok: true, displayName: result.body.profile.display_name, message: "Saved."};
 }
 
 function code(result) {
