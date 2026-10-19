@@ -149,3 +149,7 @@ Changes before 16 October 2026 are in the commit history.
 - `README.md`'s token table now names Powder Blue as Techtree's mark where other sites
   name it, with Patchbay and Techtree carrying their own palettes, and `STYLE.md`'s
   artwork list gives Techtree's crown in Canopy greens instead of the old dot orbit.
+- Evidence: level ordinary · features: Techtree brand tokens and hooks (no feature map in
+  this repo yet) · proofs: regent_ui `mix check` 36 tests, token copies in sync, Techtree
+  `make check` and a 96-load headless Chromium walk on the consuming site · gaps: WebKit
+  not run on the Mac.
