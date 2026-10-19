@@ -287,3 +287,16 @@ Changes before 16 October 2026 are in the commit history.
 - On a touch screen, `Regent.Primitives.address`'s words and copy icon are at least
   44px tall (`max(2.75rem, 44px)`), as buttons and fields already are, so a site with
   a smaller root font size cannot shrink them below a finger's 44px.
+
+## 2026-10-19 — "Your agents" shows three, with Manage beside the heading
+
+- `Regent.Account.agents_brief` lists at most three agents and no longer scrolls; the
+  site picks which three (ash-template shows the three most recently active). Its
+  `href`, which made the heading a link, is replaced by `manage_href`: Manage beside
+  the "Your agents" heading, shown while the pointer is over the list or a key has
+  moved into it, and always on a touch screen, where it is at least 44px tall. It
+  keeps its space while hidden, so showing it moves nothing. The heading is plain
+  text (founder, 19 Oct). A site passing `href` passes `manage_href` instead.
+- A row's last line puts a dot between the site and how long ago ("Active on
+  Keyfleet · 15m"); the two had run together.
+- `STYLE.md` describes the new options.

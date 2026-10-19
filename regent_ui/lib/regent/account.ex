@@ -186,18 +186,20 @@ defmodule Regent.Account do
   attr :agents, :any,
     required: true,
     doc:
-      "`:loading`, `:unavailable`, or a list of maps with id, name, kind, and last_action, " <>
-        "last_action_iso and last_action_at (short, such as \"3m\"), each nil until read"
+      "`:loading`, `:unavailable`, or a list of at most three maps with id, name, kind, " <>
+        "and last_action, last_action_iso and last_action_at (short, such as \"3m\"), " <>
+        "each nil until read"
 
-  attr :href, :string,
+  attr :manage_href, :string,
     default: nil,
-    doc: "where the \"Your agents\" heading leads, such as the site's account page"
+    doc: "where Manage beside the heading leads, such as https://regents.sh/account"
 
   @doc """
-  The person's agents in a narrow panel: a short list that scrolls past three,
-  each agent's picture and name over what it last did and how long ago. A last
-  action not yet read keeps its line's space, so reading it never moves a row.
-  With `href`, the heading itself is the link.
+  The person's agents in a narrow panel: at most three, each agent's picture and
+  name over where it was last active and how long ago. A last action not yet read
+  keeps its line's space, so reading it never moves a row. With `manage_href`,
+  Manage shows beside the heading while the pointer is over the list or a key has
+  moved into it, and always on a touch screen; it keeps its space when hidden.
   """
   def agents_brief(assigns) do
     ~H"""
@@ -207,13 +209,17 @@ defmodule Regent.Account do
       aria-labelledby={"#{@id}-title"}
       aria-busy={@agents == :loading && "true"}
     >
-      <h2 id={"#{@id}-title"}>
-        <%= if @href do %>
-          <a href={@href}>Your agents</a>
-        <% else %>
-          Your agents
-        <% end %>
-      </h2>
+      <div class="rg-account__brief-head">
+        <h2 id={"#{@id}-title"}>Your agents</h2>
+        <a
+          :if={@manage_href}
+          href={@manage_href}
+          class="rg-account__brief-manage"
+          aria-label="Manage your agents"
+        >
+          Manage
+        </a>
+      </div>
       <p :if={@agents == :loading} role="status">Loading…</p>
       <p :if={@agents == :unavailable} role="alert">
         Your agents couldn’t be read. Try refreshing.
@@ -222,7 +228,6 @@ defmodule Regent.Account do
       <ul
         :if={is_list(@agents) and @agents != []}
         class="rg-account__brief-list"
-        tabindex="0"
         aria-labelledby={"#{@id}-title"}
       >
         <li :for={agent <- @agents} id={"#{@id}-agent-#{agent.id}"}>
@@ -230,6 +235,7 @@ defmodule Regent.Account do
           <strong>{agent.name}</strong>
           <span class="rg-account__brief-last">
             <span>{agent.last_action}</span>
+            <span :if={agent.last_action_at} aria-hidden="true">·</span>
             <time :if={agent.last_action_at} datetime={agent.last_action_iso}>
               {agent.last_action_at}
             </time>
