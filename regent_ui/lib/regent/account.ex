@@ -296,12 +296,6 @@ defmodule Regent.Account do
 
   attr :chosen, :string, default: nil, doc: "the chosen agent's value"
 
-  attr :guide, :string,
-    default: nil,
-    doc:
-      "`:icons` layout: the chosen agent's own page on the site, such as /agents/dots, " <>
-        "linked by a help icon under the other two"
-
   attr :messages, :list,
     default: [],
     doc:
@@ -322,9 +316,10 @@ defmodule Regent.Account do
     values: [:list, :icons],
     doc:
       "`:list` names each agent beside its picture and lists the steps; `:icons`, for a " <>
-        "narrow panel, puts the message first in a short box that scrolls, with icons to copy " <>
-        "it and make a new code, then the pictures alone, each named on hover or keyboard focus, " <>
-        "then when the code stops working"
+        "narrow panel, puts the message first in a short box that scrolls, the chosen agent's " <>
+        "picture in its corner and small icons to copy it and make a new code, then the " <>
+        "pictures alone, each but the chosen one named on hover or keyboard focus, then when " <>
+        "the code stops working"
 
   attr :rest, :global,
     doc:
@@ -340,11 +335,11 @@ defmodule Regent.Account do
     assigns =
       assigns
       |> assign(:words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
-      |> assign(:guide_label, guide_label(assigns.harnesses, assigns.chosen))
 
     ~H"""
     <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
       <div :if={@layout == :icons} class="rg-account__prompt" role="status">
+        <.agent_mark :if={@chosen} kind={@chosen} />
         <pre :if={@message}><code>{@message}</code></pre>
         <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
         <div class="rg-account__prompt-tools">
@@ -373,25 +368,6 @@ defmodule Regent.Account do
               <path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" />
             </svg>
           </button>
-          <a
-            class="rg-account__guide"
-            href={@guide}
-            aria-label={@guide_label}
-            title={@guide_label}
-            data-unused={is_nil(@guide)}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="square"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="8" />
-              <path d="M9.75 9.75a2.25 2.25 0 1 1 3.4 1.93c-.7.42-1.15.9-1.15 1.72M12 16v.5" />
-            </svg>
-          </a>
         </div>
       </div>
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
@@ -456,13 +432,6 @@ defmodule Regent.Account do
       The code works once, until <time datetime={@iso}>{@at || "00:00 UTC"}</time>.
     </p>
     """
-  end
-
-  defp guide_label(harnesses, chosen) do
-    case Enum.find(harnesses, &(&1.value == chosen)) do
-      %{label: label} -> "How #{label} pairs"
-      nil -> nil
-    end
   end
 
   defp paired?({:paired, _name}), do: "true"

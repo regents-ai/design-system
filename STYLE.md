@@ -314,7 +314,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.identity` | The card at the top of the Account page: the person's picture, the name the site calls them and their wallet, each said once; an ENS name or short address in it opens and copies the full address | Ash Template |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.agents_brief` | The person's agents in a narrow panel, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
-| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons, then the agents five to a row, each named on hover | Ash Template |
+| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons and the chosen agent's picture, then the agents five to a row, each named on hover | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
@@ -404,13 +404,13 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - `pairing` goes in the side panel, on every page for someone signed in. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
   the harness value, which picks its picture). `layout={:icons}` is for the narrow
-  side panel: the message first, in a short box that scrolls with a copy icon, a
-  new-code icon and a help icon in their own column at its right, then the pictures
-  alone, five to a row in one frame each, named under a first-row picture and over a
-  second-row one on hover or keyboard focus, then the expiry line. Its optional
-  `guide` is the chosen agent's own page on the site, such as `/agents/dots`, which the
-  help icon links to, named "How Dots pairs"; the icon keeps its space until an agent is
-  chosen. The default `:list` names
+  side panel: the message first, in a short box that scrolls, with the chosen agent's
+  picture in its top-left corner and small copy and new-code icons centred in their
+  own column at its right, then the pictures alone, five to a row in one frame each,
+  named under a first-row picture and over a second-row one on hover or keyboard
+  focus, except the chosen one, then the expiry line. The site keeps each agent's code
+  until it expires, so choosing another agent and coming back shows the same message
+  (founder, 2026-10-20). The default `:list` names
   each agent beside its picture, numbers the steps and also requires `messages`:
   every agent's message with a stand-in code, so the box keeps one size.
   `chosen` is the chosen value; `message` is that agent's message once a code is made,

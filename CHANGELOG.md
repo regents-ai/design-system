@@ -340,3 +340,14 @@ Changes before 16 October 2026 are in the commit history.
 ## 2026-10-20 — A tip opens under a mouse
 
 - New `regent_ui/assets/js/tip.mjs`, copied by `mix regent_ui.assets`: a `Regent.Primitives.tip` opens while a mouse rests on its "i", sitting beside it, and closes a moment after the mouse leaves both the "i" and its words, so the mouse can move onto the words. A click on an "i" the mouse opened keeps it open until Escape, a press elsewhere or another click. Touch, pen and keyboard open a tip with a press, as before (founder, 20 Oct: an info icon that explains the Key price on hover). Sites import it once from `app.ts`.
+
+## 2026-10-20 — The pairing box shows the chosen agent and drops the help icon
+
+- `Regent.Account.pairing` with `layout={:icons}` puts the chosen agent's picture in the
+  top-left corner of the message box, and its copy and new-code icons are smaller
+  (24 px) and centred in their column. Sean asked for both (20 Oct).
+- The chosen agent's name no longer shows under its picture once it is chosen; Sean
+  found it left covering the row below.
+- The help icon and its `guide` attribute are gone: Sean couldn't tell what it was for.
+  Each agent's own page stays reachable from the site's agent guides. A site passing
+  `guide` drops it when it re-pins.
