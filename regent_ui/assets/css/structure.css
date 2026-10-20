@@ -118,7 +118,41 @@
   }
 }
 .rg-dialog[open] { display: flex; flex-direction: column; }
-.rg-dialog::backdrop { background: color-mix(in oklab, var(--color-fg) 30%, transparent); }
+/* The page behind an open window always dims toward charcoal, never toward the
+   page's text color, which is light in dark mode. */
+.rg-dialog::backdrop { background: color-mix(in oklab, var(--palette-charcoal) 32%, transparent); }
+:root:is([data-theme="dark"], :not([data-theme])) .rg-dialog::backdrop {
+  background: color-mix(in oklab, var(--palette-charcoal) 64%, transparent);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .rg-dialog::backdrop {
+    background: color-mix(in oklab, var(--palette-charcoal) 32%, transparent);
+  }
+}
+/* A window rises a little and fades in, and leaves faster than it came. With
+   reduced motion it appears and goes at once. */
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  .rg-dialog {
+    opacity: 0; transform: translateY(.5rem) scale(.98);
+    transition: opacity 150ms var(--ease-out), transform 150ms var(--ease-out),
+      display 150ms allow-discrete, overlay 150ms allow-discrete;
+  }
+  .rg-dialog[open] {
+    opacity: 1; transform: none;
+    transition-duration: 220ms;
+  }
+  @starting-style {
+    .rg-dialog[open] { opacity: 0; transform: translateY(.5rem) scale(.98); }
+  }
+  .rg-dialog::backdrop {
+    opacity: 0;
+    transition: opacity 150ms var(--ease-out), display 150ms allow-discrete, overlay 150ms allow-discrete;
+  }
+  .rg-dialog[open]::backdrop { opacity: 1; transition-duration: 220ms; }
+  @starting-style {
+    .rg-dialog[open]::backdrop { opacity: 0; }
+  }
+}
 .rg-dialog::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   /* From the top: the two square corners' marks, the two cuts' accents, the four

@@ -255,6 +255,10 @@ The shell is one shared component, `Regent.Structure.dialog`; a site never draws
 own. Dark windows mark their square corners in Powder Blue, light ones in Tangerine; the
 cuts carry Tangerine in both.
 
+The page behind an open window dims toward charcoal in both themes, never toward the
+text color, so dark mode never turns it grey. A window rises a little and fades in, and
+leaves a little faster than it came; with reduced motion it appears and goes at once.
+
 ### Addresses and transaction hashes
 
 A contract address or transaction hash always shows its short form, then a copy icon and

@@ -319,3 +319,8 @@ Changes before 16 October 2026 are in the commit history.
 ## 2026-10-20 — An address on Ethereum opens on Etherscan
 
 - `Regent.Primitives.address` takes `chain="ethereum"` for an address or transaction on Ethereum, and its arrow then opens Etherscan ("Open on Etherscan"); everything else still opens on Basescan, the default. Regent Credits can be bought on Base or Ethereum, so the template's Credits history and refunds page show each purchase's transaction with this one component.
+
+## 2026-10-20 — Windows dim toward charcoal and open with motion
+
+- The page behind an open `Regent.Structure.dialog` now dims toward charcoal in both themes (stronger in dark), where before it dimmed toward the text color and so turned light grey in dark mode.
+- A window rises a little and fades in over 220 ms and leaves over 150 ms, with the dimmed page fading alongside it. With reduced motion, or in forced colors, it appears and goes at once.
