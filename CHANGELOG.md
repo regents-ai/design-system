@@ -324,3 +324,7 @@ Changes before 16 October 2026 are in the commit history.
 
 - The page behind an open `Regent.Structure.dialog` now dims toward charcoal in both themes (stronger in dark), where before it dimmed toward the text color and so turned light grey in dark mode.
 - A window rises a little and fades in over 220 ms and leaves over 150 ms, with the dimmed page fading alongside it. With reduced motion, or in forced colors, it appears and goes at once.
+
+## 2026-10-20 — Window motion stays in the template
+
+- The open and close transition added to `Regent.Structure.dialog` earlier today is taken back out. It fought the template's own window motion (a spring for a pointer press, at once for a key press), so a window could still be moving after 700 ms and a key press animated. Window motion comes from the template's motion script, which sites copy. The charcoal dimming behind an open window stays.

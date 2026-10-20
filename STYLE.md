@@ -256,8 +256,10 @@ own. Dark windows mark their square corners in Powder Blue, light ones in Tanger
 cuts carry Tangerine in both.
 
 The page behind an open window dims toward charcoal in both themes, never toward the
-text color, so dark mode never turns it grey. A window rises a little and fades in, and
-leaves a little faster than it came; with reduced motion it appears and goes at once.
+text color, so dark mode never turns it grey. A window's opening and closing motion
+belongs to the template's motion script, not this library: a press by pointer springs the
+window up, a key press opens it at once, and reduced motion keeps it still. Sites copy
+that script from the template.
 
 ### Addresses and transaction hashes
 
