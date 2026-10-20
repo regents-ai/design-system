@@ -336,3 +336,7 @@ Changes before 16 October 2026 are in the commit history.
   somewhere. It keeps the button's cut corners, fill and marks and drops the chevron
   (`.rg-button--no-arrow`). Sean asked for the signed-in Credits and name to wear the
   same cut corners and marks as Sign in (20 Oct); the template's header uses it.
+
+## 2026-10-20 — A tip opens under a mouse
+
+- New `regent_ui/assets/js/tip.mjs`, copied by `mix regent_ui.assets`: a `Regent.Primitives.tip` opens while a mouse rests on its "i", sitting beside it, and closes a moment after the mouse leaves both the "i" and its words, so the mouse can move onto the words. A click on an "i" the mouse opened keeps it open until Escape, a press elsewhere or another click. Touch, pen and keyboard open a tip with a press, as before (founder, 20 Oct: an info icon that explains the Key price on hover). Sites import it once from `app.ts`.

@@ -541,7 +541,8 @@ choice and the button, and nothing else until someone asks. Too much text is a d
   each. A disabled button keeps a reason of a few words beside it.
 - **What goes one level down:** how something works, why a step exists, timings,
   provenance, technical detail and reassurance. Put a short explanation in a tip
-  (`Regent.Primitives.tip`: an "i" beside the label that opens a popover), a longer one
+  (`Regent.Primitives.tip`: an "i" beside the label that opens a popover on a press, and
+  under a mouse while it rests there), a longer one
   in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
   or page behind a link. Legal and policy text are links at the foot, never paragraphs.
 - **Show state with marks, not sentences:** a tick that draws in when a step is done, a

@@ -79,6 +79,11 @@ Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu then closes on Escape, handing focus back
 to its summary, and on a press outside it. A `select` pill needs nothing.
 
+Import `tip.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`: a
+`Regent.Primitives.tip` then opens while a mouse rests on its "i" and closes a moment
+after the mouse leaves the "i" and its words; a click keeps it open. Touch, pen and
+keyboard still open a tip with a press, without it.
+
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the
 product's hook attribute and the content that sits on the face; the component renders the
 face, a `phx-update="ignore"` stage holding `[data-holo-canvas]`, and the content on top.

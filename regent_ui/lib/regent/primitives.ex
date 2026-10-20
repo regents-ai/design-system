@@ -304,8 +304,9 @@ defmodule Regent.Primitives do
   A small "i" button that opens a short explanation beside it, so the words a
   person rarely needs stay off the screen. The explanation stays in the page and
   describes the button, so screen readers and agents read it without opening it.
-  The browser's own popover opens it on a click or tap and closes it on Escape
-  or a press elsewhere; no JavaScript.
+  The browser's own popover opens it on a click, tap or Enter and closes it on
+  Escape or a press elsewhere. With `tip.mjs` imported, it also opens while a mouse
+  rests on the "i" and closes when the mouse leaves; a click then keeps it open.
   """
   def tip(assigns) do
     ~H"""
