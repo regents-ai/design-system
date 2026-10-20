@@ -351,3 +351,11 @@ Changes before 16 October 2026 are in the commit history.
 - The help icon and its `guide` attribute are gone: Sean couldn't tell what it was for.
   Each agent's own page stays reachable from the site's agent guides. A site passing
   `guide` drops it when it re-pins.
+
+## 2026-10-20 — An agent's window has a place for its picture
+
+- `Regent.Account.agent_detail` takes a `picture` slot, shown after the facts and
+  before "What may happen next": the product's control to choose or remove the
+  picture a person gives their agent. Every site's Account page lets a person set it,
+  as regents.sh did alone until now; a site that passes nothing shows the window as
+  before.

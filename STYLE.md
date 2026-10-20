@@ -436,8 +436,9 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `same_person_count`, `same_person` (`%{id, name}`), `notice`
   (`{:status | :alert, text}`), `name_error` (why a new name was refused, in a few
   words, such as "That name can't be used."; it takes the place of the name's hint,
-  so nothing below moves), `target`, and an `actions` slot for the product's
-  buttons beside Done, such as Unpair. The name's hint and tip say where it comes
+  so nothing below moves), `target`, an `actions` slot for the product's
+  buttons beside Done, such as Unpair, and a `picture` slot, after the facts, for
+  the product's control to choose or remove the picture the person gave the agent. The name's hint and tip say where it comes
   from and who sees it: the agent chose it when it paired, and only the person and
   the agent see it.
 

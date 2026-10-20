@@ -504,6 +504,9 @@
   cursor: pointer;
 }
 
+/* The product's picture control, between the facts and what may happen next. */
+.rg-account__picture { margin-block-end: var(--space-3); }
+
 /* What may happen next and what it cost. */
 .rg-account__part { display: grid; gap: 8px; margin-block-end: var(--space-3); }
 .rg-account__part > .rg-account__aside { color: var(--color-fg-muted); font-size: var(--type-label-size); }
