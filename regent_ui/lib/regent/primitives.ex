@@ -124,6 +124,11 @@ defmodule Regent.Primitives do
     """
   end
 
+  @explorers %{
+    "base" => %{name: "Basescan", host: "basescan.org"},
+    "ethereum" => %{name: "Etherscan", host: "etherscan.io"}
+  }
+
   attr :id, :string, required: true
   attr :address, :string, required: true, doc: "the full `0x` address, or transaction hash"
 
@@ -131,6 +136,11 @@ defmodule Regent.Primitives do
     default: "address",
     values: ~w(address tx),
     doc: "`tx` for a transaction hash"
+
+  attr :chain, :string,
+    default: "base",
+    values: ~w(base ethereum),
+    doc: "the chain it is on, whose explorer the arrow opens: Basescan or Etherscan"
 
   attr :label, :string,
     default: nil,
@@ -143,7 +153,8 @@ defmodule Regent.Primitives do
   Every ENS name, address, short address and transaction hash a Regent page shows
   (founder, 2026-10-19): the words, which open the full address on a click, tap or
   Enter, then, tight together, an icon that copies it and a diagonal arrow that opens
-  it on Basescan in a new tab. For an ENS name all three give the address it points to.
+  it on its chain's explorer in a new tab: Basescan, or Etherscan for Ethereum. For
+  an ENS name all three give the address it points to.
   """
   def address(assigns) do
     assigns =
@@ -151,7 +162,8 @@ defmodule Regent.Primitives do
         label: assigns.label || short_address(assigns.address),
         copy:
           if(assigns.kind == "tx", do: "Copy the transaction hash", else: "Copy the full address"),
-        href: "https://basescan.org/#{assigns.kind}/#{assigns.address}"
+        explorer: @explorers[assigns.chain].name,
+        href: "https://#{@explorers[assigns.chain].host}/#{assigns.kind}/#{assigns.address}"
       )
 
     ~H"""
@@ -167,8 +179,8 @@ defmodule Regent.Primitives do
         href={@href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Open on Basescan"
-        title="Open on Basescan"
+        aria-label={"Open on #{@explorer}"}
+        title={"Open on #{@explorer}"}
       >
         <svg
           viewBox="0 0 12 12"

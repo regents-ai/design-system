@@ -147,9 +147,10 @@ defmodule Regent.PrimitivesTest do
     assert short =~ ~s(data-copy-text="#{full}")
   end
 
-  # Invariant: every address and transaction hash opens on Basescan, in a new tab,
-  # beside its copy icon (founder, 19 Oct).
-  test "an address and a transaction hash each open on Basescan" do
+  # Invariant: every address and transaction hash opens on its chain's explorer,
+  # Basescan unless it is on Ethereum, in a new tab, beside its copy icon
+  # (founder, 19 Oct).
+  test "an address and a transaction hash each open on their chain's explorer" do
     address = "0x1234567890abcdef1234567890abcdef12345678"
     hash = "0x" <> String.duplicate("ab", 32)
     assigns = %{address: address, hash: hash}
@@ -162,5 +163,12 @@ defmodule Regent.PrimitivesTest do
     assert sent =~ ~s(href="https://basescan.org/tx/#{hash}")
     assert sent =~ ~r{rg-address__label[^>]*>\s*0xabab..abab\s*</button>}
     assert sent =~ ~s(aria-label="Copy the transaction hash")
+    assert sent =~ ~s(aria-label="Open on Basescan")
+
+    mainnet =
+      rendered_to_string(~H|<.address id="paid" address={@hash} kind="tx" chain="ethereum" />|)
+
+    assert mainnet =~ ~s(href="https://etherscan.io/tx/#{hash}")
+    assert mainnet =~ ~s(aria-label="Open on Etherscan")
   end
 end

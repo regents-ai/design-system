@@ -315,3 +315,7 @@ Changes before 16 October 2026 are in the commit history.
 - `Regent.Structure.dialog` is the one window every site uses (founder, 19 Oct): a native `<dialog>` whose top-left and bottom-right corners are cut with a Tangerine accent along each cut, and whose other two corners are square with a mark drawn in (Powder Blue in dark, Tangerine in light). Its contents scroll inside the frame, and `--rg-dialog-size` sets its width (32rem when unset). The account page's agent window uses it; sites move their own windows onto it.
 - `Regent.Primitives.address` adds a diagonal arrow that opens the address on Basescan in a new tab, right after the copy icon, and takes `kind="tx"` for a transaction hash. On hover the copy icon grows a little and the arrow leans up and right; a press gives both a little; reduced motion keeps them still.
 - Primary buttons rest as their plain fill and bring in their marks on hover and keyboard focus (founder, 19 Oct): dark shows Powder Blue square-corner marks and Tangerine cut accents, light two Tangerine L-edges. The README describes the new hover.
+
+## 2026-10-20 — An address on Ethereum opens on Etherscan
+
+- `Regent.Primitives.address` takes `chain="ethereum"` for an address or transaction on Ethereum, and its arrow then opens Etherscan ("Open on Etherscan"); everything else still opens on Basescan, the default. Regent Credits can be bought on Base or Ethereum, so the template's Credits history and refunds page show each purchase's transaction with this one component.
