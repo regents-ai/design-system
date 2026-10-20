@@ -328,3 +328,11 @@ Changes before 16 October 2026 are in the commit history.
 ## 2026-10-20 — Window motion stays in the template
 
 - The open and close transition added to `Regent.Structure.dialog` earlier today is taken back out. It fought the template's own window motion (a spring for a pointer press, at once for a key press), so a window could still be moving after 700 ms and a key press animated. Window motion comes from the template's motion script, which sites copy. The charcoal dimming behind an open window stays.
+
+## 2026-10-20 — A button that shows something carries no arrow
+
+- `Regent.Primitives.button` takes `arrow={false}` for a button that shows something,
+  such as the header's Credits balance or the account's name, rather than going on
+  somewhere. It keeps the button's cut corners, fill and marks and drops the chevron
+  (`.rg-button--no-arrow`). Sean asked for the signed-in Credits and name to wear the
+  same cut corners and marks as Sign in (20 Oct); the template's header uses it.

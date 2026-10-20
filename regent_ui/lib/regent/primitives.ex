@@ -8,13 +8,23 @@ defmodule Regent.Primitives do
 
   attr :type, :string, default: "button", values: ~w(button submit reset)
   attr :variant, :string, default: "primary", values: ~w(primary secondary quiet)
+
+  attr :arrow, :boolean,
+    default: true,
+    doc:
+      "false for a button that shows something, such as a balance or a name, rather than going on"
+
   attr :class, :any, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
   slot :inner_block, required: true
 
   def button(assigns) do
     ~H"""
-    <button type={@type} class={["rg-button", "rg-button--#{@variant}", @class]} {@rest}>
+    <button
+      type={@type}
+      class={["rg-button", "rg-button--#{@variant}", !@arrow && "rg-button--no-arrow", @class]}
+      {@rest}
+    >
       <span class="rg-button__label">{render_slot(@inner_block)}</span>
     </button>
     """

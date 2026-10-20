@@ -71,6 +71,21 @@ defmodule Regent.PrimitivesTest do
     refute html =~ "disabled"
   end
 
+  test "a button that shows something rather than going on carries no arrow" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.button arrow={false}>10.00 Credits</.button>
+      <.button>Sign in</.button>
+      """)
+
+    assert [_] = Regex.scan(~r/rg-button--no-arrow/, html)
+
+    css = File.read!(Path.expand("../../assets/css/primitives.css", __DIR__))
+    assert css =~ ":not(.rg-button--no-arrow)"
+  end
+
   test "notices distinguish alerts and status without losing supplied content" do
     assigns = %{}
 

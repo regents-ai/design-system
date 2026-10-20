@@ -27,8 +27,9 @@
    --rg-button-mark-color and --rg-button-border-color when it sets them: in dark,
    Powder Blue marks at the two square corners and Tangerine along the two cuts; in
    light, two opposite Tangerine L-edges. Hover never takes a mark away (founder,
-   2026-10-19). Every button but a quiet one, a copy button, the theme toggle and a
-   tab carries an arrow. The site's motion kit nudges the arrow on hover
+   2026-10-19). Every button but a quiet one, a copy button, the theme toggle, a
+   tab and one that shows something rather than going on (`.rg-button--no-arrow`)
+   carries an arrow. The site's motion kit nudges the arrow on hover
    (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
@@ -129,7 +130,7 @@
       calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px);
   }
 }
-.rg-button:where(:not(.rg-button--quiet):not(.rg-copy):not(.rg-theme-toggle):not([role="tab"]))::after {
+.rg-button:where(:not(.rg-button--quiet):not(.rg-button--no-arrow):not(.rg-copy):not(.rg-theme-toggle):not([role="tab"]))::after {
   content: ""; flex: 0 0 .45em; width: .45em; height: .45em;
   border-block-start: 2px solid currentColor; border-inline-end: 2px solid currentColor;
   transform: translateX(var(--rg-chevron-x, 0px)) rotate(45deg) scale(var(--rg-press-scale, 1));

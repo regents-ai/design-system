@@ -219,7 +219,10 @@ Patterns that generalize:
   Every button is about 40px tall, 8px by 16px inside, with its label on one line; a
   `.rg-button__label` too long for its row ends in an ellipsis rather than wrapping.
   Secondary actions are a bordered square surface.
-  Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons.
+  Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons, nor
+  does a button that shows something rather than going on, such as the header's
+  Credits balance and account name (`arrow={false}`). Signed in, those two wear the
+  same cut corners and marks as Sign in (founder, 2026-10-20).
   A button that opens another site in a new tab (`target="_blank"`) shows a
   diagonal arrow up and to the right in place of its chevron, nudged the same way on
   hover; nothing else is added to its label.
