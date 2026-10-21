@@ -358,3 +358,11 @@ Changes before 16 October 2026 are in the commit history.
   `thread` or `posts`: its button size, padding and hover shade no longer need a
   `.rg-discussion` around them. The template puts it under each room message for
   likes. `CONSUMERS.md` says so.
+
+## 2026-10-21 — The side panel opens under the header
+
+- `STYLE.md` gains "The side panel opens under the header": the header runs the full
+  width over the side panel, the panel opens under the header's bottom line, and the
+  panel's top bar lines up with the sidebar's title row. Found on Patchbay, whose panel
+  slid in beside a taller header. ash-template's browser walk checks both lines; sites
+  copy that check.

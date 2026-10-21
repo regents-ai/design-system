@@ -574,6 +574,17 @@ keep the space with the line unseen (`visibility: hidden`) rather than adding an
 removing it. Switching tabs above a list must leave the list's top edge where it was.
 Check every state at desktop and phone width; the box below must not move.
 
+### The side panel opens under the header
+
+The site header runs the full width of the page, over the side panel (founder,
+2026-10-21). The side panel opens under the header's bottom line, never beside it, so
+that line is unbroken at every width. The panel's top bar is as tall as the sidebar's
+title row, so the lines under them are one line across the page. On a phone the panel
+opens under the header and covers the page below it, leaving the header's line showing.
+ash-template's shell is the reference; its browser walk measures both lines
+(`platform/test/browser/layout.spec.ts`), and a site that carries the panel copies that
+check.
+
 ## Motion
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
