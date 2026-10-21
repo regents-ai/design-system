@@ -17,6 +17,43 @@ defmodule Regent.AccountTest do
     refute loading =~ "No agents paired yet."
   end
 
+  # A check-in light shows only where a site passes one, with its words for the hover
+  # and for a screen reader; a row without one is drawn as before.
+  test "an agent row shows its check-in light only when given one" do
+    row = %{id: "a1", name: "Night Shift", kind: "hermes", harness: "Hermes", backed: false}
+    contact = %{last_contact_iso: "2026-10-21T11:00:00Z", last_contact: "4 minutes ago"}
+
+    action = %{
+      last_action: "Wrote in General",
+      last_action_iso: "2026-10-21T11:00:00Z",
+      last_action_at: "4m"
+    }
+
+    late = %{light: "late", light_label: "Checked in 40 minutes ago"}
+
+    assigns = %{
+      lit: [row |> Map.merge(contact) |> Map.merge(late)],
+      brief: [row |> Map.merge(action) |> Map.merge(late)],
+      plain: [Map.merge(row, contact)],
+      plain_brief: [row |> Map.merge(action) |> Map.merge(%{light: nil, light_label: nil})]
+    }
+
+    for html <- [
+          rendered_to_string(~H|<Regent.Account.agents id="a" agents={@lit} />|),
+          rendered_to_string(~H|<Regent.Account.agents_brief id="b" agents={@brief} />|)
+        ] do
+      assert html =~ ~s(data-light="late")
+      assert html =~ ~s(aria-label="Checked in 40 minutes ago")
+    end
+
+    for html <- [
+          rendered_to_string(~H|<Regent.Account.agents id="a" agents={@plain} />|),
+          rendered_to_string(~H|<Regent.Account.agents_brief id="b" agents={@plain_brief} />|)
+        ] do
+      refute html =~ "rg-account__light"
+    end
+  end
+
   @agent %{
     id: "agent-1",
     name: "Night Shift",

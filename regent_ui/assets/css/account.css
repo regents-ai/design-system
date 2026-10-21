@@ -257,6 +257,21 @@
 .rg-account__brief-last > [aria-hidden="true"], .rg-account__brief-last time { flex: none; }
 .rg-account__brief-last time { font-variant-numeric: tabular-nums; }
 
+/* An agent's check-in light, before its last-contact line; it never moves the line. */
+.rg-account__light {
+  display: inline-block;
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-end: 6px;
+  border-radius: 50%;
+  vertical-align: 0.05em;
+  background: var(--color-error);
+}
+.rg-account__brief-last > .rg-account__light { align-self: center; margin-inline-end: 0; }
+.rg-account__light[data-light="on"] { background: var(--color-success); }
+.rg-account__light[data-light="late"] { background: var(--color-warning); }
+
 .rg-account__pair { display: grid; justify-items: start; gap: var(--space-2); inline-size: 100%; }
 .rg-account__pair[data-layout="icons"] { gap: var(--space-1); }
 .rg-account__pair [data-unused] { visibility: hidden; }

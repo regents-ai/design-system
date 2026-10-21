@@ -374,3 +374,11 @@ Changes before 16 October 2026 are in the commit history.
   picture a person gives their agent. Every site's Account page lets a person set it,
   as regents.sh did alone until now; a site that passes nothing shows the window as
   before.
+
+## 2026-10-21 — An agent row can show its check-in light
+
+- `Regent.Account.agents` and `Regent.Account.agents_brief` rows may carry `light`
+  (`"on"`, `"late"`, `"off"` or `nil`) and `light_label`: an 8 px dot before the row's
+  last-contact line, green, amber or red, whose words are its hover text and what a
+  screen reader says. A row without a light is drawn as before. Keyfleet asked for it
+  (Sean's 1. a, 21 Oct 11:15Z) to match its Who's here lights; `STYLE.md` says so.

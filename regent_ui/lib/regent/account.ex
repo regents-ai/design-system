@@ -110,7 +110,8 @@ defmodule Regent.Account do
     required: true,
     doc:
       "`:loading`, `:unavailable`, or a list of maps with id, name, kind, harness (label), " <>
-        "backed, last_contact_iso and last_contact (formatted)"
+        "backed, last_contact_iso and last_contact (formatted), and optionally light and " <>
+        "light_label (see `light/1`)"
 
   attr :notice, :string, default: nil, doc: "the result of the last action, read out politely"
 
@@ -168,7 +169,8 @@ defmodule Regent.Account do
           <p class="rg-account__meta">
             <span>{agent.harness}</span>
             <span>
-              Last contact <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
+              <.light light={agent[:light]} label={agent[:light_label]} /> Last contact
+              <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
             </span>
           </p>
           <div :if={@actions != []} class="rg-account__actions">
@@ -188,7 +190,7 @@ defmodule Regent.Account do
     doc:
       "`:loading`, `:unavailable`, or a list of at most three maps with id, name, kind, " <>
         "and last_action, last_action_iso and last_action_at (short, such as \"3m\"), " <>
-        "each nil until read"
+        "each nil until read, and optionally light and light_label (see `light/1`)"
 
   attr :manage_href, :string,
     default: nil,
@@ -234,6 +236,7 @@ defmodule Regent.Account do
           <.agent_mark kind={agent.kind} />
           <strong>{agent.name}</strong>
           <span class="rg-account__brief-last">
+            <.light light={agent[:light]} label={agent[:light_label]} />
             <span>{agent.last_action}</span>
             <span :if={agent.last_action_at} aria-hidden="true">·</span>
             <time :if={agent.last_action_at} datetime={agent.last_action_iso}>
@@ -243,6 +246,25 @@ defmodule Regent.Account do
         </li>
       </ul>
     </section>
+    """
+  end
+
+  attr :light, :string,
+    values: ["on", "late", "off", nil],
+    doc: "how recently the agent checked in: on time, late or not at all; nil draws nothing"
+
+  attr :label, :string, doc: "the light's words, such as \"Checked in 4 minutes ago\""
+
+  @doc """
+  An agent's check-in light, before its last-contact line: green when it checks in on
+  time, amber when late, red when it has stopped. Its words are its hover text and
+  what a screen reader says. A site without check-ins passes no light.
+  """
+  def light(%{light: nil} = assigns), do: ~H""
+
+  def light(assigns) do
+    ~H"""
+    <span class="rg-account__light" data-light={@light} role="img" aria-label={@label} title={@label}></span>
     """
   end
 

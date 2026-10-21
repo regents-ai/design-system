@@ -394,6 +394,11 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
   `footer` (pairing controls, or a link to where agents are managed).
+- `agents` and `agents_brief` rows may also carry `light` (`"on"`, `"late"`, `"off"` or
+  `nil`) and `light_label`, for a site whose agents check in: an 8 px dot before the
+  row's last-contact line in `--color-success`, `--color-warning` or `--color-error`,
+  with `light_label` as its hover and screen-reader words. `nil`, or no light, draws
+  nothing.
 - `agents_brief` goes in the side panel. It requires `id` and `agents`: `:loading`,
   `:unavailable`, or a list of at most three `%{id, name, kind, last_action,
   last_action_iso, last_action_at}`, the last three `nil` until read; the site picks
