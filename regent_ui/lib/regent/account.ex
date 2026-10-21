@@ -110,8 +110,9 @@ defmodule Regent.Account do
     required: true,
     doc:
       "`:loading`, `:unavailable`, or a list of maps with id, name, kind, harness (label), " <>
-        "backed, last_contact_iso and last_contact (formatted), and optionally light and " <>
-        "light_label (see `light/1`)"
+        "wallet (the agent's address, nil when unknown), backed, last_contact_iso and " <>
+        "last_contact (formatted: when it paired or last checked in), and optionally light " <>
+        "and light_label (see `light/1`)"
 
   attr :notice, :string, default: nil, doc: "the result of the last action, read out politely"
 
@@ -164,12 +165,21 @@ defmodule Regent.Account do
           <.agent_mark kind={agent.kind} />
           <p class="rg-account__agent">
             <strong>{agent.name}</strong>
+            <Primitives.address
+              :if={agent.wallet}
+              id={"#{@id}-agent-#{agent.id}-wallet"}
+              address={agent.wallet}
+              class="rg-account__wallet"
+            />
+            <span :if={!agent.wallet} class="rg-account__wallet rg-account__wallet--none">
+              Address unavailable
+            </span>
             <.world_id :if={agent.backed} />
           </p>
           <p class="rg-account__meta">
             <span>{agent.harness}</span>
             <span>
-              <.light light={agent[:light]} label={agent[:light_label]} /> Last contact
+              <.light light={agent[:light]} label={agent[:light_label]} /> Last check-in
               <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
             </span>
           </p>
@@ -561,7 +571,7 @@ defmodule Regent.Account do
           <dd>{@agent.paired_at}</dd>
         </div>
         <div>
-          <dt>Last contact</dt>
+          <dt>Last check-in</dt>
           <dd>{@agent.last_contact} <span>{@agent.last_contact_at}</span></dd>
         </div>
         <div>

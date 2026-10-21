@@ -382,3 +382,15 @@ Changes before 16 October 2026 are in the commit history.
   last-contact line, green, amber or red, whose words are its hover text and what a
   screen reader says. A row without a light is drawn as before. Keyfleet asked for it
   (Sean's 1. a, 21 Oct 11:15Z) to match its Who's here lights; `STYLE.md` says so.
+
+## 2026-10-21 — An agent row names its wallet
+
+- Each row of `Regent.Account.agents` shows the agent's wallet beside its name through
+  `Regent.Primitives.address`: its short form, which opens the full address on a
+  click, tap or Enter, its copy icon and its explorer link. The row map gains a
+  required `wallet`; when it is `nil` the row says "Address unavailable" rather than
+  guess. Two agents with one name now read apart.
+- The contact line and the agent's window say "Last check-in", which is what the time
+  is: when the agent paired or last checked in, not when it last did anything.
+- A Codex handoff asked for it (21 Oct 11:15Z); `STYLE.md` says so. Sites add `wallet`
+  to their rows when they re-pin.

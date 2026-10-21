@@ -132,6 +132,9 @@
 .rg-account__agents .rg-account__mark { grid-area: mark; inline-size: 2.5rem; block-size: 2.5rem; }
 .rg-account__agent { grid-area: name; display: flex; align-items: center; gap: var(--space-2); min-inline-size: 0; }
 .rg-account__agent strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The agent's wallet keeps its whole short form; a long name gives way first. */
+.rg-account__agent .rg-account__wallet { flex: none; font-size: var(--type-label-size); }
+.rg-account__wallet--none { color: var(--color-fg-muted); }
 .rg-account__meta {
   grid-area: meta;
   overflow: hidden;

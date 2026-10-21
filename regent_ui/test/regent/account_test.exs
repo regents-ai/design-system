@@ -20,7 +20,15 @@ defmodule Regent.AccountTest do
   # A check-in light shows only where a site passes one, with its words for the hover
   # and for a screen reader; a row without one is drawn as before.
   test "an agent row shows its check-in light only when given one" do
-    row = %{id: "a1", name: "Night Shift", kind: "hermes", harness: "Hermes", backed: false}
+    row = %{
+      id: "a1",
+      name: "Night Shift",
+      kind: "hermes",
+      harness: "Hermes",
+      wallet: nil,
+      backed: false
+    }
+
     contact = %{last_contact_iso: "2026-10-21T11:00:00Z", last_contact: "4 minutes ago"}
 
     action = %{
@@ -52,6 +60,38 @@ defmodule Regent.AccountTest do
         ] do
       refute html =~ "rg-account__light"
     end
+  end
+
+  # Two agents may share a name; each row names its own wallet, opened and copied in
+  # full, and a row whose wallet is unknown says so rather than borrowing another's.
+  test "each agent row shows its own wallet, or says it is unavailable" do
+    row = fn id, wallet ->
+      %{
+        id: id,
+        name: "Night Shift",
+        kind: "hermes",
+        harness: "Hermes",
+        wallet: wallet,
+        backed: false,
+        last_contact_iso: "2026-10-21T11:00:00Z",
+        last_contact: "4 minutes ago"
+      }
+    end
+
+    a = "0x" <> String.duplicate("a", 36) <> "1234"
+    b = "0x" <> String.duplicate("b", 36) <> "5678"
+    assigns = %{agents: [row.("a1", a), row.("a2", b), row.("a3", nil)]}
+    html = rendered_to_string(~H|<Regent.Account.agents id="list" agents={@agents} />|)
+
+    assert html =~ ~s(id="list-agent-a1-wallet")
+    assert html =~ ~s(id="list-agent-a2-wallet")
+    assert html =~ "0xaaaa..1234"
+    assert html =~ "0xbbbb..5678"
+    assert html =~ ~s(data-copy-text="#{a}")
+    assert html =~ ~s(data-copy-text="#{b}")
+    assert html =~ "Address unavailable"
+    refute html =~ ~s(id="list-agent-a3-wallet")
+    assert length(Regex.scan(~r/Last check-in/, html)) == 3
   end
 
   @agent %{

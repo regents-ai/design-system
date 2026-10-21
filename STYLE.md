@@ -387,9 +387,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   under the page's title. `reason` is `:signed_out` (default) or `:expired`, which says the
   session ended. It never shows figures, so a sign-in problem never reads as zero.
 - `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
-  `%{id, name, kind, harness, backed, last_contact_iso, last_contact}`, all required:
-  `kind` is the harness value, which picks the agent's picture, and `last_contact` is
-  already formatted. `:unavailable` says the agents couldn't be read; only an empty
+  `%{id, name, kind, harness, wallet, backed, last_contact_iso, last_contact}`, all
+  required: `kind` is the harness value, which picks the agent's picture; `wallet` is
+  the agent's own address, shown beside its name through `Regent.Primitives.address`
+  (its short form, which opens and copies the full address), or "Address unavailable"
+  when it is `nil`, never guessed from the name; and `last_contact` is already
+  formatted, from when the agent paired or last checked in ("Last check-in"). `:unavailable` says the agents couldn't be read; only an empty
   list says "No agents paired yet." Optional `notice` reports the last action. Slots:
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
