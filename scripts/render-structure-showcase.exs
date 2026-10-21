@@ -343,22 +343,29 @@ defmodule Regent.StructureShowcase do
 
   # Most agents have no World ID, as on the live sites; one name is short, one long.
   defp sample_agents do
-    for {id, name, kind, harness, backed, ago} <- [
-          {"a1", "Pira", "muse", "Muse", true, "2 hours ago"},
-          {"a2", "Night shift", "claude_code", "Claude Code", false, "5 hours ago"},
+    for {id, name, kind, harness, backed, ago, wallet, light} <- [
+          {"a1", "Pira", "muse", "Muse", true, "2 hours ago", "0x2222222222222222222222222222222222222222",
+           {"on", "Checked in on time"}},
+          {"a2", "Night shift", "claude_code", "Claude Code", false, "5 hours ago",
+           "0x3333333333333333333333333333333333333333", {"late", "Checking in late"}},
           {"a3", "An agent with a deliberately long name that has to stay on one line", "codex",
-           "Codex", false, "2 days ago"},
-          {"a4", "Wren", "hermes", "Hermes", false, "3 days ago"},
-          {"a5", "Ilex", "other", "Something else", false, "9 days ago"}
+           "Codex", true, "2 days ago", "0x4444444444444444444444444444444444444444",
+           {"off", "Stopped checking in"}},
+          {"a4", "Wren", "hermes", "Hermes", false, "3 days ago", nil, {nil, nil}},
+          {"a5", "Ilex", "other", "Something else", false, "9 days ago",
+           "0x5555555555555555555555555555555555555555", {nil, nil}}
         ] do
       %{
         id: id,
         name: name,
         kind: kind,
         harness: harness,
+        wallet: wallet,
         backed: backed,
         last_contact_iso: "2026-10-11T08:00:00Z",
-        last_contact: ago
+        last_contact: ago,
+        light: elem(light, 0),
+        light_label: elem(light, 1)
       }
     end
   end

@@ -111,8 +111,8 @@ defmodule Regent.Account do
     doc:
       "`:loading`, `:unavailable`, or a list of maps with id, name, kind, harness (label), " <>
         "wallet (the agent's address, nil when unknown), backed, last_contact_iso and " <>
-        "last_contact (formatted: when it paired or last checked in), and optionally light " <>
-        "and light_label (see `light/1`)"
+        "last_contact (formatted: when it paired or last checked in), light and " <>
+        "light_label (see `light/1`; both nil where the site has no check-ins)"
 
   attr :notice, :string, default: nil, doc: "the result of the last action, read out politely"
 
@@ -179,7 +179,7 @@ defmodule Regent.Account do
           <p class="rg-account__meta">
             <span>{agent.harness}</span>
             <span>
-              <.light light={agent[:light]} label={agent[:light_label]} /> Last check-in
+              <.light light={agent.light} label={agent.light_label} /> Last check-in
               <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
             </span>
           </p>
@@ -200,7 +200,8 @@ defmodule Regent.Account do
     doc:
       "`:loading`, `:unavailable`, or a list of at most three maps with id, name, kind, " <>
         "and last_action, last_action_iso and last_action_at (short, such as \"3m\"), " <>
-        "each nil until read, and optionally light and light_label (see `light/1`)"
+        "each nil until read, light and light_label (see `light/1`; both nil where the " <>
+        "site has no check-ins)"
 
   attr :manage_href, :string,
     default: nil,
@@ -246,7 +247,7 @@ defmodule Regent.Account do
           <.agent_mark kind={agent.kind} />
           <strong>{agent.name}</strong>
           <span class="rg-account__brief-last">
-            <.light light={agent[:light]} label={agent[:light_label]} />
+            <.light light={agent.light} label={agent.light_label} />
             <span>{agent.last_action}</span>
             <span :if={agent.last_action_at} aria-hidden="true">·</span>
             <time :if={agent.last_action_at} datetime={agent.last_action_iso}>
@@ -263,16 +264,19 @@ defmodule Regent.Account do
     values: ["on", "late", "off", nil],
     doc: "how recently the agent checked in: on time, late or not at all; nil draws nothing"
 
-  attr :label, :string, doc: "the light's words, such as \"Checked in 4 minutes ago\""
+  attr :label, :string,
+    required: true,
+    doc: "the light's words, such as \"Checked in 4 minutes ago\"; nil only with no light"
 
   @doc """
   An agent's check-in light, before its last-contact line: green when it checks in on
-  time, amber when late, red when it has stopped. Its words are its hover text and
-  what a screen reader says. A site without check-ins passes no light.
+  time, half filled amber when late, an empty red ring when it has stopped, so the
+  shape tells them apart without colour. Its words are its hover text and what a
+  screen reader says. A site without check-ins passes nil for both.
   """
   def light(%{light: nil} = assigns), do: ~H""
 
-  def light(assigns) do
+  def light(%{label: label} = assigns) when is_binary(label) do
     ~H"""
     <span class="rg-account__light" data-light={@light} role="img" aria-label={@label} title={@label}></span>
     """
@@ -315,7 +319,7 @@ defmodule Regent.Account do
         alt=""
         width="22"
         height="22"
-      />{@words}
+      /><span class="rg-account__world-words">{@words}</span>
     </span>
     """
   end

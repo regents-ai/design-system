@@ -214,7 +214,7 @@
 /* The arrow looks and moves like the copy icon beside it: quiet until pointed at,
    then it leans up and right toward where it goes, and gives a little on a press. */
 .rg-address .rg-address__explorer {
-  display: inline-grid; place-items: center; flex: none;
+  display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
   inline-size: 1.75rem; block-size: 1.75rem; border: 1px solid transparent;
   color: var(--color-fg-muted, currentColor); text-decoration: none;
   transition: color 120ms ease, border-color 120ms ease;

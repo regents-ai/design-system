@@ -387,24 +387,31 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   under the page's title. `reason` is `:signed_out` (default) or `:expired`, which says the
   session ended. It never shows figures, so a sign-in problem never reads as zero.
 - `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
-  `%{id, name, kind, harness, wallet, backed, last_contact_iso, last_contact}`, all
-  required: `kind` is the harness value, which picks the agent's picture; `wallet` is
+  `%{id, name, kind, harness, wallet, backed, last_contact_iso, last_contact, light,
+  light_label}`, all required: `kind` is the harness value, which picks the agent's picture; `wallet` is
   the agent's own address, shown beside its name through `Regent.Primitives.address`
   (its short form, which opens and copies the full address), or "Address unavailable"
-  when it is `nil`, never guessed from the name; and `last_contact` is already
+  when it is `nil`, never guessed from the name. The wallet keeps the same height either
+  way, and on a phone it has its own line under the name in every row, where World ID
+  is its mark alone. With a mouse, the row's actions show on the row being pointed at
+  or focused but keep their own column, never laid over the wallet's controls.
+  `last_contact` is already
   formatted, from when the agent paired or last checked in ("Last check-in"). `:unavailable` says the agents couldn't be read; only an empty
   list says "No agents paired yet." Optional `notice` reports the last action. Slots:
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
   `footer` (pairing controls, or a link to where agents are managed).
-- `agents` and `agents_brief` rows may also carry `light` (`"on"`, `"late"`, `"off"` or
-  `nil`) and `light_label`, for a site whose agents check in: an 8 px dot before the
-  row's last-contact line in `--color-success`, `--color-warning` or `--color-error`,
-  with `light_label` as its hover and screen-reader words. `nil`, or no light, draws
+- `agents` and `agents_brief` rows always carry `light` (`"on"`, `"late"`, `"off"` or
+  `nil`) and `light_label`. For a site whose agents check in: an 8 px mark before the
+  row's last-contact line, a filled `--color-success` dot, a half-filled
+  `--color-warning` dot or an empty `--color-error` ring, so the shape tells them apart
+  without colour, with `light_label` as its hover and screen-reader words; a light
+  always has its words. A site without check-ins passes `nil` for both, which draws
   nothing.
 - `agents_brief` goes in the side panel. It requires `id` and `agents`: `:loading`,
   `:unavailable`, or a list of at most three `%{id, name, kind, last_action,
-  last_action_iso, last_action_at}`, the last three `nil` until read; the site picks
+  last_action_iso, last_action_at, light, light_label}`, the three last_action keys
+  `nil` until read; the site picks
   which three, such as the most recently active. Optional `manage_href` adds Manage
   beside the "Your agents" heading, such as to https://regents.sh/account: shown while
   the pointer is over the list or a key has moved into it, and always on a touch

@@ -131,10 +131,11 @@
 .rg-account__agents p { margin: 0; }
 .rg-account__agents .rg-account__mark { grid-area: mark; inline-size: 2.5rem; block-size: 2.5rem; }
 .rg-account__agent { grid-area: name; display: flex; align-items: center; gap: var(--space-2); min-inline-size: 0; }
-.rg-account__agent strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-account__agent strong { min-inline-size: 4rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* The agent's wallet keeps its whole short form; a long name gives way first. */
 .rg-account__agent .rg-account__wallet { flex: none; font-size: var(--type-label-size); }
-.rg-account__wallet--none { color: var(--color-fg-muted); }
+/* An unknown wallet takes the wallet's height, so its row is the same height. */
+.rg-account__wallet--none { display: inline-flex; align-items: center; min-block-size: 1.75rem; color: var(--color-fg-muted); }
 .rg-account__meta {
   grid-area: meta;
   overflow: hidden;
@@ -272,8 +273,14 @@
   background: var(--color-error);
 }
 .rg-account__brief-last > .rg-account__light { align-self: center; margin-inline-end: 0; }
+/* Each state has its own shape as well as its colour: filled on time, half filled
+   when late, an empty ring once stopped. */
 .rg-account__light[data-light="on"] { background: var(--color-success); }
-.rg-account__light[data-light="late"] { background: var(--color-warning); }
+.rg-account__light[data-light="late"] {
+  box-shadow: inset 0 0 0 1.5px var(--color-warning);
+  background: linear-gradient(to top, var(--color-warning) 50%, transparent 50%);
+}
+.rg-account__light[data-light="off"] { box-shadow: inset 0 0 0 1.5px var(--color-error); background: transparent; }
 
 .rg-account__pair { display: grid; justify-items: start; gap: var(--space-2); inline-size: 100%; }
 .rg-account__pair[data-layout="icons"] { gap: var(--space-1); }
@@ -564,24 +571,29 @@
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas: "mark name" "mark meta" ". actions";
   }
+  /* On a phone the wallet has its own line under the name in every row, and World ID
+     is its mark alone, so the name keeps its room; a screen reader still says the
+     words. */
+  .rg-account__agent { flex-wrap: wrap; row-gap: 0; }
+  .rg-account__agent::after { content: ""; order: 1; flex-basis: 100%; }
+  .rg-account__agent strong { max-inline-size: calc(100% - 22px - var(--space-2)); line-height: 22px; }
+  .rg-account__agent .rg-account__wallet { order: 2; }
+  .rg-account__agent .rg-account__world-words {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* With a mouse, a row's actions show only on the row being pointed at or focused,
-   laid over the row's end, so one quiet control isn't repeated down the list and
-   the words keep the full width. Touch screens always show them in their column. */
+   so one quiet control isn't repeated down the list. They keep their own column,
+   never laid over the wallet's copy and explorer controls. Touch screens always
+   show them. */
 @media (hover: hover) and (pointer: fine) {
-  .rg-account__agents li {
-    position: relative;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "mark name" "mark meta";
-  }
   .rg-account__agents .rg-account__actions {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
-    align-items: center;
-    padding-inline-start: var(--space-4);
-    background: linear-gradient(to right, transparent, var(--color-surface) var(--space-4));
     opacity: 0;
     transition: opacity 150ms ease;
   }

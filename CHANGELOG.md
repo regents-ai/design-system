@@ -394,3 +394,24 @@ Changes before 16 October 2026 are in the commit history.
   is: when the agent paired or last checked in, not when it last did anything.
 - A Codex handoff asked for it (21 Oct 11:15Z); `STYLE.md` says so. Sites add `wallet`
   to their rows when they re-pin.
+
+## 2026-10-21 — Agent rows: the wallet's controls stay reachable
+
+An independent review of the two entries above found these, now fixed:
+
+- With a mouse, a row's actions (such as Unpair) were laid over the row's end, so a
+  click meant for the wallet's copy icon or explorer arrow pressed Unpair. They now keep
+  their own column and only fade in on the row being pointed at or focused.
+- On a phone, an agent with a long name, a wallet and World ID pushed the page wider
+  than the screen. The wallet now has its own line under the name in every row, World ID
+  is its mark alone there (a screen reader still says the words), and the name keeps at
+  least 4rem.
+- A row whose wallet is unknown was shorter than one with a wallet. "Address
+  unavailable" takes the wallet's height, and the address's explorer arrow is the same
+  size as its copy icon (it was 2 px taller), in every site.
+- `light` and `light_label` are required row keys in `agents` and `agents_brief`, `nil`
+  where a site has no check-ins, so a row has one shape. A light must have its words.
+- The light's states have their own shapes as well as colours: filled on time, half
+  filled late, an empty ring once stopped.
+- Sites re-pinning add `wallet` (agents rows) and `light` and `light_label` (both
+  lists) to their rows. The showcase's sample rows carry all three.

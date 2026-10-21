@@ -18,7 +18,7 @@ defmodule Regent.AccountTest do
   end
 
   # A check-in light shows only where a site passes one, with its words for the hover
-  # and for a screen reader; a row without one is drawn as before.
+  # and for a screen reader; a site without check-ins passes nil and draws none.
   test "an agent row shows its check-in light only when given one" do
     row = %{
       id: "a1",
@@ -42,7 +42,7 @@ defmodule Regent.AccountTest do
     assigns = %{
       lit: [row |> Map.merge(contact) |> Map.merge(late)],
       brief: [row |> Map.merge(action) |> Map.merge(late)],
-      plain: [Map.merge(row, contact)],
+      plain: [row |> Map.merge(contact) |> Map.merge(%{light: nil, light_label: nil})],
       plain_brief: [row |> Map.merge(action) |> Map.merge(%{light: nil, light_label: nil})]
     }
 
@@ -74,7 +74,9 @@ defmodule Regent.AccountTest do
         wallet: wallet,
         backed: false,
         last_contact_iso: "2026-10-21T11:00:00Z",
-        last_contact: "4 minutes ago"
+        last_contact: "4 minutes ago",
+        light: nil,
+        light_label: nil
       }
     end
 
@@ -83,15 +85,19 @@ defmodule Regent.AccountTest do
     assigns = %{agents: [row.("a1", a), row.("a2", b), row.("a3", nil)]}
     html = rendered_to_string(~H|<Regent.Account.agents id="list" agents={@agents} />|)
 
-    assert html =~ ~s(id="list-agent-a1-wallet")
-    assert html =~ ~s(id="list-agent-a2-wallet")
-    assert html =~ "0xaaaa..1234"
-    assert html =~ "0xbbbb..5678"
-    assert html =~ ~s(data-copy-text="#{a}")
-    assert html =~ ~s(data-copy-text="#{b}")
-    assert html =~ "Address unavailable"
-    refute html =~ ~s(id="list-agent-a3-wallet")
-    assert length(Regex.scan(~r/Last check-in/, html)) == 3
+    in_row = fn id ->
+      [_, rest] = String.split(html, ~s(<li id="list-agent-#{id}">), parts: 2)
+      rest |> String.split("</li>", parts: 2) |> hd()
+    end
+
+    assert in_row.("a1") =~ "0xaaaa..1234"
+    assert in_row.("a1") =~ ~s(data-copy-text="#{a}")
+    refute in_row.("a1") =~ b
+    assert in_row.("a2") =~ "0xbbbb..5678"
+    assert in_row.("a2") =~ ~s(data-copy-text="#{b}")
+    refute in_row.("a2") =~ a
+    assert in_row.("a3") =~ "Address unavailable"
+    refute in_row.("a3") =~ "0x"
   end
 
   @agent %{
