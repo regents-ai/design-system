@@ -480,11 +480,14 @@ defmodule Regent.Account do
   attr :rest, :global, doc: "the product's dialog hook, which opens it and reports its close"
   slot :actions, doc: "the product's buttons beside Done, such as Unpair"
 
+  slot :picture,
+    doc: "the product's control for the picture the person chose for this agent, after the facts"
+
   @doc """
   One agent: who it is and its name, which the person may change, when it paired,
-  who stands behind it, then the three questions every Regent site answers in the
-  same words: what may happen next, what it cost and what it has done across the
-  Regent sites. "Done" closes the dialog in the browser.
+  who stands behind it, its picture when the product shows one, then the three
+  questions every Regent site answers in the same words: what may happen next,
+  what it cost and what it has done across the Regent sites. "Done" closes the dialog in the browser.
   """
   def agent_detail(assigns) do
     ~H"""
@@ -583,6 +586,8 @@ defmodule Regent.Account do
           </dd>
         </div>
       </dl>
+
+      <div :if={@picture != []} class="rg-account__picture">{render_slot(@picture)}</div>
 
       <section class="rg-account__part" aria-labelledby={"#{@id}-may"}>
         <h3 id={"#{@id}-may"}>What may happen next</h3>

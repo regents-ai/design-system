@@ -366,3 +366,11 @@ Changes before 16 October 2026 are in the commit history.
   panel's top bar lines up with the sidebar's title row. Found on Patchbay, whose panel
   slid in beside a taller header. ash-template's browser walk checks both lines; sites
   copy that check.
+
+## 2026-10-21 — An agent's window has a place for its picture
+
+- `Regent.Account.agent_detail` takes a `picture` slot, shown after the facts and
+  before "What may happen next": the product's control to choose or remove the
+  picture a person gives their agent. Every site's Account page lets a person set it,
+  as regents.sh did alone until now; a site that passes nothing shows the window as
+  before.
