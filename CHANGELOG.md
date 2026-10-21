@@ -351,3 +351,10 @@ Changes before 16 October 2026 are in the commit history.
 - The help icon and its `guide` attribute are gone: Sean couldn't tell what it was for.
   Each agent's own page stays reachable from the site's agent guides. A site passing
   `guide` drops it when it re-pins.
+
+## 2026-10-21 — The heart works outside a thread
+
+- `Regent.Discussion.like` keeps its look wherever it sits, not only inside a
+  `thread` or `posts`: its button size, padding and hover shade no longer need a
+  `.rg-discussion` around them. The template puts it under each room message for
+  likes. `CONSUMERS.md` says so.

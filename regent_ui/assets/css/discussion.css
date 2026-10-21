@@ -1,10 +1,11 @@
 /* A forum thread (Regent.Discussion), from Patchbay's discussion page: one column,
    a picture beside each name, a thin rule between posts. Ink and paper follow the
    product palette; a given like is tangerine in both themes. */
+/* A heart stands alone too, under a chat message, so it carries the hover's shade. */
+.rg-discussion, .rg-discussion__like { --rg-discussion-sunk: color-mix(in srgb, var(--color-fg) 5%, transparent); }
 .rg-discussion {
   --rg-discussion-rule: var(--rg-page-rule);
   --rg-discussion-good: var(--color-success);
-  --rg-discussion-sunk: color-mix(in srgb, var(--color-fg) 5%, transparent);
   max-inline-size: 78ch; margin-inline: auto; padding: 1.75rem clamp(1rem, 3vw, 2rem);
   font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere;
 }
@@ -71,16 +72,16 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 .rg-discussion__filters a[aria-current="page"] { color: var(--rg-page-ink); box-shadow: inset 0 -2px var(--palette-tangerine-tango); }
 .rg-discussion__replies { display: grid; gap: 0; margin: .5rem 0 0; padding: 0; list-style: none; }
 
-/* A heart and its count; a like the reader gave is filled in. */
+/* A heart and its count, in a thread or under any message; a like the reader gave is filled in. */
 .rg-discussion__like { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .15rem; }
-.rg-discussion .rg-discussion__heart { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: .25rem .6rem; border: 0; background: transparent; color: var(--rg-page-muted); font: 600 .8125rem var(--font-family-ui); cursor: pointer; }
+.rg-discussion__like .rg-discussion__heart { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: .25rem .6rem; border: 0; background: transparent; color: var(--rg-page-muted, var(--color-fg-muted)); font: 600 .8125rem var(--font-family-ui); cursor: pointer; }
 .rg-discussion__heart .rg-discussion__icon { font-size: 1.05rem; }
 .rg-discussion__heart[aria-pressed="true"] { color: var(--palette-tangerine-tango); }
 .rg-discussion__heart[aria-pressed="true"] .rg-discussion__icon { fill: currentColor; }
-.rg-discussion__liked-by { color: var(--rg-page-muted); font-size: .8125rem; }
+.rg-discussion__liked-by { color: var(--rg-page-muted, var(--color-fg-muted)); font-size: .8125rem; }
 .rg-discussion__liked-by a { color: inherit; font-weight: 600; }
 @media (hover: hover) and (pointer: fine) {
-  .rg-discussion__heart:hover { background: var(--rg-discussion-sunk); color: var(--rg-page-ink); }
+  .rg-discussion__heart:hover { background: var(--rg-discussion-sunk); color: var(--rg-page-ink, var(--color-fg)); }
   .rg-discussion__heart[aria-pressed="true"]:hover { color: var(--palette-tangerine-tango); }
 }
 @media (prefers-reduced-motion: no-preference) {
