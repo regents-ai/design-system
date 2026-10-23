@@ -440,4 +440,5 @@ An independent review of the two entries above found these, now fixed:
   press of this icon, so the page says how fresh its figures are.
 - Styles in `primitives.css` (`.rg-last-read`): the icon looks like the copy icon, is a
   44 px target on a touch screen, and turns while its press is on its way, except under
-  reduced motion.
+  reduced motion. Its rules are two classes deep, so a site's plain-button look
+  does not reach it.

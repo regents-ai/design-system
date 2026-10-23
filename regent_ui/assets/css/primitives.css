@@ -204,7 +204,7 @@
 .rg-address__full { font-family: var(--font-family-mono, monospace); }
 /* The copy icon is two classes deep too, so it stays a bare icon beside the words. */
 .rg-address .rg-copy--icon {
-  inline-size: 1.75rem; block-size: 1.75rem; min-block-size: 1.75rem; padding: 0;
+  inline-size: 1.75rem; block-size: 1.75rem; min-inline-size: 0; min-block-size: 1.75rem; padding: 0;
   border: 1px solid transparent; background: transparent; color: var(--color-fg-muted, currentColor);
 }
 .rg-address .rg-copy--icon:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
@@ -372,25 +372,26 @@
   .rg-field :is(input, select, textarea):focus-visible { outline-color: Highlight; }
 }
 /* When the figures beside it were last read, then an icon that reads them again. The
-   icon looks and moves like the copy icon, and turns while its press is on its way. */
+   icon looks and moves like the copy icon, and turns while its press is on its way.
+   Two classes deep, so a site's plain-button look does not reach it. */
 .rg-last-read { display: inline-flex; align-items: center; gap: .25rem; color: var(--color-fg-muted, currentColor); font-variant-numeric: tabular-nums; }
-.rg-last-read__again {
+.rg-last-read .rg-last-read__again {
   display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
-  inline-size: 1.75rem; block-size: 1.75rem; min-block-size: 1.75rem; padding: 0;
+  inline-size: 1.75rem; block-size: 1.75rem; min-inline-size: 0; min-block-size: 1.75rem; padding: 0;
   border: 1px solid transparent; border-radius: 0; background: transparent;
   color: var(--color-fg-muted, currentColor); cursor: pointer;
   transition: color 120ms ease, border-color 120ms ease;
 }
-.rg-last-read__again svg { inline-size: 1rem; block-size: 1rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }
-.rg-last-read__again:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
-.rg-last-read__again:active svg { transform: scale(.88); transition-duration: 100ms; }
-.rg-last-read__again:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
-.rg-last-read__again.phx-click-loading svg { animation: rg-last-read-turn 700ms linear infinite; }
+.rg-last-read .rg-last-read__again svg { inline-size: 1rem; block-size: 1rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }
+.rg-last-read .rg-last-read__again:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
+.rg-last-read .rg-last-read__again:active svg { transform: scale(.88); transition-duration: 100ms; }
+.rg-last-read .rg-last-read__again:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
+.rg-last-read .rg-last-read__again.phx-click-loading svg { animation: rg-last-read-turn 700ms linear infinite; }
 @keyframes rg-last-read-turn { to { transform: rotate(360deg); } }
 @media (hover: none), (pointer: coarse) {
-  .rg-last-read__again { inline-size: max(2.75rem, 44px); block-size: max(2.75rem, 44px); margin-block: -0.5rem; }
+  .rg-last-read .rg-last-read__again { inline-size: max(2.75rem, 44px); block-size: max(2.75rem, 44px); margin-block: -0.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rg-last-read__again svg { transition: none; }
-  .rg-last-read__again.phx-click-loading svg { animation: none; }
+  .rg-last-read .rg-last-read__again svg { transition: none; }
+  .rg-last-read .rg-last-read__again.phx-click-loading svg { animation: none; }
 }
