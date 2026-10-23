@@ -441,4 +441,5 @@ An independent review of the two entries above found these, now fixed:
 - Styles in `primitives.css` (`.rg-last-read`): the icon looks like the copy icon, is a
   44 px target on a touch screen, and turns while its press is on its way, except under
   reduced motion. Its rules are two classes deep, so a site's plain-button look
-  does not reach it.
+  does not reach it. A page may pass `disabled` while its own limit on presses
+  runs; the icon then rests dimmed.

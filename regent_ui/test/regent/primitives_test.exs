@@ -224,5 +224,12 @@ defmodule Regent.PrimitivesTest do
 
     refute never =~ "<time"
     assert never =~ ~s(phx-click="read_again")
+
+    resting =
+      rendered_to_string(~H"""
+      <.last_read id="head-read" at={@at} phx-click="read_again" disabled />
+      """)
+
+    assert resting =~ ~r/<button[^>]*disabled/
   end
 end

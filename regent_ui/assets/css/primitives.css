@@ -383,8 +383,10 @@
   transition: color 120ms ease, border-color 120ms ease;
 }
 .rg-last-read .rg-last-read__again svg { inline-size: 1rem; block-size: 1rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }
-.rg-last-read .rg-last-read__again:is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
-.rg-last-read .rg-last-read__again:active svg { transform: scale(.88); transition-duration: 100ms; }
+.rg-last-read .rg-last-read__again:not(:disabled):is(:hover, :focus-visible) { border-color: var(--color-border, currentColor); color: var(--color-fg, currentColor); }
+/* A page may rest the icon (`disabled`) while its own limit on presses runs. */
+.rg-last-read .rg-last-read__again:disabled { cursor: default; opacity: .4; }
+.rg-last-read .rg-last-read__again:not(:disabled):active svg { transform: scale(.88); transition-duration: 100ms; }
 .rg-last-read .rg-last-read__again:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 .rg-last-read .rg-last-read__again.phx-click-loading svg { animation: rg-last-read-turn 700ms linear infinite; }
 @keyframes rg-last-read-turn { to { transform: rotate(360deg); } }

@@ -145,7 +145,10 @@ defmodule Regent.Primitives do
     doc: "what a press of the icon does, read out and shown on hover"
 
   attr :class, :any, default: nil
-  attr :rest, :global, doc: "the press, such as `phx-click`"
+
+  attr :rest, :global,
+    include: ~w(disabled),
+    doc: "the press, such as `phx-click`, and `disabled` while the page rests the icon"
 
   @doc """
   When the figures beside it were last read from the chain, and an icon that asks
