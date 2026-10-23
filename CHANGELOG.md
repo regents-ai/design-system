@@ -431,3 +431,13 @@ An independent review of the two entries above found these, now fixed:
   resting mouse with `tip.mjs`, the way the "i" does. It keeps the text's own look with a
   dotted underline. `label` is needed only for the "i".
 - Autolaunch asked for it (23 Oct), so its own copy of the tip can go.
+## 2026-10-23 — Last read, with a read-again icon
+
+- New `Regent.Primitives.last_read`: when figures read from the chain were last read,
+  as a clock time in UTC, and an icon that asks the page to read them again
+  (`phx-click`). The sites now read the chain every few minutes instead of every few
+  seconds, and read again straight after a person's confirmed on-chain action or a
+  press of this icon, so the page says how fresh its figures are.
+- Styles in `primitives.css` (`.rg-last-read`): the icon looks like the copy icon, is a
+  44 px target on a touch screen, and turns while its press is on its way, except under
+  reduced motion.

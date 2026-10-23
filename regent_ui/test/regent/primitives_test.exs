@@ -204,4 +204,25 @@ defmodule Regent.PrimitivesTest do
     assert mainnet =~ ~s(href="https://etherscan.io/tx/#{hash}")
     assert mainnet =~ ~s(aria-label="Open on Etherscan")
   end
+
+  test "last read carries the reading's moment and hands its press to the page" do
+    assigns = %{at: ~U[2026-10-23 14:05:09Z]}
+
+    read =
+      rendered_to_string(~H"""
+      <.last_read id="head-read" at={@at} phx-click="read_again" />
+      """)
+
+    assert read =~ ~s(datetime="2026-10-23T14:05:09Z")
+    assert read =~ ~s(id="head-read-again")
+    assert read =~ ~s(phx-click="read_again")
+
+    never =
+      rendered_to_string(~H"""
+      <.last_read id="head-read" phx-click="read_again" />
+      """)
+
+    refute never =~ "<time"
+    assert never =~ ~s(phx-click="read_again")
+  end
 end

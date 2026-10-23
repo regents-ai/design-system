@@ -134,6 +134,55 @@ defmodule Regent.Primitives do
     """
   end
 
+  attr :id, :string, required: true
+
+  attr :at, DateTime,
+    default: nil,
+    doc: "when the figures beside it were last read, or nil before the first reading"
+
+  attr :label, :string,
+    default: "Read again now",
+    doc: "what a press of the icon does, read out and shown on hover"
+
+  attr :class, :any, default: nil
+  attr :rest, :global, doc: "the press, such as `phx-click`"
+
+  @doc """
+  When the figures beside it were last read from the chain, and an icon that asks
+  for them to be read again. The time is a clock time in UTC, so it stays right
+  however long the page is open. The press is the page's own (`phx-click`); the new
+  time arrives with the new figures, and the icon turns while the press is on its way.
+  """
+  def last_read(assigns) do
+    ~H"""
+    <span id={@id} class={["rg-last-read", @class]}>
+      <time :if={@at} datetime={DateTime.to_iso8601(@at)}>
+        Updated {Calendar.strftime(@at, "%-d %b, %H:%M UTC")}
+      </time>
+      <span :if={!@at}>Not read yet</span>
+      <button
+        id={"#{@id}-again"}
+        type="button"
+        class="rg-last-read__again"
+        aria-label={@label}
+        title={@label}
+        {@rest}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="square"
+          aria-hidden="true"
+        >
+          <path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4v4.5H15" />
+        </svg>
+      </button>
+    </span>
+    """
+  end
+
   @explorers %{
     "base" => %{name: "Basescan", host: "basescan.org"},
     "ethereum" => %{name: "Etherscan", host: "etherscan.io"}
