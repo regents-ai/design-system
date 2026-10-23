@@ -415,3 +415,10 @@ An independent review of the two entries above found these, now fixed:
   filled late, an empty ring once stopped.
 - Sites re-pinning add `wallet` (agents rows) and `light` and `light_label` (both
   lists) to their rows. The showcase's sample rows carry all three.
+
+## 2026-10-23 — plug_crypto 2.2.1
+
+- Moved plug_crypto to 2.2.1 in `regent_ui/mix.lock`, which closes the medium-severity
+  EEF-CVE-2026-105963 (a wrong-typed argument could write the secret key base into the
+  error log). Lockfile-only change; `mix check` audits the lock and failed on 2.2.0.
+  Sites take the same pin in their own locks.
