@@ -28,6 +28,7 @@ defmodule Regent.Account do
     "pi" => "pi.svg",
     "claude_code" => "claude-code.png",
     "codex" => "codex.png",
+    "chatgpt" => "chatgpt.svg",
     "cursor" => "cursor.png",
     "gemini_cli" => "gemini-cli.png",
     "dots" => "dots.png",

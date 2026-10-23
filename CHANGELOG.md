@@ -445,3 +445,12 @@ An independent review of the two entries above found these, now fixed:
   runs; the icon then rests dimmed.
 - A tap on the icon no longer flashes the phone browser's own highlight (a blue box
   on Android); the icon's turn already shows the press.
+
+## 2026-10-23 — ChatGPT's picture
+
+- `Regent.Account.agent_mark` draws an agent of kind `"chatgpt"` with OpenAI's mark
+  (`regent_ui/priv/static/images/agents/chatgpt.svg`), black on the white frame like the
+  other pictures. Before, an agent list or pairing box holding a ChatGPT agent failed to
+  draw. Sites pick it up at their next repin and `mix regent_ui.assets`; callers change
+  nothing. Turning ChatGPT pairing on stays each site's own setting
+  (`config :regent_agents, chatgpt_pairing: true`).
