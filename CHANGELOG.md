@@ -422,3 +422,12 @@ An independent review of the two entries above found these, now fixed:
   EEF-CVE-2026-105963 (a wrong-typed argument could write the secret key base into the
   error log). Lockfile-only change; `mix check` audits the lock and failed on 2.2.0.
   Sites take the same pin in their own locks.
+
+## 2026-10-23 — A figure can open its own tip
+
+- `Regent.Primitives.tip` takes a `figure` slot: a price or a percentage that opens the
+  tip's words itself, with no "i" beside it. The figure is the button, so its words
+  describe it for screen readers and agents, and it opens on a press, a tap, Enter, or a
+  resting mouse with `tip.mjs`, the way the "i" does. It keeps the text's own look with a
+  dotted underline. `label` is needed only for the "i".
+- Autolaunch asked for it (23 Oct), so its own copy of the tip can go.

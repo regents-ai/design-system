@@ -1,5 +1,6 @@
-// Opens a `Regent.Primitives.tip` while a mouse rests on its "i", and closes it a moment
-// after the mouse leaves both the "i" and its words, so the mouse can cross onto the words.
+// Opens a `Regent.Primitives.tip` while a mouse rests on its "i" or figure, and closes it
+// a moment after the mouse leaves both that and its words, so the mouse can cross onto
+// the words.
 // A click on an "i" the mouse opened keeps its words open until Escape, a press elsewhere
 // or another click on the "i". Touch, pen and keyboard open a tip only by a press, which
 // the browser's popover handles on its own.

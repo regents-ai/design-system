@@ -56,6 +56,24 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Lets REGENT staking take the USDC."
   end
 
+  test "a figure opens its own tip and is named by what it shows" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.tip id="about-price">
+        <:figure>$1.25</:figure>
+        The price of the next Key.
+      </.tip>
+      """)
+
+    assert html =~ ~s(popovertarget="about-price")
+    assert html =~ ~s(aria-describedby="about-price")
+    refute html =~ "aria-label"
+    refute html =~ "<svg"
+    assert html =~ "$1.25"
+  end
+
   test "buttons pass application events through without implicit disabling or submission" do
     assigns = %{}
 

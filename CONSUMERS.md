@@ -80,8 +80,8 @@ Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 to its summary, and on a press outside it. A `select` pill needs nothing.
 
 Import `tip.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`: a
-`Regent.Primitives.tip` then opens while a mouse rests on its "i" and closes a moment
-after the mouse leaves the "i" and its words; a click keeps it open. Touch, pen and
+`Regent.Primitives.tip` then opens while a mouse rests on its "i" or figure and closes a
+moment after the mouse leaves that and its words; a click keeps it open. Touch, pen and
 keyboard still open a tip with a press, without it.
 
 `Regent.HolographicCard.card` owns the pointer-lit graphite foil card. Pass `id`, the

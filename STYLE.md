@@ -558,7 +558,8 @@ choice and the button, and nothing else until someone asks. Too much text is a d
 - **What goes one level down:** how something works, why a step exists, timings,
   provenance, technical detail and reassurance. Put a short explanation in a tip
   (`Regent.Primitives.tip`: an "i" beside the label that opens a popover on a press, and
-  under a mouse while it rests there), a longer one
+  under a mouse while it rests there; given a `figure`, such as a price, the figure
+  itself opens it and there is no "i"), a longer one
   in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
   or page behind a link. Legal and policy text are links at the foot, never paragraphs.
 - **Show state with marks, not sentences:** a tick that draws in when a step is done, a

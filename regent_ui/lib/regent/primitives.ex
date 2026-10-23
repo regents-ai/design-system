@@ -295,30 +295,41 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
-  attr :label, :string, required: true, doc: ~s(The button's name, such as "About approving".)
+
+  attr :label, :string,
+    default: nil,
+    doc: ~s(The "i" button's name, such as "About approving". A figure is its own name.)
+
   attr :class, :any, default: nil
   attr :rest, :global
+
+  slot :figure,
+    doc: "A figure, such as a price, that opens the words itself, in place of the \"i\"."
+
   slot :inner_block, required: true
 
   @doc """
   A small "i" button that opens a short explanation beside it, so the words a
-  person rarely needs stay off the screen. The explanation stays in the page and
+  person rarely needs stay off the screen. Given a `figure`, the figure itself
+  opens them and there is no "i". The explanation stays in the page and
   describes the button, so screen readers and agents read it without opening it.
   The browser's own popover opens it on a click, tap or Enter and closes it on
   Escape or a press elsewhere. With `tip.mjs` imported, it also opens while a mouse
-  rests on the "i" and closes when the mouse leaves; a click then keeps it open.
+  rests on the "i" or the figure and closes when the mouse leaves; a click then
+  keeps it open.
   """
   def tip(assigns) do
     ~H"""
     <span class={["rg-tip", @class]} {@rest}>
       <button
         type="button"
-        class="rg-tip-button"
+        class={["rg-tip-button", @figure != [] && "rg-tip-button--figure"]}
         popovertarget={@id}
-        aria-label={@label}
+        aria-label={@figure == [] && @label}
         aria-describedby={@id}
       >
-        <svg viewBox="0 0 16 16" aria-hidden="true">
+        {render_slot(@figure)}
+        <svg :if={@figure == []} viewBox="0 0 16 16" aria-hidden="true">
           <circle cx="8" cy="8" r="6.5" /><path d="M8 7.25v4M8 4.75v.01" />
         </svg>
       </button>

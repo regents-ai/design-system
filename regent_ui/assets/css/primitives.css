@@ -281,6 +281,14 @@
 .rg-tip .rg-tip-button:focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 0; }
 @media (hover: hover) { .rg-tip .rg-tip-button:hover { color: var(--rg-p-text); } }
 @media (pointer: coarse) { .rg-tip .rg-tip-button { inline-size: 2.75rem; block-size: 2.75rem; margin: -0.625rem; } }
+/* A figure that opens its own words: it reads as the text around it, with a dotted
+   underline saying there is more. */
+.rg-tip .rg-tip-button.rg-tip-button--figure,
+.rg-tip .rg-tip-button.rg-tip-button--figure:hover {
+  display: inline; inline-size: auto; block-size: auto; margin: 0; border-radius: 0;
+  color: inherit; font: inherit; letter-spacing: inherit; cursor: help;
+  text-decoration: underline dotted; text-decoration-color: var(--rg-p-muted); text-underline-offset: 0.2em;
+}
 .rg-tip-body {
   inline-size: max-content;
   max-inline-size: min(18rem, calc(100vw - 2rem)); margin: auto; padding: var(--space-1) var(--space-2);
