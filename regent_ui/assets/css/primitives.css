@@ -379,7 +379,7 @@
   display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
   inline-size: 1.75rem; block-size: 1.75rem; min-inline-size: 0; min-block-size: 1.75rem; padding: 0;
   border: 1px solid transparent; border-radius: 0; background: transparent;
-  color: var(--color-fg-muted, currentColor); cursor: pointer;
+  color: var(--color-fg-muted, currentColor); cursor: pointer; -webkit-tap-highlight-color: transparent;
   transition: color 120ms ease, border-color 120ms ease;
 }
 .rg-last-read .rg-last-read__again svg { inline-size: 1rem; block-size: 1rem; transition: transform 160ms cubic-bezier(.23, 1, .32, 1); }

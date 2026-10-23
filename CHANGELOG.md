@@ -443,3 +443,5 @@ An independent review of the two entries above found these, now fixed:
   reduced motion. Its rules are two classes deep, so a site's plain-button look
   does not reach it. A page may pass `disabled` while its own limit on presses
   runs; the icon then rests dimmed.
+- A tap on the icon no longer flashes the phone browser's own highlight (a blue box
+  on Android); the icon's turn already shows the press.
