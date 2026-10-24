@@ -454,3 +454,9 @@ An independent review of the two entries above found these, now fixed:
   draw. Sites pick it up at their next repin and `mix regent_ui.assets`; callers change
   nothing. Turning ChatGPT pairing on stays each site's own setting
   (`config :regent_agents, chatgpt_pairing: true`).
+
+## 2026-10-24 — regent_ui accepts Elixir 1.20
+
+- `regent_ui/mix.exs` asks for Elixir `~> 1.19` instead of `~> 1.19.5`, which ruled out 1.20 and
+  made every site on Elixir 1.20.4 warn when it built regent_ui. Checked on Elixir 1.19.5 and
+  1.20.4 (46 tests each). Keyfleet found it.
