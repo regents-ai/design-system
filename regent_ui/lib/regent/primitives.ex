@@ -206,7 +206,14 @@ defmodule Regent.Primitives do
 
   attr :label, :string,
     default: nil,
-    doc: "what shows: the ENS name that points to `address`; its short form `0x1234..abcd` if nil"
+    doc:
+      "what shows in the short and compact forms: the ENS name that points to `address`; its short form `0x1234..abcd` if nil"
+
+  attr :variant, :string,
+    default: "short",
+    values: ~w(short full compact),
+    doc:
+      "`short`: the name or short form, copy icon and explorer arrow; `full`: every character, wrapping, for a person to check, with both icons; `compact`: the name or short form and the copy icon only, beside a small control in a narrow row"
 
   attr :class, :any, default: nil
   attr :rest, :global
@@ -217,6 +224,11 @@ defmodule Regent.Primitives do
   Enter, then, tight together, an icon that copies it and a diagonal arrow that opens
   it on its chain's explorer in a new tab: Basescan, or Etherscan for Ethereum. For
   an ENS name all three give the address it points to.
+
+  Where a person must check every character, such as an address they typed for
+  someone else, `variant="full"` shows the whole address, wrapping, and nothing
+  else in its place. Beside a small control in a narrow row, `variant="compact"`
+  keeps the words and the copy icon and leaves the arrow out.
   """
   def address(assigns) do
     assigns =
@@ -229,13 +241,17 @@ defmodule Regent.Primitives do
       )
 
     ~H"""
-    <span id={@id} class={["rg-address", @class]} {@rest}>
-      <button type="button" class="rg-address__label" popovertarget={"#{@id}-full"}>
-        {@label}
-      </button>
-      <span id={"#{@id}-full"} class="rg-tip-body rg-address__full" popover>{@address}</span>
+    <span id={@id} class={["rg-address", "rg-address--#{@variant}", @class]} {@rest}>
+      <span :if={@variant == "full"} class="rg-address__words">{@address}</span>
+      <%= if @variant != "full" do %>
+        <button type="button" class="rg-address__label" popovertarget={"#{@id}-full"}>
+          {@label}
+        </button>
+        <span id={"#{@id}-full"} class="rg-tip-body rg-address__full" popover>{@address}</span>
+      <% end %>
       <.copy_icon id={"#{@id}-copy"} text={@address} label={@copy} />
       <a
+        :if={@variant != "compact"}
         id={"#{@id}-explorer"}
         class="rg-address__explorer"
         href={@href}

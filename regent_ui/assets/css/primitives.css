@@ -190,7 +190,10 @@
 .rg-copy--icon[data-copy-state="failed"] { color: var(--color-error, currentColor); }
 /* An address, ENS name, short address or transaction hash, then its copy icon and
    its arrow to Basescan, the three tight together. */
+/* An address keeps its own letters: a site's uppercase or spaced-out button or
+   label style around it never reaches the words, the full address or its tip. */
 .rg-address { display: inline-flex; align-items: center; gap: .125rem; max-inline-size: 100%; vertical-align: middle; }
+.rg-address, .rg-address .rg-address__label, .rg-address__full { text-transform: none; letter-spacing: normal; }
 .rg-address .rg-address__label { margin-inline-end: .125rem; }
 /* The words open the full address. Two classes deep, so a site's plain-button look
    does not reach them. */
@@ -202,6 +205,19 @@
 }
 .rg-address .rg-address__label:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
 .rg-address__full { font-family: var(--font-family-mono, monospace); }
+/* The full form: every character, breaking at any of them, with the icons after the
+   last line. */
+.rg-address--full { display: inline; }
+.rg-address__words {
+  font-family: var(--font-family-mono, monospace); font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere; word-break: break-all; margin-inline-end: .25rem;
+}
+.rg-address--full :is(.rg-copy--icon, .rg-address__explorer) { vertical-align: middle; }
+/* The compact form holds a fixed width beside a small control in a narrow row: the
+   short form's twelve characters, whole. A longer name ends in an ellipsis there;
+   the full address is one press away. */
+.rg-address--compact { flex: none; }
+.rg-address--compact .rg-address__label { flex: none; max-inline-size: 12ch; }
 /* The copy icon is two classes deep too, so it stays a bare icon beside the words. */
 .rg-address .rg-copy--icon {
   inline-size: 1.75rem; block-size: 1.75rem; min-inline-size: 0; min-block-size: 1.75rem; padding: 0;
