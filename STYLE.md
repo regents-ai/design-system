@@ -508,6 +508,43 @@ dropdown inside a form stays an `rg-field` select, so its corners match the inpu
 An open `details` pill closes on Escape, handing focus back to its summary, and on a press
 outside it, through `pill_select.mjs` (copied by `mix regent_ui.assets`, imported once).
 
+## Layers
+
+Six layers name what sits on what: Ground, Sheet, Card, Panel, Window and Tip. Ground
+is the page; a sheet is the one surface you work on (`Regent.Structure.panel`); cards
+sit on a sheet; a panel slides in from the edge it stays against (the side panel, the
+phone menu); a window opens in the middle over a shade (`Regent.Structure.dialog`); a
+tip or menu is the highest and the shortest-lived. The higher a thing sits, the shorter
+it stays.
+
+Height shows three ways at once: a firmer edge, a lighter fill and how it arrives.
+Never in a soft shadow.
+
+| Layer | Edge | Fill | Arrives |
+| --- | --- | --- | --- |
+| Ground | None | The page | Still |
+| Sheet | Light, four cut corners | Surface | Still |
+| Card | A rule between rows | Surface | Settles in |
+| Panel | Firm, on its open side | The page | Slides from its edge |
+| Window | Firmer, two cut corners | Surface, over a shade | Rises |
+| Tip | Firm | Raised | Drops in |
+
+- Each layer that floats has one stacking place, and nothing states a number of its
+  own: `--rg-layer-card` 1, `--rg-layer-shade` 10, `--rg-layer-panel` 20,
+  `--rg-layer-header` 30, `--rg-layer-tip` 50 and `--rg-layer-skip` 60 (the skip
+  link). A window, and a tip or menu the browser lifts above the page itself (a
+  modal dialog, a popover), needs none.
+- Panels and tips name their shadow, and it is none: `--rg-layer-panel-shadow` and
+  `--rg-layer-tip-shadow`. A window's cut-corner frame draws its own edge. Layers
+  stay flat (Sean, LAYERS-DEPTH a, 27 October 2026); nothing floats on a soft
+  shadow.
+- Artwork that orders its own pieces (a cube, the crown, a hero) keeps its own numbers
+  inside itself; they never meet the page's layers.
+- With reduced motion asked for, nothing moves: a page's headline and its cards fade
+  in, and windows, panels and menus are simply there.
+- The template's `/showcase/grammar` shows the pieces by name, how they move and the
+  six layers drawn.
+
 ## Shared base and local additions
 
 Every site keeps the shared base. A site may add to it; an addition is not a defect.

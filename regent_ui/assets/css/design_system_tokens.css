@@ -128,6 +128,15 @@
   --shadow-md: 0 12px 28px -20px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 24%, transparent);
   --shadow-lg: 0 28px 64px -48px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 32%, transparent);
 
+  --rg-layer-card: 1;
+  --rg-layer-shade: 10;
+  --rg-layer-panel: 20;
+  --rg-layer-header: 30;
+  --rg-layer-tip: 50;
+  --rg-layer-skip: 60;
+  --rg-layer-panel-shadow: none;
+  --rg-layer-tip-shadow: none;
+
   --hairline: color-mix(in oklch, var(--color-fg) 14%, transparent);
   --hairline-strong: color-mix(in oklch, var(--color-fg) 26%, transparent);
 

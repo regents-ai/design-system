@@ -486,3 +486,20 @@ An independent review of the two entries above found these, now fixed:
   and its downloads), joined to the site graph by `graph/2` and printed by
   `Regent.AgentMetadata.head`. Facts a page does not show are left out. Patchbay's
   AI-search request; `CONSUMERS.md` and `STYLE.md` say so.
+
+## 2026-10-27 — Layers
+
+- `STYLE.md` has a Layers section after Shape and spacing: six layers (Ground, Sheet,
+  Card, Panel, Window, Tip), each showing its height by its edge, its fill and how it
+  arrives, never by a soft shadow.
+- New tokens: one stacking place per floating layer (`--rg-layer-card` 1, `-shade` 10,
+  `-panel` 20, `-header` 30, `-tip` 50, `-skip` 60) and one shadow each for panel and
+  tip, both `none`: layers stay flat (Sean, LAYERS-DEPTH a). Windows need no number;
+  the browser lifts them above the page.
+  The template uses the same names and words.
+- `.rg-panel` lifts on focus to the card layer, and the account choice's name tip
+  takes the tip layer, so regent_ui states no stacking number of its own outside
+  artwork.
+- `Regent.Structure.dialog` also opens as a popover (`popover` on the component), so a
+  window shown above another window, such as Credits' "Where to spend", wears the same
+  cut-corner frame.

@@ -215,8 +215,9 @@ defmodule Regent.Structure do
   in the shared cut-corner frame, never a plain square box. Like a primary button,
   its top-left and bottom-right corners are cut with an accent along each cut, and
   the other two are square with a mark drawn in. The application opens and closes
-  it and owns everything inside; its contents scroll inside the frame, so the
-  frame's corners stay put on a short screen.
+  it (`showModal()`, or `popover` for a window shown above another one) and owns
+  everything inside; its contents scroll inside the frame, so the frame's corners
+  stay put on a short screen.
   """
   def dialog(assigns) do
     ~H"""
