@@ -20,7 +20,10 @@ CSRF, provider configuration and styles/scripts product-owned. Pass truthful bra
 canonical URL, share image and alt, and a structured-data map. `image_width` and
 `image_height` are optional and print only when set: give them for a picture whose
 size is known, such as the site's own, and leave them out for a page's own picture,
-such as a blog post's cover. Optional guide,
+such as a blog post's cover. A page that holds a blog post, a forum thread or
+question, or a table of data adds its own schema.org node beside the site graph with
+`Regent.StructuredData` (`blog_posting/2`, `discussion/1`, `dataset/1`, joined by
+`graph/2`); every fact in it must be one the page shows. Optional guide,
 sitemap and OpenAPI links must name real routes. `markdown` defaults to false:
 enable it only for the product's explicit supported-page set. Site classification
 is optional and caller-owned, never selected to inflate a score. `nonce` supports

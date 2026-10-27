@@ -326,6 +326,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, Keyfleet |
 | `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
+| `Regent.StructuredData` | A page's own schema.org facts: blog post, forum thread or question, data table | Ash Template |
 
 The foil's WebGPU renderer is `regent_ui/assets/js/holographic_card.mjs`; `Regent.Discussion`
 remembers Compact replies with `discussion.mjs`; `Regent.Blog`'s

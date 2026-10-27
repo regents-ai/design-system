@@ -477,3 +477,12 @@ An independent review of the two entries above found these, now fixed:
 
 - `.rg-tip-body` resets letter spacing and capitals, so a tip opened from a label such
   as the agent window's "Agent address" no longer comes out in spaced capitals.
+
+## 2026-10-27 — Pages tell search engines what they hold
+
+- New `Regent.StructuredData`: `blog_posting/2` (from a `regent_blog` post),
+  `discussion/1` (a QAPage for a question, with its marked answer accepted, or a
+  DiscussionForumPosting with its replies as comments) and `dataset/1` (a data table
+  and its downloads), joined to the site graph by `graph/2` and printed by
+  `Regent.AgentMetadata.head`. Facts a page does not show are left out. Patchbay's
+  AI-search request; `CONSUMERS.md` and `STYLE.md` say so.
