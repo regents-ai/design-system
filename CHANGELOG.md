@@ -460,3 +460,15 @@ An independent review of the two entries above found these, now fixed:
 - `regent_ui/mix.exs` asks for Elixir `~> 1.19` instead of `~> 1.19.5`, which ruled out 1.20 and
   made every site on Elixir 1.20.4 warn when it built regent_ui. Checked on Elixir 1.19.5 and
   1.20.4 (46 tests each). Keyfleet found it.
+
+## 2026-10-27 — Agent list and agent window: clearer words and layout
+
+- `Regent.Account.agents`: each row shows the agent's whole name, and the line under
+  it holds the address (copy and explorer controls) and the row's actions, always in
+  view. The hover-only actions and the phone-only wallet line are gone.
+- `Regent.Account.agent_detail`: the agent address has a tip on how the agent made
+  it with SIWA and how the app running the agent keeps its key. Headings are now
+  "Allowed Agent Actions", "Spending" and "Activity". "It never uses your wallet." is
+  a quote in headline size. Spending adds "More info at your account", linking to the
+  new `account_href` (default `/account`). Activity drops its explainer; with nothing
+  yet it reads "Your agent’s actions will appear here."

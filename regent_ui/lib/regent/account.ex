@@ -121,8 +121,8 @@ defmodule Regent.Account do
 
   slot :actions,
     doc:
-      "per-agent controls, such as Unpair, as quiet buttons; receives the agent. They show " <>
-        "when the row is hovered or focused, and stay in view on touch screens"
+      "per-agent controls, such as See Actions and Unpair, as quiet buttons; receives the " <>
+        "agent. They sit on the line under the name, after the agent's address"
 
   slot :footer, doc: "pairing controls, or where to manage agents when this site cannot"
 
@@ -166,6 +166,9 @@ defmodule Regent.Account do
           <.agent_mark kind={agent.kind} />
           <p class="rg-account__agent">
             <strong>{agent.name}</strong>
+            <.world_id :if={agent.backed} />
+          </p>
+          <div class="rg-account__controls">
             <Primitives.address
               :if={agent.wallet}
               id={"#{@id}-agent-#{agent.id}-wallet"}
@@ -175,8 +178,10 @@ defmodule Regent.Account do
             <span :if={!agent.wallet} class="rg-account__wallet rg-account__wallet--none">
               Address unavailable
             </span>
-            <.world_id :if={agent.backed} />
-          </p>
+            <div :if={@actions != []} class="rg-account__actions">
+              {render_slot(@actions, agent)}
+            </div>
+          </div>
           <p class="rg-account__meta">
             <span>{agent.harness}</span>
             <span>
@@ -184,9 +189,6 @@ defmodule Regent.Account do
               <time datetime={agent.last_contact_iso}>{agent.last_contact}</time>
             </span>
           </p>
-          <div :if={@actions != []} class="rg-account__actions">
-            {render_slot(@actions, agent)}
-          </div>
         </li>
       </ul>
       <div :if={@footer != []} class="rg-account__footer">{render_slot(@footer)}</div>
@@ -502,6 +504,10 @@ defmodule Regent.Account do
     required: true,
     doc: "`:loading`, `:unavailable`, or the Credits it has spent for its person, formatted"
 
+  attr :account_href, :string,
+    default: "/account",
+    doc: "the site's Account page, where the person's Credits are"
+
   attr :notice, :any, default: nil, doc: "`{:status | :alert, text}`: how the last action ended"
   attr :target, :any, default: nil, doc: "phx-target for the presses below"
   attr :open_event, :string, required: true, doc: "opens another agent; carries `id`"
@@ -523,8 +529,8 @@ defmodule Regent.Account do
   @doc """
   One agent: who it is and its name, which the person may change, when it paired,
   who stands behind it, its picture when the product shows one, then the three
-  questions every Regent site answers in the same words: what may happen next,
-  what it cost and what it has done across the Regent sites. "Done" closes the dialog in the browser.
+  questions every Regent site answers in the same words: what it may do, what it
+  has spent and what it has done across the Regent sites. "Done" closes the dialog in the browser.
   """
   def agent_detail(assigns) do
     ~H"""
@@ -580,7 +586,20 @@ defmodule Regent.Account do
           <dd>{@agent.last_contact} <span>{@agent.last_contact_at}</span></dd>
         </div>
         <div>
-          <dt>Agent address</dt>
+          <dt class="rg-account__fact-term">
+            Agent address
+            <Primitives.tip id={"#{@id}-wallet-about"} label="About the agent address">
+              Your agent made this address for itself when it first signed in with SIWA
+              (Sign-In With Agent). SIWA lets an agent prove it holds the private key
+              behind its address without ever sharing the key, so every Regent site knows
+              it is the same agent.
+              <span class="rg-account__tip-line" data-after="true">
+                Where that private key is kept depends on the app running your agent:
+                some keep it in a file on your computer, others in a secure key store or a
+                hosted wallet. Regent sites never see it or hold it.
+              </span>
+            </Primitives.tip>
+          </dt>
           <dd>
             <Primitives.address
               id={"#{@id}-wallet"}
@@ -627,29 +646,27 @@ defmodule Regent.Account do
       <div :if={@picture != []} class="rg-account__picture">{render_slot(@picture)}</div>
 
       <section class="rg-account__part" aria-labelledby={"#{@id}-may"}>
-        <h3 id={"#{@id}-may"}>What may happen next</h3>
+        <h3 id={"#{@id}-may"}>Allowed Agent Actions</h3>
         <p>While it stays paired, {@agent.name} may:</p>
         <ul>
           <li :for={line <- @may}>{line}</li>
         </ul>
-        <p class="rg-account__aside">It never uses your wallet.</p>
+        <blockquote class="rg-account__promise">It never uses your wallet.</blockquote>
       </section>
 
       <section class="rg-account__part" aria-labelledby={"#{@id}-cost"}>
-        <h3 id={"#{@id}-cost"}>What it cost</h3>
+        <h3 id={"#{@id}-cost"}>Spending</h3>
         <p role="status">{spent_words(@spent)}</p>
+        <p>More info at <a href={@account_href}>your account</a>.</p>
       </section>
 
       <section class="rg-account__log" aria-labelledby={"#{@id}-activity"}>
-        <h3 id={"#{@id}-activity"}>Recent activity</h3>
-        <p>
-          The Regent sites this agent signed requests on since it paired, a line for each site and day, newest first. Kept for 30 days.
-        </p>
+        <h3 id={"#{@id}-activity"}>Activity</h3>
         <p :if={@activity == :loading} role="status">Reading this agent’s activity…</p>
         <p :if={@activity == :unavailable} role="status">
           This agent’s activity couldn’t be read right now. Refresh to try again.
         </p>
-        <p :if={@activity == []} role="status">No requests yet since it paired.</p>
+        <p :if={@activity == []} role="status">Your agent’s actions will appear here.</p>
         <ol :if={is_list(@activity) and @activity != []}>
           <li :for={entry <- @activity}>
             <span>{entry.site}</span>

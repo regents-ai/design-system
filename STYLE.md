@@ -390,12 +390,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - `agents` requires `id` and `agents`: `:loading`, `:unavailable`, or a list of
   `%{id, name, kind, harness, wallet, backed, last_contact_iso, last_contact, light,
   light_label}`, all required: `kind` is the harness value, which picks the agent's picture; `wallet` is
-  the agent's own address, shown beside its name through `Regent.Primitives.address`
-  (its short form, which opens and copies the full address), or "Address unavailable"
-  when it is `nil`, never guessed from the name. The wallet keeps the same height either
-  way, and on a phone it has its own line under the name in every row, where World ID
-  is its mark alone. With a mouse, the row's actions show on the row being pointed at
-  or focused but keep their own column, never laid over the wallet's controls.
+  the agent's own address, shown on the line under its whole name through
+  `Regent.Primitives.address` (its short form, which opens and copies the full
+  address), or "Address unavailable" when it is `nil`, never guessed from the name.
+  The row's actions (See Actions, Unpair) follow the address on that same line and
+  are always shown. A long name wraps rather than being cut; on a phone World ID is
+  its mark alone.
   `last_contact` is already
   formatted, from when the agent paired or last checked in ("Last check-in"). `:unavailable` says the agents couldn't be read; only an empty
   list says "No agents paired yet." Optional `notice` reports the last action. Slots:
@@ -447,8 +447,11 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   formatted), `activity` (`:loading`, `:unavailable`, or a line for each site and
   day, newest first: `%{site, day_iso, day, hours}`, `hours` saying when the first
   and last request that day came) and `open_event` (carries `id`). After the facts
-  it answers the three questions every Regent site asks in the same words: "What
-  may happen next", "What it cost", then the recent activity. Optional:
+  it answers the three questions every Regent site asks in the same words, under
+  "Allowed Agent Actions" (closing on the quoted promise that it never uses the
+  person's wallet), "Spending" (with a link to `account_href`, default `/account`)
+  and "Activity". The agent address carries a tip on how the agent made it with
+  SIWA and how its harness keeps the key. Optional:
   `same_person_count`, `same_person` (`%{id, name}`), `notice`
   (`{:status | :alert, text}`), `name_error` (why a new name was refused, in a few
   words, such as "That name can't be used."; it takes the place of the name's hint,
