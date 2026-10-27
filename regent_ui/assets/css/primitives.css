@@ -295,7 +295,7 @@
   border: 1px solid var(--rg-p-border); border-radius: var(--radius);
   background: var(--color-surface-elevated, var(--rg-p-surface)); color: var(--rg-p-text);
   font-family: var(--font-family-ui, inherit); font-size: .875rem; font-weight: 400; line-height: 1.4;
-  text-align: start; overflow-wrap: anywhere;
+  letter-spacing: normal; text-align: start; text-transform: none; overflow-wrap: anywhere;
 }
 /* Beside its button where the browser can place it there; centred otherwise. */
 @supports (position-area: block-end) {

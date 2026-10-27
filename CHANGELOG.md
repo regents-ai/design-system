@@ -472,3 +472,8 @@ An independent review of the two entries above found these, now fixed:
   a quote in headline size. Spending adds "More info at your account", linking to the
   new `account_href` (default `/account`). Activity drops its explainer; with nothing
   yet it reads "Your agent’s actions will appear here."
+
+## 2026-10-27 — A tip reads in plain letters beside a small-capitals label
+
+- `.rg-tip-body` resets letter spacing and capitals, so a tip opened from a label such
+  as the agent window's "Agent address" no longer comes out in spaced capitals.
