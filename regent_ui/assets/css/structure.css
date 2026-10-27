@@ -160,7 +160,7 @@
 @media (max-width: 47.99rem) {
   .rg-dialog { --rg-dialog-cut: 12px; }
 }
-.rg-panel:focus-within { z-index: 2; }
+.rg-panel:focus-within { z-index: var(--rg-layer-card); }
 .rg-panel__heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding: var(--rg-panel-padding); border-block-end: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
 .rg-panel__heading h3 { margin: 0; min-inline-size: 0; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
 .rg-panel__index { font-family: var(--font-family-mono); font-size: .8125rem; white-space: nowrap; }
