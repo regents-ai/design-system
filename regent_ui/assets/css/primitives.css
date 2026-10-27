@@ -190,10 +190,13 @@
 .rg-copy--icon[data-copy-state="failed"] { color: var(--color-error, currentColor); }
 /* An address, ENS name, short address or transaction hash, then its copy icon and
    its arrow to Basescan, the three tight together. */
-/* An address keeps its own letters: a site's uppercase or spaced-out button or
-   label style around it never reaches the words, the full address or its tip. */
+/* An address keeps its own letters: a site's uppercase, small-caps or spaced-out
+   button or label style around it never reaches the words, the full address or its
+   tip. It always reads left to right, so on a right-to-left page a long name is still
+   cut at its end. */
 .rg-address { display: inline-flex; align-items: center; gap: .125rem; max-inline-size: 100%; vertical-align: middle; }
-.rg-address, .rg-address .rg-address__label, .rg-address__full { text-transform: none; letter-spacing: normal; }
+.rg-address, .rg-address .rg-address__label, .rg-address__full { text-transform: none; letter-spacing: normal; font-variant-caps: normal; }
+.rg-address .rg-address__label, .rg-address__words, .rg-address__full { direction: ltr; unicode-bidi: isolate; }
 .rg-address .rg-address__label { margin-inline-end: .125rem; }
 /* The words open the full address. Two classes deep, so a site's plain-button look
    does not reach them. */

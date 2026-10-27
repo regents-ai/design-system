@@ -506,9 +506,12 @@ An independent review of the two entries above found these, now fixed:
 
 ## 2026-10-27 — Addresses keep their letters, and come in full and compact forms
 
-- `Regent.Primitives.address` resets letter case and spacing on its own words, its
-  full address and its tip, so a site's uppercase or spaced-out label or button style
-  no longer turns `0x1234..abcd` into `0X1234..ABCD`. regents.sh asked for it.
+- `Regent.Primitives.address` resets letter case, small caps and spacing on its own
+  words, its full address and its tip, so a site's uppercase, small-caps or spaced-out
+  label or button style no longer turns `0x1234..abcd` into `0X1234..ABCD`. The words
+  always read left to right, so on a right-to-left page a long name is cut at its end.
+  regents.sh asked for it; the template chief's review found the small caps and
+  right-to-left cases.
 - New `variant` attribute. `short` (the default) is the address as before. `full`
   shows every character of the `0x` address, wrapping, with the copy icon and the
   arrow after it, for a person checking an address they typed for someone else.
