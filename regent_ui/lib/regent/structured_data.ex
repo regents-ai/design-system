@@ -44,8 +44,10 @@ defmodule Regent.StructuredData do
   A forum thread as `Regent.Discussion` shows it.
 
   `kind: :question` gives a QAPage whose marked answer (`answer`) is its
-  accepted answer and whose other replies are suggested answers;
-  `kind: :discussion` gives a DiscussionForumPosting with its replies as
+  accepted answer and whose other replies are suggested answers. Search engines
+  read a QAPage only with at least one answer, so a question whose page shows
+  neither a marked answer nor a reply is a DiscussionForumPosting until it has
+  one. `kind: :discussion` gives a DiscussionForumPosting with its replies as
   comments. The thread map holds `url`, `title`, `text`, `author`, `at`,
   `reply_count`, `replies` and, when the page shows them, `likes` and `views`.
   Each post (the answer and every reply) holds `url`, `text`, `author`, `at` and
@@ -53,6 +55,10 @@ defmodule Regent.StructuredData do
   `replies` may be the replies the page shows, fewer than `reply_count`.
   """
   @spec discussion(map()) :: map()
+  def discussion(%{kind: :question, replies: []} = thread)
+      when not is_map_key(thread, :answer) or is_nil(thread.answer),
+      do: discussion(%{thread | kind: :discussion})
+
   def discussion(%{kind: :question} = thread) do
     answer = thread[:answer]
 

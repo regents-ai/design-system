@@ -61,6 +61,22 @@ defmodule Regent.StructuredDataTest do
     assert length(question["suggestedAnswer"]) == 2
   end
 
+  test "a question with no answer yet is a forum post until one comes" do
+    for extra <- [%{replies: []}, %{replies: [], answer: nil}] do
+      page = StructuredData.discussion(thread(:question, Map.put(extra, :reply_count, 0)))
+
+      assert page["@type"] == "DiscussionForumPosting"
+      assert page["headline"] == "Why does sign-in close?"
+      assert page["commentCount"] == 0
+      refute Map.has_key?(page, "comment")
+    end
+
+    [first | _] = thread(:question).replies
+    answered = StructuredData.discussion(thread(:question, %{replies: [first], reply_count: 1}))
+    assert answered["@type"] == "QAPage"
+    assert [%{"text" => "Reply a"}] = answered["mainEntity"]["suggestedAnswer"]
+  end
+
   test "a discussion counts its likes and views only when the page shows them" do
     shown = StructuredData.discussion(thread(:discussion, %{likes: 4, views: 40}))
 

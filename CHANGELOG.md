@@ -528,3 +528,10 @@ An independent review of the two entries above found these, now fixed:
   because the picture map is read with `Map.fetch!`, on every site whose pin lacks this
   line, whether or not that site offers the connector. Pairings are shared, so every site
   takes this pin before any site switches the connector on.
+
+## 2026-10-28 — An unanswered question is a forum post until it has an answer
+
+- `Regent.StructuredData.discussion/1` gives a question whose page shows neither a marked
+  answer nor a reply a `DiscussionForumPosting`, and a `QAPage` once it has one. Search
+  engines read a `QAPage` only with an accepted or suggested answer, so every new question
+  on every site was reported as an error until someone replied (Patchbay found it).
