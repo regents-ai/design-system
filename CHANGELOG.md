@@ -519,3 +519,12 @@ An independent review of the two entries above found these, now fixed:
   arrow, so it fits beside a small control such as "Change" in a row 320 px wide; a
   longer name ends in an ellipsis there and still opens and copies in full.
 - `STYLE.md` "Addresses and transaction hashes" says when to use each.
+
+## 2026-10-28 — Claude, the connected app, has its picture
+
+- `Regent.Account.agent_mark` knows the `claude` harness, which elixir-utils d763b80 added
+  for the Claude connector, and shows it with the Claude picture Claude Code already uses.
+  Before this, any agent list showing a Claude paired through the connector raised,
+  because the picture map is read with `Map.fetch!`, on every site whose pin lacks this
+  line, whether or not that site offers the connector. Pairings are shared, so every site
+  takes this pin before any site switches the connector on.
