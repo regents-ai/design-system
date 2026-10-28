@@ -573,3 +573,13 @@ An independent review of the two entries above found these, now fixed:
   around them, and three small marks left in its corners from the screenshot it was cut
   from, are now transparent. Agent pictures sit on the mark's white tile, where the
   off-white showed as a faint square (reviewer, 28 Oct 17:38Z).
+
+## 2026-10-28 — The account menu can carry the Credits balance on the narrowest phones
+
+- `Regent.Account.menu` takes an optional `balance` slot: the Credits balance as one
+  button that opens the site's Credits panel. It shows, as a flat row under the wallet
+  like Pair New Agent (44 px tall), only at 22.49rem wide and under, where the site's
+  header leaves its own balance out. At 320 px the header's seven buttons and the frame's
+  gutters needed about 323 px of a 288 px row, so a person with a balance scrolled
+  sideways by 15 px (design chief's review, 28 Oct). No balance, no slot, no row.
+  `STYLE.md` says so.

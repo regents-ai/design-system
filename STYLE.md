@@ -431,7 +431,10 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
   `pair_href` (its pairing box, such as `/account#account-pairing`) and the `picture`
   (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
-  line, left out when the name already is the wallet. Both links patch. Sign out
+  line, left out when the name already is the wallet. The optional `balance` slot
+  holds the Credits balance as one button opening the site's Credits panel; it shows
+  only at 22.49rem wide and under, where the site's header leaves its own balance out,
+  so the balance has one place on screen at every width. Both links patch. Sign out
   carries `data-account-target="sign-out"`. The site closes it when a link in it is
   followed, since a LiveView page change leaves a popover open.
 - `layout` is the Account page's body: `id`, then the `identity`, `agents`, `pairing`,

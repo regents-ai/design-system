@@ -279,10 +279,17 @@ defmodule Regent.Account do
   slot :picture, required: true, doc: "the person's picture, 40 px square"
   slot :agents, required: true, doc: "the person's agents, in `agents_brief/1`"
 
+  slot :balance,
+    doc:
+      "the header's Credits balance as one button that opens the same Credits panel; shown only on a screen 22.49rem wide or less, where the site's header leaves its own balance out"
+
   @doc """
   The account menu: the small box the account's button at the top right of every
   page opens, hanging under it. The person's picture, name and wallet, their three
   most recently active agents, Pair New Agent, then Manage Account and Sign out.
+  On the narrowest phones the header has no room for the Credits balance, so the
+  `balance` slot shows it here instead, under the wallet; wider, the row is hidden
+  and the header's own balance is the one on screen.
   Everything else about the account is on the site's Account page, which
   `manage_href` and `pair_href` lead to. Both patch: a page drawn by the same
   LiveView as the Account page changes in place, and any other page loads it.
@@ -314,6 +321,7 @@ defmodule Regent.Account do
           <Primitives.address id={"#{@id}-wallet"} address={@wallet} label={@ens_name} />
         </p>
       </div>
+      <div :if={@balance != []} class="rg-account-menu__balance">{render_slot(@balance)}</div>
       <div class="rg-account-menu__agents">{render_slot(@agents)}</div>
       <.link patch={@pair_href} class="rg-account-menu__pair">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg> Pair New Agent

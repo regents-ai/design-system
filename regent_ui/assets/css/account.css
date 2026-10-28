@@ -283,6 +283,34 @@
 @media (hover: hover) {
   .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
+/* The Credits balance, a flat row like Pair New Agent. Only the narrowest phones
+   show it, where the site's header leaves its own balance out for room, so the
+   balance is on screen once at every width. */
+.rg-account-menu .rg-account-menu__balance { display: none; padding: 0; }
+@media (max-width: 22.49rem) { .rg-account-menu .rg-account-menu__balance { display: block; } }
+.rg-account-menu__balance > :is(button, a) {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  inline-size: 100%;
+  min-block-size: 2.75rem;
+  margin: 0;
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-fg);
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.rg-account-menu__balance > :is(button, a):focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+@media (hover: hover) {
+  .rg-account-menu__balance > :is(button, a):hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
+}
 .rg-account-menu__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); }
 .rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
