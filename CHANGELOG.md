@@ -566,3 +566,10 @@ An independent review of the two entries above found these, now fixed:
   `claude` harness (Claude, the connected app) now shows `claude-duet.png`, the coral
   circle with the black loop, cut to 128 by 128 on the paper colour like the other
   agents. Claude Code (`claude_code`) keeps its own picture.
+
+## 2026-10-28 — Claude Duet's picture without its paper square
+
+- `claude-duet.png` keeps only the coral circle and the black loop; the off-white paper
+  around them, and three small marks left in its corners from the screenshot it was cut
+  from, are now transparent. Agent pictures sit on the mark's white tile, where the
+  off-white showed as a faint square (reviewer, 28 Oct 17:38Z).
