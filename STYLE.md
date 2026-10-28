@@ -617,22 +617,31 @@ common button or disclosure.
 Design like a Coinbase deposit dialog (founder, 2026-10-06): the figures, the input, the
 choice and the button, and nothing else until someone asks. Too much text is a defect.
 
-- **What stays visible:** a short title or the figure that matters, labels of one to
+- **Visible:** a short title or the figure that matters, labels of one to
   three words, the amount and what it costs or buys, the primary action, and anything
   needed to choose it. Errors, refusals and outcomes stay visible too, one short line
   each. A disabled button keeps a reason of a few words beside it.
-- **What goes one level down:** how something works, why a step exists, timings,
+- **One level down:** how something works, why a step exists, timings,
   provenance, technical detail and reassurance. Put a short explanation in a tip
   (`Regent.Primitives.tip`: an "i" beside the label that opens a popover on a press, and
   under a mouse while it rests there; given a `figure`, such as a price, the figure
   itself opens it and there is no "i"), a longer one
   in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
   or page behind a link. Legal and policy text are links at the foot, never paragraphs.
-- **Show state with marks, not sentences:** a tick that draws in when a step is done, a
+- **Marks:** state shows as marks, not sentences: a tick that draws in when a step is done, a
   dashed box while it waits, the changed number flashing. Words appear only when
   something went wrong or the person must act.
-- **One idea per line.** No paragraph under a button, no sentence that repeats a label,
+- **Lines:** one idea per line. No paragraph under a button, no sentence that repeats a label,
   no "you can" or "this lets you" lines. Cut every word a person would not miss.
+
+- **Titles:** one or two words, a noun, never a phrase (founder, 2026-10-28: a phrase
+  as a title "is a 100% match for AI writing"). This covers page and section headings,
+  panel, card and dialog titles, disclosure summaries, tabs, navigation and field
+  labels. "Citation", not "Work that cites it"; "Legend", not "What the marks mean";
+  "Votes", not "How each Key voted"; "Clone", not "Copy the code"; "Pushes", not "Sent
+  lately". No title opens with who, what, where, why or when. A product's own name,
+  content people wrote, a button (a verb and its object) and a one-line empty state are
+  not titles.
 
 Hidden words stay in the page. A tip's words describe its button and a closed dropdown's
 body stays rendered, so screen readers and agents read the full detail without opening

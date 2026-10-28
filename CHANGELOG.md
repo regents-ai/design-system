@@ -573,3 +573,10 @@ An independent review of the two entries above found these, now fixed:
   around them, and three small marks left in its corners from the screenshot it was cut
   from, are now transparent. Agent pictures sit on the mark's white tile, where the
   off-white showed as a faint square (reviewer, 28 Oct 17:38Z).
+
+## 2026-10-28 — Titles are one or two words
+
+- STYLE.md, "Few words on screen": a title is one or two words, a noun, never a
+  phrase (founder rule). Counterexamples: "Work that cites it" (Citation), "What the
+  marks mean" (Legend), "How each Key voted" (Votes), "Copy the code" (Clone), "Sent
+  lately" (Pushes). The section's own bold leads follow it.
