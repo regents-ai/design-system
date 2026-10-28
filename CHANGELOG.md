@@ -559,3 +559,10 @@ An independent review of the two entries above found these, now fixed:
 - `STYLE.md`: the side panel rule becomes the account menu rule; `agents_brief` goes in
   the menu and `pairing` on the Account page; the Account page section describes the
   shared layout.
+
+## 2026-10-28 — Claude Duet has its own picture
+
+- Sean, 28 Oct 15:37Z, answered the picture decision with the Claude Duet logo. The
+  `claude` harness (Claude, the connected app) now shows `claude-duet.png`, the coral
+  circle with the black loop, cut to 128 by 128 on the paper colour like the other
+  agents. Claude Code (`claude_code`) keeps its own picture.

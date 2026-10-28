@@ -28,7 +28,7 @@ defmodule Regent.Account do
     "ironclaw" => "ironclaw.png",
     "pi" => "pi.svg",
     "claude_code" => "claude-code.png",
-    "claude" => "claude-code.png",
+    "claude" => "claude-duet.png",
     "codex" => "codex.png",
     "chatgpt" => "chatgpt.svg",
     "cursor" => "cursor.png",
