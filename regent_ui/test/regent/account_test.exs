@@ -177,6 +177,24 @@ defmodule Regent.AccountTest do
     """)
   end
 
+  defp menu(name, ens_name, wallet) do
+    assigns = %{name: name, ens_name: ens_name, wallet: wallet}
+
+    rendered_to_string(~H"""
+    <Regent.Account.menu
+      id="who"
+      name={@name}
+      wallet={@wallet}
+      ens_name={@ens_name}
+      manage_href="/account"
+      pair_href="/account#account-pairing"
+    >
+      <:picture></:picture>
+      <:agents></:agents>
+    </Regent.Account.menu>
+    """)
+  end
+
   defp count(html, text), do: length(String.split(html, text)) - 1
 
   # Invariant: the account card says each of the name, the ENS name and the short
@@ -210,5 +228,29 @@ defmodule Regent.AccountTest do
     no_wallet = identity("Ada", nil, nil)
     assert no_wallet =~ ">Ada<"
     refute no_wallet =~ "Copy the full address"
+  end
+
+  # Invariant: the account menu, like the account card, says the name and the
+  # wallet once each, the ENS name always as the wallet it points to, and a short
+  # address in another letter case is still the wallet.
+  test "the account menu says the name and the wallet once each" do
+    checksummed = "0x" <> String.duplicate("aB", 20)
+    lower = String.downcase(checksummed)
+
+    for {name, ens_name, wallet, words} <- [
+          {"seanwbren.eth", "seanwbren.eth", @wallet, "seanwbren.eth"},
+          {"0xaaaa..aaaa", nil, @wallet, "0xaaaa..aaaa"},
+          {"0xaBaB..aBaB", nil, lower, "0xaBaB..aBaB"},
+          {"Ada", "seanwbren.eth", @wallet, "seanwbren.eth"}
+        ] do
+      html = menu(name, ens_name, wallet)
+      assert html =~ ~s(aria-label="#{name}")
+      shown = String.replace(html, ~s(aria-label="#{name}"), "")
+      assert count(shown, words) == 1
+      assert count(shown, ~s(aria-label="Copy the full address")) == 1
+      assert shown =~ ~s(data-copy-text="#{wallet}")
+    end
+
+    refute menu("0xaBaB..aBaB", nil, lower) =~ "0xabab..abab"
   end
 end

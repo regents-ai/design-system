@@ -15,7 +15,7 @@ defmodule Regent.Primitives do
       "false for a button that shows something, such as a balance or a name, rather than going on"
 
   attr :class, :any, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
+  attr :rest, :global, include: ~w(disabled form name value popovertarget popovertargetaction)
   slot :inner_block, required: true
 
   def button(assigns) do

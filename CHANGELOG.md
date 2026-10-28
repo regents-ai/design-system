@@ -535,3 +535,27 @@ An independent review of the two entries above found these, now fixed:
   answer nor a reply a `DiscussionForumPosting`, and a `QAPage` once it has one. Search
   engines read a `QAPage` only with an accepted or suggested answer, so every new question
   on every site was reported as an error until someone replied (Patchbay found it).
+
+## 2026-10-28 — The account menu and one Account page layout
+
+- Sean, 28 Oct 07:54Z: "instead of a sidepanel, do a upper right modal. and then the
+  account route on all sites handles that privy user . and all account routes should be
+  the exact same, with some local site versions shown first".
+- New `Regent.Account.menu`: the account menu, a browser popover hanging under the
+  header's account button on the Tip layer (firm edge, raised fill, no shadow; drops in
+  over `--duration-base` and leaves over `--duration-fast`, still with reduced motion).
+  It hangs from the button the site names `anchor-name: --rg-account-menu` (`position-area`)
+  and is never taller than the room below that button, so a short screen scrolls it. It holds the person's picture, name
+  and wallet (`Primitives.address`, left out when the name already is the wallet's ENS
+  name or short address, in any letter case), their agents (`agents_brief`), Pair New
+  Agent, Manage Account and Sign out. Screen readers hear it named by the person's name.
+  Both links patch. On a phone it spans the screen less 8 px each side.
+- New `Regent.Account.layout`: the Account page's sections in one order on every site,
+  the site's own parts first, then the account card and the agents across the page,
+  then Pair New Agent beside Credits and the profile; two columns from 46rem.
+- `Regent.Account.identity` leaves out the wallet line when the name already is the
+  wallet, as the menu does.
+- `Regent.Primitives.button` passes `popovertarget` and `popovertargetaction`.
+- `STYLE.md`: the side panel rule becomes the account menu rule; `agents_brief` goes in
+  the menu and `pairing` on the Account page; the Account page section describes the
+  shared layout.

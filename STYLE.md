@@ -321,8 +321,10 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.identity` | The card at the top of the Account page: the person's picture, the name the site calls them and their wallet, each said once; an ENS name or short address in it opens and copies the full address | Ash Template |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
-| `Regent.Account.agents_brief` | The person's agents in a narrow panel, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
-| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow panel the message comes first in a short box with copy and new-code icons and the chosen agent's picture, then the agents five to a row, each named on hover | Ash Template |
+| `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, Manage Account and Sign out | Ash Template |
+| `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
+| `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
+| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow column the message comes first in a short box with copy and new-code icons and the chosen agent's picture, then the agents five to a row, each named on hover | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
@@ -417,7 +419,7 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   without colour, with `light_label` as its hover and screen-reader words; a light
   always has its words. A site without check-ins passes `nil` for both, which draws
   nothing.
-- `agents_brief` goes in the side panel. It requires `id` and `agents`: `:loading`,
+- `agents_brief` goes in the account menu. It requires `id` and `agents`: `:loading`,
   `:unavailable`, or a list of at most three `%{id, name, kind, last_action,
   last_action_iso, last_action_at, light, light_label}`, the three last_action keys
   `nil` until read; the site picks
@@ -425,10 +427,21 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   beside the "Your agents" heading, such as to https://regents.sh/account: shown while
   the pointer is over the list or a key has moved into it, and always on a touch
   screen, keeping its space while hidden. The heading is plain text.
-- `pairing` goes in the side panel, on every page for someone signed in. It requires
+- `menu` is the account menu, a `popover` the header's account button names with
+  `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
+  `pair_href` (its pairing box, such as `/account#account-pairing`) and the `picture`
+  (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
+  line, left out when the name already is the wallet. Both links patch. Sign out
+  carries `data-account-target="sign-out"`. The site closes it when a link in it is
+  followed, since a LiveView page change leaves a popover open.
+- `layout` is the Account page's body: `id`, then the `identity`, `agents`, `pairing`,
+  `credits` and `profile` slots, and any number of `site` slots for this site's own
+  parts, which come first. The pairing section is `#<id>-pairing`, under the heading
+  Pair New Agent. Two columns from a 46rem container width, one below.
+- `pairing` goes on the Account page, under Pair New Agent in `layout`. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
-  the harness value, which picks its picture). `layout={:icons}` is for the narrow
-  side panel: the message first, in a short box that scrolls, with the chosen agent's
+  the harness value, which picks its picture). `layout={:icons}` is for a narrow
+  column such as the Account page's: the message first, in a short box that scrolls, with the chosen agent's
   picture in its top-left corner and small copy and new-code icons centred in their
   own column at its right, then the pictures alone, five to a row in one frame each,
   named under a first-row picture and over a second-row one on hover or keyboard
@@ -519,8 +532,8 @@ outside it, through `pill_select.mjs` (copied by `mix regent_ui.assets`, importe
 
 Six layers name what sits on what: Ground, Sheet, Card, Panel, Window and Tip. Ground
 is the page; a sheet is the one surface you work on (`Regent.Structure.panel`); cards
-sit on a sheet; a panel slides in from the edge it stays against (the side panel, the
-phone menu); a window opens in the middle over a shade (`Regent.Structure.dialog`); a
+sit on a sheet; a panel slides in from the edge it stays against (the phone
+menu); a window opens in the middle over a shade (`Regent.Structure.dialog`); a
 tip or menu is the highest and the shortest-lived. The higher a thing sits, the shorter
 it stays.
 
@@ -575,12 +588,16 @@ The words are fixed: **Sign in** and **Sign out** (never "Sign In", "Log out" or
 profile section inside it. The header's account control stays site-owned, since it
 holds the site's sign-in wiring, but uses these words.
 
-The page shows, in order: `Regent.Account.signed_out` until the person is signed in;
-then the account card (`Regent.Account.identity`), a **Profile** section (`Regent.Profile.panel`, where the person sets their
-**Public Display Name**, the name people see for them), `Regent.Account.agents`, and, where the site
-offers them, `credits_summary` and `points_summary` with their `history`. A site may give
-a long section its own tab under Account, such as Points, and adds its own sections after
-these. Each section shows its own state: loading, could not be read, or a session
+The page is the same on every site (founder, 2026-10-28: "all account routes should be
+the exact same, with some local site versions shown first"). It shows
+`Regent.Account.signed_out` until the person is signed in; then `Regent.Account.layout`
+draws, in order: the site's own parts (its `site` slots), the account card
+(`Regent.Account.identity`) and `Regent.Account.agents` across the page, then Pair New
+Agent (`pairing`) beside `credits_summary` and the **Profile** section
+(`Regent.Profile.panel`, where the person sets their **Public Display Name**, the name
+people see for them). A narrow page shows one column in that order. A site may give a
+long section its own tab under Account, such as Points with `points_summary` and its
+`history`. Each section shows its own state: loading, could not be read, or a session
 that ended. A site that cannot change pairings shows the agents read-only with a link to
 where they are managed. Showing these sections never turns on spending Credits or
 earning Points.
@@ -640,16 +657,16 @@ keep the space with the line unseen (`visibility: hidden`) rather than adding an
 removing it. Switching tabs above a list must leave the list's top edge where it was.
 Check every state at desktop and phone width; the box below must not move.
 
-### The side panel opens under the header
+### The account menu hangs under its button
 
-The site header runs the full width of the page, over the side panel (founder,
-2026-10-21). The side panel opens under the header's bottom line, never beside it, so
-that line is unbroken at every width. The panel's top bar is as tall as the sidebar's
-title row, so the lines under them are one line across the page. On a phone the panel
-opens under the header and covers the page below it, leaving the header's line showing.
-ash-template's shell is the reference; its browser walk measures both lines
-(`platform/test/browser/layout.spec.ts`), and a site that carries the panel copies that
-check.
+Signed in, the account's button at the top right of every page opens the account menu
+(`Regent.Account.menu`), never a panel down the side (founder, 2026-10-28: "instead of
+a sidepanel, do a upper right modal"). It is a menu on the Tip layer: a firm edge, the
+raised fill, no shadow, dropping in from under the button with its right edge on the
+button's. The page keeps its full width under it. On a phone it spans the screen less
+8 px each side. ash-template's shell is the reference; its browser walk measures it at
+1280, 2000, 390 and 320 wide (`platform/test/browser/account_menu.spec.ts`), and every
+site copies that check.
 
 ## Motion
 

@@ -211,7 +211,96 @@
 }
 .rg-account__mark img { inline-size: 100%; block-size: 100%; object-fit: contain; }
 
-/* The person's agents in a narrow panel, three at most. A last action not yet
+/* The account menu, a menu on the Tip layer: a firm edge, a raised fill and no
+   shadow. It hangs under the button that opens it, which the site names with
+   `anchor-name: --rg-account-menu`, right edges in line, and is never taller than
+   the room between that button and the bottom of the screen, whatever the header's
+   height; a short screen scrolls it. It drops in from the button and leaves faster;
+   with reduced motion asked for it is simply there. A phone's menu spans the
+   screen, still under the button. */
+.rg-account-menu {
+  position-anchor: --rg-account-menu;
+  inset: auto;
+  position-area: block-end span-inline-start;
+  inline-size: min(20rem, calc(100vw - 1rem));
+  max-block-size: calc(100% - var(--space-1) - env(safe-area-inset-bottom));
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  overflow: hidden auto;
+  border: 1px solid var(--hairline-strong);
+  background: var(--color-surface-elevated, var(--color-surface));
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+  box-shadow: var(--rg-layer-tip-shadow);
+  transform-origin: top right;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    overlay var(--duration-fast) allow-discrete,
+    display var(--duration-fast) allow-discrete;
+}
+.rg-account-menu:popover-open {
+  display: grid;
+  transition-duration: var(--duration-base);
+}
+.rg-account-menu:not(:popover-open) { opacity: 0; transform: translateY(-4px) scale(0.98); }
+@starting-style {
+  .rg-account-menu:popover-open { opacity: 0; transform: translateY(-4px) scale(0.98); }
+}
+@media (max-width: 47.99rem) {
+  .rg-account-menu { inset-inline: var(--space-1); inline-size: auto; position-area: block-end; }
+}
+@media (prefers-reduced-motion: reduce) { .rg-account-menu { transition: none; } }
+.rg-account-menu > * { min-inline-size: 0; padding: var(--space-2); }
+.rg-account-menu > * + * { border-block-start: 1px solid var(--hairline); }
+.rg-account-menu p { margin: 0; }
+.rg-account-menu__who {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.75rem;
+}
+.rg-account-menu__picture { grid-row: span 2; display: grid; inline-size: 2.5rem; block-size: 2.5rem; overflow: hidden; }
+.rg-account-menu__picture :where(img, svg, span) { inline-size: 100%; block-size: 100%; }
+.rg-account-menu__name { min-inline-size: 0; font-size: .95rem; }
+.rg-account-menu__name strong { display: block; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.rg-account-menu__wallet { color: var(--color-fg-muted); font-size: .875rem; }
+.rg-account-menu .rg-account__brief-list li { padding-inline: 0; }
+/* Pair New Agent takes the whole row, so the press is easy to land. */
+.rg-account-menu .rg-account-menu__pair {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-block-size: 2.75rem;
+  padding-block: 0;
+  color: var(--color-fg);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.rg-account-menu__pair svg { flex: none; inline-size: 1rem; block-size: 1rem; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.rg-account-menu__pair:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+@media (hover: hover) {
+  .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
+}
+.rg-account-menu__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); }
+.rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
+@media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
+
+/* The Account page: this site's own sections, the account card and the agents run
+   full width. Below them two columns that each stack their own sections, so a tall
+   one never leaves a gap beside it: pairing on the left, Credits over the profile
+   on the right. A narrow page shows one column in that order. */
+.rg-account-layout { container: rg-account-layout / inline-size; }
+.rg-account-layout__grid,
+.rg-account-layout__column { display: grid; gap: 1.5rem; align-content: start; min-inline-size: 0; }
+.rg-account-layout__pairing { display: grid; gap: var(--space-2); align-content: start; }
+@container rg-account-layout (min-width: 46rem) {
+  .rg-account-layout__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; align-items: start; }
+  .rg-account-layout__full { grid-column: 1 / -1; }
+}
+
+/* The person's agents in the account menu, three at most. A last action not yet
    read keeps its line, so reading it never moves a row. Manage keeps its space
    while hidden, so showing it never moves the heading. */
 .rg-account__brief { display: grid; gap: var(--space-1); color: var(--color-fg); font-family: var(--font-family-ui); }

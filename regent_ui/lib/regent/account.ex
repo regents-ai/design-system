@@ -1,8 +1,9 @@
 defmodule Regent.Account do
   @moduledoc """
-  The account page's shared sections: the signed-out panel, the account card,
-  paired agents with the pairing box and one agent's own view, and read-only
-  Credits and Points.
+  The account's shared parts: the account menu every page opens from its header,
+  and the Account page's sections in their shared layout (the signed-out panel,
+  the account card, paired agents with the pairing box and one agent's own view,
+  and read-only Credits and Points).
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
 
@@ -76,12 +77,7 @@ defmodule Regent.Account do
   has their wallet beneath it, as its ENS name if it has one, else its short address.
   """
   def identity(assigns) do
-    assigns =
-      assign(assigns,
-        name_is_wallet:
-          assigns.wallet != nil and
-            assigns.name in [Primitives.short_address(assigns.wallet), assigns.ens_name]
-      )
+    assigns = assign(assigns, name_is_wallet: name_is_wallet?(assigns))
 
     ~H"""
     <section id={@id} class={["rg-account-identity", @class]} aria-label="Your account" {@rest}>
@@ -212,7 +208,7 @@ defmodule Regent.Account do
     doc: "where Manage beside the heading leads, such as https://regents.sh/account"
 
   @doc """
-  The person's agents in a narrow panel: at most three, each agent's picture and
+  The person's agents in the account menu: at most three, each agent's picture and
   name over where it was last active and how long ago. A last action not yet read
   keeps its line's space, so reading it never moves a row. With `manage_href`,
   Manage shows beside the heading while the pointer is over the list or a key has
@@ -263,6 +259,132 @@ defmodule Regent.Account do
     </section>
     """
   end
+
+  attr :id, :string, required: true
+
+  attr :name, :string,
+    required: true,
+    doc:
+      "what the site calls the person: their chosen name, their ENS name or their short address"
+
+  attr :wallet, :string, default: nil, doc: "the account's full `0x` wallet address"
+  attr :ens_name, :string, default: nil, doc: "the ENS name that points to `wallet`"
+  attr :manage_href, :string, required: true, doc: "this site's Account page"
+
+  attr :pair_href, :string,
+    required: true,
+    doc: "the pairing box on this site's Account page, such as /account#account-pairing"
+
+  attr :rest, :global
+  slot :picture, required: true, doc: "the person's picture, 40 px square"
+  slot :agents, required: true, doc: "the person's agents, in `agents_brief/1`"
+
+  @doc """
+  The account menu: the small box the account's button at the top right of every
+  page opens, hanging under it. The person's picture, name and wallet, their three
+  most recently active agents, Pair New Agent, then Manage Account and Sign out.
+  Everything else about the account is on the site's Account page, which
+  `manage_href` and `pair_href` lead to. Both patch: a page drawn by the same
+  LiveView as the Account page changes in place, and any other page loads it.
+
+  The browser opens and closes it (`popover`): the header's button names it with
+  `popovertarget` and carries `anchor-name: --rg-account-menu`, which the menu
+  hangs from, and it closes on Escape or a press anywhere else. A LiveView page
+  change leaves it open, so the site closes it when one of its links is followed.
+  Sign out carries `data-account-target="sign-out"`, which the site's sign-in script
+  answers.
+  """
+  def menu(assigns) do
+    assigns = assign(assigns, name_is_wallet: name_is_wallet?(assigns))
+
+    ~H"""
+    <section id={@id} class="rg-account-menu" popover aria-label={@name} {@rest}>
+      <div class="rg-account-menu__who">
+        <div class="rg-account-menu__picture">{render_slot(@picture)}</div>
+        <p class="rg-account-menu__name">
+          <strong :if={!@name_is_wallet}>{@name}</strong>
+          <Primitives.address
+            :if={@name_is_wallet}
+            id={"#{@id}-wallet"}
+            address={@wallet}
+            label={@name}
+          />
+        </p>
+        <p :if={@wallet && !@name_is_wallet} class="rg-account-menu__wallet">
+          <Primitives.address id={"#{@id}-wallet"} address={@wallet} label={@ens_name} />
+        </p>
+      </div>
+      <div class="rg-account-menu__agents">{render_slot(@agents)}</div>
+      <.link patch={@pair_href} class="rg-account-menu__pair">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg> Pair New Agent
+      </.link>
+      <div class="rg-account-menu__foot">
+        <.link
+          patch={@manage_href}
+          class="rg-button rg-button--secondary rg-button--no-arrow"
+        >
+          <span class="rg-button__label">Manage Account</span>
+        </.link>
+        <Primitives.button
+          variant="secondary"
+          type="button"
+          arrow={false}
+          data-account-target="sign-out"
+        >
+          Sign out
+        </Primitives.button>
+      </div>
+    </section>
+    """
+  end
+
+  attr :id, :string, required: true, doc: "the page's id; the pairing section is `<id>-pairing`"
+  slot :site, doc: "this site's own sections, each shown full width before the shared ones"
+  slot :identity, required: true, doc: "`identity/1`"
+  slot :agents, required: true, doc: "`agents/1`"
+  slot :pairing, required: true, doc: "`pairing/1`, under the heading Pair New Agent"
+  slot :credits, required: true, doc: "`credits_summary/1`"
+  slot :profile, required: true, doc: "the person's public name (`Regent.Profile.panel`)"
+
+  @doc """
+  The Account page's sections, in the same order and places on every Regent site.
+  This site's own sections come first, then the account card and the agents, full
+  width; below them pairing on one side and Credits over the profile on the other,
+  in one column on a narrow page. The menu's Pair New Agent leads to `#<id>-pairing`.
+  """
+  def layout(assigns) do
+    ~H"""
+    <div id={@id} class="rg-account-layout">
+      <div class="rg-account-layout__grid">
+        <div :for={site <- @site} class="rg-account-layout__full">{render_slot(site)}</div>
+        <div class="rg-account-layout__full">{render_slot(@identity)}</div>
+        <div class="rg-account-layout__full">{render_slot(@agents)}</div>
+        <section
+          id={"#{@id}-pairing"}
+          class="rg-account rg-account-layout__pairing"
+          aria-labelledby={"#{@id}-pairing-title"}
+        >
+          <h2 id={"#{@id}-pairing-title"}>Pair New Agent</h2>
+          {render_slot(@pairing)}
+        </section>
+        <div class="rg-account-layout__column">
+          {render_slot(@credits)}
+          {render_slot(@profile)}
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  # The site calls the person by their wallet's ENS name or short address, so that
+  # name is the wallet and nothing repeats beneath it.
+  defp name_is_wallet?(%{wallet: nil}), do: false
+
+  # A short address matches whatever letter case the wallet was given in.
+  defp name_is_wallet?(%{name: name, wallet: wallet, ens_name: ens_name}),
+    do:
+      name == ens_name or
+        String.downcase(name) == String.downcase(Primitives.short_address(wallet))
 
   attr :light, :string,
     values: ["on", "late", "off", nil],
