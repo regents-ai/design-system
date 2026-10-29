@@ -38,8 +38,9 @@
   font-weight: 600;
 }
 
-/* The name and address sit beside the picture while their address fits there, and
-   go under it on the narrowest phones. */
+/* The name and address sit beside the picture while a short address fits there, and
+   go under it on the narrowest phones. A longer name ends in an ellipsis rather than
+   running past the screen. */
 .rg-account-identity__who {
   display: flex;
   flex-wrap: wrap;
@@ -59,10 +60,12 @@
 
 .rg-account-identity__name {
   display: grid;
-  flex: 1 1 0;
+  flex: 1 1 11.5rem;
   gap: .25rem;
-  min-inline-size: min-content;
+  min-inline-size: 0;
 }
+
+.rg-account-identity__name > * { min-inline-size: 0; }
 
 .rg-account-identity__name h2 {
   margin: 0;
@@ -452,10 +455,12 @@
    or keyboard focus, under a first-row picture and over a second-row one, so it
    only ever covers other pictures, and kept inside the panel at each row's ends.
    The chosen agent's name never shows: its picture is already in the message box.
-   On the narrowest phones the frames shrink together to fit the row. */
+   On the narrowest phones the frames shrink together to fit the row, never below a
+   44px tap. */
 .rg-account__pair[data-layout="icons"] .rg-account__choices {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, calc(2.5rem + 10px)));
+  grid-template-columns: repeat(5, minmax(44px, calc(2.5rem + 10px)));
+  column-gap: 0;
   justify-content: space-between;
   inline-size: 100%;
 }

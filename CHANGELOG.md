@@ -607,3 +607,12 @@ An independent review of the two entries above found these, now fixed:
   the row; each frame stays at least 44px. At 320px the row was 28px wider than the card.
 - Found by ash-template's walk of the shared /account at 320, 390 and 1280. A shared
   change: sites take it after Sean's sign-off, all at once.
+
+## 2026-10-29 — The Account card keeps 44px taps and long names in view
+
+- `account.css`: the five agent pictures in a row have no gap between their columns,
+  since the row already spreads them, and each frame keeps at least a 44px tap. A 320px
+  phone's row shows full 50px frames again.
+- The name and address go under the picture when a short address has no room beside
+  it, and a long name, such as an ENS name, ends in an ellipsis instead of running
+  past the screen. Before, an ENS name ran 120px past a 320px phone's edge.
