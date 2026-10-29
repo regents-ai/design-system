@@ -583,3 +583,16 @@ An independent review of the two entries above found these, now fixed:
   gutters needed about 323 px of a 288 px row, so a person with a balance scrolled
   sideways by 15 px (design chief's review, 28 Oct). No balance, no slot, no row.
   `STYLE.md` says so.
+
+## 2026-10-29 — Buttons are 2.5rem for a mouse, 44px only for a finger
+
+- Founder rule (ash-template ticket UI-3): a control is 2.5rem tall on a fine pointer
+  and at least 44px only under `(hover: none), (pointer: coarse)`.
+- `.rg-button` is exactly 40px with its label on one line (border-box, no block
+  padding); it was 42 to 44px. The theme switch is 2.5rem square, 44px on touch.
+- `.rg-disclosure > summary` is at least 2.5rem, not 4rem at every width; `.rg-pill-select`
+  is 2.5rem, not 44px; both are 44px on touch.
+- Discussion filters and likes, and the blog's back, byline, contents and phone contents
+  links, are 2.5rem, 44px on touch.
+- `MOBILE.md` and `CONSUMERS.md` say so. A shared change: sites take it after Sean's
+  sign-off, all at once.

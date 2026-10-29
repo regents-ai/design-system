@@ -49,7 +49,7 @@ opposite of the theme showing, which is `data-theme` when set, otherwise `light`
 when `matchMedia("(prefers-color-scheme: light)")` matches and `dark` when it does
 not. Its styles ship through `primitives.css`. The prism turns only while the button
 is pointed at or focused; reduced motion disables rotation.
-The button is a borderless 2.75rem press target with the prism as a 1.75rem box with
+The button is a borderless 2.5rem press target (44px on a touch screen) with the prism as a 1.75rem box with
 slightly rounded corners in its middle, and pointing at it shows the other theme's
 colours. A product header gives it no border, background, corners or height of its own;
 it only sets the gap to the icons beside it.

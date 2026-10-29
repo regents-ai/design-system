@@ -33,12 +33,13 @@
    (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
-/* About 40px tall with its label on one line. A row never squeezes a button below
-   its label; a `.rg-button__label` wider than the whole row ends in an ellipsis. */
+/* 40px tall with its label on one line (44px for a finger, below). A row never
+   squeezes a button below its label; a `.rg-button__label` wider than the whole row
+   ends in an ellipsis. */
 .rg-button {
-  position: relative; isolation: isolate; flex-shrink: 0;
+  position: relative; isolation: isolate; flex-shrink: 0; box-sizing: border-box;
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
-  min-height: 2.5rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
+  min-height: 2.5rem; padding: 0 var(--space-2); border: 1px solid transparent;
   max-inline-size: 100%; white-space: nowrap; text-align: center;
   border-radius: 0; cursor: pointer; overflow: visible;
   background: transparent; color: var(--rg-p-on-accent); font-weight: 600;
@@ -279,7 +280,7 @@
 .rg-empty { display: grid; gap: var(--space-2); padding: var(--container-padding); text-align: start; }
 .rg-empty-title { margin: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure { padding: 0; border-block-end: 1px solid var(--rg-p-border); }
-.rg-disclosure > summary { display: flex; align-items: center; gap: var(--space-2); min-height: 4rem; padding-block: var(--space-2); cursor: pointer; list-style: none; box-sizing: border-box; }
+.rg-disclosure > summary { display: flex; align-items: center; gap: var(--space-2); min-height: 2.5rem; padding-block: var(--space-1); cursor: pointer; list-style: none; box-sizing: border-box; }
 .rg-disclosure-index { flex: 0 0 2rem; font-family: var(--font-family-mono); font-size: .8125rem; }
 .rg-disclosure-title { flex: 1; min-inline-size: 0; overflow-wrap: anywhere; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure > summary::-webkit-details-marker { display: none; }
@@ -340,8 +341,8 @@
    opens a menu. Form fields keep `.rg-field select`, with corners that match their inputs. */
 .rg-pill-select { position: relative; display: inline-flex; }
 .rg-pill-select > :is(select, summary) {
-  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px;
-  padding: 8px 40px 8px 18px; border: 1px solid var(--rg-p-control-border); border-radius: 999px;
+  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 2.5rem;
+  padding: 6px 40px 6px 18px; border: 1px solid var(--rg-p-control-border); border-radius: 999px;
   background: var(--rg-p-surface); color: var(--rg-p-text); font: inherit; cursor: pointer;
   appearance: none; -webkit-appearance: none; list-style: none;
 }
@@ -373,6 +374,7 @@
    Safari page zoom. */
 @media (hover: none), (pointer: coarse) {
   .rg-button { min-height: 44px; min-inline-size: 44px; }
+  .rg-disclosure > summary, .rg-pill-select > :is(select, summary) { min-height: 44px; }
   .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
     min-height: max(2.75rem, 44px);
     font-size: max(1em, 16px);
