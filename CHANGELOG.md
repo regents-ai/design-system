@@ -601,3 +601,14 @@ An independent review of the two entries above found these, now fixed:
   the copy icon and the Basescan arrow), so a wallet author follows the 19 Oct address
   rule. On a post, `author_href` then links the author's picture, because the name's
   words open the address. Without `author_address` both look as before.
+
+## 2026-10-29 — Blog tables fit small phones
+
+- `blog.css`: at 40rem wide and under, prose table cells drop their 10rem minimum,
+  take `10px 12px` padding and never split a word (`overflow-wrap: break-word`). A
+  two-column table now fits a 320 px phone, where its second column used to start
+  off-screen inside the table's scroll region; a wider table still scrolls there, each
+  column as narrow as its longest word. Desktop is unchanged. Without the last rule the
+  cells inherit `overflow-wrap: anywhere` and a six-column table (Techtree's wallet
+  bench post) shrank to one letter per line. `BLOG.md` says so. Sean chose this design
+  on 29 Oct ("use recommended"), from the 28 Oct live review of Techtree's posts.

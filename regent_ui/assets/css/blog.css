@@ -72,5 +72,6 @@
   .rg-blog__card-copy, .rg-blog__body { padding: 24px 16px; }
   .rg-blog__heading { padding-inline: 16px; }
   .rg-blog__prose { font-size: 1rem; }
+  .rg-blog__prose :where(th,td) { min-inline-size: 0; padding: 10px 12px; overflow-wrap: break-word; }
 }
 @media (forced-colors: active) { .rg-blog { border-color: CanvasText; } .rg-blog__contents a[aria-current] { border-color: LinkText; } }
