@@ -284,7 +284,7 @@
 .rg-disclosure-index { flex: 0 0 2rem; font-family: var(--font-family-mono); font-size: .8125rem; }
 .rg-disclosure-title { flex: 1; min-inline-size: 0; overflow-wrap: anywhere; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure > summary::-webkit-details-marker { display: none; }
-.rg-chevron { flex: 0 0 auto; font-size: 1.5em; transform: rotate(0); }
+.rg-chevron { flex: 0 0 auto; font-size: 1.5em; line-height: 1; transform: rotate(0); }
 .rg-disclosure[open] > summary .rg-chevron { transform: rotate(180deg); }
 .rg-disclosure-body { padding-block: var(--space-1) var(--space-3); overflow-wrap: anywhere; }
 .rg-disclosure--indexed > .rg-disclosure-body { padding-inline-start: calc(2rem + var(--space-2)); }
