@@ -96,6 +96,12 @@ defmodule Regent.Discussion do
   attr :opening, :boolean, default: false, doc: "The thread's opening post rather than a reply."
   attr :author, :string, required: true
   attr :author_href, :string, default: nil
+
+  attr :author_address, :string,
+    default: nil,
+    doc:
+      "The author's `0x` wallet address when `author` is its ENS name or short form. The name is then drawn with `Regent.Primitives.address`, which opens and copies the address, and `author_href` links the picture."
+
   attr :at, DateTime, required: true
   attr :ago, :string, required: true, doc: "The product's words for when, e.g. \"3 hours ago\"."
   attr :href, :string, required: true, doc: "The address of this post."
@@ -120,11 +126,32 @@ defmodule Regent.Discussion do
       ]}
       aria-label={@opening && "The post"}
     >
-      <div class="rg-discussion__avatar">{render_slot(@avatar)}</div>
+      <a
+        :if={@author_address && @author_href}
+        class="rg-discussion__avatar"
+        href={@author_href}
+        aria-label={@author}
+      >
+        {render_slot(@avatar)}
+      </a>
+      <div :if={!(@author_address && @author_href)} class="rg-discussion__avatar">
+        {render_slot(@avatar)}
+      </div>
       <div class="rg-discussion__main">
         <header class="rg-discussion__post-head">
-          <a :if={@author_href} class="rg-discussion__author" href={@author_href}><bdi>{@author}</bdi></a>
-          <span :if={!@author_href} class="rg-discussion__author"><bdi>{@author}</bdi></span>
+          <Regent.Primitives.address
+            :if={@author_address}
+            id={"#{@id}-author"}
+            address={@author_address}
+            label={@author}
+            class="rg-discussion__author"
+          />
+          <a :if={!@author_address && @author_href} class="rg-discussion__author" href={@author_href}>
+            <bdi>{@author}</bdi>
+          </a>
+          <span :if={!@author_address && !@author_href} class="rg-discussion__author">
+            <bdi>{@author}</bdi>
+          </span>
           {render_slot(@label)}
           <a class="rg-discussion__when" href={@href}>
             <time datetime={DateTime.to_iso8601(@at)}>{@ago}</time>
@@ -152,6 +179,12 @@ defmodule Regent.Discussion do
   attr :id, :string, required: true
   attr :author, :string, required: true
   attr :author_href, :string, default: nil
+
+  attr :author_address, :string,
+    default: nil,
+    doc:
+      "The author's `0x` wallet address when `author` is its ENS name or short form, drawn with `Regent.Primitives.address` in place of the name."
+
   attr :at, DateTime, required: true
   attr :date, :string, required: true, doc: "The product's words for the day it was written."
   attr :href, :string, required: true, doc: "The whole answer: its anchor, or a page showing it."
@@ -166,8 +199,15 @@ defmodule Regent.Discussion do
     <section id={@id} class="rg-discussion__solved" aria-labelledby={"#{@id}-title"}>
       <h2 id={"#{@id}-title"} class="rg-discussion__solved-title"><.icon name={:check} /> Solved</h2>
       <p class="rg-discussion__solved-by">
-        Answer by <a :if={@author_href} href={@author_href}><bdi>{@author}</bdi></a>
-        <bdi :if={!@author_href}>{@author}</bdi>
+        Answer by
+        <Regent.Primitives.address
+          :if={@author_address}
+          id={"#{@id}-author"}
+          address={@author_address}
+          label={@author}
+        />
+        <a :if={!@author_address && @author_href} href={@author_href}><bdi>{@author}</bdi></a>
+        <bdi :if={!@author_address && !@author_href}>{@author}</bdi>
         <time datetime={DateTime.to_iso8601(@at)}>{@date}</time>
       </p>
       <div class="rg-discussion__excerpt">{render_slot(@inner_block)}</div>

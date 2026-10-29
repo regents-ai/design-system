@@ -312,8 +312,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
 | `Regent.Blog.not_found` | Missing-post page | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Discussion.thread` | Forum thread: title, Solved mark, counts and the Compact replies switch | Ash Template (showcase), Patchbay |
-| `Regent.Discussion.post` | Opening post or reply with picture, name, time, words and actions | Ash Template (showcase) |
-| `Regent.Discussion.solved` | Solved box quoting the marked answer under the opening post | Ash Template (showcase) |
+| `Regent.Discussion.post` | Opening post or reply with picture, name, time, words and actions; with `author_address`, a wallet author's ENS name or short address is drawn with `Regent.Primitives.address` and the picture links their page | Ash Template (showcase) |
+| `Regent.Discussion.solved` | Solved box quoting the marked answer under the opening post; `author_address` draws a wallet author the same way | Ash Template (showcase) |
 | `Regent.Discussion.replies` | Replies heading, filters, list and empty line | Ash Template (showcase) |
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |

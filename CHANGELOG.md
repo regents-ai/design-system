@@ -592,3 +592,12 @@ An independent review of the two entries above found these, now fixed:
   next (88 of the widths from 120 to 460 px did it). The short and compact forms keep
   every position they had; in the full form the arrow now sits as tight to the copy
   icon as it does in the short form. `STYLE.md` says so.
+
+## 2026-10-29 — A wallet author in a discussion opens and copies their address
+
+- `Regent.Discussion.post` and `Regent.Discussion.solved` take `author_address`: the
+  author's `0x` wallet address when their name is its ENS name or short form. The name
+  is then drawn with `Regent.Primitives.address` (its words open the full address, then
+  the copy icon and the Basescan arrow), so a wallet author follows the 19 Oct address
+  rule. On a post, `author_href` then links the author's picture, because the name's
+  words open the address. Without `author_address` both look as before.

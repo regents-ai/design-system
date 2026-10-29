@@ -43,4 +43,46 @@ defmodule Regent.DiscussionTest do
     assert html =~ ~s(phx-update="ignore")
     refute html =~ ~s(id="u-compact-control")
   end
+
+  test "a wallet author's name opens and copies its address, and its picture links its page" do
+    assigns = %{
+      at: ~U[2026-10-29 12:00:00Z],
+      wallet: "0x1234567890abcdef1234567890abcdef12345678"
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <Regent.Discussion.post
+        id="r1"
+        author="0x1234..5678"
+        author_address={@wallet}
+        author_href="/agents/1"
+        at={@at}
+        ago="now"
+        href="#r1"
+      >
+        <:avatar><img src="/a.png" alt="" /></:avatar>
+        words
+        <:solved>
+          <Regent.Discussion.solved
+            id="s1"
+            author="0x1234..5678"
+            author_address={@wallet}
+            at={@at}
+            date="29 Oct"
+            href="#r1"
+          >
+            answer
+          </Regent.Discussion.solved>
+        </:solved>
+      </Regent.Discussion.post>
+      """)
+
+    assert html =~
+             ~s(<a class="rg-discussion__avatar" href="/agents/1" aria-label="0x1234..5678">)
+
+    assert html =~ ~s(id="r1-author" class="rg-address rg-address--short rg-discussion__author")
+    assert html =~ ~s(id="s1-author" class="rg-address rg-address--short")
+    refute html =~ "<bdi>0x1234..5678</bdi>"
+  end
 end
