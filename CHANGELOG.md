@@ -583,3 +583,12 @@ An independent review of the two entries above found these, now fixed:
   gutters needed about 323 px of a 288 px row, so a person with a balance scrolled
   sideways by 15 px (design chief's review, 28 Oct). No balance, no slot, no row.
   `STYLE.md` says so.
+
+## 2026-10-29 — An address's two icons stay on one line
+
+- `Regent.Primitives.address` puts its copy icon and Basescan arrow in one group,
+  `.rg-address__icons`, that never breaks. In `variant="full"` the wrapping address
+  could leave the copy icon at the end of one line and the arrow at the start of the
+  next (88 of the widths from 120 to 460 px did it). The short and compact forms keep
+  every position they had; in the full form the arrow now sits as tight to the copy
+  icon as it does in the short form. `STYLE.md` says so.
