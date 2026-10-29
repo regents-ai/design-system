@@ -612,3 +612,14 @@ An independent review of the two entries above found these, now fixed:
   cells inherit `overflow-wrap: anywhere` and a six-column table (Techtree's wallet
   bench post) shrank to one letter per line. `BLOG.md` says so. Sean chose this design
   on 29 Oct ("use recommended"), from the 28 Oct live review of Techtree's posts.
+
+## 2026-10-29 — Agents get their own page
+
+- `Regent.Account.agents_layout` is the Agents page's body (`/account/agents` on every
+  site): the person's agents full width, then Pair New Agent in the left column from
+  a 46rem container width, its section `#<id>-pairing` as before. `Regent.Account.layout`
+  no longer takes the `agents` and `pairing` slots: the Account page is the account
+  card, then Credits beside the profile. The menu's `pair_href` now points at the
+  Agents page, such as `/account/agents#account-pairing`. A tester could not find
+  where to pair or where to see their agents; one Agents tab answers both. `STYLE.md`
+  says so.

@@ -187,7 +187,7 @@ defmodule Regent.AccountTest do
       wallet={@wallet}
       ens_name={@ens_name}
       manage_href="/account"
-      pair_href="/account#account-pairing"
+      pair_href="/account/agents#account-pairing"
     >
       <:picture></:picture>
       <:agents></:agents>

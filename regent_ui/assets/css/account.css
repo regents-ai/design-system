@@ -315,10 +315,10 @@
 .rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
 
-/* The Account page: this site's own sections, the account card and the agents run
-   full width. Below them two columns that each stack their own sections, so a tall
-   one never leaves a gap beside it: pairing on the left, Credits over the profile
-   on the right. A narrow page shows one column in that order. */
+/* The Account page: this site's own sections and the account card run full width,
+   then Credits on the left and the profile on the right. The Agents page: the
+   agents full width, then pairing on the left. A narrow page shows one column in
+   that order. */
 .rg-account-layout { container: rg-account-layout / inline-size; }
 .rg-account-layout__grid,
 .rg-account-layout__column { display: grid; gap: 1.5rem; align-content: start; min-inline-size: 0; }

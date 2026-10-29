@@ -1,9 +1,9 @@
 defmodule Regent.Account do
   @moduledoc """
   The account's shared parts: the account menu every page opens from its header,
-  and the Account page's sections in their shared layout (the signed-out panel,
-  the account card, paired agents with the pairing box and one agent's own view,
-  and read-only Credits and Points).
+  the Account page's sections in their shared layout (the signed-out panel, the
+  account card and read-only Credits and Points), and the Agents page's (paired
+  agents with the pairing box and one agent's own view).
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
 
@@ -273,7 +273,7 @@ defmodule Regent.Account do
 
   attr :pair_href, :string,
     required: true,
-    doc: "the pairing box on this site's Account page, such as /account#account-pairing"
+    doc: "the pairing box on this site's Agents page, such as /account/agents#account-pairing"
 
   attr :rest, :global
   slot :picture, required: true, doc: "the person's picture, 40 px square"
@@ -290,8 +290,8 @@ defmodule Regent.Account do
   On the narrowest phones the header has no room for the Credits balance, so the
   `balance` slot shows it here instead, under the wallet; wider, the row is hidden
   and the header's own balance is the one on screen.
-  Everything else about the account is on the site's Account page, which
-  `manage_href` and `pair_href` lead to. Both patch: a page drawn by the same
+  Everything else about the account is on the site's Account and Agents pages,
+  which `manage_href` and `pair_href` lead to. Both patch: a page drawn by the same
   LiveView as the Account page changes in place, and any other page loads it.
 
   The browser opens and closes it (`popover`): the header's button names it with
@@ -346,19 +346,17 @@ defmodule Regent.Account do
     """
   end
 
-  attr :id, :string, required: true, doc: "the page's id; the pairing section is `<id>-pairing`"
+  attr :id, :string, required: true, doc: "the page's id"
   slot :site, doc: "this site's own sections, each shown full width before the shared ones"
   slot :identity, required: true, doc: "`identity/1`"
-  slot :agents, required: true, doc: "`agents/1`"
-  slot :pairing, required: true, doc: "`pairing/1`, under the heading Pair New Agent"
   slot :credits, required: true, doc: "`credits_summary/1`"
   slot :profile, required: true, doc: "the person's public name (`Regent.Profile.panel`)"
 
   @doc """
   The Account page's sections, in the same order and places on every Regent site.
-  This site's own sections come first, then the account card and the agents, full
-  width; below them pairing on one side and Credits over the profile on the other,
-  in one column on a narrow page. The menu's Pair New Agent leads to `#<id>-pairing`.
+  This site's own sections come first, then the account card, full width; below
+  them Credits on one side and the profile on the other, in one column on a narrow
+  page. The agents have their own page (`agents_layout/1`).
   """
   def layout(assigns) do
     ~H"""
@@ -366,6 +364,26 @@ defmodule Regent.Account do
       <div class="rg-account-layout__grid">
         <div :for={site <- @site} class="rg-account-layout__full">{render_slot(site)}</div>
         <div class="rg-account-layout__full">{render_slot(@identity)}</div>
+        <div class="rg-account-layout__column">{render_slot(@credits)}</div>
+        <div class="rg-account-layout__column">{render_slot(@profile)}</div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :id, :string, required: true, doc: "the page's id; the pairing section is `<id>-pairing`"
+  slot :agents, required: true, doc: "`agents/1`"
+  slot :pairing, required: true, doc: "`pairing/1`, under the heading Pair New Agent"
+
+  @doc """
+  The Agents page's sections, the same on every Regent site: the person's agents,
+  full width, then pairing a new one under Pair New Agent, in the left column from
+  a 46rem container width. The menu's Pair New Agent leads to `#<id>-pairing`.
+  """
+  def agents_layout(assigns) do
+    ~H"""
+    <div id={@id} class="rg-account-layout">
+      <div class="rg-account-layout__grid">
         <div class="rg-account-layout__full">{render_slot(@agents)}</div>
         <section
           id={"#{@id}-pairing"}
@@ -375,10 +393,6 @@ defmodule Regent.Account do
           <h2 id={"#{@id}-pairing-title"}>Pair New Agent</h2>
           {render_slot(@pairing)}
         </section>
-        <div class="rg-account-layout__column">
-          {render_slot(@credits)}
-          {render_slot(@profile)}
-        </div>
       </div>
     </div>
     """

@@ -323,6 +323,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, Manage Account and Sign out | Ash Template |
 | `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
+| `Regent.Account.agents_layout` | The Agents page's sections: the person's agents, then Pair New Agent | Ash Template |
 | `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
 | `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow column the message comes first in a short box with copy and new-code icons and the chosen agent's picture, then the agents five to a row, each named on hover | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
@@ -429,7 +430,7 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   screen, keeping its space while hidden. The heading is plain text.
 - `menu` is the account menu, a `popover` the header's account button names with
   `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
-  `pair_href` (its pairing box, such as `/account#account-pairing`) and the `picture`
+  `pair_href` (its pairing box, such as `/account/agents#account-pairing`) and the `picture`
   (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
   line, left out when the name already is the wallet. The optional `balance` slot
   holds the Credits balance as one button opening the site's Credits panel; it shows
@@ -437,14 +438,18 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   so the balance has one place on screen at every width. Both links patch. Sign out
   carries `data-account-target="sign-out"`. The site closes it when a link in it is
   followed, since a LiveView page change leaves a popover open.
-- `layout` is the Account page's body: `id`, then the `identity`, `agents`, `pairing`,
-  `credits` and `profile` slots, and any number of `site` slots for this site's own
-  parts, which come first. The pairing section is `#<id>-pairing`, under the heading
-  Pair New Agent. Two columns from a 46rem container width, one below.
-- `pairing` goes on the Account page, under Pair New Agent in `layout`. It requires
+- `layout` is the Account page's body: `id`, then the `identity`, `credits` and
+  `profile` slots, and any number of `site` slots for this site's own parts, which
+  come first. Credits and the profile sit side by side from a 46rem container width,
+  one below the other under it.
+- `agents_layout` is the Agents page's body (`/account/agents`): `id`, then the
+  `agents` slot, full width, and the `pairing` slot, under the heading Pair New Agent
+  in the left column from a 46rem container width. The pairing section is
+  `#<id>-pairing`.
+- `pairing` goes on the Agents page, under Pair New Agent in `agents_layout`. It requires
   `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
   the harness value, which picks its picture). `layout={:icons}` is for a narrow
-  column such as the Account page's: the message first, in a short box that scrolls, with the chosen agent's
+  column such as the Agents page's: the message first, in a short box that scrolls, with the chosen agent's
   picture in its top-left corner and small copy and new-code icons centred in their
   own column at its right, then the pictures alone, five to a row in one frame each,
   named under a first-row picture and over a second-row one on hover or keyboard
