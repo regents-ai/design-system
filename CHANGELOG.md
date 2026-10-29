@@ -597,3 +597,13 @@ An independent review of the two entries above found these, now fixed:
   links, are 2.5rem, 44px on touch.
 - `MOBILE.md` and `CONSUMERS.md` say so. A shared change: sites take it after Sean's
   sign-off, all at once.
+
+## 2026-10-29 — The Account card fits a 320px phone
+
+- `.rg-account-identity`: the name and short address sit beside the picture while the
+  address fits there, and go under it on the narrowest phones. At 320px the address ran
+  about 40px past the screen, so the whole page scrolled sideways.
+- The pairing box's five agent pictures (`data-layout="icons"`) shrink together to fit
+  the row; each frame stays at least 44px. At 320px the row was 28px wider than the card.
+- Found by ash-template's walk of the shared /account at 320, 390 and 1280. A shared
+  change: sites take it after Sean's sign-off, all at once.

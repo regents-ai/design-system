@@ -38,8 +38,11 @@
   font-weight: 600;
 }
 
+/* The name and address sit beside the picture while their address fits there, and
+   go under it on the narrowest phones. */
 .rg-account-identity__who {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem;
   min-inline-size: 0;
@@ -56,8 +59,9 @@
 
 .rg-account-identity__name {
   display: grid;
+  flex: 1 1 0;
   gap: .25rem;
-  min-inline-size: 0;
+  min-inline-size: min-content;
 }
 
 .rg-account-identity__name h2 {
@@ -447,17 +451,20 @@
 /* Pictures only, five to a row, each in one frame: the agent's name shows on hover
    or keyboard focus, under a first-row picture and over a second-row one, so it
    only ever covers other pictures, and kept inside the panel at each row's ends.
-   The chosen agent's name never shows: its picture is already in the message box. */
+   The chosen agent's name never shows: its picture is already in the message box.
+   On the narrowest phones the frames shrink together to fit the row. */
 .rg-account__pair[data-layout="icons"] .rg-account__choices {
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(5, minmax(0, calc(2.5rem + 10px)));
   justify-content: space-between;
   inline-size: 100%;
 }
-.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 4px; }
+.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; min-inline-size: 0; padding: 4px; }
 .rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark {
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
+  inline-size: 100%;
+  max-inline-size: 2.5rem;
+  block-size: auto;
+  aspect-ratio: 1;
   border: 0;
 }
 .rg-account__pair[data-layout="icons"] .rg-account__choice-name {
