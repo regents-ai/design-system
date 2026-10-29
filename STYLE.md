@@ -277,7 +277,7 @@ arrow leans up and right; a press gives both a little.
 An address keeps its own letters: a site's uppercase, small-caps or spaced-out style
 around it never reaches them, and it reads left to right on every page. Where a person must check every character, such as an address
 they typed for someone else, `variant="full"` shows the whole `0x` address, wrapping,
-with both icons after it. Beside a small control in a narrow row, such as "Change" on a
+with both icons after it, kept together so a line never breaks between them. Beside a small control in a narrow row, such as "Change" on a
 phone, `variant="compact"` holds the short form's twelve characters and the copy icon,
 without the arrow; a longer name ends in an ellipsis there.
 

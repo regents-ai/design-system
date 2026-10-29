@@ -616,3 +616,12 @@ An independent review of the two entries above found these, now fixed:
 - The name and address go under the picture when a short address has no room beside
   it, and a long name, such as an ENS name, ends in an ellipsis instead of running
   past the screen. Before, an ENS name ran 120px past a 320px phone's edge.
+
+## 2026-10-29 — An address's two icons stay on one line
+
+- `Regent.Primitives.address` puts its copy icon and Basescan arrow in one group,
+  `.rg-address__icons`, that never breaks. In `variant="full"` the wrapping address
+  could leave the copy icon at the end of one line and the arrow at the start of the
+  next (88 of the widths from 120 to 460 px did it). The short and compact forms keep
+  every position they had; in the full form the arrow now sits as tight to the copy
+  icon as it does in the short form. `STYLE.md` says so.

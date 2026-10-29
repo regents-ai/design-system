@@ -249,28 +249,30 @@ defmodule Regent.Primitives do
         </button>
         <span id={"#{@id}-full"} class="rg-tip-body rg-address__full" popover>{@address}</span>
       <% end %>
-      <.copy_icon id={"#{@id}-copy"} text={@address} label={@copy} />
-      <a
-        :if={@variant != "compact"}
-        id={"#{@id}-explorer"}
-        class="rg-address__explorer"
-        href={@href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={"Open on #{@explorer}"}
-        title={"Open on #{@explorer}"}
-      >
-        <svg
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="square"
-          aria-hidden="true"
+      <span class="rg-address__icons">
+        <.copy_icon id={"#{@id}-copy"} text={@address} label={@copy} />
+        <a
+          :if={@variant != "compact"}
+          id={"#{@id}-explorer"}
+          class="rg-address__explorer"
+          href={@href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={"Open on #{@explorer}"}
+          title={"Open on #{@explorer}"}
         >
-          <path d="M2 10 10 2M3.5 2H10v6.5" />
-        </svg>
-      </a>
+          <svg
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="square"
+            aria-hidden="true"
+          >
+            <path d="M2 10 10 2M3.5 2H10v6.5" />
+          </svg>
+        </a>
+      </span>
     </span>
     """
   end
