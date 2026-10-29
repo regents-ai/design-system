@@ -134,7 +134,7 @@ defmodule Regent.Account do
       aria-busy={@agents == :loading && "true"}
     >
       <h2 id={"#{@id}-title"}>
-        Agents
+        Paired
         <Primitives.tip id={"#{@id}-about"} label="About paired agents">
           {render_slot(@about)}
           <span class="rg-account__tip-line" data-after={@about != [] && "true"}>

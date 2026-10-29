@@ -623,3 +623,9 @@ An independent review of the two entries above found these, now fixed:
   Agents page, such as `/account/agents#account-pairing`. A tester could not find
   where to pair or where to see their agents; one Agents tab answers both. `STYLE.md`
   says so.
+
+## 2026-10-29 — The Agents page's list is headed Paired
+
+- `Regent.Account.agents/1` is headed Paired, not Agents: it now sits on the Agents
+  page, under the page's own title Agents, and above Pair New Agent. Its tip is
+  unchanged.
