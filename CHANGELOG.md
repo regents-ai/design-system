@@ -673,3 +673,15 @@ An independent review of the two entries above found these, now fixed:
   `--font-family-sans` or non-code `--font-family-mono` in site CSS with `--font-family-ui`.
   SIWA's `scripts/build_agent_page.py` embeds `GeistSerif-Regular.woff2` and
   `GeistMono-Regular.woff2` now.
+
+## 2026-10-30 — No weight above 400
+
+- Geist Serif has one weight, so every rule that asked for 500 or 600 did nothing. Those
+  declarations are gone from the package CSS, and so is `--font-weight-semibold` (CSS and
+  JSON tokens). Hierarchy is size, colour and space only, as `STYLE.md` now says.
+- Two places relied on bold alone and now use colour or size: a discussion's "liked by"
+  names take the page ink against the muted line, and headings inside a post excerpt are
+  set in the title role at 1.125em.
+- Consumers: delete any `font-weight` above 400 and any `var(--font-weight-semibold)` in
+  site CSS, and give a name or amount beside quieter words `--color-fg` against
+  `--color-fg-muted`.

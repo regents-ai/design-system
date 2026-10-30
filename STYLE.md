@@ -169,8 +169,10 @@ resolves to `--font-family-serif`. Addresses, hashes, amounts and indices use
 `--font-family-ui` with `font-variant-numeric: tabular-nums`.
 
 Vercel ships Geist Serif in **regular upright 400 only**. The root sets
-`font-synthesis-weight: none`, so `--font-weight-semibold`, `strong` and `b` render at 400
-rather than as a browser-thickened face; hierarchy comes from size, colour and space.
+`font-synthesis-weight: none`, so `strong`, `b` and headings render at 400 rather than as a
+browser-thickened face. No rule sets a weight above 400: hierarchy comes from size, colour
+and space, and a name or amount beside quieter words takes `--color-fg` against their
+`--color-fg-muted`.
 Italic is allowed to slant. Headings keep `font-synthesis: none`.
 
 Font URL contract: the canonical CSS declares each face as

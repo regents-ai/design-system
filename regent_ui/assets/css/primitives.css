@@ -41,7 +41,7 @@
   min-height: 2.5rem; padding: var(--space-1) var(--space-2); border: 1px solid transparent;
   max-inline-size: 100%; white-space: nowrap; text-align: center;
   border-radius: 0; cursor: pointer; overflow: visible;
-  background: transparent; color: var(--rg-p-on-accent); font-weight: 600;
+  background: transparent; color: var(--rg-p-on-accent);
   text-decoration: none;
 }
 .rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; overflow-x: clip; text-overflow: ellipsis; background: transparent; transform: scale(var(--rg-press-scale, 1)); }
@@ -262,7 +262,6 @@
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
 .rg-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 4px; }
 .rg-field { display: grid; gap: var(--space-1); }
-.rg-field > label { font-weight: 600; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
   min-width: 0; width: 100%; min-height: 2.75rem; box-sizing: border-box; padding: var(--space-1) var(--space-2);
   border: 1px solid var(--rg-p-control-border); border-radius: var(--radius);

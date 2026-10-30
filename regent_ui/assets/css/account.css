@@ -12,7 +12,6 @@
 .rg-account h3 {
   margin: 0;
   font-family: var(--font-family-ui);
-  font-weight: 600;
   font-synthesis: none;
   overflow-wrap: anywhere;
 }
@@ -35,7 +34,6 @@
 .rg-account-identity__kicker {
   color: var(--color-fg-muted);
   font-size: .875rem;
-  font-weight: 600;
 }
 
 .rg-account-identity__who {
@@ -63,7 +61,6 @@
 .rg-account-identity__name h2 {
   margin: 0;
   font-size: 1.5rem;
-  font-weight: 600;
   line-height: 1.05;
   overflow-wrap: anywhere;
 }
@@ -154,7 +151,7 @@
 .rg-account__meta span + span::before { content: " · "; }
 .rg-account__actions { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
 /* A row's quiet controls stay secondary to the agent's name until pointed at. */
-.rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); font-weight: 600; }
+.rg-account__agents .rg-account__actions .rg-button--quiet { color: var(--color-fg-muted); }
 .rg-account__agents .rg-account__actions .rg-button--quiet:is(:hover, :focus-visible) { color: var(--color-fg); }
 
 /* World's mark, unchanged from World's brand kit (https://world.org/brand),
@@ -263,7 +260,7 @@
 .rg-account-menu__picture { grid-row: span 2; display: grid; inline-size: 2.5rem; block-size: 2.5rem; overflow: hidden; }
 .rg-account-menu__picture :where(img, svg, span) { inline-size: 100%; block-size: 100%; }
 .rg-account-menu__name { min-inline-size: 0; font-size: .95rem; }
-.rg-account-menu__name strong { display: block; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.rg-account-menu__name strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rg-account-menu__wallet { color: var(--color-fg-muted); font-size: .875rem; }
 .rg-account-menu .rg-account__brief-list li { padding-inline: 0; }
 /* Pair New Agent takes the whole row, so the press is easy to land. */
@@ -275,7 +272,6 @@
   padding-block: 0;
   color: var(--color-fg);
   font-size: .875rem;
-  font-weight: 600;
   text-decoration: none;
 }
 .rg-account-menu__pair svg { flex: none; inline-size: 1rem; block-size: 1rem; fill: none; stroke: currentColor; stroke-width: 1.5; }
@@ -301,7 +297,6 @@
   color: var(--color-fg);
   font: inherit;
   font-size: .875rem;
-  font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: start;
   text-decoration: none;
@@ -333,7 +328,7 @@
    while hidden, so showing it never moves the heading. */
 .rg-account__brief { display: grid; gap: var(--space-1); color: var(--color-fg); font-family: var(--font-family-ui); }
 .rg-account__brief-head { display: flex; align-items: center; gap: var(--space-2); min-block-size: 1.75rem; }
-.rg-account__brief h2 { margin: 0; font-size: .95rem; font-weight: 600; }
+.rg-account__brief h2 { margin: 0; font-size: .95rem; }
 .rg-account__brief-manage {
   display: inline-flex;
   align-items: center;
@@ -342,7 +337,6 @@
   border: 1px solid var(--color-border, currentColor);
   color: var(--color-fg);
   font-size: var(--type-label-size);
-  font-weight: 600;
   text-decoration: none;
   opacity: 0;
   transition: opacity 120ms ease, border-color 120ms ease;
@@ -599,7 +593,7 @@
   font-family: var(--font-family-ui);
 }
 .rg-account__dialog h2,
-.rg-account__dialog h3 { margin: 0; font-family: var(--font-family-ui); font-weight: 600; }
+.rg-account__dialog h3 { margin: 0; font-family: var(--font-family-ui); }
 .rg-account__dialog h2 { font-size: 1.5rem; line-height: 1.25; overflow-wrap: anywhere; }
 .rg-account__dialog h3 { font-size: var(--type-headline-size); }
 .rg-account__dialog p { margin: 0; }
@@ -665,7 +659,6 @@
   padding: 10px 0 10px 16px;
   border-inline-start: 3px solid var(--color-fg);
   font-size: var(--type-headline-size);
-  font-weight: 600;
   line-height: 1.3;
 }
 .rg-account__part ul { display: grid; gap: 4px; margin: 0; padding-inline-start: 1.2em; }

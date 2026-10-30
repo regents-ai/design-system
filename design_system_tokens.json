@@ -72,7 +72,6 @@
       "--type-code-size": "14px",
       "--type-code-line": "20px",
       "--font-weight-regular": "400",
-      "--font-weight-semibold": "600",
       "--tracking-microlabel": "0.14em"
     },
     ":root[data-brand=\"platform\"]": {

@@ -18,8 +18,8 @@
   padding: clamp(3rem, 10vh, 7rem) 1.5rem;
 }
 body:has(> .rg-utility) { margin: 0; min-block-size: 100svh; background: var(--utility-bg); }
-.rg-utility h1 { margin: 0 0 1rem; font-family: var(--font-family-ui); font-size: clamp(1.5rem, 4vw, 1.75rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.25; }
-.rg-utility h2, .rg-utility h3 { font-family: var(--font-family-ui); font-weight: 600; line-height: 1.35; }
+.rg-utility h1 { margin: 0 0 1rem; font-family: var(--font-family-ui); font-size: clamp(1.5rem, 4vw, 1.75rem); letter-spacing: -.025em; line-height: 1.25; }
+.rg-utility h2, .rg-utility h3 { font-family: var(--font-family-ui); line-height: 1.35; }
 .rg-utility__context { margin: 0 0 2rem; color: var(--color-fg-muted); font-size: .875rem; }
 .rg-utility__body > :first-child { margin-top: 0; }
 .rg-utility__body p { margin-block: 0 1rem; }
