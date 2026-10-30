@@ -10,44 +10,13 @@
  */
 
 /* Packaged font assets. Consumers serve regent_ui/priv/static/fonts at /fonts/regent-ui/
- * (mix regent_ui.assets copies them). Pixel is regular upright only; Sans and code Mono are 400/600. */
+ * (mix regent_ui.assets copies them). Geist Serif is every role's face; Vercel ships it
+ * in regular upright 400 only, so weight is never synthesized. Geist Mono 400 sets code. */
 @font-face {
-  font-family: "Geist Pixel Square";
-  src: url("/fonts/regent-ui/GeistPixel-Square.woff2") format("woff2");
+  font-family: "Geist Serif";
+  src: url("/fonts/regent-ui/GeistSerif-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist UI Sans";
-  src: url("/fonts/regent-ui/Geist-Regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist UI Sans";
-  src: url("/fonts/regent-ui/Geist-Italic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist UI Sans";
-  src: url("/fonts/regent-ui/Geist-SemiBold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist UI Sans";
-  src: url("/fonts/regent-ui/Geist-SemiBoldItalic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 600;
   font-display: swap;
 }
 
@@ -56,30 +25,6 @@
   src: url("/fonts/regent-ui/GeistMono-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("/fonts/regent-ui/GeistMono-Italic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("/fonts/regent-ui/GeistMono-SemiBold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("/fonts/regent-ui/GeistMono-SemiBoldItalic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 600;
   font-display: swap;
 }
 
@@ -147,11 +92,11 @@
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --active-scale: 0.97;
 
-  --font-family-sans: "Geist UI Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-family-title: "Geist Pixel Square", ui-monospace, monospace;
-  --font-family-ui: var(--font-family-sans);
-  --font-family-paragraph: var(--font-family-sans);
-  --font-family-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-serif: "Geist Serif", serif;
+  --font-family-title: var(--font-family-serif);
+  --font-family-ui: var(--font-family-serif);
+  --font-family-paragraph: var(--font-family-serif);
+  --font-family-mono: "Geist Mono", monospace;
 
   --type-display-size: 40px;
   --type-display-line: 48px;
@@ -369,6 +314,7 @@
 html {
   color: var(--color-fg);
   background: var(--color-bg);
+  font-synthesis-weight: none;
 }
 
 body {
@@ -380,9 +326,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Only 400 and 600 are packaged, so ordinary heading and bold semantics resolve to
- * 600 instead of the user agent's 700. Zero specificity keeps KaTeX's own math
- * weights (and any explicit product rule) in charge. */
 h1,
 h2,
 h3,
@@ -392,10 +335,6 @@ h6 {
   font-family: var(--font-family-title);
   font-weight: var(--font-weight-regular);
   font-synthesis: none;
-}
-
-:where(strong, b) {
-  font-weight: var(--font-weight-semibold);
 }
 
 button,

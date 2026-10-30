@@ -163,7 +163,7 @@
 .rg-panel:focus-within { z-index: var(--rg-layer-card); }
 .rg-panel__heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding: var(--rg-panel-padding); border-block-end: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
 .rg-panel__heading h3 { margin: 0; min-inline-size: 0; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
-.rg-panel__index { font-family: var(--font-family-mono); font-size: .8125rem; white-space: nowrap; }
+.rg-panel__index { font-family: var(--font-family-ui); font-size: .8125rem; white-space: nowrap; }
 /* Subgrid aligns heading, image and separate caption bands even with long copy. */
 :where(.rg-feature, .rg-feature *, .rg-feature *::before, .rg-feature *::after) { box-sizing: border-box; }
 .rg-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
@@ -183,7 +183,7 @@
 .rg-technical-figure__art::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(currentColor .6px, transparent .9px); background-size: 4px 4px; }
 .rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
 .rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }
-.rg-technical-figure svg text { font-family: var(--font-family-mono); font-size: 12px; fill: currentColor; stroke: none; }
+.rg-technical-figure svg text { font-family: var(--font-family-ui); font-size: 12px; fill: currentColor; stroke: none; }
 .rg-technical-figure figcaption { font-family: var(--font-family-ui); font-size: .8125rem; text-align: start; justify-self: start; margin-block-start: var(--space-2); }
 @media (max-width: 74.99rem) {
   .rg-sheet { --rg-page-gutter: var(--space-3); --rg-rail-width: 9rem; --rg-track-gap: var(--space-3); --rg-panel-padding: var(--space-3); }

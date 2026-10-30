@@ -68,16 +68,16 @@ defmodule Regent.VisualContractTest do
     end
   end
 
-  test "every declared font is packaged at its same-origin URL with only 400 and 600 weights" do
+  test "every declared font is packaged at its same-origin URL, regular upright only" do
     css = File.read!(Path.join(@repository_root, "design_system_tokens.css"))
     faces = Regex.scan(~r/@font-face \{([^}]*)\}/, css, capture: :all_but_first)
-    assert length(faces) == 9
+    assert length(faces) == 2
 
     for [face] <- faces do
       [_, file] = Regex.run(~r{url\("/fonts/regent-ui/([^"]+)"\)}, face)
       assert File.exists?(Path.join([@package_root, "priv/static/fonts", file])), file
-      assert face =~ ~r/font-weight: (400|600);/
-      assert face =~ ~r/font-style: (normal|italic);/
+      assert face =~ "font-weight: 400;"
+      assert face =~ "font-style: normal;"
     end
 
     assert File.exists?(Path.join(@package_root, "priv/static/fonts/OFL.txt"))
@@ -247,28 +247,31 @@ defmodule Regent.VisualContractTest do
     end
   end
 
-  test "titles use genuine regular Pixel Square while UI and prose use Sans" do
+  test "every role sets Geist Serif, packaged regular upright, and weight is never synthesized" do
     tokens =
       File.read!(Path.join(@repository_root, "design_system_tokens.json"))
       |> Jason.decode!()
       |> get_in(["selectors", ":root"])
 
-    assert tokens["--font-family-title"] =~ "Geist Pixel Square"
-    assert tokens["--font-family-ui"] == "var(--font-family-sans)"
-    assert tokens["--font-family-paragraph"] == "var(--font-family-sans)"
-    file = "GeistPixel-Square.woff2"
+    assert tokens["--font-family-serif"] == ~s("Geist Serif", serif)
+
+    for role <- ~w(--font-family-title --font-family-ui --font-family-paragraph) do
+      assert tokens[role] == "var(--font-family-serif)"
+    end
+
+    file = "GeistSerif-Regular.woff2"
 
     assert File.read!(Path.join([@package_root, "priv/static/fonts", file])) ==
-             File.read!(Path.join([@repository_root, "geist-font/GeistPixel/webfonts", file]))
+             File.read!(Path.join([@repository_root, "geist-font/GeistSerif/webfonts", file]))
 
     css = File.read!(Path.join(@repository_root, "design_system_tokens.css"))
 
     [face] =
-      Regex.scan(~r/@font-face \{[^}]*font-family: "Geist Pixel Square";[^}]*\}/, css)
+      Regex.scan(~r/@font-face \{[^}]*font-family: "Geist Serif";[^}]*\}/, css)
       |> List.flatten()
 
     assert face =~ "font-weight: 400;"
     assert face =~ "font-style: normal;"
-    assert css =~ "font-synthesis: none;"
+    assert css =~ "font-synthesis-weight: none;"
   end
 end

@@ -202,12 +202,12 @@
    does not reach them. */
 .rg-address .rg-address__label {
   min-inline-size: 0; min-block-size: 0; padding: 0; border: 0; border-radius: 0;
-  background: transparent; color: inherit; font: inherit; font-family: var(--font-family-mono, monospace);
+  background: transparent; color: inherit; font: inherit; font-family: var(--font-family-ui);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums;
   cursor: pointer; text-decoration: underline dotted; text-underline-offset: .2em;
 }
 .rg-address .rg-address__label:focus-visible { outline: 2px solid var(--color-fg, currentColor); outline-offset: 2px; }
-.rg-address__full { font-family: var(--font-family-mono, monospace); }
+.rg-address__full { font-family: var(--font-family-ui); }
 /* The copy icon and the arrow are one group that never breaks, so a wrapping line
    carries both together. */
 .rg-address__icons { display: inline-flex; flex: none; align-items: center; gap: .125rem; white-space: nowrap; vertical-align: middle; }
@@ -215,7 +215,7 @@
    last line. */
 .rg-address--full { display: inline; }
 .rg-address__words {
-  font-family: var(--font-family-mono, monospace); font-variant-numeric: tabular-nums;
+  font-family: var(--font-family-ui); font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere; word-break: break-all; margin-inline-end: .25rem;
 }
 /* The compact form holds a fixed width beside a small control in a narrow row: the
@@ -282,7 +282,7 @@
 .rg-empty-title { margin: 0; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure { padding: 0; border-block-end: 1px solid var(--rg-p-border); }
 .rg-disclosure > summary { display: flex; align-items: center; gap: var(--space-2); min-height: 4rem; padding-block: var(--space-2); cursor: pointer; list-style: none; box-sizing: border-box; }
-.rg-disclosure-index { flex: 0 0 2rem; font-family: var(--font-family-mono); font-size: .8125rem; }
+.rg-disclosure-index { flex: 0 0 2rem; font-family: var(--font-family-ui); font-size: .8125rem; }
 .rg-disclosure-title { flex: 1; min-inline-size: 0; overflow-wrap: anywhere; font-family: var(--font-family-title); font-weight: 400; font-synthesis: none; }
 .rg-disclosure > summary::-webkit-details-marker { display: none; }
 .rg-chevron { flex: 0 0 auto; font-size: 1.5em; transform: rotate(0); }

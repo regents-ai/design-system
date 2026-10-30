@@ -153,31 +153,33 @@ presented, styled as bordered uppercase micro-labels, never hidden for marketing
 
 ## Typography
 
-Three faces, packaged with the shared UI library and served from the consuming application's
-own origin. All are Vercel Geist under the SIL Open Font License 1.1; the license ships
-beside the files.
+One face, Vercel's Geist Serif, sets every title, heading, body line, label, control,
+address and figure. Geist Mono stays only for code: `code`, `kbd`, `pre` and `samp`,
+including the pairing message. Both are packaged with the shared UI library, served from
+the consuming application's own origin, and licensed under the SIL Open Font License 1.1;
+the license ships beside the files.
 
 | Face | Canonical `font-family` name | Token | Use |
 | --- | --- | --- | --- |
-| Geist Pixel Square | `"Geist Pixel Square"` | `--font-family-title` | Deliberate brand headlines, wordmarks and editorial display moments; never routine account, settings, connection or error headings |
-| Geist UI Sans | `"Geist UI Sans"` | `--font-family-sans`, `--font-family-ui`, `--font-family-paragraph` | Body, forms, navigation, labels, captions, legal text and other UI |
-| Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code, technical indices, addresses and readouts |
+| Geist Serif | `"Geist Serif"` | `--font-family-serif`, through `--font-family-title`, `--font-family-ui` and `--font-family-paragraph` | Everything that is not code |
+| Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code blocks, code spans and command lines only |
 
-`--font-family-ui` and `--font-family-paragraph` resolve to Geist UI Sans. Routine
-account, settings, connection and error headings use Sans; Pixel Square is reserved
-for deliberate brand and editorial display headings. Mono is reserved for technical/code roles.
+The three role tokens stay separate so a role can be retuned in one place; today each
+resolves to `--font-family-serif`. Addresses, hashes, amounts and indices use
+`--font-family-ui` with `font-variant-numeric: tabular-nums`.
 
-Pixel Square is genuine upright **400 only**, with `font-synthesis: none`; never fake
-bold or italic Pixel. Sans and Mono support 400 and 600 with genuine italics, using
-`--font-weight-regular` and `--font-weight-semibold`.
+Vercel ships Geist Serif in **regular upright 400 only**. The root sets
+`font-synthesis-weight: none`, so `--font-weight-semibold`, `strong` and `b` render at 400
+rather than as a browser-thickened face; hierarchy comes from size, colour and space.
+Italic is allowed to slant. Headings keep `font-synthesis: none`.
 
 Font URL contract: the canonical CSS declares each face as
-`url("/fonts/regent-ui/<file>")`, where the files are `GeistPixel-Square`, `Geist-Regular`, `Geist-Italic`,
-`Geist-SemiBold`, `Geist-SemiBoldItalic`, `GeistMono-Regular`, `GeistMono-Italic`,
-`GeistMono-SemiBold` and `GeistMono-SemiBoldItalic` (all `.woff2`) plus `OFL.txt`. They live in
-`regent_ui/priv/static/fonts/`, generated from `geist-font/` by `scripts/generate-tokens-json.mjs`,
-and `mix regent_ui.assets` copies them into the application's `priv/static/fonts/regent-ui/`.
+`url("/fonts/regent-ui/<file>")`, where the files are `GeistSerif-Regular.woff2` and
+`GeistMono-Regular.woff2` plus `OFL.txt`. They live in `regent_ui/priv/static/fonts/`,
+generated from `geist-font/` by `scripts/generate-tokens-json.mjs`, and
+`mix regent_ui.assets` copies them into the application's `priv/static/fonts/regent-ui/`.
 The application serves `fonts` as a static path; no cross-origin font host is involved.
+Text in a script Geist Serif does not cover (it is Latin only) falls to the device's serif.
 
 Math rendered by KaTeX keeps its own scoped KaTeX fonts, and Markdown output keeps its
 structure: prose paragraphs take the paragraph role, and code spans and blocks take mono.
@@ -359,7 +361,7 @@ Section bars contain the caller's real heading (with `rg-section-bar__label`), a
 decorative diamond and a CSS patterned leader. Decorations are aria-hidden; the leader
 disappears on mobile before labels become too small. Bars wrap and grow.
 
-`rg-hero-title` is the display title: Geist Pixel Square 400, 40–72px, line-height 1.03 and
+`rg-hero-title` is the display title: Geist Serif 400, 40–72px, line-height 1.03 and
 tracking -0.045em. It is an opt-in display role, not an override for dense application typography.
 
 Disclosures remain native `details`/`summary`. Optional `index` uses a mono column;
@@ -378,7 +380,7 @@ informative images need an explicit alt, while decorative images keep the empty 
 
 `ratio_card` is a static bracketed metric sheet: square frame, four inert corner
 L-strokes, header/footer rules, a computed percentage header badge (`No data` when
-unknown), uppercase labels above baseline-aligned Pixel Square 400 percentages,
+unknown), uppercase labels above baseline-aligned Geist Serif 400 percentages,
 canonical Tangerine fill, vertical-striped remainder and five scale labels. The footer
 label sits above the tiles and right-aligned optional badge. Its unique `id`
 and `title` are required strings. Integer `value_bps` is `0..10000` or `nil` (default):
@@ -521,7 +523,7 @@ Package checks and synthetic rendering do not establish real consumer acceptance
 
 Feature groups remain small HTML compositions, not a page-builder API.
 Use three/two/one feature columns and 1px gaps; an odd final card never spans a whole row.
-Use approved marks or Geist Pixel Square brand text, never borrowed wordmarks or invented metrics.
+Use approved marks or Geist Serif brand text, never borrowed wordmarks or invented metrics.
 
 ### Mobile controls and acceptance
 
@@ -766,7 +768,7 @@ the shared visual direction is accepted, before rolling pinned revisions to the 
 
 ## Utility screens
 
-Account, settings, connection and recovery screens use Geist Sans, including headings.
+Account, settings, connection and recovery screens use Geist Serif, including headings.
 Use `Regent.Utility.page` for standalone messages and `rg-utility` for account content.
 The shared utility palette has neutral light and dark surfaces, readable secondary text,
 and a restrained rule color. Product accents still belong to actions. Use open sections

@@ -35,9 +35,8 @@ Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
 
 - Shared components render; products decide. No routes, authentication, persistence, wallet
   admission, money movement or product workflow state lives in this package.
-- Typography: Geist Pixel Square 400 for deliberate brand and editorial display headings;
-  Geist UI Sans 400/600 for utility headings, body and interface text; Geist Mono for code, addresses and technical identifiers. Never
-  synthesize bold or italic Pixel. Fonts are served same-origin from `/fonts/regent-ui/`.
+- Typography: Geist Serif 400 for every heading, body line, control, label and address;
+  Geist Mono 400 for code only. Never synthesize bold. Fonts are served same-origin from `/fonts/regent-ui/`.
 - Shape: a ruled technical sheet. `--radius` is 0; brand panels may use fixed 45-degree cuts; utility sections use quiet separators
   and primary buttons cut two corners. Only inert CSS skins clip; content, menus and focus rings never do.
   Flat, opaque surfaces with paired surface/ink roles; no glass, blur, glow, lift or idle motion.

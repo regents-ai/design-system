@@ -2,7 +2,7 @@
 
 Use this with `STYLE.md` for all five Phoenix products and ash-template. This is an iPhone-oriented
 web contract, not a request to replace the sites with native iOS UI or one common
-marketing layout. Keep the approved palettes, ruled geometry and Pixel/Sans roles.
+marketing layout. Keep the approved palettes, ruled geometry and Geist Serif type.
 
 ## First-screen hierarchy
 

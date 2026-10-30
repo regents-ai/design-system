@@ -20,8 +20,7 @@ The components link only to that address and use no other word for the page.
 - An article may supply `authors`, an ordered list of maps with `name` and `x`
   (a validated HTTPS X profile URL). Every author gets its own byline link. If
   absent or empty, the existing `author` and `author_x` fields supply one author.
-- Typography follows the shared contract: Geist Pixel Square headings, Sans body,
-  Mono code. Surfaces/ink inherit the active product and light/dark palette.
+- Typography follows the shared contract: Geist Serif headings and body, Mono code. Surfaces/ink inherit the active product and light/dark palette.
 - Native fragment links work without JavaScript. The small `blog.mjs` enhancement
   updates active sections, accounts for a sticky site header, and renders local
   KaTeX as accessible MathML. It does not fetch posts, mutate auth or own themes.

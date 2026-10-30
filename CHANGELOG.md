@@ -655,3 +655,21 @@ An independent review of the two entries above found these, now fixed:
   as Techtree does; every other brand keeps the shared beam, Tangerine in light and
   Powder Blue in dark, the colours of its button marks. Patchbay's primaries keep
   Tangerine edges, so its beam stays shared. No style changes.
+
+## 2026-10-30 — Geist Serif everywhere
+
+- Every role now sets Vercel's Geist Serif (Sean, 30 Oct: "switch all fonts, everywhere"):
+  titles, headings, body, controls, labels, addresses, amounts and indices.
+  `--font-family-serif` is the face; `--font-family-title`, `--font-family-ui` and
+  `--font-family-paragraph` resolve to it. `--font-family-sans` is gone.
+- Geist Mono 400 stays only for code (`code`, `kbd`, `pre`, `samp`, the pairing message
+  and blog code) while Sean decides whether code goes serif too.
+- Vercel ships Geist Serif in regular upright 400 only, so the root sets
+  `font-synthesis-weight: none`: semibold and `strong` render at 400, never a fake bold.
+- Packaged fonts are now `GeistSerif-Regular.woff2` and `GeistMono-Regular.woff2` (plus
+  `OFL.txt`); Geist Sans, Geist Pixel and the other Mono files are removed from the
+  package and from `geist-font/`.
+- Consumers: move the pin, run `mix regent_ui.assets`, and replace any
+  `--font-family-sans` or non-code `--font-family-mono` in site CSS with `--font-family-ui`.
+  SIWA's `scripts/build_agent_page.py` embeds `GeistSerif-Regular.woff2` and
+  `GeistMono-Regular.woff2` now.

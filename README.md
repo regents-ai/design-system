@@ -61,7 +61,7 @@ node scripts/generate-tokens-json.mjs
 | `design_system_tokens.json` | Generated mirror of the token CSS, for tools that cannot parse CSS. |
 | `regent_ui/` | The Phoenix component library: primitives, ruled-sheet structure, blog, profile, theme toggle, holographic card and agent metadata, with their CSS, fonts and small browser modules. `STYLE.md` lists every component and which apps use it. |
 | `logos/` | Vector marks for Regents Labs (crown), Autolaunch (chart), and Techtree (tree), in voxel and flat styles, dark and light. |
-| `geist-font/` | Canonical Geist Pixel Square, Geist UI Sans and Geist Mono fonts. |
+| `geist-font/` | Canonical Geist Serif and Geist Mono fonts. |
 | `images/` | Artwork, blueprints, and per-product design studies. |
 | `scripts/` | The token generator. |
 
@@ -84,11 +84,10 @@ apply them; the CSS file is what to read for exact values.
 
 | Face | Packaged files | Used for |
 | --- | --- | --- |
-| Geist Pixel Square | `regent_ui/priv/static/fonts/GeistPixel-Square.woff2` | All titles and subtitles, upright 400 only; no synthetic bold/italic |
-| Geist UI Sans | `regent_ui/priv/static/fonts/Geist-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Body, controls, navigation, captions, labels and other UI |
-| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-{Regular,Italic,SemiBold,SemiBoldItalic}.woff2` | Code, technical indices, addresses and readouts |
+| Geist Serif | `regent_ui/priv/static/fonts/GeistSerif-Regular.woff2` | Every title, heading, body line, control, label, address and figure |
+| Geist Mono | `regent_ui/priv/static/fonts/GeistMono-Regular.woff2` | Code blocks, code spans and command lines only |
 
-Sans and Mono use weights 400 and 600, each with a genuine italic. Pixel uses 400 only.
+Both are regular upright 400; weight is never synthesized.
 The packaged files are generated from
 `geist-font/` and served by consuming applications at `/fonts/regent-ui/`; `STYLE.md` records
 the full URL contract.
@@ -100,7 +99,7 @@ the full URL contract.
 The current shared language uses square grid cells, flat chamfered panels, opposing-cut
 primary actions and ruled native disclosures. Eight base palettes are unchanged; supporting
 surface/ink roles expose the other three identity colors in coherent compartments.
-Typography is Pixel Square for titles/subtitles, Sans for body/UI, and Mono for technical text.
+Typography is Geist Serif for everything but code, and Geist Mono for code.
 Page-background SVGs are retired; the source artwork remains available for smaller sections.
 
 ```bash
@@ -216,7 +215,7 @@ The caller defines the change's units/period; it is display text only. Optional
 `:footer` and `:footer_badge` slots provide content; `rg-ratio-card__tile` styles
 static footer tiles without inventing buttons. `class` and global attributes reach
 the article. The square bracketed sheet stacks paired metrics in containers at or
-below 30rem, uses Pixel Square 400 display numbers, and keeps content/focus unclipped.
+below 30rem, uses Geist Serif 400 display numbers, and keeps content/focus unclipped.
 Canonical orange fills the meter; its computed percentage also appears in a read-only
 header badge (`No data` when unknown). Uppercase labels sit above the metrics;
 the footer label sits above the tiles and right badge. Orange-tinted notes use locally contrasting ink

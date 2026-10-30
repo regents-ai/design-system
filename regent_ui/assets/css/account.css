@@ -92,7 +92,7 @@
 .rg-account__metrics dt { line-height: 1.5; }
 .rg-account__metrics dd {
   margin: var(--space-1) 0 0;
-  font-family: var(--font-family-mono);
+  font-family: var(--font-family-ui);
   font-size: var(--type-title-size);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
@@ -191,7 +191,7 @@
   border-block-start: 1px solid var(--color-border);
 }
 .rg-account__history p { margin: 0; overflow-wrap: anywhere; }
-.rg-account__amount { font-family: var(--font-family-mono); font-variant-numeric: tabular-nums; }
+.rg-account__amount { font-family: var(--font-family-ui); font-variant-numeric: tabular-nums; }
 .rg-account__when { grid-column: 1 / -1; font-size: var(--type-label-size); }
 
 /* Pairing: choose an agent, then copy the message it needs. Every state's message

@@ -3,8 +3,8 @@
 ## Current contract
 
 The standalone local Touch ID shell is `standalone/agent-key.html`. SIWA's
-`scripts/build_agent_page.py` embeds this shell, the canonical tokens, three regular
-Geist fonts and the crown marks into its Python/Node clients and the Regents CLI.
+`scripts/build_agent_page.py` embeds this shell, the canonical tokens, the two regular
+Geist fonts (Serif and Mono) and the crown marks into its Python/Node clients and the Regents CLI.
 The shell owns presentation only; SIWA owns passkey behavior and state messages in
 `assets/agent/passkey.js`. No remote assets are loaded on the local credential page. Whatever serves the page
 replaces `__NONCE__` in its `<style>` and `<script>` with a new random value per page
@@ -118,10 +118,9 @@ ink lights in the two palette colours that stand out from it. The renderer's fou
 with no frame. Every
 surface on a page shares one GPU device.
 
-Preserve the eight base palette values. Use Geist Pixel Square 400 for every title and
-subtitle, Geist UI Sans 400/600 for body and UI, and Geist Mono for code/technical indices.
-Never synthesize bold Pixel. The generator packages `GeistPixel-Square.woff2` from
-`geist-font/GeistPixel/webfonts/`; rerun `mix regent_ui.assets` and serve
+Preserve the eight base palette values. Use Geist Serif 400 for everything but code, and
+Geist Mono 400 for code only. Never synthesize bold. The generator packages
+`GeistSerif-Regular.woff2` from `geist-font/GeistSerif/webfonts/`; rerun `mix regent_ui.assets` and serve
 `/fonts/regent-ui/` from the consumer origin. Supporting figure/band/panel surface and ink
 roles expose the other three palette constants per brand; use their paired utility
 classes coherently, not random per-card accents.
@@ -232,7 +231,7 @@ The consumers are `repos/regents/platform`, `repos/autolaunch/platform`,
 
 Use `Regent.Utility.page` for standalone errors and recovery messages. Use `rg-utility`
 on account/settings content; `Regent.Account` sections and dialogs share the same
-Sans typography and neutral palette. Keep Pixel for deliberate brand moments.
+Geist Serif typography and neutral palette.
 Shared OAuth consent markup must adopt the utility classes alongside this package;
 release the shared CSS first. No consent policy, status or callback behavior changes.
 Render `mix run ../scripts/render-utility-showcase.exs` from regent_ui for local
