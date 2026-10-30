@@ -188,21 +188,27 @@ defmodule Regent.Primitives do
 
   @explorers %{
     "base" => %{name: "Basescan", host: "basescan.org"},
-    "ethereum" => %{name: "Etherscan", host: "etherscan.io"}
+    "ethereum" => %{name: "Etherscan", host: "etherscan.io"},
+    "robinhood" => %{name: "Blockscout", host: "robinhoodchain.blockscout.com"}
   }
 
   attr :id, :string, required: true
-  attr :address, :string, required: true, doc: "the full `0x` address, or transaction hash"
+
+  attr :address, :string,
+    required: true,
+    doc: "the full `0x` address, transaction hash or long ID"
 
   attr :kind, :string,
     default: "address",
-    values: ~w(address tx),
-    doc: "`tx` for a transaction hash"
+    values: ~w(address tx id),
+    doc:
+      "`tx` for a transaction hash; `id` for a long hex ID, such as a Uniswap v4 pool ID, which no explorer opens"
 
   attr :chain, :string,
     default: "base",
-    values: ~w(base ethereum),
-    doc: "the chain it is on, whose explorer the arrow opens: Basescan or Etherscan"
+    values: ["base", "ethereum", "robinhood", nil],
+    doc:
+      "the chain it is on, whose explorer the arrow opens: Basescan, Etherscan or Blockscout for Robinhood; nil for a test network with no explorer, such as a local chain, and no arrow"
 
   attr :label, :string,
     default: nil,
@@ -222,8 +228,11 @@ defmodule Regent.Primitives do
   Every ENS name, address, short address and transaction hash a Regent page shows
   (founder, 2026-10-19): the words, which open the full address on a click, tap or
   Enter, then, tight together, an icon that copies it and a diagonal arrow that opens
-  it on its chain's explorer in a new tab: Basescan, or Etherscan for Ethereum. For
-  an ENS name all three give the address it points to.
+  it on its chain's explorer in a new tab: Basescan, Etherscan for Ethereum or
+  Blockscout for Robinhood. For an ENS name all three give the address it points to.
+  On a test network with no explorer (`chain={nil}`) and for a long ID that is not an
+  address (`kind="id"`), such as a Uniswap v4 pool ID, the words and the copy icon
+  stand alone.
 
   Where a person must check every character, such as an address they typed for
   someone else, `variant="full"` shows the whole address, wrapping, and nothing
@@ -231,13 +240,14 @@ defmodule Regent.Primitives do
   keeps the words and the copy icon and leaves the arrow out.
   """
   def address(assigns) do
+    explorer = if assigns.kind != "id", do: @explorers[assigns.chain]
+
     assigns =
       assign(assigns,
         label: assigns.label || short_address(assigns.address),
-        copy:
-          if(assigns.kind == "tx", do: "Copy the transaction hash", else: "Copy the full address"),
-        explorer: @explorers[assigns.chain].name,
-        href: "https://#{@explorers[assigns.chain].host}/#{assigns.kind}/#{assigns.address}"
+        copy: copy_label(assigns.kind),
+        explorer: explorer && explorer.name,
+        href: explorer && "https://#{explorer.host}/#{assigns.kind}/#{assigns.address}"
       )
 
     ~H"""
@@ -252,7 +262,7 @@ defmodule Regent.Primitives do
       <span class="rg-address__icons">
         <.copy_icon id={"#{@id}-copy"} text={@address} label={@copy} />
         <a
-          :if={@variant != "compact"}
+          :if={@variant != "compact" and @explorer}
           id={"#{@id}-explorer"}
           class="rg-address__explorer"
           href={@href}
@@ -276,6 +286,10 @@ defmodule Regent.Primitives do
     </span>
     """
   end
+
+  defp copy_label("tx"), do: "Copy the transaction hash"
+  defp copy_label("id"), do: "Copy the full ID"
+  defp copy_label("address"), do: "Copy the full address"
 
   @doc """
   An address's short form, `0x`, its first four and last four characters joined by

@@ -181,8 +181,8 @@ defmodule Regent.PrimitivesTest do
   end
 
   # Invariant: every address and transaction hash opens on its chain's explorer,
-  # Basescan unless it is on Ethereum, in a new tab, beside its copy icon
-  # (founder, 19 Oct).
+  # Basescan unless it is on Ethereum or Robinhood, in a new tab, beside its copy
+  # icon (founder, 19 Oct).
   test "an address and a transaction hash each open on their chain's explorer" do
     address = "0x1234567890abcdef1234567890abcdef12345678"
     hash = "0x" <> String.duplicate("ab", 32)
@@ -203,6 +203,31 @@ defmodule Regent.PrimitivesTest do
 
     assert mainnet =~ ~s(href="https://etherscan.io/tx/#{hash}")
     assert mainnet =~ ~s(aria-label="Open on Etherscan")
+
+    robinhood =
+      rendered_to_string(~H|<.address id="bid" address={@hash} kind="tx" chain="robinhood" />|)
+
+    assert robinhood =~ ~s(href="https://robinhoodchain.blockscout.com/tx/#{hash}")
+    assert robinhood =~ ~s(aria-label="Open on Blockscout")
+  end
+
+  # Invariant: on a chain with no explorer, and for a long ID no explorer opens, the
+  # short form and its copy icon stand alone, with no arrow (Autolaunch, 30 Oct).
+  test "an address on a test network and a long ID copy without an explorer" do
+    address = "0x1234567890abcdef1234567890abcdef12345678"
+    pool = "0x" <> String.duplicate("cd", 32)
+    assigns = %{address: address, pool: pool}
+
+    local = rendered_to_string(~H|<.address id="lab" address={@address} chain={nil} />|)
+    assert local =~ ~s(data-copy-text="#{address}")
+    assert local =~ ~s(aria-label="Copy the full address")
+    refute local =~ "href="
+
+    id = rendered_to_string(~H|<.address id="pool" address={@pool} kind="id" />|)
+    assert id =~ ~r{rg-address__label[^>]*>\s*0xcdcd..cdcd\s*</button>}
+    assert id =~ ~s(data-copy-text="#{pool}")
+    assert id =~ ~s(aria-label="Copy the full ID")
+    refute id =~ "href="
   end
 
   test "last read carries the reading's moment and hands its press to the page" do

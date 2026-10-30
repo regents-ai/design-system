@@ -629,3 +629,13 @@ An independent review of the two entries above found these, now fixed:
 - `Regent.Account.agents/1` is headed Paired, not Agents: it now sits on the Agents
   page, under the page's own title Agents, and above Pair New Agent. Its tip is
   unchanged.
+
+## 2026-10-30 — Addresses on Robinhood, on a test network, and long IDs
+
+- `Regent.Primitives.address` takes `chain="robinhood"`, whose arrow opens the address
+  or transaction on Blockscout (`robinhoodchain.blockscout.com`), and `chain={nil}` for
+  a test network with no explorer, such as Autolaunch's local chain 31337, which leaves
+  the arrow out. `kind="id"` draws a long hex ID that is not an address, such as a
+  Uniswap v4 pool ID: its short form, which opens the whole ID, and a copy icon labelled
+  "Copy the full ID", with no arrow. Autolaunch asked for both so its stock page can
+  drop its hand-made Copy buttons. `STYLE.md` says so.

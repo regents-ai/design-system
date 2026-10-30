@@ -174,9 +174,11 @@ cut-corner frame; the site passes its own hook, events and `aria-labelledby`, an
 contents scroll inside the frame. A window sets its width with `--rg-dialog-size`
 (32rem when it sets none); everything else about its contents goes on
 `.rg-dialog__body`. Every address, ENS name and transaction hash is
-`Regent.Primitives.address` (`kind="tx"` for a hash, `chain="ethereum"` for something
-on Ethereum): its short form, then a copy icon and an arrow to Basescan, or Etherscan,
-tight together.
+`Regent.Primitives.address` (`kind="tx"` for a hash, `chain="ethereum"` or
+`chain="robinhood"` for something on Ethereum or Robinhood): its short form, then a copy
+icon and an arrow to Basescan, Etherscan or Blockscout, tight together. On a test network
+with no explorer `chain={nil}` leaves the arrow out, and a long ID such as a Uniswap v4
+pool ID takes `kind="id"`, copied with no arrow.
 
 ```heex
 <Regent.Structure.dialog id="buy-key" phx-hook="ModalDialog" aria-labelledby="buy-key-title">
