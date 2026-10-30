@@ -177,7 +177,7 @@ contents scroll inside the frame. A window sets its width with `--rg-dialog-size
 `Regent.Primitives.address` (`kind="tx"` for a hash, `chain="ethereum"` or
 `chain="robinhood"` for something on Ethereum or Robinhood): its short form, then a copy
 icon and an arrow to Basescan, Etherscan or Blockscout, tight together. On a test network
-with no explorer `chain={nil}` leaves the arrow out, and a long ID such as a Uniswap v4
+with no explorer `chain="test"` leaves the arrow out, and a long ID such as a Uniswap v4
 pool ID takes `kind="id"`, copied with no arrow.
 
 ```heex

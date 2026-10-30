@@ -218,7 +218,7 @@ defmodule Regent.PrimitivesTest do
     pool = "0x" <> String.duplicate("cd", 32)
     assigns = %{address: address, pool: pool}
 
-    local = rendered_to_string(~H|<.address id="lab" address={@address} chain={nil} />|)
+    local = rendered_to_string(~H|<.address id="lab" address={@address} chain="test" />|)
     assert local =~ ~s(data-copy-text="#{address}")
     assert local =~ ~s(aria-label="Copy the full address")
     refute local =~ "href="
@@ -228,6 +228,18 @@ defmodule Regent.PrimitivesTest do
     assert id =~ ~s(data-copy-text="#{pool}")
     assert id =~ ~s(aria-label="Copy the full ID")
     refute id =~ "href="
+  end
+
+  # Invariant: a chain the component does not know stops the page instead of quietly
+  # losing the explorer link, whatever the kind.
+  test "an address on a chain it does not know raises" do
+    for chain <- [:robinhood, "polygon"], kind <- ~w(address id) do
+      assigns = %{chain: chain, kind: kind}
+
+      assert_raise ArgumentError, ~r/chain must be one of/, fn ->
+        rendered_to_string(~H|<.address id="x" address="0x1" chain={@chain} kind={@kind} />|)
+      end
+    end
   end
 
   test "last read carries the reading's moment and hands its press to the page" do

@@ -189,7 +189,8 @@ defmodule Regent.Primitives do
   @explorers %{
     "base" => %{name: "Basescan", host: "basescan.org"},
     "ethereum" => %{name: "Etherscan", host: "etherscan.io"},
-    "robinhood" => %{name: "Blockscout", host: "robinhoodchain.blockscout.com"}
+    "robinhood" => %{name: "Blockscout", host: "robinhoodchain.blockscout.com"},
+    "test" => nil
   }
 
   attr :id, :string, required: true
@@ -206,9 +207,9 @@ defmodule Regent.Primitives do
 
   attr :chain, :string,
     default: "base",
-    values: ["base", "ethereum", "robinhood", nil],
+    values: ~w(base ethereum robinhood test),
     doc:
-      "the chain it is on, whose explorer the arrow opens: Basescan, Etherscan or Blockscout for Robinhood; nil for a test network with no explorer, such as a local chain, and no arrow"
+      "the chain it is on, whose explorer the arrow opens: Basescan, Etherscan or Blockscout for Robinhood; `test` for a test network with no explorer, such as a local chain, and no arrow. Any other value raises"
 
   attr :label, :string,
     default: nil,
@@ -230,7 +231,7 @@ defmodule Regent.Primitives do
   Enter, then, tight together, an icon that copies it and a diagonal arrow that opens
   it on its chain's explorer in a new tab: Basescan, Etherscan for Ethereum or
   Blockscout for Robinhood. For an ENS name all three give the address it points to.
-  On a test network with no explorer (`chain={nil}`) and for a long ID that is not an
+  On a test network with no explorer (`chain="test"`) and for a long ID that is not an
   address (`kind="id"`), such as a Uniswap v4 pool ID, the words and the copy icon
   stand alone.
 
@@ -240,7 +241,8 @@ defmodule Regent.Primitives do
   keeps the words and the copy icon and leaves the arrow out.
   """
   def address(assigns) do
-    explorer = if assigns.kind != "id", do: @explorers[assigns.chain]
+    chain_explorer = explorer!(assigns.chain)
+    explorer = if assigns.kind != "id", do: chain_explorer
 
     assigns =
       assign(assigns,
@@ -285,6 +287,17 @@ defmodule Regent.Primitives do
       </span>
     </span>
     """
+  end
+
+  defp explorer!(chain) do
+    case Map.fetch(@explorers, chain) do
+      {:ok, explorer} ->
+        explorer
+
+      :error ->
+        raise ArgumentError,
+              "chain must be one of #{inspect(Map.keys(@explorers))}, got: #{inspect(chain)}"
+    end
   end
 
   defp copy_label("tx"), do: "Copy the transaction hash"

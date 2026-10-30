@@ -272,7 +272,7 @@ tight together, with the shared hover and press motion (founder, 2026-10-19). On
 component, `Regent.Primitives.address` (`kind="tx"` for a hash), draws it everywhere;
 a page never places the icons by hand. Something on Ethereum takes `chain="ethereum"`,
 and its arrow opens Etherscan instead; on Robinhood, `chain="robinhood"` opens Blockscout.
-On a test network with no explorer, such as a local chain, `chain={nil}` leaves the arrow
+On a test network with no explorer, such as a local chain, `chain="test"` leaves the arrow
 out. A long hex ID that is not an address, such as a Uniswap v4 pool ID, takes
 `kind="id"`: its short form and a copy icon for the whole ID, and no arrow. On hover the copy icon grows a little and the
 arrow leans up and right; a press gives both a little.
@@ -297,7 +297,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.copy_button` | Copies a value or an element's text and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
-| `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain={nil}`), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
+| `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |

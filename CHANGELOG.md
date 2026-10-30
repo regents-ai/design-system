@@ -639,3 +639,12 @@ An independent review of the two entries above found these, now fixed:
   Uniswap v4 pool ID: its short form, which opens the whole ID, and a copy icon labelled
   "Copy the full ID", with no arrow. Autolaunch asked for both so its stock page can
   drop its hand-made Copy buttons. `STYLE.md` says so.
+
+## 2026-10-30 — A test network is chain="test"; an unknown chain raises
+
+- `Regent.Primitives.address` takes `chain="test"` for a test network with no explorer
+  (copy icon, no arrow) in place of `chain={nil}`, which it no longer accepts. Any chain
+  other than `"base"`, `"ethereum"`, `"robinhood"` or `"test"`, such as the atom
+  `:robinhood` or a nil from a forgotten assign, raises `ArgumentError` when the page
+  renders, for every kind, instead of quietly dropping the explorer link. `STYLE.md` and
+  `README.md` say so.
