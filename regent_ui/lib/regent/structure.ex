@@ -226,4 +226,39 @@ defmodule Regent.Structure do
     </dialog>
     """
   end
+
+  @doc """
+  The one window that asks before an action that can't be undone, such as deleting a
+  note, in place of the browser's own confirm box. Render it once in the root layout
+  and import `confirm.mjs`. A control then asks by carrying `data-confirm`, its
+  question, and `data-confirm-action`, the word on the button that goes ahead, such as
+  "Delete". Cancel takes focus first; Cancel or Escape hands focus back to the control,
+  and the button that goes ahead presses the control again, this time without asking.
+  """
+  def confirm(assigns) do
+    ~H"""
+    <.dialog
+      id="rg-confirm"
+      class="rg-confirm"
+      role="alertdialog"
+      aria-labelledby="rg-confirm-question"
+    >
+      <form method="dialog" class="rg-confirm__form">
+        <p id="rg-confirm-question" class="rg-confirm__question"></p>
+        <div class="rg-confirm__actions">
+          <Regent.Primitives.button
+            type="submit"
+            variant="secondary"
+            value="cancel"
+            arrow={false}
+            autofocus
+          >
+            Cancel
+          </Regent.Primitives.button>
+          <Regent.Primitives.button type="submit" value="accept" data-confirm-accept></Regent.Primitives.button>
+        </div>
+      </form>
+    </.dialog>
+    """
+  end
 end

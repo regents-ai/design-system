@@ -82,6 +82,13 @@ Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu then closes on Escape, handing focus back
 to its summary, and on a press outside it. A `select` pill needs nothing.
 
+Render `Regent.Structure.confirm` once in the root layout and import `confirm.mjs`
+(copied by `mix regent_ui.assets`) once from the site's `app.ts`, in place of
+`phoenix_html`'s script: a press on any control with `data-confirm` (the question) and
+`data-confirm-action` (the word on the button that goes ahead, such as "Delete") then
+asks in that window, and the browser's own confirm box never shows. Every
+`data-confirm` gets a `data-confirm-action`.
+
 Import `tip.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`: a
 `Regent.Primitives.tip` then opens while a mouse rests on its "i" or figure and closes a
 moment after the mouse leaves that and its words; a click keeps it open. Touch, pen and
