@@ -700,3 +700,12 @@ An independent review of the two entries above found these, now fixed:
 - Consumers: render `<Regent.Structure.confirm />` once in the root layout, import
   `confirm.mjs` from `app.ts` and drop `import "phoenix_html"` when it was there only
   for `data-confirm`, and give every `data-confirm` a `data-confirm-action`.
+
+## 2026-10-30 — Account parts fit a 320px phone and a mouse
+
+- `account.css`, from Techtree's local fixes, now for every site: a wallet's words are
+  at least 28px tall beside an agent and 24px in the account menu with a mouse; an
+  identity heading goes under its picture once the row holds less than 12rem of name,
+  and a wallet name's icons under it, instead of running past a 254px column; and
+  below 360px the pairing box's five agent pictures keep 44px each so a row of five
+  fits. Sites drop their own copies.

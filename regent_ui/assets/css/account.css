@@ -36,8 +36,12 @@
   font-size: .875rem;
 }
 
+/* On a narrow page, such as 254px on a 320px phone, a name that is the wallet, with its
+   copy and explorer icons, goes under the picture when the row has no room for both,
+   and its icons go under it when it alone fills the row. */
 .rg-account-identity__who {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem;
   min-inline-size: 0;
@@ -52,18 +56,23 @@
 
 .rg-account-identity__picture > * { display: block; inline-size: 100%; block-size: 100%; }
 
+/* Beside the picture while the row holds 12rem of name, under it below that. */
 .rg-account-identity__name {
   display: grid;
+  flex: 1 1 12rem;
   gap: .25rem;
   min-inline-size: 0;
 }
 
 .rg-account-identity__name h2 {
+  min-inline-size: 0;
   margin: 0;
   font-size: 1.5rem;
   line-height: 1.05;
   overflow-wrap: anywhere;
 }
+
+.rg-account-identity__name h2 .rg-address { flex-wrap: wrap; }
 
 .rg-account-identity__name p { color: var(--color-fg-muted); }
 
@@ -140,6 +149,13 @@
 .rg-account__controls .rg-account__wallet { flex: none; font-size: var(--type-label-size); }
 /* An unknown wallet takes the wallet's height, so its row is the same height. */
 .rg-account__wallet--none { display: inline-flex; align-items: center; min-block-size: 1.75rem; color: var(--color-fg-muted); }
+/* With a mouse, a wallet's words are a control at least as tall as the rest: 28px
+   beside an agent, the height the unknown wallet above matches, and 24px in the
+   menu. A finger already gets 44px from the shared address. */
+@media (hover: hover) and (pointer: fine) {
+  .rg-account__controls .rg-account__wallet .rg-address__label { min-block-size: 1.75rem; }
+  .rg-account-menu__name .rg-address .rg-address__label { min-block-size: 1.5rem; }
+}
 .rg-account__meta {
   grid-area: meta;
   overflow: hidden;
@@ -449,6 +465,10 @@
   inline-size: 100%;
 }
 .rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 4px; }
+/* Five pictures to a row on the narrowest phones, each keeping a finger's 44px. */
+@media (max-width: 22.49rem) {
+  .rg-account__pair[data-layout="icons"] .rg-account__choice { padding: 1px; }
+}
 .rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark {
   inline-size: 2.5rem;
   block-size: 2.5rem;
