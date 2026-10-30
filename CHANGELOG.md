@@ -709,3 +709,10 @@ An independent review of the two entries above found these, now fixed:
   and a wallet name's icons under it, instead of running past a 254px column; and
   below 360px the pairing box's five agent pictures keep 44px each so a row of five
   fits. Sites drop their own copies.
+
+## 2026-10-30 — A window's main button shows against the window
+
+- `structure.css`: in every `.rg-dialog`, the main button takes a tenth of its text
+  colour over its fill. In the default colours its fill was the window's own, so
+  "Delete ›" in the confirm window and "Done ›" in other windows looked like plain
+  text beside a framed Cancel. A brand fill only deepens a little.
