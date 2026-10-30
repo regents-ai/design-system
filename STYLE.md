@@ -208,7 +208,9 @@ Patterns that generalize:
   A brand may set `--rg-button-mark-color` for both dark marks and
   `--rg-button-border-color` for the light edges; Techtree sets both
   to `#238450`. The theme switch's beam follows `--rg-theme-laser-light` and
-  `--rg-theme-laser-dark` the same way.
+  `--rg-theme-laser-dark` the same way: a brand that sets its own button marks sets
+  the beam to match, as Techtree does, and every other brand keeps the shared beam,
+  Tangerine in light and Powder Blue in dark, the colours of its button marks.
   Techtree's lime is too pale on its light page for the fill alone, so in light its
   primaries rest with a whole cut outline in `#238450`.
   Two buttons side by side in a header never look the same: one is primary, the other

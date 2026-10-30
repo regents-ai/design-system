@@ -648,3 +648,10 @@ An independent review of the two entries above found these, now fixed:
   `:robinhood` or a nil from a forgotten assign, raises `ArgumentError` when the page
   renders, for every kind, instead of quietly dropping the explorer link. `STYLE.md` and
   `README.md` say so.
+
+## 2026-10-30 — The theme switch's beam follows the button marks
+
+- `STYLE.md` says it once: a brand that sets its own button marks sets the beam to match,
+  as Techtree does; every other brand keeps the shared beam, Tangerine in light and
+  Powder Blue in dark, the colours of its button marks. Patchbay's primaries keep
+  Tangerine edges, so its beam stays shared. No style changes.
