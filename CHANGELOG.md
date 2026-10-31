@@ -685,3 +685,9 @@ An independent review of the two entries above found these, now fixed:
 - Consumers: delete any `font-weight` above 400 and any `var(--font-weight-semibold)` in
   site CSS, and give a name or amount beside quieter words `--color-fg` against
   `--color-fg-muted`.
+
+## 2026-10-31 — phoenix_html 4.4.0
+
+- `regent_ui/mix.lock` moves phoenix_html from 4.3.0 to 4.4.0, which fixes advisory
+  EEF-CVE-2026-117645 (medium). Lock only; `regent_ui`'s 58 tests run clean on it. Sites
+  resolve phoenix_html in their own locks, so each site bumps its own.
