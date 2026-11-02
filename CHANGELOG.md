@@ -748,3 +748,6 @@ site changes the attributes below in one round; the old ones are gone.
 - `Regent.Account.pairing`'s icons layout puts the agents first and drops "Choose type of
   agent below to get pairing message." The message box stays unseen, keeping its space,
   until there is a message or an outcome, so choosing moves nothing.
+- An account section's status line now sits beneath its figures, history or agents instead
+  of under the heading. It keeps its reserved line, so a message still moves nothing, and a
+  heading is no longer followed by an empty gap. Sites change nothing.

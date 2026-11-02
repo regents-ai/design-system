@@ -148,14 +148,6 @@ defmodule Regent.Account do
           </span>
         </Primitives.tip>
       </h2>
-      <p
-        class="rg-account__status"
-        data-state={agents_state(@agents)}
-        data-unseen={if agents_text(@agents, @notice), do: "false", else: "true"}
-        role={if @agents == :unavailable, do: "alert", else: "status"}
-      >
-        {agents_text(@agents, @notice) || "Current agents"}
-      </p>
       <p :if={@agents == []} class="rg-account__empty">No agents paired yet.</p>
       <ul :if={is_list(@agents) and @agents != []} class="rg-account__agents">
         <li :for={agent <- @agents} id={"#{@id}-agent-#{agent.id}"}>
@@ -187,6 +179,14 @@ defmodule Regent.Account do
           </p>
         </li>
       </ul>
+      <p
+        class="rg-account__status"
+        data-state={agents_state(@agents)}
+        data-unseen={if agents_text(@agents, @notice), do: "false", else: "true"}
+        role={if @agents == :unavailable, do: "alert", else: "status"}
+      >
+        {agents_text(@agents, @notice) || "Current agents"}
+      </p>
       <div :if={@footer != []} class="rg-account__footer">{render_slot(@footer)}</div>
     </section>
     """
@@ -854,11 +854,11 @@ defmodule Regent.Account do
       aria-busy={@state == :loading && "true"}
     >
       <h2 id={"#{@id}-title"}>Credits</h2>
-      <.read_status state={@state} message={@message} />
       <dl class="rg-account__metrics">
         <.metric label="Available" value={@available} state={@state} />
         <.metric label="Held" value={@held} state={@state} />
       </dl>
+      <.read_status state={@state} message={@message} />
       {render_slot(@inner_block)}
     </section>
     """
@@ -886,12 +886,12 @@ defmodule Regent.Account do
       aria-busy={@state == :loading && "true"}
     >
       <h2 id={"#{@id}-title"}>{@title}</h2>
-      <.read_status state={@state} message={@message} />
       <dl class="rg-account__metrics">
         <.metric label="Confirmed" value={@confirmed} state={@state} />
         <.metric label="Earned today" value={@today} state={@state} />
         <.metric label="Activity being verified" value={@pending} state={@state} />
       </dl>
+      <.read_status state={@state} message={@message} />
       <div :if={@allowances != []} class="rg-account__allowances">
         <h3>Daily allowances</h3>
         <dl class="rg-account__metrics">
@@ -930,7 +930,6 @@ defmodule Regent.Account do
       aria-busy={@state == :loading && "true"}
     >
       <h2 id={"#{@id}-title"}>{@title}</h2>
-      <.read_status state={@state} message={@message} />
       <%= if @state in [:ready, :stale] do %>
         <p :if={@rows == []} class="rg-account__empty">{@empty_message}</p>
         <ol :if={@rows != []} class="rg-account__history">
@@ -954,6 +953,7 @@ defmodule Regent.Account do
           </li>
         </ol>
       <% end %>
+      <.read_status state={@state} message={@message} />
     </section>
     """
   end

@@ -17,6 +17,7 @@
 }
 
 .rg-account h2 { font-size: 1.125rem; line-height: 1.35; }
+.rg-account > h2 { margin-block-end: var(--space-2); }
 .rg-account h3 { font-size: var(--type-body-size); }
 
 /* The account card: the picture, the name and the wallet beneath it. */
@@ -71,9 +72,11 @@
 
 .rg-account-identity__name p { color: var(--color-fg-muted); }
 
+/* Beneath what it speaks of, keeping its line's space there, so a heading is never
+   followed by a gap and a message moves nothing. */
 .rg-account__status {
   min-block-size: 1.5em;
-  margin: var(--space-1) 0 var(--space-2);
+  margin-block: var(--space-1) 0;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
