@@ -31,11 +31,6 @@
 
 .rg-account-identity p { margin: 0; }
 
-.rg-account-identity__kicker {
-  color: var(--color-fg-muted);
-  font-size: .875rem;
-}
-
 /* On a narrow page, such as 254px on a 320px phone, a name that is the wallet, with its
    copy and explorer icons, goes under the picture when the row has no room for both,
    and its icons go under it when it alone fills the row. */
@@ -581,8 +576,6 @@
   .rg-account__renew:active svg { transform: none; }
 }
 
-.rg-account__steps { display: grid; gap: 6px; margin: 0; padding-inline-start: 1.25rem; }
-.rg-account__steps li::marker { color: var(--color-fg-muted); }
 
 .rg-account__message { display: grid; inline-size: 100%; }
 .rg-account__message > * { grid-area: 1 / 1; margin: 0; }
@@ -633,9 +626,8 @@
 .rg-account__name { margin: 0 0 var(--space-3); }
 .rg-account__name-row { display: flex; align-items: center; gap: var(--space-2); }
 .rg-account__name-row input { flex: 1; min-width: 0; }
-.rg-account__name .rg-muted { display: flex; align-items: center; gap: 6px; }
-.rg-account__name .rg-muted > span:first-child {
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+.rg-account__name .rg-muted {
+  min-block-size: 1lh; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
 .rg-account__facts {

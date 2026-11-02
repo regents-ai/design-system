@@ -81,7 +81,6 @@ defmodule Regent.Account do
 
     ~H"""
     <section id={@id} class={["rg-account-identity", @class]} aria-label="Your account" {@rest}>
-      <p class="rg-account-identity__kicker">Your account</p>
       <div class="rg-account-identity__who">
         <div :if={@picture != []} class="rg-account-identity__picture">{render_slot(@picture)}</div>
         <div class="rg-account-identity__name">
@@ -556,7 +555,7 @@ defmodule Regent.Account do
       </div>
       <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
         <legend id={"#{@id}-title"}>
-          Choose the agent to pair
+          Agent
         </legend>
         <label :for={harness <- @harnesses} class="rg-account__choice">
           <input
@@ -572,11 +571,6 @@ defmodule Regent.Account do
       </fieldset>
       <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
       <%= if @layout == :list do %>
-        <ol class="rg-account__steps">
-          <li>Copy this message.</li>
-          <li>Paste it to your agent wherever you chat with it.</li>
-          <li>Your agent appears here once it pairs. This page updates on its own.</li>
-        </ol>
         <div class="rg-account__message" role="status">
           <pre :for={message <- @messages} data-unused={message != @message}><code>{message}</code></pre>
           <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
@@ -709,15 +703,14 @@ defmodule Regent.Account do
             />
             <Primitives.button type="submit">Save</Primitives.button>
           </div>
-          <:hint>
-            <span :if={@name_error} role="alert">{@name_error}</span>
-            <span :if={!@name_error}>Only you see this name.</span>
+          <:tip>
             <Primitives.tip id={"#{@id}-name-about"} label="About this name">
               Your agent chose this name when it paired. Only you and the agent see it.
               A new name shows on your account on every Regent site. It may hold up to
               80 characters, with no hidden characters.
             </Primitives.tip>
-          </:hint>
+          </:tip>
+          <:hint><span role="alert">{@name_error}</span></:hint>
         </Primitives.field>
       </form>
 

@@ -7,7 +7,6 @@ defmodule Regent.Blog do
   use Phoenix.Component
 
   attr :posts, :list, required: true
-  attr :site, :string, required: true
   attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
   attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
 
@@ -15,8 +14,7 @@ defmodule Regent.Blog do
     ~H"""
     <section class="rg-blog rg-sheet rg-blog--gallery" data-regent-blog aria-labelledby="blog-title">
       <header class="rg-blog__intro">
-        <p class="rg-blog__eyebrow">{@name}</p>
-        <h1 id="blog-title">Latest updates from {@site}.</h1>
+        <h1 id="blog-title">{@name}</h1>
       </header>
       <ol :if={@posts != []} class="rg-blog__grid" role="list">
         <li :for={post <- @posts}>
@@ -44,8 +42,7 @@ defmodule Regent.Blog do
         </li>
       </ol>
       <div :if={@posts == []} class="rg-blog__empty">
-        <h2>Nothing here yet.</h2>
-        <p>Updates will appear here, newest first.</p>
+        <h2>Nothing here yet</h2>
       </div>
     </section>
     """
@@ -124,9 +121,7 @@ defmodule Regent.Blog do
     ~H"""
     <section class="rg-blog rg-sheet" aria-labelledby="blog-title">
       <header class="rg-blog__intro">
-        <p class="rg-blog__eyebrow">{@name} · 404</p>
-        <h1 id="blog-title">Not found.</h1>
-        <p>This page is not available.</p>
+        <h1 id="blog-title">Not found</h1>
         <a href={@path} class="rg-blog__back">← Back to {@name}</a>
       </header>
     </section>

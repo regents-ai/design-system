@@ -89,7 +89,6 @@ defmodule Regent.StructureShowcase do
                 stroke="none"
               />
             </svg>
-            <:caption>Illustration / boundaries, surfaces, connections</:caption>
           </.technical_figure>
         </main>
       </.row>

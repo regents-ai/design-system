@@ -194,7 +194,6 @@
 .rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
 .rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }
 .rg-technical-figure svg text { font-family: var(--font-family-ui); font-size: 12px; fill: currentColor; stroke: none; }
-.rg-technical-figure figcaption { font-family: var(--font-family-ui); font-size: .8125rem; text-align: start; justify-self: start; margin-block-start: var(--space-2); }
 @media (max-width: 74.99rem) {
   .rg-sheet { --rg-page-gutter: var(--space-3); --rg-rail-width: 9rem; --rg-track-gap: var(--space-3); --rg-panel-padding: var(--space-3); }
 }

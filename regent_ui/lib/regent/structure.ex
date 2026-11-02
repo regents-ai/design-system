@@ -48,13 +48,11 @@ defmodule Regent.Structure do
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
-  slot :caption
 
   def technical_figure(assigns) do
     ~H"""
     <figure class={["rg-technical-figure", @class]} {@rest}>
       <div class="rg-technical-figure__art">{render_slot(@inner_block)}</div>
-      <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
     </figure>
     """
   end
@@ -105,7 +103,6 @@ defmodule Regent.Structure do
   """
   attr :id, :string, required: true
   attr :title, :string, required: true
-  attr :eyebrow, :string, default: "Allocation"
   attr :value_bps, :integer, default: nil
   attr :label, :string, default: "Allocated"
   attr :remainder_label, :string, default: "Remaining"
@@ -124,8 +121,6 @@ defmodule Regent.Structure do
     ~H"""
     <article id={@id} class={["rg-ratio-card", @class]} aria-labelledby={"#{@id}-title"} {@rest}>
       <header class="rg-ratio-card__header">
-        <span class="rg-ratio-card__eyebrow">{@eyebrow}</span>
-        <span class="rg-ratio-card__slash" aria-hidden="true">/</span>
         <h3 id={"#{@id}-title"} class="rg-ratio-card__title">{@title}</h3>
         <span class="rg-ratio-card__header-badge">{@badge}</span>
       </header>

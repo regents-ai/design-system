@@ -5,10 +5,7 @@ defmodule UtilityPreview do
 
   def connection(assigns) do
     ~H"""
-    <Regent.Utility.page
-      title="This connection link no longer works"
-      context="Ash Template · Connected apps"
-    >
+    <Regent.Utility.page title="This connection link no longer works">
       <p>It expired or has already been used. Return to the app and start connecting again.</p>
       <:note>
         <p>No new access was granted.</p>
@@ -20,19 +17,16 @@ defmodule UtilityPreview do
   def account(assigns) do
     ~H"""
     <main class="rg-utility preview-account">
-      <p class="rg-utility__context">Ash Template · Account</p>
       <h1>Account</h1>
-      <p class="preview-description">Manage your profile, agents and connected accounts.</p>
       <section class="rg-account" aria-labelledby="profile-heading">
         <h2 id="profile-heading">Profile</h2>
         <.field id="display-name" label="Display name">
           <input id="display-name" value="Example account" />
         </.field>
-        <p class="preview-note">Preview data only. No account is connected.</p>
         <.button>Save changes</.button>
       </section>
       <Regent.Account.agents id="preview-agents" agents={[]}>
-        <:footer><.button variant="secondary">Pair an agent</.button></:footer>
+        <:footer><.button variant="secondary">Pair New Agent</.button></:footer>
       </Regent.Account.agents>
       <Regent.Account.signed_out id="preview-expired" reason={:expired}>
         <:sign_in><.button>Sign in</.button></:sign_in>
@@ -43,8 +37,7 @@ defmodule UtilityPreview do
 
   def error(assigns) do
     ~H"""
-    <Regent.Utility.page title="We can’t find that page" context="Ash Template" id="error-page">
-      <p>Use the homepage or one of the links below to continue.</p>
+    <Regent.Utility.page title="We can’t find that page" id="error-page">
       <:actions><a class="rg-button" href="/">Go to the homepage</a></:actions>
       <:note>
         <nav aria-label="Recovery links">
@@ -74,7 +67,7 @@ for theme <- ["light", "dark"], screen <- [:connection, :account, :error] do
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>#{screen} · #{theme} · Local preview</title>
   <link rel="stylesheet" href="/css/design_system_tokens.css"><link rel="stylesheet" href="/css/primitives.css">
-  <style>body{margin:0;background:var(--utility-bg)}.preview-account{max-width:42rem;margin:auto;padding:3rem 1.5rem;box-sizing:border-box}.preview-description{color:var(--color-fg-muted);margin:0 0 2rem}.rg-field{margin:1.25rem 0 .5rem}.preview-note{font-size:.875rem;color:var(--color-fg-muted)}</style>
+  <style>body{margin:0;background:var(--utility-bg)}.preview-account{max-width:42rem;margin:auto;padding:3rem 1.5rem;box-sizing:border-box}.rg-field{margin:1.25rem 0 .5rem}</style>
   </head><body>#{body}</body></html>
   """
 

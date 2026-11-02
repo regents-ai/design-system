@@ -722,3 +722,26 @@ An independent review of the two entries above found these, now fixed:
   colour over its fill. In the default colours its fill was the window's own, so
   "Delete ›" in the confirm window and "Done ›" in other windows looked like plain
   text beside a framed Cancel. A brand fill only deepens a little.
+
+## 2026-11-02 — Shared parts carry no taglines, helper text or small labels
+
+Founder, 2 Nov: as simple as Linear's website or Apple Notes. If a screen needs these
+words to make sense, fix the layout. `STYLE.md` "Few words on screen" says so. Every
+site changes the attributes below in one round; the old ones are gone.
+
+- `Regent.Blog.gallery` heads the page with its `name` alone: no small label, no
+  "Latest updates from" line. The `site` attribute is gone, and so is the empty page's
+  second line. `Regent.Blog.not_found` says "Not found" and links back, nothing else.
+- `Regent.Utility.page` has no `context` label above its title.
+- `Regent.Structure.ratio_card` has no `eyebrow`; `Regent.Structure.technical_figure`
+  has no `caption`.
+- `Regent.Account.identity` has no "Your account" label.
+- `Regent.Primitives.field` has a `tip` slot beside the label. `hint` stays for a live
+  limit or a refusal under the input. Each input's explanation moves to a tip.
+- `Regent.Profile.panel` and `Regent.Account.agent_detail` drop their hint lines ("The
+  name people see for you.", "Only you see this name."); the tips stay. The agent name's
+  refusal keeps its line, empty until needed, so nothing below moves.
+- `Regent.Account.pairing` drops its three numbered steps. The list layout now reads like
+  the icons layout: the agent, the message, Copy message. The choices are headed "Agent".
+- `Regent.Discussion.solved` moves its sentence into a tip beside Solved. The `caption`
+  attribute is gone.

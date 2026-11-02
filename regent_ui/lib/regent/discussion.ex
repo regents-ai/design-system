@@ -189,15 +189,17 @@ defmodule Regent.Discussion do
   attr :date, :string, required: true, doc: "The product's words for the day it was written."
   attr :href, :string, required: true, doc: "The whole answer: its anchor, or a page showing it."
 
-  attr :caption, :string,
-    default: "The person who asked says this answer worked. That is their word, not a check."
-
   slot :inner_block, required: true, doc: "The answer's opening lines; they fade out."
 
   def solved(assigns) do
     ~H"""
     <section id={@id} class="rg-discussion__solved" aria-labelledby={"#{@id}-title"}>
-      <h2 id={"#{@id}-title"} class="rg-discussion__solved-title"><.icon name={:check} /> Solved</h2>
+      <h2 id={"#{@id}-title"} class="rg-discussion__solved-title">
+        <.icon name={:check} /> Solved
+        <Regent.Primitives.tip id={"#{@id}-about"} label="About solved">
+          The person who asked says this answer worked. That is their word, not a check.
+        </Regent.Primitives.tip>
+      </h2>
       <p class="rg-discussion__solved-by">
         Answer by
         <Regent.Primitives.address
@@ -211,7 +213,6 @@ defmodule Regent.Discussion do
         <time datetime={DateTime.to_iso8601(@at)}>{@date}</time>
       </p>
       <div class="rg-discussion__excerpt">{render_slot(@inner_block)}</div>
-      <p class="rg-discussion__caption">{@caption}</p>
       <a href={@href}>Read the whole answer →</a>
     </section>
     """

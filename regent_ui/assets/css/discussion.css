@@ -60,7 +60,6 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 .rg-discussion__excerpt { max-block-size: 7.5em; overflow: hidden; margin: .5rem 0 0; font-size: .9375rem; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
 .rg-discussion__excerpt > :first-child { margin-block-start: 0; }
 .rg-discussion .rg-discussion__excerpt :is(h1, h2, h3, h4, h5, h6) { margin: .25rem 0; font: 1.125em/1.4 var(--font-family-title); letter-spacing: normal; }
-.rg-discussion__solved .rg-discussion__caption { margin: .25rem 0 0; }
 .rg-discussion__solved > a { display: inline-block; margin-block-start: .25rem; font-size: .8125rem; }
 
 /* Replies, their filters and the empty line. */

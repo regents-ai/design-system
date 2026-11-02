@@ -397,9 +397,8 @@ label sits above the tiles and right-aligned optional badge. Its unique `id`
 and `title` are required strings. Integer `value_bps` is `0..10000` or `nil` (default):
 paired labels and the named `0..100` meter derive from the same basis points,
 trimmed to at most two decimals. Invalid inputs raise `ArgumentError`; `nil` shows
-em dashes and `No data` without a meter. Defaults are `eyebrow="Allocation"`,
-`label="Allocated"`, `remainder_label="Remaining"`, `footer_label="Details"` and
-`change={nil}`. Change text is caller-defined, including period; it is not calculated.
+em dashes and `No data` without a meter. Defaults are `label="Allocated"`,
+`remainder_label="Remaining"`, `footer_label="Details"` and `change={nil}`. Change text is caller-defined, including period; it is not calculated.
 Optional `:footer`/`:footer_badge` slots and `class`/global attributes provide content
 without implicit actions. Use `rg-ratio-card__tile` for static footer tiles.
 Orange notes mix 55% Tangerine with local ink on a 12% Tangerine/local-surface tint;
@@ -640,9 +639,17 @@ common button or disclosure.
 
 ### Few words on screen
 
-Design like a Coinbase deposit dialog (founder, 2026-10-06): the figures, the input, the
-choice and the button, and nothing else until someone asks. Too much text is a defect.
+Make every screen as simple as Linear's website or Apple Notes (founder, 2026-11-02):
+simple purpose, simple design, simple code. Cut taglines, helper text and secondary
+labels. If a screen needs them to make sense, fix the layout: the order, the grouping,
+the control itself. Each change must make the page better for people, for the developers
+who build it and for the agents that read it at once, and break nothing. Too much text is
+a defect.
 
+- **Never on screen:** a tagline or subtitle under a heading, a small label above one (a
+  kicker, eyebrow or breadcrumb that repeats the page or site name), a line under an input
+  saying what to type, and a caption under a page's picture. Shared components carry no slot for
+  these.
 - **What stays visible:** a short title or the figure that matters, labels of one to
   three words, the amount and what it costs or buys, the primary action, and anything
   needed to choose it. Errors, refusals and outcomes stay visible too, one short line

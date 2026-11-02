@@ -18,7 +18,6 @@ defmodule Regent.StructureTest do
           </Regent.Structure.section_bar>
           <Regent.Structure.technical_figure>
             <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" /></svg>
-            <:caption>One ring defines the shared boundary.</:caption>
           </Regent.Structure.technical_figure>
         </Regent.Structure.row>
       </Regent.Structure.frame>
@@ -26,7 +25,6 @@ defmodule Regent.StructureTest do
 
     assert html =~ ~s(<nav aria-label="Sections">)
     assert html =~ ~s(<h2 id="capabilities")
-    assert html =~ "One ring defines the shared boundary."
     assert html =~ ~s(class="rg-section-bar__leader" aria-hidden="true")
     refute html =~ "role=\"navigation\" hidden"
   end
@@ -146,7 +144,6 @@ defmodule Regent.StructureTest do
       assert html =~ ~s(aria-valuenow="#{allocated}")
       assert html =~ ~s(aria-valuetext="Allocated: #{allocated}%; Remaining: #{remaining}%")
       assert html =~ ~s(style="inline-size: #{allocated}%")
-      assert html =~ "Allocation"
       assert html =~ "Details"
       refute html =~ "No data"
       refute html =~ "rg-ratio-card__change"
@@ -188,7 +185,6 @@ defmodule Regent.StructureTest do
       <Regent.Structure.ratio_card
         id="custom-ratio"
         title="Supply & demand"
-        eyebrow="Pool <sample>"
         value_bps={5620}
         label={@label}
         remainder_label="Available & unassigned"
@@ -206,7 +202,6 @@ defmodule Regent.StructureTest do
     assert html =~ ~s(class="rg-ratio-card custom-card")
     assert html =~ ~s(data-purpose="example")
     assert html =~ "Supply &amp; demand"
-    assert html =~ "Pool &lt;sample&gt;"
     assert html =~ "Committed &lt;units&gt;"
     assert html =~ "Available &amp; unassigned"
     assert html =~ "+2.1 pp / 7 days &lt;estimate&gt;"
