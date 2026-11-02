@@ -270,6 +270,14 @@ belongs to the template's motion script, not this library: a press by pointer sp
 window up, a key press opens it at once, and reduced motion keeps it still. Sites copy
 that script from the template.
 
+A question before an action that can't be undone, such as deleting a note, is asked in
+one shared window, `Regent.Structure.confirm`, never the browser's own confirm box. A
+site renders it once in its root layout and imports `confirm.mjs`. A control asks by
+carrying `data-confirm`, its question, and `data-confirm-action`, the one word on the
+button that goes ahead (Delete, Unpair, Block). Cancel takes focus first; Cancel or
+Escape hands focus back to the control, and the button that goes ahead does what the
+press would have done. It rises like every other window.
+
 ### Addresses and transaction hashes
 
 A contract address or transaction hash always shows its short form, then a copy icon and
@@ -316,6 +324,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and Keyfleet (showcase) |
 | `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, Keyfleet |
 | `Regent.Structure.ratio_card` | Read-only basis-point allocation sheet | Regents |
+| `Regent.Structure.confirm` | The one window that asks before an action that can't be undone, worded by the control's `data-confirm` and `data-confirm-action` (with `confirm.mjs`) | Ash Template |
 | `Regent.Blog.gallery` | Blog index | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |

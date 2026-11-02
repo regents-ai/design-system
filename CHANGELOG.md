@@ -691,3 +691,18 @@ An independent review of the two entries above found these, now fixed:
 - `regent_ui/mix.lock` moves phoenix_html from 4.3.0 to 4.4.0, which fixes advisory
   EEF-CVE-2026-117645 (medium). Lock only; `regent_ui`'s 58 tests run clean on it. Sites
   resolve phoenix_html in their own locks, so each site bumps its own.
+
+## 2026-10-30 — One window asks before an action that can't be undone
+
+- New `Regent.Structure.confirm` and `regent_ui/assets/js/confirm.mjs`: a press on a
+  control carrying `data-confirm` now asks in the shared cut-corner window, on the
+  Window layer, instead of the browser's own grey confirm box. The question is the
+  control's `data-confirm`; the button that goes ahead is worded by its
+  `data-confirm-action` (Delete, Unpair, Block, End, Lock). Cancel takes focus first;
+  Cancel or Escape hands focus back to the control; going ahead presses the control
+  again without asking, so links, form buttons and LiveView `phx-click` act as before.
+- `mix regent_ui.assets` copies `confirm.mjs`. `STYLE.md` (Dialogs and the component
+  catalog) and `CONSUMERS.md` say how to adopt it.
+- Consumers: render `<Regent.Structure.confirm />` once in the root layout, import
+  `confirm.mjs` from `app.ts` and drop `import "phoenix_html"` when it was there only
+  for `data-confirm`, and give every `data-confirm` a `data-confirm-action`.

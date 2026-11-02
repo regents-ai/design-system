@@ -28,6 +28,7 @@ defmodule Mix.Tasks.RegentUi.Assets do
     for pattern <- [
           "profile.*",
           "blog.mjs",
+          "confirm.mjs",
           "discussion.mjs",
           "holographic_card.*",
           "pill_select.mjs",
