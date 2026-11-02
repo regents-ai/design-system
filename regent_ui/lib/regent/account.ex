@@ -517,11 +517,32 @@ defmodule Regent.Account do
   def pairing(assigns) do
     assigns =
       assigns
-      |> assign(:words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
+      |> assign(:words, pairing_words(assigns.outcome))
 
     ~H"""
     <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
-      <div :if={@layout == :icons} class="rg-account__prompt" role="status">
+      <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
+        <legend id={"#{@id}-title"}>
+          Agent
+        </legend>
+        <label :for={harness <- @harnesses} class="rg-account__choice">
+          <input
+            type="radio"
+            name="harness"
+            value={harness.value}
+            checked={harness.value == @chosen}
+            class="rg-account__radio"
+          />
+          <.agent_mark kind={harness.value} />
+          <span class="rg-account__choice-name">{harness.label}</span>
+        </label>
+      </fieldset>
+      <div
+        :if={@layout == :icons}
+        class="rg-account__prompt"
+        role="status"
+        data-unused={is_nil(@message) and is_nil(@words)}
+      >
         <.agent_mark :if={@chosen} kind={@chosen} />
         <pre :if={@message}><code>{@message}</code></pre>
         <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
@@ -553,22 +574,6 @@ defmodule Regent.Account do
           </button>
         </div>
       </div>
-      <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
-        <legend id={"#{@id}-title"}>
-          Agent
-        </legend>
-        <label :for={harness <- @harnesses} class="rg-account__choice">
-          <input
-            type="radio"
-            name="harness"
-            value={harness.value}
-            checked={harness.value == @chosen}
-            class="rg-account__radio"
-          />
-          <.agent_mark kind={harness.value} />
-          <span class="rg-account__choice-name">{harness.label}</span>
-        </label>
-      </fieldset>
       <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
       <%= if @layout == :list do %>
         <div class="rg-account__message" role="status">
@@ -997,14 +1002,12 @@ defmodule Regent.Account do
   defp signed_out_text(:signed_out), do: "Sign in to see your account."
   defp signed_out_text(:expired), do: "Your session ended. Sign in again to see your account."
 
-  defp pairing_words({:paired, name}, _message, _chosen),
-    do: "#{name} paired with your account."
+  defp pairing_words({:paired, name}), do: "#{name} paired with your account."
 
-  defp pairing_words(:unavailable, _message, _chosen),
+  defp pairing_words(:unavailable),
     do: "A pairing code couldn’t be made right now. Try again in a moment."
 
-  defp pairing_words(nil, nil, nil), do: "Choose type of agent below to get pairing message."
-  defp pairing_words(nil, _message, _chosen), do: nil
+  defp pairing_words(nil), do: nil
 
   defp agents_state(:loading), do: :loading
   defp agents_state(:unavailable), do: :error

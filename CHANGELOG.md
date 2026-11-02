@@ -745,3 +745,6 @@ site changes the attributes below in one round; the old ones are gone.
   the icons layout: the agent, the message, Copy message. The choices are headed "Agent".
 - `Regent.Discussion.solved` moves its sentence into a tip beside Solved. The `caption`
   attribute is gone.
+- `Regent.Account.pairing`'s icons layout puts the agents first and drops "Choose type of
+  agent below to get pairing message." The message box stays unseen, keeping its space,
+  until there is a message or an outcome, so choosing moves nothing.
