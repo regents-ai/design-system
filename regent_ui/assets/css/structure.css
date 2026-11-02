@@ -160,6 +160,10 @@
 @media (max-width: 47.99rem) {
   .rg-dialog { --rg-dialog-cut: 12px; }
 }
+/* A window's main button shows against the window. In the default colours its fill is
+   the window's own, so a tenth of its text colour lies over it; a brand fill only
+   deepens a little. */
+.rg-dialog .rg-button--primary::before { box-shadow: inset 0 0 0 100vmax color-mix(in srgb, currentColor 10%, transparent); }
 /* The window that asks before an action that can't be undone (`Regent.Structure.confirm`):
    the question, then Cancel and the button that goes ahead at the end of one row. */
 .rg-confirm { --rg-dialog-size: 26rem; }
