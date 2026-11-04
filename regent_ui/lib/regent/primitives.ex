@@ -31,11 +31,15 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
-  attr :text, :string, default: nil, doc: "What the button copies. Give this or `target`."
+  attr :text, :string, default: nil, doc: "What the button copies. Give one of these three."
 
   attr :target, :string,
     default: nil,
-    doc: "The id of the element on the page whose text the button copies. Give this or `text`."
+    doc: "The id of the element on the page whose text the button copies."
+
+  attr :url, :string,
+    default: nil,
+    doc: "The address on this site whose text the button fetches and copies when pressed."
 
   attr :variant, :string, default: "secondary", values: ~w(primary secondary quiet)
   attr :class, :any, default: nil
@@ -43,7 +47,8 @@ defmodule Regent.Primitives do
   slot :inner_block, required: true
 
   @doc """
-  A button that copies `text`, or the text of the element whose id is `target`,
+  A button that copies `text`, the text of the element whose id is `target`, or the
+  text at `url`, fetched only when pressed so that a long text stays out of the page,
   on any page, live or not. The application installs the template's page-wide copy
   listener once, which copies on press and sets `data-copy-state` to `copied`,
   `selected` or `failed` for a moment; a live page keeps that state through its
@@ -51,14 +56,14 @@ defmodule Regent.Primitives do
   then shows "Copied", "Selected" or "Couldn't copy" in place of its label, at
   the label's widest, and the polite status after it says the same for screen
   readers. When the browser refuses the clipboard, a `target` is selected for the
-  person to copy themselves; a `text` cannot be, so the button says it failed.
+  person to copy themselves; a `text` or `url` cannot be, so the button says it
+  failed, as it does when the `url` does not answer.
   """
-  def copy_button(%{text: text, target: target} = assigns)
-      when is_nil(text) == is_nil(target) do
-    raise ArgumentError, "copy_button #{assigns.id} takes exactly one of text or target"
-  end
-
   def copy_button(assigns) do
+    if Enum.count([assigns.text, assigns.target, assigns.url], &is_binary/1) != 1 do
+      raise ArgumentError, "copy_button #{assigns.id} takes exactly one of text, target or url"
+    end
+
     ~H"""
     <.button
       id={@id}
@@ -67,6 +72,7 @@ defmodule Regent.Primitives do
       phx-mounted={Phoenix.LiveView.JS.ignore_attributes(["data-copy-state"])}
       data-copy-text={@text}
       data-copy-target={@target}
+      data-copy-url={@url}
       data-copy-status={"#{@id}-status"}
       {@rest}
     >

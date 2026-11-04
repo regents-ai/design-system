@@ -158,6 +158,35 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Selected"
   end
 
+  test "a copy button with a url names it and carries no text of its own" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.copy_button id="page-copy" url="/page.md">Copy Page</.copy_button>
+      """)
+
+    assert html =~ ~s(data-copy-url="/page.md")
+    refute html =~ "data-copy-text"
+    refute html =~ "Selected"
+  end
+
+  test "a copy button takes exactly one thing to copy" do
+    assigns = %{}
+
+    assert_raise ArgumentError, ~r/exactly one of text, target or url/, fn ->
+      rendered_to_string(~H"""
+      <.copy_button id="both" text="words" url="/page.md">Copy</.copy_button>
+      """)
+    end
+
+    assert_raise ArgumentError, ~r/exactly one of text, target or url/, fn ->
+      rendered_to_string(~H"""
+      <.copy_button id="none">Copy</.copy_button>
+      """)
+    end
+  end
+
   # Invariant: an ENS name or short address always opens and copies the full address it
   # stands for, by click, tap or keyboard as well as hover (Sentinel, 19 Oct).
   test "an address shows its name and copies the full address it points to" do

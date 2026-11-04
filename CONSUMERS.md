@@ -54,12 +54,14 @@ slightly rounded corners in its middle, and pointing at it shows the other theme
 colours. A product header gives it no border, background, corners or height of its own;
 it only sets the gap to the icons beside it.
 
-`Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, either the
-`text` to copy or the `target` id of an element on the page whose text it copies, and
-the label as its slot. It works on every page, LiveView or controller-rendered: the
-product calls the template's `installCopyButtons()` (`assets/js/copy_buttons.ts`) once
-from `app.ts`, and that one page-wide listener copies `data-copy-text` or the target's
-text, selects the target instead when the browser refuses the clipboard, sets
+`Regent.Primitives.copy_button` owns the copy button's markup: pass `id`, one of the
+`text` to copy, the `target` id of an element on the page whose text it copies, or the
+`url` on this site whose text it fetches when pressed (for a text too long to carry in
+the page), and the label as its slot. It works on every page, LiveView or
+controller-rendered: the product calls the template's `installCopyButtons()`
+(`assets/js/copy_buttons.ts`) once from `app.ts`, and that one page-wide listener copies
+`data-copy-text`, the target's text or the page at `data-copy-url`, selects the target
+instead when the browser refuses the clipboard, sets
 `data-copy-state` to `copied`, `selected` or `failed` for a moment and writes the same
 word into the element named by `data-copy-status`. The button tells LiveView to leave
 `data-copy-state` alone on patches (`JS.ignore_attributes`), and the component renders

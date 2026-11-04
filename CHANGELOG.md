@@ -701,3 +701,9 @@ An independent review of the two entries above found these, now fixed:
 - typescript stays at 6.0.3: typescript-eslint, at its newest, allows only below 6.1.
 - `social-posts`: minimatch forced from 10.2.6 to 11.0.4, which closes alert 1 and the 12 moderate audit notices in the
   eslint tools. eslint and typescript-eslint ask for 10; both lint with 11 unchanged.
+
+## 2026-11-04 — A copy button can copy a page fetched when pressed
+
+- `Regent.Primitives.copy_button` takes `url`, beside `text` and `target`, for a text too long to carry in the page.
+  It renders `data-copy-url`; the template's `assets/js/copy_buttons.ts` fetches and copies it when pressed. A site
+  takes this library pin and that script together.
