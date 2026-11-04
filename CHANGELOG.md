@@ -698,5 +698,6 @@ An independent review of the two entries above found these, now fixed:
 - `social-posts`: @types/node 24.12.2 to 26.6.6 (major), @tailwindcss/vite and tailwindcss 4.2.4 to 4.3.4, react and
   react-dom 19.2.5 to 19.3.1, react-router-dom 7.15.0 to 7.18.5, vite 8.0.10 to 8.3.5, @vitejs/plugin-react 6.0.1 to
   6.2.1, eslint 10.3.0 to 10.14.0, typescript-eslint 8.59.2 to 8.72.1, and the rest of its build tools.
-- typescript stays at 6.0.3: typescript-eslint, at its newest, allows only below 6.1. 12 moderate audit notices remain
-  in the eslint tools, with no newer release to move to; they don't ship in the built pages.
+- typescript stays at 6.0.3: typescript-eslint, at its newest, allows only below 6.1.
+- `social-posts`: minimatch forced from 10.2.6 to 11.0.4, which closes alert 1 and the 12 moderate audit notices in the
+  eslint tools. eslint and typescript-eslint ask for 10; both lint with 11 unchanged.
