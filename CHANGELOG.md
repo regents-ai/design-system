@@ -691,3 +691,12 @@ An independent review of the two entries above found these, now fixed:
 - `regent_ui/mix.lock` moves phoenix_html from 4.3.0 to 4.4.0, which fixes advisory
   EEF-CVE-2026-117645 (medium). Lock only; `regent_ui`'s 58 tests run clean on it. Sites
   resolve phoenix_html in their own locks, so each site bumps its own.
+
+## 2026-11-04 — Packages to latest
+
+- `regent_ui` lock: phoenix 1.8.15 to 1.8.16, phoenix_live_view 1.2.12 to 1.2.13, websock_adapter 0.6.0 to 0.7.0.
+- `social-posts`: @types/node 24.12.2 to 26.6.6 (major), @tailwindcss/vite and tailwindcss 4.2.4 to 4.3.4, react and
+  react-dom 19.2.5 to 19.3.1, react-router-dom 7.15.0 to 7.18.5, vite 8.0.10 to 8.3.5, @vitejs/plugin-react 6.0.1 to
+  6.2.1, eslint 10.3.0 to 10.14.0, typescript-eslint 8.59.2 to 8.72.1, and the rest of its build tools.
+- typescript stays at 6.0.3: typescript-eslint, at its newest, allows only below 6.1. 12 moderate audit notices remain
+  in the eslint tools, with no newer release to move to; they don't ship in the built pages.
