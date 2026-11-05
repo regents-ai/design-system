@@ -57,3 +57,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Lucide — every icon
+
+`regent_ui/icons/lucide/` holds the whole Lucide icon set, unchanged, and `Regent.Icons`
+reads it when the library compiles. The arrows and chevrons in
+`regent_ui/assets/css/primitives.css` repeat the shapes of Lucide's `chevron-right`,
+`arrow-up-right` and `chevron-down`.
+
+- Project: Lucide — https://lucide.dev
+- Package: `lucide-static` 1.68.0, from https://registry.npmjs.org/lucide-static
+- License: ISC, kept at `regent_ui/icons/lucide/LICENSE`

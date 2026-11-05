@@ -6,6 +6,8 @@ defmodule Regent.Primitives do
   """
   use Phoenix.Component
 
+  alias Regent.Icons
+
   attr :type, :string, default: "button", values: ~w(button submit reset)
   attr :variant, :string, default: "primary", values: ~w(primary secondary quiet)
 
@@ -122,19 +124,10 @@ defmodule Regent.Primitives do
       data-copy-status={"#{@id}-status"}
       {@rest}
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="square"
-        aria-hidden="true"
-      >
-        <path class="rg-copy__idle" d="M8 8h12v12H8zM16 8V4H4v12h4" />
-        <path class="rg-copy__copied" d="m5 12.5 4.5 4.5L19 7.5" />
-        <path class="rg-copy__selected" d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3" />
-        <path class="rg-copy__failed" d="m6 6 12 12M18 6 6 18" />
-      </svg>
+      <Icons.icon name="copy" class="rg-copy__idle" />
+      <Icons.icon name="check" class="rg-copy__copied" />
+      <Icons.icon name="scan" class="rg-copy__selected" />
+      <Icons.icon name="x" class="rg-copy__failed" />
     </button>
     <span id={"#{@id}-status"} class="rg-copy__status" role="status" phx-update="ignore"></span>
     """
@@ -177,16 +170,7 @@ defmodule Regent.Primitives do
         title={@label}
         {@rest}
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="square"
-          aria-hidden="true"
-        >
-          <path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4v4.5H15" />
-        </svg>
+        <Icons.icon name="rotate-cw" />
       </button>
     </span>
     """
@@ -279,16 +263,7 @@ defmodule Regent.Primitives do
           aria-label={"Open on #{@explorer}"}
           title={"Open on #{@explorer}"}
         >
-          <svg
-            viewBox="0 0 12 12"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="square"
-            aria-hidden="true"
-          >
-            <path d="M2 10 10 2M3.5 2H10v6.5" />
-          </svg>
+          <Icons.icon name="arrow-up-right" />
         </a>
       </span>
     </span>
@@ -432,9 +407,7 @@ defmodule Regent.Primitives do
         aria-describedby={@id}
       >
         {render_slot(@figure)}
-        <svg :if={@figure == []} viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="8" cy="8" r="6.5" /><path d="M8 7.25v4M8 4.75v.01" />
-        </svg>
+        <Icons.icon :if={@figure == []} name="info" />
       </button>
       <span id={@id} class="rg-tip-body" popover role="tooltip">{render_slot(@inner_block)}</span>
     </span>
@@ -460,7 +433,7 @@ defmodule Regent.Primitives do
       <summary>
         <span :if={@index} class="rg-disclosure-index">{@index}</span>
         <span class="rg-disclosure-title">{@summary}</span>
-        <span class="rg-chevron" aria-hidden="true">⌄</span>
+        <Icons.icon name="chevron-down" class="rg-chevron" />
       </summary>
       <div class="rg-disclosure-body">{render_slot(@inner_block)}</div>
     </details>

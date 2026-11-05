@@ -707,3 +707,14 @@ An independent review of the two entries above found these, now fixed:
 - `Regent.Primitives.copy_button` takes `url`, beside `text` and `target`, for a text too long to carry in the page.
   It renders `data-copy-url`; the template's `assets/js/copy_buttons.ts` fetches and copies it when pressed. A site
   takes this library pin and that script together.
+
+## 2026-11-05 — Every icon comes from Lucide
+
+- New `Regent.Icons.icon`: any Lucide icon by name, from the whole set of 1.68.0 in
+  `regent_ui/icons/lucide`, at the library's weight and centred on the words beside it.
+- The library's own icons move onto it: the copy icon and its tick, frame and cross, the
+  read-again and new-code icons, the explorer arrow, the tip's mark, Pair New Agent's
+  plus, the disclosure chevron and the discussion marks. The arrows on buttons and the
+  pill select's chevron take Lucide's shapes in `primitives.css`.
+- `STYLE.md` gains the Icons rule: a site never draws its own. `THIRD_PARTY_NOTICES.md`
+  carries Lucide's licence.

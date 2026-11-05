@@ -56,6 +56,21 @@ defmodule Regent.PrimitivesTest do
     assert html =~ "Lets REGENT staking take the USDC."
   end
 
+  test "an icon draws Lucide's whole shape from the set, with none of the file's own wrapper" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <Regent.Icons.icon name="copy" class="mine" />
+      """)
+
+    assert html =~ ~s(class="rg-icon mine")
+    assert html =~ ~s(<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />)
+    assert html =~ ~s(<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />)
+    assert length(String.split(html, "<svg")) == 2
+    refute html =~ "lucide"
+  end
+
   test "a figure opens its own tip and is named by what it shows" do
     assigns = %{}
 

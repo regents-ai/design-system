@@ -290,6 +290,27 @@ with both icons after it, kept together so a line never breaks between them. Bes
 phone, `variant="compact"` holds the short form's twelve characters and the copy icon,
 without the arrow; a longer name ends in an ellipsis there.
 
+### Icons
+
+Every icon on a button, link or label is Lucide, drawn with `Regent.Icons.icon`
+(founder, 2026-11-05). A site never draws its own, whether as an `<svg>` in a page, a
+mask in a stylesheet or a copied path, so neighbours always share one weight, height
+and baseline.
+
+- `name` is Lucide's own name, from the whole set in `regent_ui/icons/lucide`. Any name
+  there works with no change to the library, and a name that is not there fails the build.
+- The line weight is the library's 1.8 on Lucide's 24 grid, with round ends. A page never
+  sets its own weight or fills an outline to make it stand out; a filled heart that shows
+  it is pressed is the one state that fills.
+- The icon is one line of text tall and sits centred on the capitals beside it. Size it
+  with `font-size` or a class on the icon; never nudge it with margins or `translate`.
+- Icons are for looking at. The button or link around one carries the words, as its text
+  or its `aria-label`.
+- Logos stay logos: a company's mark (X, GitHub), the Regent crown and the agent pictures
+  are artwork, not icons. Lucide does not carry them.
+- Before shipping a button with an icon, look at it zoomed in 3 to 6 times beside its
+  neighbours and compare weight, height and baseline. A width check does not see this.
+
 ### Shared compositions
 
 This table is the complete public component catalog of `regent_ui/lib`. "Used by" is
@@ -301,6 +322,7 @@ Ash Template and Keyfleet (each `platform/`).
 | --- | --- | --- |
 | `Regent.Primitives.button` | Primary, secondary or quiet action | All six apps |
 | `Regent.Primitives.copy_button` | Copies a value, an element's text or a page fetched when pressed, and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
+| `Regent.Icons.icon` | Any Lucide icon, by name, at the library's weight and centred on the words beside it | Ash Template |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |

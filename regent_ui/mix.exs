@@ -33,7 +33,7 @@ defmodule RegentUi.MixProject do
   defp package do
     [
       licenses: ["MIT"],
-      files: ["lib", "assets", "priv", "mix.exs", ".formatter.exs"]
+      files: ["lib", "assets", "icons", "priv", "mix.exs", ".formatter.exs"]
     ]
   end
 

@@ -274,7 +274,7 @@
   font-size: .875rem;
   text-decoration: none;
 }
-.rg-account-menu__pair svg { flex: none; inline-size: 1rem; block-size: 1rem; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.rg-account-menu__pair svg { inline-size: 1rem; block-size: 1rem; }
 .rg-account-menu__pair:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 @media (hover: hover) {
   .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }

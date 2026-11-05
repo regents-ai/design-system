@@ -17,6 +17,7 @@ defmodule Regent.Account do
   """
   use Phoenix.Component
 
+  alias Regent.Icons
   alias Regent.Primitives
 
   @agent_pictures %{
@@ -324,7 +325,7 @@ defmodule Regent.Account do
       <div :if={@balance != []} class="rg-account-menu__balance">{render_slot(@balance)}</div>
       <div class="rg-account-menu__agents">{render_slot(@agents)}</div>
       <.link patch={@pair_href} class="rg-account-menu__pair">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg> Pair New Agent
+        <Icons.icon name="plus" /> Pair New Agent
       </.link>
       <div class="rg-account-menu__foot">
         <.link
@@ -541,16 +542,7 @@ defmodule Regent.Account do
             title="Make a new code"
             data-unused={is_nil(@chosen)}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="square"
-              aria-hidden="true"
-            >
-              <path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" />
-            </svg>
+            <Icons.icon name="rotate-cw" />
           </button>
         </div>
       </div>

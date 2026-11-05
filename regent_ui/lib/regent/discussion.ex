@@ -27,6 +27,8 @@ defmodule Regent.Discussion do
   """
   use Phoenix.Component
 
+  alias Regent.Icons
+
   attr :id, :string, required: true
   attr :title, :string, required: true
   attr :solved, :boolean, default: false
@@ -59,7 +61,7 @@ defmodule Regent.Discussion do
       <header class="rg-discussion__head">
         <h1 id={"#{@id}-title"} class="rg-discussion__title">
           <span :if={@solved} class="rg-discussion__solved-mark" title="Solved">
-            <.icon name={:check} /><span class="rg-discussion__hidden">Solved: </span>
+            <Icons.icon name="check" class="rg-discussion__icon" /><span class="rg-discussion__hidden">Solved: </span>
           </span>{@title}
         </h1>
         <p :if={@context != []} class="rg-discussion__context">{render_slot(@context)}</p>
@@ -67,9 +69,21 @@ defmodule Regent.Discussion do
 
       <div class="rg-discussion__bar">
         <p class="rg-discussion__stats">
-          <span><.icon name={:reply} /> {count(@replies, "reply", "replies")}</span>
-          <span :if={@views}><.icon name={:eye} /> {count(@views, "view", "views")}</span>
-          <span :if={@likes}><.icon name={:heart} /> {count(@likes, "like", "likes")}</span>
+          <span><Icons.icon name="message-circle" class="rg-discussion__icon" /> {count(
+            @replies,
+            "reply",
+            "replies"
+          )}</span>
+          <span :if={@views}><Icons.icon name="eye" class="rg-discussion__icon" /> {count(
+            @views,
+            "view",
+            "views"
+          )}</span>
+          <span :if={@likes}><Icons.icon name="heart" class="rg-discussion__icon" /> {count(
+            @likes,
+            "like",
+            "likes"
+          )}</span>
           <span :if={@last_activity && @last_activity_at}>
             Last activity
             <time datetime={DateTime.to_iso8601(@last_activity_at)}>{@last_activity}</time>
@@ -171,7 +185,7 @@ defmodule Regent.Discussion do
   def label(assigns) do
     ~H"""
     <span class={["rg-discussion__label", @good && "rg-discussion__label--good"]}>
-      <.icon :if={@good} name={:check} />{render_slot(@inner_block)}
+      <Icons.icon :if={@good} name="check" class="rg-discussion__icon" />{render_slot(@inner_block)}
     </span>
     """
   end
@@ -197,7 +211,9 @@ defmodule Regent.Discussion do
   def solved(assigns) do
     ~H"""
     <section id={@id} class="rg-discussion__solved" aria-labelledby={"#{@id}-title"}>
-      <h2 id={"#{@id}-title"} class="rg-discussion__solved-title"><.icon name={:check} /> Solved</h2>
+      <h2 id={"#{@id}-title"} class="rg-discussion__solved-title">
+        <Icons.icon name="check" class="rg-discussion__icon" /> Solved
+      </h2>
       <p class="rg-discussion__solved-by">
         Answer by
         <Regent.Primitives.address
@@ -287,7 +303,7 @@ defmodule Regent.Discussion do
         title={if @liked, do: "You like this. Press to take it back.", else: "Like this post"}
         {@rest}
       >
-        <.icon name={:heart} />
+        <Icons.icon name="heart" class="rg-discussion__icon" />
         <span :if={@count > 0} aria-hidden="true">{@count}</span>
         <span class="rg-discussion__hidden">Like, {count(@count, "like", "likes")}</span>
       </button>
@@ -312,34 +328,4 @@ defmodule Regent.Discussion do
 
   defp count(1, one, _many), do: "1 #{one}"
   defp count(n, _one, many), do: "#{n} #{many}"
-
-  attr :name, :atom, required: true
-
-  defp icon(assigns) do
-    ~H"""
-    <svg
-      class="rg-discussion__icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.75"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d={path(@name)} />
-    </svg>
-    """
-  end
-
-  defp path(:check), do: "M20 6 9 17l-5-5"
-  defp path(:reply), do: "M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"
-
-  defp path(:eye),
-    do: "M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-
-  defp path(:heart),
-    do:
-      "M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"
 end
