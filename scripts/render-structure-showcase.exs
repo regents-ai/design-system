@@ -378,12 +378,12 @@ defmodule Regent.StructureShowcase do
         limit: %{label: "Limit", used: 35, of: 100, value: "35 of 100 today"},
         items: [
           %{
-            id: "credits.purchase_settled",
-            label: "Credits bought",
-            points: "+1 per USDC",
+            id: "patchbay.offer_bid_placed",
+            label: "Patchbay Offer placed",
+            points: "+5",
             done: false,
-            note: "12 of 50 today",
-            count: %{done: 12, of: 50}
+            note: "3 of 10 today",
+            count: %{done: 3, of: 10}
           }
         ]
       }
@@ -403,8 +403,8 @@ defmodule Regent.StructureShowcase do
 
   defp sample_points_activity do
     [
-      %{id: "1", label: "Credits bought", by: "You", at: "6 Nov, 10:40 UTC", points: "+12"},
-      %{id: "2", label: "Credits bought", by: "Pira", at: "4 Nov, 18:45 UTC", points: "+0", status: "Limit reached"}
+      %{id: "1", label: "First note written by your agent", by: "Pira", at: "6 Nov, 10:40 UTC", points: "+10"},
+      %{id: "2", label: "Patchbay Offer placed", by: "You", at: "4 Nov, 18:45 UTC", points: "+0", status: "Limit reached"}
     ]
   end
 

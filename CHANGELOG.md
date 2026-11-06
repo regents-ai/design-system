@@ -761,3 +761,9 @@ An independent review of the two entries above found these, now fixed:
   press (28px with a mouse), and the box is 90px tall in every state, so nothing moves
   when a code arrives. The showcase's pairing examples drop the `messages` input the
   component no longer takes, which had warned three times on every render.
+
+
+## 2026-11-06 — Points earn nothing from Credits
+
+- The showcase's Points examples show a Patchbay Offer and an agent's first note in
+  place of "Credits bought": Points no longer has a Credits rule.
