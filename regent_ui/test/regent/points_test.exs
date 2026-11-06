@@ -31,8 +31,8 @@ defmodule Regent.PointsTest do
   test "the reader's place shows in the list or under it, never twice" do
     assigns = %{
       rows: [
-        %{rank: 1, name: "Nadia", points: "512", you: false},
-        %{rank: 2, name: "Ada", points: "240", you: true}
+        %{rank: 1, name: "Nadia", wallet: nil, ens_name: nil, points: "512", you: false},
+        %{rank: 2, name: "Ada", wallet: nil, ens_name: nil, points: "240", you: true}
       ]
     }
 
@@ -50,6 +50,26 @@ defmodule Regent.PointsTest do
 
     refute below =~ ~s(data-you="true")
     assert below =~ "rg-points-board__you"
+  end
+
+  # Every wallet is public: a person who chose no name shows as their full wallet,
+  # copyable, never a short form printed as text.
+  test "a person with no name shows their wallet with its copy icon" do
+    wallet = "0x3e7a5c2b9d4f1a6e8b0c7d2e9f4a1b3c5d6ec99a"
+
+    assigns = %{
+      rows: [
+        %{rank: 1, name: nil, wallet: wallet, ens_name: nil, points: "512", you: false},
+        %{rank: 2, name: nil, wallet: wallet, ens_name: "pira.eth", points: "240", you: false}
+      ]
+    }
+
+    html = rendered_to_string(~H|<Regent.Points.board id="b" rows={@rows} />|)
+
+    assert html =~ ~s(id="b-wallet-1-copy")
+    assert html =~ ~s(id="b-wallet-2-copy")
+    assert html =~ "0x3e7a..c99a"
+    assert html =~ "pira.eth"
   end
 
   # The action a person can still do comes before the ones done, and only it links

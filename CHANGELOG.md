@@ -763,7 +763,11 @@ An independent review of the two entries above found these, now fixed:
   component no longer takes, which had warned three times on every render.
 
 
-## 2026-11-06 — Points earn nothing from Credits
+## 2026-11-06 — Points: no Credits rows, wallets on the board
 
 - The showcase's Points examples show a Patchbay Offer and an agent's first note in
   place of "Credits bought": Points no longer has a Credits rule.
+- `Regent.Points.board`: a row whose `name` is `nil` shows its `wallet` through
+  `Regent.Primitives.address` (compact, with the copy icon), labelled with `ens_name`
+  when it has one, in place of a short address printed as plain text. Each row now
+  takes `wallet` and `ens_name`. Every wallet is public (Sean, 6 November 2026).

@@ -7,7 +7,7 @@ defmodule Regent.Points do
   account, and none decides what earns.
   """
   use Phoenix.Component
-  alias Regent.Icons
+  alias Regent.{Icons, Primitives}
 
   @states [:ready, :loading, :stale, :error]
 
@@ -154,13 +154,18 @@ defmodule Regent.Points do
   attr :rows, :list,
     default: [],
     doc:
-      "the highest totals, each `%{rank, name, points, you}` and whatever the `face` slot draws"
+      "the highest totals, each `%{rank, name, wallet, ens_name, points, you}` and whatever the `face` slot draws: " <>
+        "`name` is the name the person chose, else `nil`, and the row then shows `wallet` as an address, " <>
+        "labelled with `ens_name` when it has one"
 
   attr :you, :map, default: nil, doc: "`%{rank, points}` for an account below the list, else nil"
   attr :state, :atom, default: :ready, values: @states
   slot :face, doc: "the picture beside a row's name; receives the row"
 
-  @doc "The highest totals by public name. The reader's own row stands out."
+  @doc """
+  The highest totals by name, or by wallet address with its copy icon for a person who
+  chose no name. The reader's own row stands out.
+  """
   def board(assigns) do
     ~H"""
     <section
@@ -174,11 +179,22 @@ defmodule Regent.Points do
       <p :if={@state == :error} role="alert">Could not load. Try refreshing.</p>
       <p :if={@state in [:ready, :stale] and @rows == []}>No points yet.</p>
       <ol :if={@state in [:ready, :stale] and @rows != []}>
-        <li :for={row <- @rows} data-you={to_string(row.you)} data-top={to_string(row.rank <= 3)}>
+        <li
+          :for={{row, line} <- Enum.with_index(@rows, 1)}
+          data-you={to_string(row.you)}
+          data-top={to_string(row.rank <= 3)}
+        >
           <span class="rg-points-board__rank">{row.rank}</span>
           <span :if={@face != []} class="rg-points-board__face">{render_slot(@face, row)}</span>
           <span class="rg-points-board__name">
-            <bdi title={row.name}>{row.name}</bdi>
+            <bdi :if={row.name} title={row.name}>{row.name}</bdi>
+            <Primitives.address
+              :if={!row.name}
+              id={"#{@id}-wallet-#{line}"}
+              address={row.wallet}
+              label={row.ens_name}
+              variant="compact"
+            />
             <span :if={row.you} class="rg-points-board__tag">You</span>
           </span>
           <span class="rg-points-board__points">{row.points}</span>

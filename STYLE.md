@@ -536,7 +536,9 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - Colour on the Points page marks three things only: the total and each action's
   points (the band pair), the reader's own row, tier and count left (the figure
   pair), and a finished action (success). A leaderboard name keeps to one line and
-  ends in an ellipsis; an account's public name is all that is shown of it.
+  ends in an ellipsis. A person who chose no name shows as their wallet through
+  `Regent.Primitives.address` (compact, with the copy icon), labelled with their ENS
+  name when they have one: every wallet is public (Sean, 6 November 2026).
 - `history` requires `id` and `title`. `rows` defaults to `[]`, with each row shaped
   `%{label: string, amount: string_or_nil, occurred_at: string, status: optional_string}`.
   Include units in `amount` and the timezone in `occurred_at`. Products supply the

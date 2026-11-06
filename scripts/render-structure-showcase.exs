@@ -390,15 +390,16 @@ defmodule Regent.StructureShowcase do
     ]
   end
 
-  # One name is long, one account has no name and shows its short wallet.
+  # One name is long; one person chose no name and shows their wallet, one their ENS name.
   defp sample_points_board do
-    for {rank, name, points, you} <- [
-          {1, "Nadia Reyes", "512", false},
-          {2, "Maximilian Featherstonehaugh-Abernathy the Third", "455", false},
-          {3, "0x3e7a..c99a", "390", false},
-          {4, "Ada Quill", "240", true}
+    for {rank, name, wallet, ens_name, points, you} <- [
+          {1, "Nadia Reyes", nil, nil, "512", false},
+          {2, "Maximilian Featherstonehaugh-Abernathy the Third", nil, nil, "455", false},
+          {3, nil, "0x3e7a5c2b9d4f1a6e8b0c7d2e9f4a1b3c5d6ec99a", nil, "390", false},
+          {3, nil, "0x9b1d4e7a2c5f8b0d3e6a9c2f5b8e1d4a7c0f3b6e", "pira.eth", "390", false},
+          {5, "Ada Quill", nil, nil, "240", true}
         ],
-        do: %{rank: rank, name: name, points: points, you: you}
+        do: %{rank: rank, name: name, wallet: wallet, ens_name: ens_name, points: points, you: you}
   end
 
   defp sample_points_activity do
