@@ -2,13 +2,20 @@
    left to do, the leaderboard, the bonus tiers and the activity. Colour marks three
    things only: the total and each action's points (the band pair), what is the
    reader's own (the figure pair), and a finished action (success). */
+/* Every breakpoint here follows the width the page gives Points, never the window:
+   a side panel beside the page must not squeeze a layout meant for a wide one. */
 .rg-points {
+  container: rg-points / inline-size;
+  min-inline-size: 0;
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+}
+
+.rg-points__frame {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   min-inline-size: 0;
-  color: var(--color-fg);
-  font-family: var(--font-family-ui);
 }
 
 /* One column reads: total, to do, leaderboard, bonus, activity. */
@@ -19,13 +26,13 @@
 .rg-points-bonus { order: 3; }
 .rg-points-activity { order: 4; }
 
-@media (min-width: 60rem) {
-  .rg-points {
+@container rg-points (min-width: 52rem) {
+  .rg-points__frame {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     column-gap: var(--space-6);
     align-items: start;
   }
-  .rg-points > .rg-points-total { grid-column: 1 / -1; }
+  .rg-points__frame > .rg-points-total { grid-column: 1 / -1; }
   .rg-points__main,
   .rg-points__side { display: grid; gap: var(--space-4); min-inline-size: 0; }
 }
@@ -125,12 +132,13 @@
 
 .rg-points-total__main { display: grid; gap: var(--space-1); min-inline-size: 0; }
 
+/* One line always, sized from the panel's own width so six digits still fit. */
 .rg-points-total__figure {
-  font-size: clamp(4rem, 16vw, 7rem);
+  font-size: clamp(3rem, 22cqi, 7rem);
   line-height: .9;
   letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .rg-points-total__about { max-inline-size: 34rem; line-height: var(--type-body-line); }
@@ -152,7 +160,7 @@
 }
 
 .rg-points-total__days dd {
-  font-size: clamp(1.75rem, 8vw, 3rem);
+  font-size: clamp(1.75rem, 9cqi, 3rem);
   line-height: 1.05;
   letter-spacing: -.02em;
   font-variant-numeric: tabular-nums;
@@ -174,12 +182,15 @@
   }
 }
 
-@media (min-width: 48rem) {
+/* Wide: the three figures sit beside the total. */
+@container rg-points (min-width: 52rem) {
   .rg-points-total {
-    grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+    grid-template-columns: minmax(0, 1fr) auto;
     padding: var(--space-4);
   }
   .rg-points-total > header { grid-column: 1 / -1; }
+  .rg-points-total__figure { font-size: clamp(4rem, 12cqi, 7rem); }
+  .rg-points-total__days dd { font-size: 3rem; }
   .rg-points-total__days {
     grid-template-columns: repeat(3, minmax(8.5rem, auto));
     padding-block-start: 0;

@@ -753,6 +753,7 @@ An independent review of the two entries above found these, now fixed:
   `activity`. The total sits large on the site's band colour with today, yesterday and
   the account's rank; the actions left to do come first, each with its points; the
   leaderboard marks the reader's own row; the bonus marks the tier held. One column on
-  a phone, two from 60rem; no part changes height as its figures arrive.
+  a phone, two where the page gives it 52rem or more; no part changes height as its
+  figures arrive.
 - `Regent.Account.points_summary` and its `.rg-account__allowances` styles are gone;
   the Points page uses `Regent.Points.total` and `todo`.

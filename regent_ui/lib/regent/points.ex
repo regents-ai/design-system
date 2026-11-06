@@ -15,13 +15,18 @@ defmodule Regent.Points do
   slot :main, required: true, doc: "the to-do list, then the activity"
   slot :side, doc: "the leaderboard, then the bonus"
 
-  @doc "The page's frame: the total across the top, then two columns, one on a phone."
+  @doc """
+  The page's frame: the total across the top, then two columns, or one where the
+  page gives Points less than 52rem.
+  """
   def layout(assigns) do
     ~H"""
     <div class="rg-points">
-      {render_slot(@total)}
-      <div class="rg-points__main">{render_slot(@main)}</div>
-      <div :if={@side != []} class="rg-points__side">{render_slot(@side)}</div>
+      <div class="rg-points__frame">
+        {render_slot(@total)}
+        <div class="rg-points__main">{render_slot(@main)}</div>
+        <div :if={@side != []} class="rg-points__side">{render_slot(@side)}</div>
+      </div>
     </div>
     """
   end

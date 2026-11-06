@@ -527,9 +527,10 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - `Regent.Points` draws the Points page from figures the site has already formatted;
   it reads nothing and computes no limit. `layout` takes `total`, `main` and `side`
   slots: one column on a phone in the order total, to do, leaderboard, bonus,
-  activity; two columns from 60rem. `total` takes `total`, `today`, `yesterday` and
-  `rank` as strings or `nil`, `pending` (actions still being checked) and one
-  sentence in its inner block. `todo` takes `left` and `groups`; `board` takes
+  activity; two columns where the page gives Points 52rem or more (measured on the
+  component, not the window, so a side panel never squeezes it). `total` takes
+  `total`, `today`, `yesterday` and `rank` as strings or `nil`, `pending` (actions
+  still being checked) and one sentence in its inner block. `todo` takes `left` and `groups`; `board` takes
   `rows`, the reader's own row below the list as `you`, and a `face` slot for the
   picture; `bonus` takes `tiers` and `periods`; `activity` takes `rows` and `more`.
 - Colour on the Points page marks three things only: the total and each action's
