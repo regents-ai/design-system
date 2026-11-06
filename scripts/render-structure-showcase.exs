@@ -318,18 +318,43 @@ defmodule Regent.StructureShowcase do
             <Regent.Account.credits_summary id="account-credits" available="12.50" held="2.00" />
             <Regent.Account.credits_summary id="account-credits-loading" state={:loading} />
             <Regent.Account.credits_summary id="account-credits-failed" state={:error} />
-            <Regent.Account.points_summary
-              id="account-points"
-              confirmed="1,240"
-              today="35"
-              pending="2"
-              allowances={[
-                %{label: "Activity", value: "35 of 100"},
-                %{label: "Credits", value: "0 of 100"}
-              ]}
-              state={:stale}
-            />
           </div>
+        </section>
+        <section id="points" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Points / the page</h2>
+          </.section_bar>
+          <Regent.Points.layout>
+            <:total>
+              <Regent.Points.total id="points-total" total="240" today="22" yesterday="20" rank="4" pending={1}>
+                A record of everything you and your agents do across Regents.
+              </Regent.Points.total>
+            </:total>
+            <:main>
+              <Regent.Points.todo id="points-todo" left={2} groups={sample_points_todo()} />
+              <Regent.Points.activity id="points-activity" rows={sample_points_activity()} more />
+            </:main>
+            <:side>
+              <Regent.Points.board id="points-board" rows={sample_points_board()} />
+              <Regent.Points.board
+                id="points-board-below"
+                rows={Enum.map(sample_points_board(), &%{&1 | you: false})}
+                you={%{rank: 15, points: "10"}}
+              />
+              <Regent.Points.board id="points-board-failed" state={:error} />
+              <Regent.Points.bonus
+                id="points-bonus"
+                nfts={4}
+                percent={45}
+                tiers={[
+                  %{range: "1–2", percent: 20, held: false},
+                  %{range: "3–6", percent: 45, held: true},
+                  %{range: "7+", percent: 75, held: false}
+                ]}
+                periods={[%{label: "Period 1", value: "240 earned, ends 1 Dec"}]}
+              />
+            </:side>
+          </Regent.Points.layout>
         </section>
       </.row>
     </.frame>
@@ -339,6 +364,51 @@ defmodule Regent.StructureShowcase do
       <form method="dialog"><.button type="submit">Close dialog</.button></form>
     </dialog>
     """
+  end
+
+  defp sample_points_todo do
+    [
+      %{
+        title: "Once",
+        limit: nil,
+        items: [
+          %{id: "social.farcaster", label: "Farcaster account linked", points: "+10", done: false, href: "#"},
+          %{id: "account.activated", label: "Account activated", points: "+25", done: true}
+        ]
+      },
+      %{
+        title: "Daily",
+        limit: %{label: "Limit", used: 35, of: 100, value: "35 of 100 today"},
+        items: [
+          %{
+            id: "credits.purchase_settled",
+            label: "Credits bought",
+            points: "+1 per USDC",
+            done: false,
+            note: "12 of 50 today",
+            count: %{done: 12, of: 50}
+          }
+        ]
+      }
+    ]
+  end
+
+  # One name is long, one account has no name and shows its short wallet.
+  defp sample_points_board do
+    for {rank, name, points, you} <- [
+          {1, "Nadia Reyes", "512", false},
+          {2, "Maximilian Featherstonehaugh-Abernathy the Third", "455", false},
+          {3, "0x3e7a..c99a", "390", false},
+          {4, "Ada Quill", "240", true}
+        ],
+        do: %{rank: rank, name: name, points: points, you: you}
+  end
+
+  defp sample_points_activity do
+    [
+      %{id: "1", label: "Credits bought", by: "You", at: "6 Nov, 10:40 UTC", points: "+12"},
+      %{id: "2", label: "Credits bought", by: "Pira", at: "4 Nov, 18:45 UTC", points: "+0", status: "Limit reached"}
+    ]
   end
 
   # Most agents have no World ID, as on the live sites; one name is short, one long.

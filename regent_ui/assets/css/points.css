@@ -1,0 +1,419 @@
+/* The Points page (Regent.Points): the total on the site's band colour, the actions
+   left to do, the leaderboard, the bonus tiers and the activity. Colour marks three
+   things only: the total and each action's points (the band pair), what is the
+   reader's own (the figure pair), and a finished action (success). */
+.rg-points {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-inline-size: 0;
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+}
+
+/* One column reads: total, to do, leaderboard, bonus, activity. */
+.rg-points__main,
+.rg-points__side { display: contents; }
+.rg-points-todo { order: 1; }
+.rg-points-board { order: 2; }
+.rg-points-bonus { order: 3; }
+.rg-points-activity { order: 4; }
+
+@media (min-width: 60rem) {
+  .rg-points {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--space-6);
+    align-items: start;
+  }
+  .rg-points > .rg-points-total { grid-column: 1 / -1; }
+  .rg-points__main,
+  .rg-points__side { display: grid; gap: var(--space-4); min-inline-size: 0; }
+}
+
+.rg-points :where(h2, h3, p, dl, dd, ol, ul) { margin: 0; padding: 0; }
+.rg-points :where(ol, ul) { list-style: none; }
+.rg-points :where(h2, h3) { font-family: var(--font-family-ui); font-synthesis: none; font-weight: inherit; }
+.rg-points :where(small) { font-size: var(--type-label-size); line-height: var(--type-label-line); }
+
+.rg-points__unseen {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Every section but the total: an open section under one rule. */
+.rg-points-todo,
+.rg-points-board,
+.rg-points-bonus,
+.rg-points-activity {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  min-inline-size: 0;
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.rg-points-todo h2,
+.rg-points-board h2,
+.rg-points-bonus h2,
+.rg-points-activity h2 {
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+}
+
+.rg-points h3,
+.rg-points-total h2,
+.rg-points-total dt {
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+  letter-spacing: var(--tracking-microlabel);
+  text-transform: uppercase;
+}
+
+.rg-points h3 { color: var(--color-fg-muted); }
+
+/* A bar for a count out of its limit. The words beside it say the same. */
+.rg-points progress {
+  appearance: none;
+  display: block;
+  inline-size: 100%;
+  block-size: 6px;
+  border: 0;
+  background: var(--hairline-strong);
+  color: var(--brand-accent);
+}
+.rg-points progress::-webkit-progress-bar { background: var(--hairline-strong); }
+.rg-points progress::-webkit-progress-value {
+  background: var(--brand-accent);
+  transition: inline-size var(--duration-slow) var(--ease-out);
+}
+.rg-points progress::-moz-progress-bar { background: var(--brand-accent); }
+
+/* The total. */
+.rg-points-total {
+  --rg-points-cut: var(--rg-cut-panel);
+  --rg-points-rule: color-mix(in oklch, currentColor 30%, transparent);
+  container: rg-points-total / inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2) var(--space-6);
+  min-inline-size: 0;
+  padding: var(--space-3);
+  background: var(--support-band-surface);
+  color: var(--support-band-ink);
+  clip-path: polygon(0 0, calc(100% - var(--rg-points-cut)) 0, 100% var(--rg-points-cut), 100% 100%, var(--rg-points-cut) 100%, 0 calc(100% - var(--rg-points-cut)));
+}
+
+/* The notice shares the title's line, so it never moves the page under it. */
+.rg-points-total > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--space-2);
+  padding-inline-end: var(--rg-points-cut);
+}
+.rg-points-total__note {
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+}
+.rg-points-total__note[data-unseen="true"] { display: none; }
+
+.rg-points-total__main { display: grid; gap: var(--space-1); min-inline-size: 0; }
+
+.rg-points-total__figure {
+  font-size: clamp(4rem, 16vw, 7rem);
+  line-height: .9;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.rg-points-total__about { max-inline-size: 34rem; line-height: var(--type-body-line); }
+
+/* Today, yesterday and rank: each as wide as its words, the last taking the rest. */
+.rg-points-total__days {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-self: end;
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--rg-points-rule);
+}
+
+.rg-points-total__days > div { display: grid; gap: 4px; min-inline-size: 0; padding-inline-end: 12px; }
+
+.rg-points-total__days > div + div {
+  padding-inline-start: 12px;
+  border-inline-start: 1px solid var(--rg-points-rule);
+}
+
+.rg-points-total__days dd {
+  font-size: clamp(1.75rem, 8vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Too narrow for three side by side: one to a line, the figure at the end. */
+@container rg-points-total (max-width: 15.5rem) {
+  .rg-points-total__days { grid-template-columns: minmax(0, 1fr); padding-block-start: 0; }
+  .rg-points-total__days > div {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    padding: var(--space-1) 0;
+  }
+  .rg-points-total__days > div + div {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--rg-points-rule);
+  }
+}
+
+@media (min-width: 48rem) {
+  .rg-points-total {
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+    padding: var(--space-4);
+  }
+  .rg-points-total > header { grid-column: 1 / -1; }
+  .rg-points-total__days {
+    grid-template-columns: repeat(3, minmax(8.5rem, auto));
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+  .rg-points-total__days > div { padding-inline: var(--space-2); }
+  .rg-points-total__days > div:first-child { border-inline-start: 1px solid var(--rg-points-rule); }
+  .rg-points-total__days > div:last-child { padding-inline-end: 0; }
+}
+
+/* To do. */
+.rg-points-todo > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
+.rg-points-todo__left {
+  padding: 2px 10px;
+  background: var(--support-figure-surface);
+  color: var(--support-figure-ink);
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+}
+.rg-points-todo__left[data-none="true"] {
+  background: transparent;
+  color: var(--color-success);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.rg-points-todo__group { display: grid; gap: var(--space-1); min-inline-size: 0; }
+.rg-points-todo__group + .rg-points-todo__group { margin-block-start: var(--space-2); }
+
+.rg-points-todo__limit {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+  font-variant-numeric: tabular-nums;
+}
+
+.rg-points-todo li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "mark label points" ". bar bar";
+  align-items: center;
+  gap: 6px 12px;
+  min-block-size: 3rem;
+  padding-block: 10px;
+  border-block-start: 1px solid var(--hairline);
+}
+
+.rg-points-todo__mark { grid-area: mark; display: inline-flex; color: var(--color-fg-muted); font-size: 1.25rem; }
+.rg-points-todo__label { grid-area: label; display: grid; min-inline-size: 0; overflow-wrap: anywhere; }
+.rg-points-todo__label small { color: var(--color-fg-muted); }
+.rg-points-todo__label a { color: inherit; text-decoration: underline; text-decoration-color: var(--hairline-strong); text-underline-offset: .2em; }
+.rg-points-todo__label a:hover { text-decoration-color: currentColor; }
+.rg-points-todo li > progress { grid-area: bar; }
+
+.rg-points-todo__points {
+  grid-area: points;
+  padding: 2px 10px;
+  background: var(--support-band-surface);
+  color: var(--support-band-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rg-points-todo li[data-done="true"] .rg-points-todo__mark { color: var(--color-success); }
+.rg-points-todo li[data-done="true"] .rg-points-todo__label { color: var(--color-fg-muted); }
+.rg-points-todo li[data-done="true"] .rg-points-todo__points {
+  background: transparent;
+  color: var(--color-fg-muted);
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+}
+
+/* Leaderboard. */
+.rg-points-board li,
+.rg-points-board__you {
+  display: grid;
+  grid-template-columns: 1.75rem auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 3rem;
+  padding: 8px 10px;
+  border-block-start: 1px solid var(--hairline);
+  font-variant-numeric: tabular-nums;
+}
+
+.rg-points-board__rank {
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  color: var(--color-fg-muted);
+}
+
+.rg-points-board li[data-top="true"] .rg-points-board__rank {
+  background: var(--support-band-surface);
+  color: var(--support-band-ink);
+}
+
+.rg-points-board__face { display: block; inline-size: 1.75rem; block-size: 1.75rem; }
+.rg-points-board__face > * { inline-size: 100%; block-size: 100%; }
+.rg-points-board__face:empty { display: none; }
+
+/* A name keeps to one line, so a long one never makes its row taller. */
+.rg-points-board__name {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+}
+.rg-points-board__name bdi {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rg-points-board__tag {
+  flex: none;
+  padding: 0 6px;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.rg-points-board__points { grid-column: 4; white-space: nowrap; }
+
+.rg-points-board li[data-you="true"],
+.rg-points-board__you {
+  background: var(--support-figure-surface);
+  color: var(--support-figure-ink);
+  border-block-start-color: transparent;
+}
+.rg-points-board li[data-you="true"] .rg-points-board__rank:not([data-top]),
+.rg-points-board__you .rg-points-board__rank { color: inherit; }
+.rg-points-board li[data-you="true"] + li { border-block-start-color: transparent; }
+.rg-points-board__you { margin-block-start: var(--space-1); }
+
+/* Bonus. */
+.rg-points-bonus h2 { display: flex; align-items: center; gap: var(--space-1); }
+
+.rg-points-bonus__held {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  min-block-size: 2.5rem;
+  color: var(--color-fg-muted);
+}
+.rg-points-bonus__held strong {
+  color: var(--color-fg);
+  font-size: 2rem;
+  font-weight: inherit;
+  line-height: 2.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rg-points-bonus__tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.rg-points-bonus__tiers li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  font-variant-numeric: tabular-nums;
+}
+.rg-points-bonus__tiers span { color: var(--color-fg-muted); font-size: var(--type-label-size); line-height: var(--type-label-line); }
+.rg-points-bonus__tiers strong { font-size: var(--type-headline-size); font-weight: inherit; line-height: var(--type-headline-line); }
+.rg-points-bonus__tiers li[data-held="true"] {
+  background: var(--support-figure-surface);
+  color: var(--support-figure-ink);
+  box-shadow: none;
+}
+.rg-points-bonus__tiers li[data-held="true"] span { color: inherit; }
+
+.rg-points-bonus__periods > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding-block: 10px;
+  border-block-start: 1px solid var(--hairline);
+  font-variant-numeric: tabular-nums;
+}
+.rg-points-bonus__periods dt { color: var(--color-fg-muted); }
+
+/* Activity. */
+.rg-points-activity li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 4px 12px;
+  min-block-size: 3rem;
+  padding-block: 10px;
+  border-block-start: 1px solid var(--hairline);
+}
+.rg-points-activity__label { display: grid; min-inline-size: 0; overflow-wrap: anywhere; }
+.rg-points-activity__label small,
+.rg-points-activity__more { color: var(--color-fg-muted); }
+.rg-points-activity__status {
+  padding: 0 8px;
+  color: var(--color-fg-muted);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-label-line);
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  white-space: nowrap;
+}
+.rg-points-activity__points { grid-column: 3; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rg-points-activity__more { font-size: var(--type-label-size); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-points progress::-webkit-progress-value { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .rg-points-total { clip-path: none; border: 1px solid CanvasText; }
+  .rg-points-total,
+  .rg-points-todo__left,
+  .rg-points-todo__points,
+  .rg-points-board li[data-you="true"],
+  .rg-points-board__you,
+  .rg-points-board li[data-top="true"] .rg-points-board__rank,
+  .rg-points-bonus__tiers li[data-held="true"] {
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: inset 0 0 0 1px CanvasText;
+  }
+  .rg-points-board li[data-you="true"],
+  .rg-points-bonus__tiers li[data-held="true"] { box-shadow: inset 0 0 0 2px Highlight; }
+}

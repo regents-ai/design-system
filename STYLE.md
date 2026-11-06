@@ -359,7 +359,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
-| `Regent.Account.points_summary` | Confirmed Points, today, pending activity and separate allowances | Awaiting consumer adoption |
+| `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
 | `Regent.Account.history` | Read-only formatted Credits or Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
@@ -524,11 +524,18 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
 - `credits_summary` requires a unique string `id`; `available` and `held` are already
   formatted strings or `nil`. The site's own lines and links under the figures go in
   its inner block, inside the same box; never wrap the section in a second framed panel.
-- `points_summary` requires `id`; `confirmed`, `today` and `pending` are formatted
-  strings or `nil`. `pending` counts activity being verified, not spendable Points.
-  Optional `allowances` is a list of `%{label: string, value: string_or_nil}`; callers
-  label activity and Credits-purchase pools separately and include the unit and
-  remaining-period wording. The component never merges allowances or computes limits.
+- `Regent.Points` draws the Points page from figures the site has already formatted;
+  it reads nothing and computes no limit. `layout` takes `total`, `main` and `side`
+  slots: one column on a phone in the order total, to do, leaderboard, bonus,
+  activity; two columns from 60rem. `total` takes `total`, `today`, `yesterday` and
+  `rank` as strings or `nil`, `pending` (actions still being checked) and one
+  sentence in its inner block. `todo` takes `left` and `groups`; `board` takes
+  `rows`, the reader's own row below the list as `you`, and a `face` slot for the
+  picture; `bonus` takes `tiers` and `periods`; `activity` takes `rows` and `more`.
+- Colour on the Points page marks three things only: the total and each action's
+  points (the band pair), the reader's own row, tier and count left (the figure
+  pair), and a finished action (success). A leaderboard name keeps to one line and
+  ends in an ellipsis; an account's public name is all that is shown of it.
 - `history` requires `id` and `title`. `rows` defaults to `[]`, with each row shaped
   `%{label: string, amount: string_or_nil, occurred_at: string, status: optional_string}`.
   Include units in `amount` and the timezone in `occurred_at`. Products supply the
@@ -634,8 +641,7 @@ draws, in order: the site's own parts (its `site` slots), the account card
 (`Regent.Account.identity`) across the page, then `credits_summary` beside the **Profile** section
 (`Regent.Profile.panel`, where the person sets their **Public Display Name**, the name
 people see for them). A narrow page shows one column in that order. A site may give a
-long section its own tab under Account, such as Points with `points_summary` and its
-`history`. Each section shows its own state: loading, could not be read, or a session
+long section its own tab under Account, such as Points, drawn with `Regent.Points`. Each section shows its own state: loading, could not be read, or a session
 that ended. A site that cannot change pairings shows the agents read-only with a link to
 where they are managed. Showing these sections never turns on spending Credits or
 earning Points.

@@ -825,49 +825,6 @@ defmodule Regent.Account do
   end
 
   attr :id, :string, required: true
-  attr :title, :string, default: "Points", doc: "\"Balance\" on a page already titled Points"
-  attr :confirmed, :string, default: nil
-  attr :today, :string, default: nil
-  attr :pending, :string, default: nil, doc: "formatted count of activity being verified"
-
-  attr :allowances, :list,
-    default: [],
-    doc: "separate pools as %{label: string, value: formatted string or nil}"
-
-  attr :state, :atom, default: :ready, values: [:ready, :loading, :stale, :error]
-  attr :message, :string, default: nil
-
-  def points_summary(assigns) do
-    ~H"""
-    <section
-      id={@id}
-      class="rg-account"
-      aria-labelledby={"#{@id}-title"}
-      aria-busy={@state == :loading && "true"}
-    >
-      <h2 id={"#{@id}-title"}>{@title}</h2>
-      <.read_status state={@state} message={@message} />
-      <dl class="rg-account__metrics">
-        <.metric label="Confirmed" value={@confirmed} state={@state} />
-        <.metric label="Earned today" value={@today} state={@state} />
-        <.metric label="Activity being verified" value={@pending} state={@state} />
-      </dl>
-      <div :if={@allowances != []} class="rg-account__allowances">
-        <h3>Daily allowances</h3>
-        <dl class="rg-account__metrics">
-          <.metric
-            :for={allowance <- @allowances}
-            label={allowance.label}
-            value={allowance.value}
-            state={@state}
-          />
-        </dl>
-      </div>
-    </section>
-    """
-  end
-
-  attr :id, :string, required: true
   attr :title, :string, required: true
 
   attr :rows, :list,

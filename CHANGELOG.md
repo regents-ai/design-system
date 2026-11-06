@@ -745,3 +745,14 @@ An independent review of the two entries above found these, now fixed:
 - `pill_select.mjs`: Escape closes only the open pills a person can see, inside the open
   window when one is open. The agent list waiting open in the shut pairing window had
   taken every Escape, so the account menu no longer closed on it.
+
+
+## 2026-11-06 — The Points page
+
+- New `Regent.Points` (`points.css`): `layout`, `total`, `todo`, `board`, `bonus` and
+  `activity`. The total sits large on the site's band colour with today, yesterday and
+  the account's rank; the actions left to do come first, each with its points; the
+  leaderboard marks the reader's own row; the bonus marks the tier held. One column on
+  a phone, two from 60rem; no part changes height as its figures arrive.
+- `Regent.Account.points_summary` and its `.rg-account__allowances` styles are gone;
+  the Points page uses `Regent.Points.total` and `todo`.
