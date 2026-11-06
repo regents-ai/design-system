@@ -757,3 +757,7 @@ An independent review of the two entries above found these, now fixed:
   figures arrive.
 - `Regent.Account.points_summary` and its `.rg-account__allowances` styles are gone;
   the Points page uses `Regent.Points.total` and `todo`.
+- Pairing: on a touch screen the message box's copy and new-code icons are each a 44px
+  press (28px with a mouse), and the box is 90px tall in every state, so nothing moves
+  when a code arrives. The showcase's pairing examples drop the `messages` input the
+  component no longer takes, which had warned three times on every render.

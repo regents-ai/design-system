@@ -539,6 +539,17 @@
   min-block-size: 1.75rem;
 }
 .rg-account__prompt-tools .rg-copy--icon svg, .rg-account__renew svg { inline-size: 1rem; block-size: 1rem; }
+/* On a touch screen each icon is a full 44px press; the box is two of them tall
+   in every state, so nothing moves when a code arrives. */
+@media (pointer: coarse) {
+  .rg-account__prompt { block-size: calc(2 * 2.75rem + 2px); }
+  .rg-account__prompt > .rg-account__prompt-tools { gap: 0; padding: 0; }
+  .rg-account__prompt-tools .rg-copy--icon, .rg-account__renew {
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    min-block-size: 2.75rem;
+  }
+}
 .rg-account__renew {
   display: inline-grid;
   place-items: center;

@@ -267,7 +267,6 @@ defmodule Regent.StructureShowcase do
                 <Regent.Account.pairing
                   id="account-pairing"
                   harnesses={sample_harnesses()}
-                  messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}
                 />
               </:footer>
             </Regent.Account.agents>
@@ -277,8 +276,7 @@ defmodule Regent.StructureShowcase do
                   id="account-pairing-issued"
                   harnesses={sample_harnesses()}
                   chosen="codex"
-                  messages={sample_messages("K7Q2-M9XR-4TWD-P8LC")}
-                  message={hd(sample_messages("K7Q2-M9XR-4TWD-P8LC"))}
+                  message={sample_message("K7Q2-M9XR-4TWD-P8LC")}
                   expires_iso="2026-10-12T14:05:00Z"
                   expires="14:05 UTC"
                 />
@@ -290,7 +288,6 @@ defmodule Regent.StructureShowcase do
                   id="account-pairing-paired"
                   harnesses={sample_harnesses()}
                   chosen="codex"
-                  messages={sample_messages("XXXXXXXXXXXXXXXXXXXXXXXX")}
                   outcome={{:paired, "Pira"}}
                 />
               </:footer>
@@ -445,11 +442,9 @@ defmodule Regent.StructureShowcase do
         do: %{value: value, label: label}
   end
 
-  defp sample_messages(code) do
-    [
-      "Pair with my Regents Labs account on regents.sh\nPairing code: #{code}\n" <>
-        "Follow the \"Pair with a person's account\" steps at https://regents.sh/llms.txt"
-    ]
+  defp sample_message(code) do
+    "Pair with my Regents Labs account on regents.sh\nPairing code: #{code}\n" <>
+      "Follow the \"Pair with a person's account\" steps at https://regents.sh/llms.txt"
   end
 
   defp sample_detail do
