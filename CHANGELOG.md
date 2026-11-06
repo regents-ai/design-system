@@ -718,3 +718,19 @@ An independent review of the two entries above found these, now fixed:
   pill select's chevron take Lucide's shapes in `primitives.css`.
 - `STYLE.md` gains the Icons rule: a site never draws its own. `THIRD_PARTY_NOTICES.md`
   carries Lucide's licence.
+
+## 2026-11-06 — Pair New Agent opens one window
+
+- `Regent.Account.pairing` is now the pairing window's insides, in one layout (founder,
+  2026-11-05, "1a"): an agent dropdown with names and pictures, the chosen agent's
+  picture large, then three numbered steps: copy the message, paste it, and a tick
+  once paired. The `layout` and `messages` attributes are gone, with the `:list` and
+  `:icons` layouts.
+- `Regent.Account.menu` takes `pair_window`, the id of the site's pairing window, in
+  place of `pair_href`: Pair New Agent is a button carrying `data-pair-open` that the
+  site's script answers by opening the window over the page.
+- `Regent.Account.agents_layout` is gone: the Agents page shows `agents/1` alone, and
+  its footer's Pair New Agent opens the window.
+- `pill_select.mjs` hands focus back to a pill's summary however the pill closes,
+  including the page's redraw after a choice.
+

@@ -2,8 +2,8 @@ defmodule Regent.Account do
   @moduledoc """
   The account's shared parts: the account menu every page opens from its header,
   the Account page's sections in their shared layout (the signed-out panel, the
-  account card and read-only Credits and Points), and the Agents page's (paired
-  agents with the pairing box and one agent's own view).
+  account card and read-only Credits and Points), the Agents page's (paired agents
+  and one agent's own view), and the pairing window's insides.
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
 
@@ -122,7 +122,7 @@ defmodule Regent.Account do
       "per-agent controls, such as See Actions and Unpair, as quiet buttons; receives the " <>
         "agent. They sit on the line under the name, after the agent's address"
 
-  slot :footer, doc: "pairing controls, or where to manage agents when this site cannot"
+  slot :footer, doc: "Pair New Agent, or where to manage agents when this site cannot"
 
   def agents(assigns) do
     assigns = assign(assigns, :world_id_words, @world_id_words)
@@ -272,9 +272,9 @@ defmodule Regent.Account do
   attr :ens_name, :string, default: nil, doc: "the ENS name that points to `wallet`"
   attr :manage_href, :string, required: true, doc: "this site's Account page"
 
-  attr :pair_href, :string,
+  attr :pair_window, :string,
     required: true,
-    doc: "the pairing box on this site's Agents page, such as /account/agents#account-pairing"
+    doc: "the id of this site's pairing window, which Pair New Agent opens"
 
   attr :rest, :global
   slot :picture, required: true, doc: "the person's picture, 40 px square"
@@ -291,9 +291,12 @@ defmodule Regent.Account do
   On the narrowest phones the header has no room for the Credits balance, so the
   `balance` slot shows it here instead, under the wallet; wider, the row is hidden
   and the header's own balance is the one on screen.
-  Everything else about the account is on the site's Account and Agents pages,
-  which `manage_href` and `pair_href` lead to. Both patch: a page drawn by the same
-  LiveView as the Account page changes in place, and any other page loads it.
+  Everything else about the account is on the site's Account page, which
+  `manage_href` leads to. It patches: a page drawn by the same LiveView as the
+  Account page changes in place, and any other page loads it. Pair New Agent opens
+  the pairing window, `pair_window`, over whatever page is open: it names it with
+  `aria-controls` and carries `data-pair-open`, which the site's script answers by
+  closing the menu and opening the window (`showModal()`).
 
   The browser opens and closes it (`popover`): the header's button names it with
   `popovertarget` and carries `anchor-name: --rg-account-menu`, which the menu
@@ -324,9 +327,15 @@ defmodule Regent.Account do
       </div>
       <div :if={@balance != []} class="rg-account-menu__balance">{render_slot(@balance)}</div>
       <div class="rg-account-menu__agents">{render_slot(@agents)}</div>
-      <.link patch={@pair_href} class="rg-account-menu__pair">
+      <button
+        type="button"
+        class="rg-account-menu__pair"
+        aria-haspopup="dialog"
+        aria-controls={@pair_window}
+        data-pair-open
+      >
         <Icons.icon name="plus" /> Pair New Agent
-      </.link>
+      </button>
       <div class="rg-account-menu__foot">
         <.link
           patch={@manage_href}
@@ -357,7 +366,7 @@ defmodule Regent.Account do
   The Account page's sections, in the same order and places on every Regent site.
   This site's own sections come first, then the account card, full width; below
   them Credits on one side and the profile on the other, in one column on a narrow
-  page. The agents have their own page (`agents_layout/1`).
+  page. The agents have their own page, with `agents/1`.
   """
   def layout(assigns) do
     ~H"""
@@ -367,33 +376,6 @@ defmodule Regent.Account do
         <div class="rg-account-layout__full">{render_slot(@identity)}</div>
         <div class="rg-account-layout__column">{render_slot(@credits)}</div>
         <div class="rg-account-layout__column">{render_slot(@profile)}</div>
-      </div>
-    </div>
-    """
-  end
-
-  attr :id, :string, required: true, doc: "the page's id; the pairing section is `<id>-pairing`"
-  slot :agents, required: true, doc: "`agents/1`"
-  slot :pairing, required: true, doc: "`pairing/1`, under the heading Pair New Agent"
-
-  @doc """
-  The Agents page's sections, the same on every Regent site: the person's agents,
-  full width, then pairing a new one under Pair New Agent, in the left column from
-  a 46rem container width. The menu's Pair New Agent leads to `#<id>-pairing`.
-  """
-  def agents_layout(assigns) do
-    ~H"""
-    <div id={@id} class="rg-account-layout">
-      <div class="rg-account-layout__grid">
-        <div class="rg-account-layout__full">{render_slot(@agents)}</div>
-        <section
-          id={"#{@id}-pairing"}
-          class="rg-account rg-account-layout__pairing"
-          aria-labelledby={"#{@id}-pairing-title"}
-        >
-          <h2 id={"#{@id}-pairing-title"}>Pair New Agent</h2>
-          {render_slot(@pairing)}
-        </section>
       </div>
     </div>
     """
@@ -480,13 +462,6 @@ defmodule Regent.Account do
     doc: "every agent a person may choose, as %{value, label}; value is the harness value"
 
   attr :chosen, :string, default: nil, doc: "the chosen agent's value"
-
-  attr :messages, :list,
-    default: [],
-    doc:
-      "`:list` layout: every agent's message, with a stand-in code before one is made, so " <>
-        "the box keeps one size"
-
   attr :message, :string, default: nil, doc: "the chosen agent's message once its code is made"
 
   attr :outcome, :any,
@@ -496,104 +471,95 @@ defmodule Regent.Account do
   attr :expires_iso, :string, default: nil
   attr :expires, :string, default: nil, doc: "when the code stops working, such as \"14:05 UTC\""
 
-  attr :layout, :atom,
-    default: :list,
-    values: [:list, :icons],
-    doc:
-      "`:list` names each agent beside its picture and lists the steps; `:icons`, for a " <>
-        "narrow panel, puts the message first in a short box that scrolls, the chosen agent's " <>
-        "picture in its corner and small icons to copy it and make a new code, then the " <>
-        "pictures alone, each but the chosen one named on hover or keyboard focus, then when " <>
-        "the code stops working"
-
   attr :rest, :global,
     doc:
       "the product's own events on the form: phx-change and phx-submit, both carrying " <>
         "`harness`, and phx-target"
 
   @doc """
-  Choosing an agent and the message to paste it. Choosing sends the form's change
-  event; "Make a new code" submits it. Every state shares one layout, and what a
-  state lacks keeps its space unseen, so choosing never changes the height.
+  Pairing an agent, as the pairing window and the pairing page show it: a dropdown
+  of the agents by name and picture, the chosen agent's picture large under it, then
+  three numbered steps: the message with its code in a short box with icons to copy
+  it and make a new code, pasting it to the agent, and a tick once it has paired.
+
+  Choosing an agent sends the form's change event; the new-code icon submits it.
+  The dropdown is open while no agent is chosen and closes when the next redraw
+  follows a choice. Every state shares one layout, and what a state lacks keeps its
+  space unseen, so choosing never changes the height; boxes still waiting are dashed.
   """
   def pairing(assigns) do
+    chosen = Enum.find(assigns.harnesses, &(&1.value == assigns.chosen))
+
     assigns =
-      assigns
-      |> assign(:words, pairing_words(assigns.outcome, assigns.message, assigns.chosen))
+      assign(assigns,
+        chosen_label: chosen && chosen.label,
+        paired: paired_name(assigns.outcome),
+        unavailable: assigns.outcome == :unavailable
+      )
 
     ~H"""
-    <form id={@id} class="rg-account__pair" data-layout={@layout} {@rest}>
-      <div :if={@layout == :icons} class="rg-account__prompt" role="status">
+    <form id={@id} class="rg-account__pair" {@rest}>
+      <details class="rg-pill-select rg-account__pick" open={is_nil(@chosen)}>
+        <summary aria-label={"Agent: #{@chosen_label || "none chosen"}"}>
+          <.agent_mark :if={@chosen} kind={@chosen} />
+          <span>{@chosen_label || "Choose agent"}</span>
+        </summary>
+        <fieldset class="rg-account__choices">
+          <legend>Agent</legend>
+          <label :for={harness <- @harnesses} class="rg-account__choice">
+            <input
+              type="radio"
+              name="harness"
+              value={harness.value}
+              checked={harness.value == @chosen}
+              class="rg-account__radio"
+            />
+            <.agent_mark kind={harness.value} />
+            <span>{harness.label}</span>
+          </label>
+        </fieldset>
+      </details>
+      <div class="rg-account__stage" data-waiting={is_nil(@chosen)}>
         <.agent_mark :if={@chosen} kind={@chosen} />
-        <pre :if={@message}><code>{@message}</code></pre>
-        <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
-        <div class="rg-account__prompt-tools">
-          <Primitives.copy_icon
-            id={"#{@id}-copy"}
-            text={@message || ""}
-            label="Copy message"
-            data-unused={is_nil(@message)}
-          />
-          <button
-            id={"#{@id}-new"}
-            type="submit"
-            class="rg-account__renew"
-            aria-label="Make a new code"
-            title="Make a new code"
-            data-unused={is_nil(@chosen)}
-          >
-            <Icons.icon name="rotate-cw" />
-          </button>
-        </div>
       </div>
-      <fieldset class="rg-account__choices" aria-labelledby={"#{@id}-title"}>
-        <legend id={"#{@id}-title"}>
-          Choose the agent to pair
-        </legend>
-        <label :for={harness <- @harnesses} class="rg-account__choice">
-          <input
-            type="radio"
-            name="harness"
-            value={harness.value}
-            checked={harness.value == @chosen}
-            class="rg-account__radio"
-          />
-          <.agent_mark kind={harness.value} />
-          <span class="rg-account__choice-name">{harness.label}</span>
-        </label>
-      </fieldset>
-      <.expiry :if={@layout == :icons} message={@message} iso={@expires_iso} at={@expires} />
-      <%= if @layout == :list do %>
-        <ol class="rg-account__steps">
-          <li>Copy this message.</li>
-          <li>Paste it to your agent wherever you chat with it.</li>
-          <li>Your agent appears here once it pairs. This page updates on its own.</li>
-        </ol>
-        <div class="rg-account__message" role="status">
-          <pre :for={message <- @messages} data-unused={message != @message}><code>{message}</code></pre>
-          <p :if={@words} class="rg-account__words" data-paired={paired?(@outcome)}>{@words}</p>
-        </div>
-        <div class="rg-account__pair-actions">
-          <Primitives.copy_button
-            id={"#{@id}-copy"}
-            text={@message || ""}
-            variant="primary"
-            data-unused={is_nil(@message)}
-          >
-            Copy message
-          </Primitives.copy_button>
-          <Primitives.button
-            id={"#{@id}-new"}
-            type="submit"
-            variant="secondary"
-            phx-disable-with="Making a code…"
-            data-unused={is_nil(@chosen)}
-          >
-            Make a new code
-          </Primitives.button>
-        </div>
-        <.expiry message={@message} iso={@expires_iso} at={@expires} />
-      <% end %>
+      <ol class="rg-account__steps">
+        <li>
+          <span>Copy the message</span>
+          <div class="rg-account__prompt" data-waiting={is_nil(@message) && !@unavailable}>
+            <pre :if={@message} tabindex="0"><code>{@message}</code></pre>
+            <p :if={@unavailable} class="rg-account__words" role="alert">
+              No code right now. Try again.
+            </p>
+            <div class="rg-account__prompt-tools">
+              <Primitives.copy_icon
+                id={"#{@id}-copy"}
+                text={@message || ""}
+                label="Copy message"
+                data-unused={is_nil(@message)}
+              />
+              <button
+                id={"#{@id}-new"}
+                type="submit"
+                class="rg-account__renew"
+                aria-label="Make a new code"
+                title="Make a new code"
+                data-unused={is_nil(@chosen)}
+              >
+                <Icons.icon name="rotate-cw" />
+              </button>
+            </div>
+          </div>
+          <.expiry message={@message} iso={@expires_iso} at={@expires} />
+        </li>
+        <li>Paste it to {@chosen_label || "your agent"}</li>
+        <li class="rg-account__done" data-paired={@paired && "true"}>
+          <span role="status">
+            <Icons.icon name="check" />
+            <span :if={@paired}>{@paired} paired</span>
+            <span :if={!@paired}>Wait for it to pair</span>
+          </span>
+        </li>
+      </ol>
     </form>
     """
   end
@@ -605,13 +571,13 @@ defmodule Regent.Account do
   defp expiry(assigns) do
     ~H"""
     <p class="rg-account__expiry" data-unused={is_nil(@message)}>
-      The code works once, until <time datetime={@iso}>{@at || "00:00 UTC"}</time>.
+      Works once, until <time datetime={@iso}>{@at || "00:00 UTC"}</time>
     </p>
     """
   end
 
-  defp paired?({:paired, _name}), do: "true"
-  defp paired?(_outcome), do: nil
+  defp paired_name({:paired, name}), do: name
+  defp paired_name(_outcome), do: nil
 
   attr :id, :string, required: true
 
@@ -995,15 +961,6 @@ defmodule Regent.Account do
 
   defp signed_out_text(:signed_out), do: "Sign in to see your account."
   defp signed_out_text(:expired), do: "Your session ended. Sign in again to see your account."
-
-  defp pairing_words({:paired, name}, _message, _chosen),
-    do: "#{name} paired with your account."
-
-  defp pairing_words(:unavailable, _message, _chosen),
-    do: "A pairing code couldn’t be made right now. Try again in a moment."
-
-  defp pairing_words(nil, nil, nil), do: "Choose type of agent below to get pairing message."
-  defp pairing_words(nil, _message, _chosen), do: nil
 
   defp agents_state(:loading), do: :loading
   defp agents_state(:unavailable), do: :error

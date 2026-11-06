@@ -2,8 +2,28 @@
 // summary when it was inside, and on a click anywhere outside it. Escape that closes
 // a pill goes no further, so a dialog holding the pill stays open. The click listener
 // sits on the root element, not the document: iPhone Safari only sends a tap on plain
-// text to a listener there.
+// text to a listener there. However a pill closes, by the page's next redraw after a
+// choice too, focus that was inside it goes back to its summary.
 const openPills = "details.rg-pill-select[open]";
+
+// The pill focus was last inside: a closing pill hides its focused choice, and the
+// browser may hand focus to the page before the pill hears it closed.
+let focusedPill = null;
+
+document.addEventListener("focusin", event => {
+  focusedPill = event.target instanceof Element ? event.target.closest(".rg-pill-select") : null;
+});
+
+document.addEventListener(
+  "toggle",
+  event => {
+    const pill = event.target;
+    if (!(pill instanceof HTMLDetailsElement) || !pill.matches(".rg-pill-select") || pill.open) return;
+    const lost = document.activeElement === document.body && focusedPill === pill;
+    if (lost || pill.contains(document.activeElement)) pill.querySelector(":scope > summary")?.focus();
+  },
+  true
+);
 
 document.addEventListener("keydown", event => {
   if (event.key !== "Escape") return;

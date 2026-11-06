@@ -354,9 +354,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
 | `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, Manage Account and Sign out | Ash Template |
 | `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
-| `Regent.Account.agents_layout` | The Agents page's sections: the person's agents, then Pair New Agent | Ash Template |
 | `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
-| `Regent.Account.pairing` | Choosing an agent and the message with its pairing code to paste it; in a narrow column the message comes first in a short box with copy and new-code icons and the chosen agent's picture, then the agents five to a row, each named on hover | Ash Template |
+| `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture large, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
@@ -443,7 +442,8 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   list says "No agents paired yet." Optional `notice` reports the last action. Slots:
   `about` (tip text on what a paired agent may do here), `actions` (per-agent controls
   such as Unpair, given the agent; leave out when the site cannot change pairings) and
-  `footer` (pairing controls, or a link to where agents are managed).
+  `footer` (Pair New Agent, opening the pairing window, or a link to where agents are
+  managed).
 - `agents` and `agents_brief` rows always carry `light` (`"on"`, `"late"`, `"off"` or
   `nil`) and `light_label`. For a site whose agents check in: an 8 px mark before the
   row's last-contact line, a filled `--color-success` dot, a half-filled
@@ -461,40 +461,40 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   screen, keeping its space while hidden. The heading is plain text.
 - `menu` is the account menu, a `popover` the header's account button names with
   `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
-  `pair_href` (its pairing box, such as `/account/agents#account-pairing`) and the `picture`
+  `pair_window` (the id of its pairing window) and the `picture`
   (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
   line, left out when the name already is the wallet. The optional `balance` slot
   holds the Credits balance as one button opening the site's Credits panel; it shows
   only at 22.49rem wide and under, where the site's header leaves its own balance out,
-  so the balance has one place on screen at every width. Both links patch. Sign out
-  carries `data-account-target="sign-out"`. The site closes it when a link in it is
-  followed, since a LiveView page change leaves a popover open.
+  so the balance has one place on screen at every width. Manage Account patches.
+  Pair New Agent is a button naming the window with `aria-controls` and carrying
+  `data-pair-open`; the site's script closes the menu and opens the window over the
+  page. Sign out carries `data-account-target="sign-out"`. The site closes the menu
+  when a link in it is followed, since a LiveView page change leaves a popover open.
 - `layout` is the Account page's body: `id`, then the `identity`, `credits` and
   `profile` slots, and any number of `site` slots for this site's own parts, which
   come first. Credits and the profile sit side by side from a 46rem container width,
   one below the other under it.
-- `agents_layout` is the Agents page's body (`/account/agents`): `id`, then the
-  `agents` slot, full width, and the `pairing` slot, under the heading Pair New Agent
-  in the left column from a 46rem container width. The pairing section is
-  `#<id>-pairing`.
-- `pairing` goes on the Agents page, under Pair New Agent in `agents_layout`. It requires
-  `id`, `harnesses` (`%{value, label}` for every agent a person may choose; `value` is
-  the harness value, which picks its picture). `layout={:icons}` is for a narrow
-  column such as the Agents page's: the message first, in a short box that scrolls, with the chosen agent's
-  picture in its top-left corner and small copy and new-code icons centred in their
-  own column at its right, then the pictures alone, five to a row in one frame each,
-  named under a first-row picture and over a second-row one on hover or keyboard
-  focus, except the chosen one, then the expiry line. The site keeps each agent's code
-  until it expires, so choosing another agent and coming back shows the same message
-  (founder, 2026-10-20). The default `:list` names
-  each agent beside its picture, numbers the steps and also requires `messages`:
-  every agent's message with a stand-in code, so the box keeps one size.
-  `chosen` is the chosen value; `message` is that agent's message once a code is made,
-  with `expires_iso` and `expires` (such as "14:05 UTC"); `outcome` is
-  `{:paired, name}` once the code is used or `:unavailable` when none could be made.
-  The product's events sit on the form: `phx-change` (choosing) and `phx-submit`
-  ("Make a new code") both carry `harness`. What a state lacks keeps its space
-  unseen, so choosing an agent never changes the height.
+- `pairing` is what the pairing window holds, the same on every site (founder,
+  2026-11-05): Pair New Agent, in the account menu and on the Agents page, opens one
+  window (`Regent.Structure.dialog`) with it inside, and a pairing link's page shows it
+  in the page. It requires `id` and `harnesses` (`%{value, label}` for every agent a
+  person may choose; `value` is the harness value, which picks its picture). In order:
+  the agent dropdown, a `details.rg-pill-select` with a field's square corners whose
+  list (each agent's picture and name, two to a row) drops over what is below and is
+  open while nothing is chosen; the chosen agent's picture large; then three numbered
+  steps: the message in a short box that scrolls, with small copy and new-code icons
+  in their own column at its right and the expiry line under it; "Paste it to" the
+  chosen agent; and a dashed ring that becomes a tick drawing in once the agent paired.
+  The site keeps each agent's code until it expires, so choosing another agent and
+  coming back shows the same message (founder, 2026-10-20). `chosen` is the chosen
+  value; `message` is that agent's message once a code is made, with `expires_iso`
+  and `expires` (such as "14:05 UTC"); `outcome` is `{:paired, name}` once the code is
+  used or `:unavailable` when none could be made. The product's events sit on the
+  form: `phx-change` (choosing) and `phx-submit` (the new-code icon) both carry
+  `harness`. The redraw after a choice closes the dropdown, and `pill_select.mjs`
+  hands focus back to its summary. What a state lacks keeps its space unseen, so
+  choosing an agent never changes the height, and a box still waiting is dashed.
 - `agent_detail` is a `<dialog>` the product renders while one agent is open, with its
   own hook to open it and report the close. It requires `id`, `agent`
   (`%{id, name, kind, harness, wallet, listing, paired_at, last_contact,
@@ -631,8 +631,7 @@ The page is the same on every site (founder, 2026-10-28: "all account routes sho
 the exact same, with some local site versions shown first"). It shows
 `Regent.Account.signed_out` until the person is signed in; then `Regent.Account.layout`
 draws, in order: the site's own parts (its `site` slots), the account card
-(`Regent.Account.identity`) and `Regent.Account.agents` across the page, then Pair New
-Agent (`pairing`) beside `credits_summary` and the **Profile** section
+(`Regent.Account.identity`) across the page, then `credits_summary` beside the **Profile** section
 (`Regent.Profile.panel`, where the person sets their **Public Display Name**, the name
 people see for them). A narrow page shows one column in that order. A site may give a
 long section its own tab under Account, such as Points with `points_summary` and its

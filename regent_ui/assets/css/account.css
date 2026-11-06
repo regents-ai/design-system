@@ -191,11 +191,8 @@
 .rg-account__amount { font-family: var(--font-family-ui); font-variant-numeric: tabular-nums; }
 .rg-account__when { grid-column: 1 / -1; font-size: var(--type-label-size); }
 
-/* Pairing: choose an agent, then copy the message it needs. Every state's message
-   and words share one place, and what a state lacks keeps its space unseen, so
-   choosing an agent never changes the height. The agents' pictures are drawn for a
-   light ground, such as NVIDIA's black lettering, so each sits on white in both
-   themes. */
+/* An agent's picture. The pictures are drawn for a light ground, such as NVIDIA's
+   black lettering, so each sits on white in both themes. */
 .rg-account__mark {
   display: grid;
   flex: none;
@@ -268,11 +265,17 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  inline-size: 100%;
   min-block-size: 2.75rem;
+  margin: 0;
   padding-block: 0;
+  border: 0;
+  background: transparent;
   color: var(--color-fg);
+  font: inherit;
   font-size: .875rem;
-  text-decoration: none;
+  text-align: start;
+  cursor: pointer;
 }
 .rg-account-menu__pair svg { inline-size: 1rem; block-size: 1rem; }
 .rg-account-menu__pair:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
@@ -311,13 +314,11 @@
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
 
 /* The Account page: this site's own sections and the account card run full width,
-   then Credits on the left and the profile on the right. The Agents page: the
-   agents full width, then pairing on the left. A narrow page shows one column in
-   that order. */
+   then Credits on the left and the profile on the right. A narrow page shows one
+   column in that order. */
 .rg-account-layout { container: rg-account-layout / inline-size; }
 .rg-account-layout__grid,
 .rg-account-layout__column { display: grid; gap: 1.5rem; align-content: start; min-inline-size: 0; }
-.rg-account-layout__pairing { display: grid; gap: var(--space-2); align-content: start; }
 @container rg-account-layout (min-width: 46rem) {
   .rg-account-layout__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; align-items: start; }
   .rg-account-layout__full { grid-column: 1 / -1; }
@@ -400,34 +401,69 @@
 }
 .rg-account__light[data-light="off"] { box-shadow: inset 0 0 0 1.5px var(--color-error); background: transparent; }
 
-.rg-account__pair { display: grid; justify-items: start; gap: var(--space-2); inline-size: 100%; }
-.rg-account__pair[data-layout="icons"] { gap: var(--space-1); }
+/* Pairing, in the pairing window or on the pairing page: the agent dropdown, the
+   chosen agent's picture large, then three numbered steps. What a state lacks keeps
+   its space unseen, so choosing an agent never changes the height, and a box still
+   waiting for its contents is dashed. */
+.rg-account__pair { display: grid; gap: var(--space-3); inline-size: 100%; font-family: var(--font-family-ui); }
 .rg-account__pair [data-unused] { visibility: hidden; }
 
-.rg-account__choices { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; border: 0; }
-.rg-account__choices legend {
-  float: left;
+/* The dropdown: the shared details dropdown (`rg-pill-select`, which closes it on
+   Escape and on a press outside), with a field's square corners, the whole width.
+   Its list drops over what is below, on the Tip layer, so opening it moves nothing. */
+.rg-account__pick.rg-pill-select { display: flex; }
+.rg-account__pick.rg-pill-select > summary {
+  gap: 10px;
   inline-size: 100%;
-  margin-block-end: var(--space-2);
-  padding: 0;
-  font-family: var(--font-family-ui);
-  font-size: var(--type-body-size);
+  padding-inline-start: 8px;
+  border-radius: 0;
+}
+.rg-account__pick > summary .rg-account__mark { inline-size: 1.75rem; block-size: 1.75rem; }
+.rg-account__choices {
+  position: absolute;
+  inset-block-start: calc(100% + 4px);
+  inset-inline: 0;
+  z-index: var(--rg-layer-tip);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--color-surface-elevated, var(--color-surface));
+  box-shadow: var(--rg-layer-tip-shadow);
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+@starting-style {
+  .rg-account__pick[open] > .rg-account__choices { opacity: 0; transform: translateY(-4px); }
+}
+.rg-account__choices legend {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .rg-account__choice {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px 4px 4px;
-  border: 1px solid var(--color-border);
+  gap: 8px;
+  min-inline-size: 0;
+  min-block-size: 2.75rem;
+  padding: 4px 8px 4px 4px;
+  color: var(--color-fg);
+  font-size: .875rem;
   cursor: pointer;
-  transition: border-color 160ms ease;
 }
-.rg-account__choice:hover { border-color: var(--color-fg-muted); }
-.rg-account__choice:has(input:checked) {
-  border-color: var(--color-fg);
-  box-shadow: inset 0 0 0 1px var(--color-fg);
+.rg-account__choice > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (hover: hover) {
+  .rg-account__choice:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
-.rg-account__choice:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.rg-account__choice:has(input:checked) { box-shadow: inset 0 0 0 1px var(--color-fg); }
+.rg-account__choice:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 .rg-account__choice .rg-account__mark { inline-size: 1.75rem; block-size: 1.75rem; }
 .rg-account__radio {
   position: absolute;
@@ -437,86 +473,52 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-
-/* Pictures only, five to a row, each in one frame: the agent's name shows on hover
-   or keyboard focus, under a first-row picture and over a second-row one, so it
-   only ever covers other pictures, and kept inside the panel at each row's ends.
-   The chosen agent's name never shows: its picture is already in the message box. */
-.rg-account__pair[data-layout="icons"] .rg-account__choices {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  justify-content: space-between;
-  inline-size: 100%;
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice { position: relative; padding: 4px; }
-.rg-account__pair[data-layout="icons"] .rg-account__choice .rg-account__mark {
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
-  border: 0;
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice-name {
-  position: absolute;
-  inset-block-start: calc(100% + 6px);
-  inset-inline-start: 50%;
-  z-index: var(--rg-layer-tip);
-  padding: 2px 8px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-elevated, var(--color-surface));
-  color: var(--color-fg);
-  font-family: var(--font-family-ui);
-  font-size: .8125rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%);
-  transition: opacity 120ms ease;
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(n + 6) .rg-account__choice-name {
-  inset-block: auto calc(100% + 6px);
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(5n + 1) .rg-account__choice-name {
-  inset-inline-start: 0;
-  transform: none;
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice:nth-of-type(5n) .rg-account__choice-name {
-  inset-inline: auto 0;
-  transform: none;
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice:has(input:focus-visible) .rg-account__choice-name { opacity: 1; }
-@media (hover: hover) {
-  .rg-account__pair[data-layout="icons"] .rg-account__choice:hover .rg-account__choice-name { opacity: 1; }
-}
-.rg-account__pair[data-layout="icons"] .rg-account__choice:has(input:checked) .rg-account__choice-name { opacity: 0; }
-/* Its question is read out, not shown: the pictures under the message answer it. */
-.rg-account__pair[data-layout="icons"] legend {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+@media (max-width: 22.49rem) {
+  .rg-account__choices { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* The narrow panel's message: a short box that scrolls, the chosen agent's picture
-   in its top-left corner and its two small icons centred in their own column at
-   the right, so the message never runs under either. */
-.rg-account__prompt {
+/* The chosen agent's picture, large. */
+.rg-account__stage {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: minmax(0, 1fr);
-  inline-size: 100%;
-  block-size: 6.75rem;
+  place-items: center;
+  aspect-ratio: 16 / 9;
   border: 1px solid var(--color-border);
   background: var(--color-bg);
 }
-.rg-account__prompt > * { grid-area: 1 / 2; margin: 0; }
-.rg-account__prompt > .rg-account__mark {
-  grid-area: 1 / 1;
-  align-self: start;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  margin: 8px 0 0 10px;
+.rg-account__stage[data-waiting] { border-style: dashed; }
+.rg-account__stage .rg-account__mark { inline-size: 4.5rem; block-size: 4.5rem; }
+
+/* The steps, numbered 01 to 03 in a column of their own. */
+.rg-account__steps { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; counter-reset: rg-step; }
+.rg-account__steps > li {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 8px;
+  row-gap: 6px;
+  align-items: center;
+  counter-increment: rg-step;
 }
+.rg-account__steps > li::before {
+  content: counter(rg-step, decimal-leading-zero);
+  color: var(--color-fg-muted);
+  font-family: var(--font-family-mono);
+  font-size: .8125rem;
+}
+.rg-account__steps > li > * { grid-column: 2; }
+
+/* The message: a short box that scrolls, its two small icons centred in their own
+   column at the right, so the message never runs under them. */
+.rg-account__prompt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  inline-size: 100%;
+  block-size: 5.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+.rg-account__prompt[data-waiting] { border-style: dashed; }
+.rg-account__prompt > * { grid-area: 1 / 1; margin: 0; }
 .rg-account__prompt pre {
   padding: 8px 10px;
   overflow-y: auto;
@@ -527,20 +529,21 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.rg-account__prompt .rg-account__words { padding: 8px 10px; font-size: .875rem; }
+.rg-account__prompt pre:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.rg-account__prompt .rg-account__words { align-self: center; padding: 8px 10px; font-size: .875rem; }
 .rg-account__prompt > .rg-account__prompt-tools {
-  grid-area: 1 / 3;
+  grid-area: 1 / 2;
   display: grid;
   align-content: center;
   gap: 4px;
   padding: 4px;
 }
 .rg-account__prompt-tools .rg-copy--icon, .rg-account__renew {
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  min-block-size: 1.5rem;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  min-block-size: 1.75rem;
 }
-.rg-account__prompt-tools .rg-copy--icon svg, .rg-account__renew svg { inline-size: .875rem; block-size: .875rem; }
+.rg-account__prompt-tools .rg-copy--icon svg, .rg-account__renew svg { inline-size: 1rem; block-size: 1rem; }
 .rg-account__renew {
   display: inline-grid;
   place-items: center;
@@ -556,35 +559,30 @@
 .rg-account__renew:is(:hover, :focus-visible) { border-color: var(--color-border); color: var(--color-fg); }
 .rg-account__renew:active svg { transform: rotate(-60deg); }
 .rg-account__renew:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* Paired: a dashed ring while it waits, then a tick that draws in. */
+.rg-account__done > span { display: flex; align-items: center; gap: 8px; }
+.rg-account__done svg {
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: 2px;
+  border: 1px dashed var(--color-border);
+  border-radius: 50%;
+  color: transparent;
+}
+.rg-account__done[data-paired] svg { border: 1px solid var(--color-success); color: var(--color-success); }
+.rg-account__done[data-paired] svg :is(path, polyline) {
+  stroke-dasharray: 24;
+  animation: rg-account-tick var(--duration-slow) var(--ease-out) both;
+}
+@keyframes rg-account-tick { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .rg-account__renew, .rg-account__renew svg { transition: none; }
+  .rg-account__renew, .rg-account__renew svg, .rg-account__choices { transition: none; }
   .rg-account__renew:active svg { transform: none; }
+  .rg-account__done[data-paired] svg :is(path, polyline) { animation: none; }
 }
 
-.rg-account__steps { display: grid; gap: 6px; margin: 0; padding-inline-start: 1.25rem; }
-.rg-account__steps li::marker { color: var(--color-fg-muted); }
-
-.rg-account__message { display: grid; inline-size: 100%; }
-.rg-account__message > * { grid-area: 1 / 1; margin: 0; }
-.rg-account__message pre {
-  inline-size: 100%;
-  padding: 12px;
-  overflow-x: auto;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-  font-family: var(--font-family-mono);
-  font-size: var(--type-code-size);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.rg-account__words { align-self: center; padding: 12px 16px; }
-.rg-account__words[data-paired] {
-  border-inline-start: 2px solid var(--color-success);
-  background: var(--color-bg);
-}
-
-.rg-account__pair-actions { display: flex; flex-wrap: wrap; gap: var(--space-1); }
-.rg-account__pair-actions > [data-unused] { order: 1; }
 .rg-account__expiry { margin: 0; color: var(--color-fg-muted); font-size: var(--type-label-size); }
 
 /* One agent's own view: who it is, when it paired, and what it has done. */
@@ -712,6 +710,3 @@
   .rg-account__choice:has(input:checked) { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .rg-account__choice, .rg-account__choice-name { transition: none; }
-}
