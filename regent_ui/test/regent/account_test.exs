@@ -126,7 +126,6 @@ defmodule Regent.AccountTest do
         verified={false}
         activity={[]}
         may={["Post in rooms"]}
-        spent="0 Credits"
         open_event="open_agent"
         rename_event="rename_agent"
         name_error={@error}

@@ -771,3 +771,18 @@ An independent review of the two entries above found these, now fixed:
   `Regent.Primitives.address` (compact, with the copy icon), labelled with `ens_name`
   when it has one, in place of a short address printed as plain text. Each row now
   takes `wallet` and `ens_name`. Every wallet is public (Sean, 6 November 2026).
+
+
+## 2026-11-06 — Credits leave the shared components
+
+Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends them.
+
+- `Regent.Account.credits_summary` is gone, with its `.rg-account__metrics` styles.
+- `Regent.Account.menu` no longer takes a `balance` slot; its `.rg-account-menu__balance`
+  row and styles are gone.
+- `Regent.Account.layout` no longer takes a `credits` slot. It now holds the site's own
+  sections, the account card and the profile, one below the other at full width; the
+  `.rg-account-layout__grid`, `__full` and `__column` classes are gone.
+- `Regent.Account.agent_detail` no longer takes `spent` or `account_href`, and its
+  "Spending" part is gone: the window answers what the agent may do and what it has done.
+- `STYLE.md` and the showcase drop every Credits example.

@@ -302,8 +302,7 @@ defmodule Regent.StructureShowcase do
               same_person_count={3}
               same_person={[%{id: "a3", name: "Wren"}, %{id: "a4", name: "Ilex"}]}
               activity={sample_activity()}
-              may={["Read and search your notes", "Pin a note for 1 Credit, within the spending you allow"]}
-              spent="3.00 Credits"
+              may={["Read and search your notes", "Pin a note"]}
               notice={{:status, "Pira is paired."}}
               open_event="open_agent"
               rename_event="rename_agent"
@@ -312,9 +311,6 @@ defmodule Regent.StructureShowcase do
             </Regent.Account.agent_detail>
             <Regent.Account.agents id="account-agents-loading" agents={:loading} />
             <Regent.Account.agents id="account-agents-failed" agents={:unavailable} />
-            <Regent.Account.credits_summary id="account-credits" available="12.50" held="2.00" />
-            <Regent.Account.credits_summary id="account-credits-loading" state={:loading} />
-            <Regent.Account.credits_summary id="account-credits-failed" state={:error} />
           </div>
         </section>
         <section id="points" class="rg-inset">

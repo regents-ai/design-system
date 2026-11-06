@@ -2,7 +2,7 @@ defmodule Regent.Account do
   @moduledoc """
   The account's shared parts: the account menu every page opens from its header,
   the Account page's sections in their shared layout (the signed-out panel, the
-  account card and read-only Credits and Points), the Agents page's (paired agents
+  account card and read-only Points), the Agents page's (paired agents
   and one agent's own view), and the pairing window's insides.
   Products authorize and read the data, format amounts and dates, and own every
   action. No domain structs are required.
@@ -280,17 +280,10 @@ defmodule Regent.Account do
   slot :picture, required: true, doc: "the person's picture, 40 px square"
   slot :agents, required: true, doc: "the person's agents, in `agents_brief/1`"
 
-  slot :balance,
-    doc:
-      "the header's Credits balance as one button that opens the same Credits panel; shown only on a screen 22.49rem wide or less, where the site's header leaves its own balance out"
-
   @doc """
   The account menu: the small box the account's button at the top right of every
   page opens, hanging under it. The person's picture, name and wallet, their three
   most recently active agents, Pair New Agent, then Manage Account and Sign out.
-  On the narrowest phones the header has no room for the Credits balance, so the
-  `balance` slot shows it here instead, under the wallet; wider, the row is hidden
-  and the header's own balance is the one on screen.
   Everything else about the account is on the site's Account page, which
   `manage_href` leads to. It patches: a page drawn by the same LiveView as the
   Account page changes in place, and any other page loads it. Pair New Agent opens
@@ -325,7 +318,6 @@ defmodule Regent.Account do
           <Primitives.address id={"#{@id}-wallet"} address={@wallet} label={@ens_name} />
         </p>
       </div>
-      <div :if={@balance != []} class="rg-account-menu__balance">{render_slot(@balance)}</div>
       <div class="rg-account-menu__agents">{render_slot(@agents)}</div>
       <button
         type="button"
@@ -359,24 +351,19 @@ defmodule Regent.Account do
   attr :id, :string, required: true, doc: "the page's id"
   slot :site, doc: "this site's own sections, each shown full width before the shared ones"
   slot :identity, required: true, doc: "`identity/1`"
-  slot :credits, required: true, doc: "`credits_summary/1`"
   slot :profile, required: true, doc: "the person's public name (`Regent.Profile.panel`)"
 
   @doc """
-  The Account page's sections, in the same order and places on every Regent site.
-  This site's own sections come first, then the account card, full width; below
-  them Credits on one side and the profile on the other, in one column on a narrow
-  page. The agents have their own page, with `agents/1`.
+  The Account page's sections, in the same order on every Regent site, one below
+  the other: this site's own sections, then the account card, then the profile.
+  The agents have their own page, with `agents/1`.
   """
   def layout(assigns) do
     ~H"""
     <div id={@id} class="rg-account-layout">
-      <div class="rg-account-layout__grid">
-        <div :for={site <- @site} class="rg-account-layout__full">{render_slot(site)}</div>
-        <div class="rg-account-layout__full">{render_slot(@identity)}</div>
-        <div class="rg-account-layout__column">{render_slot(@credits)}</div>
-        <div class="rg-account-layout__column">{render_slot(@profile)}</div>
-      </div>
+      <div :for={site <- @site}>{render_slot(site)}</div>
+      <div>{render_slot(@identity)}</div>
+      <div>{render_slot(@profile)}</div>
     </div>
     """
   end
@@ -602,15 +589,6 @@ defmodule Regent.Account do
         "site and day, newest first, `hours` saying when its first and last request came"
 
   attr :may, :list, required: true, doc: "what a paired agent may do on this site, a line each"
-
-  attr :spent, :any,
-    required: true,
-    doc: "`:loading`, `:unavailable`, or the Credits it has spent for its person, formatted"
-
-  attr :account_href, :string,
-    default: "/account",
-    doc: "the site's Account page, where the person's Credits are"
-
   attr :notice, :any, default: nil, doc: "`{:status | :alert, text}`: how the last action ended"
   attr :target, :any, default: nil, doc: "phx-target for the presses below"
   attr :open_event, :string, required: true, doc: "opens another agent; carries `id`"
@@ -631,9 +609,9 @@ defmodule Regent.Account do
 
   @doc """
   One agent: who it is and its name, which the person may change, when it paired,
-  who stands behind it, its picture when the product shows one, then the three
-  questions every Regent site answers in the same words: what it may do, what it
-  has spent and what it has done across the Regent sites. "Done" closes the dialog in the browser.
+  who stands behind it, its picture when the product shows one, then the two
+  questions every Regent site answers in the same words: what it may do and what it
+  has done across the Regent sites. "Done" closes the dialog in the browser.
   """
   def agent_detail(assigns) do
     ~H"""
@@ -757,12 +735,6 @@ defmodule Regent.Account do
         <blockquote class="rg-account__promise">It never uses your wallet.</blockquote>
       </section>
 
-      <section class="rg-account__part" aria-labelledby={"#{@id}-cost"}>
-        <h3 id={"#{@id}-cost"}>Spending</h3>
-        <p role="status">{spent_words(@spent)}</p>
-        <p>More info at <a href={@account_href}>your account</a>.</p>
-      </section>
-
       <section class="rg-account__log" aria-labelledby={"#{@id}-activity"}>
         <h3 id={"#{@id}-activity"}>Activity</h3>
         <p :if={@activity == :loading} role="status">Reading this agent’s activity…</p>
@@ -788,39 +760,6 @@ defmodule Regent.Account do
         </form>
       </div>
     </Regent.Structure.dialog>
-    """
-  end
-
-  defp spent_words(:loading), do: "Reading what it has spent…"
-
-  defp spent_words(:unavailable),
-    do: "What it has spent couldn’t be read right now. Refresh to try again."
-
-  defp spent_words(spent), do: "#{spent} spent for you on Regent sites."
-
-  attr :id, :string, required: true
-  attr :available, :string, default: nil
-  attr :held, :string, default: nil
-  attr :state, :atom, default: :ready, values: [:ready, :loading, :stale, :error]
-  attr :message, :string, default: nil
-  slot :inner_block, doc: "the product's own lines and links under the figures, in the same box"
-
-  def credits_summary(assigns) do
-    ~H"""
-    <section
-      id={@id}
-      class="rg-account"
-      aria-labelledby={"#{@id}-title"}
-      aria-busy={@state == :loading && "true"}
-    >
-      <h2 id={"#{@id}-title"}>Credits</h2>
-      <.read_status state={@state} message={@message} />
-      <dl class="rg-account__metrics">
-        <.metric label="Available" value={@available} state={@state} />
-        <.metric label="Held" value={@held} state={@state} />
-      </dl>
-      {render_slot(@inner_block)}
-    </section>
     """
   end
 
@@ -853,7 +792,7 @@ defmodule Regent.Account do
         <ol :if={@rows != []} class="rg-account__history">
           <li :for={row <- @rows}>
             <p class="rg-account__activity">{row.label}</p>
-            <p class="rg-account__amount">{display_value(row.amount, @state)}</p>
+            <p class="rg-account__amount">{display_value(row.amount)}</p>
             <p class="rg-account__when">
               <span :if={Map.get(row, :status)}>{row.status} · </span>{row.occurred_at}
               <span :if={Map.get(row, :link)}>
@@ -875,19 +814,6 @@ defmodule Regent.Account do
     """
   end
 
-  attr :label, :string, required: true
-  attr :value, :string, default: nil
-  attr :state, :atom, required: true
-
-  defp metric(assigns) do
-    ~H"""
-    <div>
-      <dt>{@label}</dt>
-      <dd>{display_value(@value, @state)}</dd>
-    </div>
-    """
-  end
-
   attr :state, :atom, required: true
   attr :message, :string, default: nil
 
@@ -906,10 +832,8 @@ defmodule Regent.Account do
     """
   end
 
-  defp display_value(_value, :loading), do: "Loading…"
-  defp display_value(_value, :error), do: "Unavailable"
-  defp display_value(value, _state) when value in [nil, ""], do: "Unavailable"
-  defp display_value(value, _state), do: value
+  defp display_value(value) when value in [nil, ""], do: "Unavailable"
+  defp display_value(value), do: value
 
   defp state_message(:ready), do: nil
   defp state_message(:loading), do: "Loading…"

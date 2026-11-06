@@ -14,7 +14,7 @@ defmodule Regent.Primitives do
   attr :arrow, :boolean,
     default: true,
     doc:
-      "false for a button that shows something, such as a balance or a name, rather than going on"
+      "false for a button that shows something, such as the account's name, rather than going on"
 
   attr :class, :any, default: nil
   attr :rest, :global, include: ~w(disabled form name value popovertarget popovertargetaction)

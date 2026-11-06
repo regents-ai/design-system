@@ -78,23 +78,6 @@
 .rg-account__status[data-state="error"] { color: var(--color-error); }
 .rg-account__status[data-state="stale"] { color: var(--color-warning); }
 
-.rg-account__metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-  gap: var(--space-3);
-  margin: 0;
-}
-
-.rg-account__metrics > div { min-inline-size: 0; }
-.rg-account__metrics dt { line-height: 1.5; }
-.rg-account__metrics dd {
-  margin: var(--space-1) 0 0;
-  font-family: var(--font-family-ui);
-  font-size: var(--type-title-size);
-  font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
-}
-
 /* Under the page's own title: one line and the sign-in button, side by side. */
 .rg-account--signed-out {
   display: flex;
@@ -274,47 +257,14 @@
 @media (hover: hover) {
   .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
-/* The Credits balance, a flat row like Pair New Agent. Only the narrowest phones
-   show it, where the site's header leaves its own balance out for room, so the
-   balance is on screen once at every width. */
-.rg-account-menu .rg-account-menu__balance { display: none; padding: 0; }
-@media (max-width: 22.49rem) { .rg-account-menu .rg-account-menu__balance { display: block; } }
-.rg-account-menu__balance > :is(button, a) {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  inline-size: 100%;
-  min-block-size: 2.75rem;
-  margin: 0;
-  padding: 0 var(--space-2);
-  border: 0;
-  background: transparent;
-  color: var(--color-fg);
-  font: inherit;
-  font-size: .875rem;
-  font-variant-numeric: tabular-nums;
-  text-align: start;
-  text-decoration: none;
-  cursor: pointer;
-}
-.rg-account-menu__balance > :is(button, a):focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
-@media (hover: hover) {
-  .rg-account-menu__balance > :is(button, a):hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
-}
 .rg-account-menu__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); }
 .rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
 
-/* The Account page: this site's own sections and the account card run full width,
-   then Credits on the left and the profile on the right. A narrow page shows one
-   column in that order. */
-.rg-account-layout { container: rg-account-layout / inline-size; }
-.rg-account-layout__grid,
-.rg-account-layout__column { display: grid; gap: 1.5rem; align-content: start; min-inline-size: 0; }
-@container rg-account-layout (min-width: 46rem) {
-  .rg-account-layout__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; align-items: start; }
-  .rg-account-layout__full { grid-column: 1 / -1; }
-}
+/* The Account page: this site's own sections, the account card, then the profile,
+   one below the other. */
+.rg-account-layout { display: grid; gap: 1.5rem; align-content: start; min-inline-size: 0; }
+.rg-account-layout > * { min-inline-size: 0; }
 
 /* The person's agents in the account menu, three at most. A last action not yet
    read keeps its line, so reading it never moves a row. Manage keeps its space
@@ -655,7 +605,7 @@
 /* The product's picture control, between the facts and what it may do. */
 .rg-account__picture { margin-block-end: var(--space-3); }
 
-/* What it may do and what it has spent. */
+/* What it may do. */
 .rg-account__part { display: grid; gap: 8px; margin-block-end: var(--space-3); }
 /* The promise under what an agent may do, set apart as a quote. */
 .rg-account__promise {

@@ -227,8 +227,8 @@ Patterns that generalize:
   Secondary actions are a bordered square surface.
   Quiet actions remain text. Copy controls and tabs do not acquire CTA chevrons, nor
   does a button that shows something rather than going on, such as the header's
-  Credits balance and account name (`arrow={false}`). Signed in, those two wear the
-  same cut corners and marks as Sign in (founder, 2026-10-20).
+  account name (`arrow={false}`). Signed in, it wears the same cut corners and marks
+  as Sign in (founder, 2026-10-20).
   A button that opens another site in a new tab (`target="_blank"`) shows a
   diagonal arrow up and to the right in place of its chevron, nudged the same way on
   hover; nothing else is added to its label.
@@ -356,11 +356,10 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
 | `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
 | `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture large, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
-| `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, what it cost, activity across the sites | Ash Template |
+| `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
-| `Regent.Account.credits_summary` | Read-only available and held Credits | Awaiting consumer adoption |
 | `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
-| `Regent.Account.history` | Read-only formatted Credits or Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
+| `Regent.Account.history` | Read-only formatted Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
@@ -421,8 +420,8 @@ and a solid Highlight meter fill. No shimmer or idle animation applies.
 
 `Regent.Account` renders the account page's shared sections. The product must authorize
 and load the account before rendering it; the package has no routes, domain dependencies,
-wallet operations, purchase controls or grant controls. Credits are distinct from the
-Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
+wallet operations, purchase controls or grant controls. Importing `primitives.css`
+includes `account.css`.
 
 - `signed_out` requires `id` and a `sign_in` slot holding the product's own button,
   labelled "Sign in". It is one line and the button, with no heading of its own: it sits
@@ -463,18 +462,14 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
   `pair_window` (the id of its pairing window) and the `picture`
   (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
-  line, left out when the name already is the wallet. The optional `balance` slot
-  holds the Credits balance as one button opening the site's Credits panel; it shows
-  only at 22.49rem wide and under, where the site's header leaves its own balance out,
-  so the balance has one place on screen at every width. Manage Account patches.
+  line, left out when the name already is the wallet. Manage Account patches.
   Pair New Agent is a button naming the window with `aria-controls` and carrying
   `data-pair-open`; the site's script closes the menu and opens the window over the
   page. Sign out carries `data-account-target="sign-out"`. The site closes the menu
   when a link in it is followed, since a LiveView page change leaves a popover open.
-- `layout` is the Account page's body: `id`, then the `identity`, `credits` and
-  `profile` slots, and any number of `site` slots for this site's own parts, which
-  come first. Credits and the profile sit side by side from a 46rem container width,
-  one below the other under it.
+- `layout` is the Account page's body: `id`, then the `identity` and `profile`
+  slots, and any number of `site` slots for this site's own parts, which come first.
+  Every section runs full width, one below the other.
 - `pairing` is what the pairing window holds, the same on every site (founder,
   2026-11-05): Pair New Agent, in the account menu and on the Agents page, opens one
   window (`Regent.Structure.dialog`) with it inside, and a pairing link's page shows it
@@ -503,14 +498,12 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   `verified`, `may` (what a paired agent may do on this site, a line each),
   `rename_event` (the Name form under the heading saves a new name; it carries
   `agent_id` and `name`),
-  `spent` (`:loading`, `:unavailable`, or the Credits it has spent for its person,
-  formatted), `activity` (`:loading`, `:unavailable`, or a line for each site and
+  `activity` (`:loading`, `:unavailable`, or a line for each site and
   day, newest first: `%{site, day_iso, day, hours}`, `hours` saying when the first
   and last request that day came) and `open_event` (carries `id`). After the facts
-  it answers the three questions every Regent site asks in the same words, under
+  it answers the two questions every Regent site asks in the same words, under
   "Allowed Agent Actions" (closing on the quoted promise that it never uses the
-  person's wallet), "Spending" (with a link to `account_href`, default `/account`)
-  and "Activity". The agent address carries a tip on how the agent made it with
+  person's wallet) and "Activity". The agent address carries a tip on how the agent made it with
   SIWA and how its harness keeps the key. Optional:
   `same_person_count`, `same_person` (`%{id, name}`), `notice`
   (`{:status | :alert, text}`), `name_error` (why a new name was refused, in a few
@@ -521,9 +514,6 @@ Privy wallet's USDC balance. Importing `primitives.css` includes `account.css`.
   from and who sees it: the agent chose it when it paired, and only the person and
   the agent see it.
 
-- `credits_summary` requires a unique string `id`; `available` and `held` are already
-  formatted strings or `nil`. The site's own lines and links under the figures go in
-  its inner block, inside the same box; never wrap the section in a second framed panel.
 - `Regent.Points` draws the Points page from figures the site has already formatted;
   it reads nothing and computes no limit. `layout` takes `total`, `main` and `side`
   slots: one column on a phone in the order total, to do, leaderboard, bonus,
@@ -641,13 +631,12 @@ The page is the same on every site (founder, 2026-10-28: "all account routes sho
 the exact same, with some local site versions shown first"). It shows
 `Regent.Account.signed_out` until the person is signed in; then `Regent.Account.layout`
 draws, in order: the site's own parts (its `site` slots), the account card
-(`Regent.Account.identity`) across the page, then `credits_summary` beside the **Profile** section
-(`Regent.Profile.panel`, where the person sets their **Public Display Name**, the name
-people see for them). A narrow page shows one column in that order. A site may give a
+(`Regent.Account.identity`), then the **Profile** section (`Regent.Profile.panel`,
+where the person sets their **Public Display Name**, the name people see for them),
+each across the page. A site may give a
 long section its own tab under Account, such as Points, drawn with `Regent.Points`. Each section shows its own state: loading, could not be read, or a session
 that ended. A site that cannot change pairings shows the agents read-only with a link to
-where they are managed. Showing these sections never turns on spending Credits or
-earning Points.
+where they are managed. Showing these sections never turns on earning Points.
 
 ## Product layouts and disclosure
 

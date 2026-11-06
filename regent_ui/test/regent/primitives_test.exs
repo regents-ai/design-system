@@ -109,7 +109,7 @@ defmodule Regent.PrimitivesTest do
 
     html =
       rendered_to_string(~H"""
-      <.button arrow={false}>10.00 Credits</.button>
+      <.button arrow={false}>Ada</.button>
       <.button>Sign in</.button>
       """)
 
