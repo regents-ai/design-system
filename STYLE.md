@@ -565,7 +565,7 @@ opens a menu) wrapping the control. It is fully rounded with a 1px border, its t
 18px and a drawn arrow 16px in from the right, in the text's colour in both themes. A
 dropdown inside a form stays an `rg-field` select, so its corners match the inputs beside it.
 An open `details` pill closes on Escape, handing focus back to its summary, and on a press
-outside it, through `pill_select.mjs` (copied by `mix regent_ui.assets`, imported once).
+outside it in its own layer (its window, or else the page), through `pill_select.mjs` (copied by `mix regent_ui.assets`, imported once).
 
 ## Layers
 

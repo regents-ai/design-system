@@ -1,5 +1,5 @@
 // Closes an open `details.rg-pill-select` menu on Escape, handing focus back to its
-// summary when it was inside, and on a click anywhere outside it. Escape that closes
+// summary when it was inside, and on a click outside it in its own layer. Escape that closes
 // a pill goes no further, so a dialog holding the pill stays open. The click listener
 // sits on the root element, not the document: iPhone Safari only sends a tap on plain
 // text to a listener there. However a pill closes, by the page's next redraw after a
@@ -37,8 +37,12 @@ document.addEventListener("keydown", event => {
   });
 });
 
+// A click outside a pill closes it only within the pill's own layer: the window
+// (`dialog`) it sits in, or else the page. The press on the page that opens a window
+// leaves the pills waiting inside that window as they are.
 document.documentElement.addEventListener("click", event => {
   document.querySelectorAll(openPills).forEach(pill => {
-    if (!pill.contains(event.target)) pill.open = false;
+    const layer = pill.closest("dialog") ?? document.documentElement;
+    if (!pill.contains(event.target) && layer.contains(event.target)) pill.open = false;
   });
 });

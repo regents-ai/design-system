@@ -734,3 +734,11 @@ An independent review of the two entries above found these, now fixed:
 - `pill_select.mjs` hands focus back to a pill's summary however the pill closes,
   including the page's redraw after a choice.
 
+
+## 2026-11-06 — A pill in a window waits for the window
+
+- `pill_select.mjs`: a press outside an open pill closes it only within the pill's own
+  layer, its window or else the page. Pressing Pair New Agent on the page had closed the
+  agent list waiting in the pairing window, so the window opened without it.
+- `account.css`: the pairing dropdown's pill has no block padding, so the chosen agent's
+  picture fits its 44px and a choice no longer makes it 2px taller.

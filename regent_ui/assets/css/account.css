@@ -412,8 +412,11 @@
    Escape and on a press outside), with a field's square corners, the whole width.
    Its list drops over what is below, on the Tip layer, so opening it moves nothing. */
 .rg-account__pick.rg-pill-select { display: flex; }
+/* No block padding: the chosen agent's picture fits inside the pill's 44px, so a
+   choice never makes it taller. */
 .rg-account__pick.rg-pill-select > summary {
   gap: 10px;
+  padding-block: 0;
   inline-size: 100%;
   padding-inline-start: 8px;
   border-radius: 0;
