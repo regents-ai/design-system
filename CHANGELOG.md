@@ -742,3 +742,6 @@ An independent review of the two entries above found these, now fixed:
   agent list waiting in the pairing window, so the window opened without it.
 - `account.css`: the pairing dropdown's pill has no block padding, so the chosen agent's
   picture fits its 44px and a choice no longer makes it 2px taller.
+- `pill_select.mjs`: Escape closes only the open pills a person can see, inside the open
+  window when one is open. The agent list waiting open in the shut pairing window had
+  taken every Escape, so the account menu no longer closed on it.

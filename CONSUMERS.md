@@ -81,7 +81,7 @@ in the product's form with `type="submit"`. Import `discussion.mjs` (copied by
 without it and survives LiveView patches.
 
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
-`app.ts`: an open `details.rg-pill-select` menu then closes on Escape, handing focus back
+`app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the
 page). A `select` pill needs nothing.
 
