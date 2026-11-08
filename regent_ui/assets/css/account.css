@@ -257,6 +257,8 @@
 @media (hover: hover) {
   .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
+/* The site's theme switch: its words at the start, the switch at the end. */
+.rg-account-menu__theme { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
 .rg-account-menu__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); }
 .rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
