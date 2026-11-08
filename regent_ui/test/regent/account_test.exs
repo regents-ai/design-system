@@ -253,4 +253,28 @@ defmodule Regent.AccountTest do
 
     refute menu("0xaBaB..aBaB", nil, lower) =~ "0xabab..abab"
   end
+
+  # Invariant: a site's theme switch sits in its own row between Pair New Agent and
+  # Manage Account, and a menu given none has no empty row (Sean, 2026-11-08).
+  test "the account menu holds the site's theme switch above Manage Account" do
+    assigns = %{}
+
+    with_theme =
+      rendered_to_string(~H"""
+      <Regent.Account.menu id="who" name="Ada" manage_href="/account" pair_window="pairing-window">
+        <:picture></:picture>
+        <:agents></:agents>
+        <:theme><button id="site-theme" role="switch"></button></:theme>
+      </Regent.Account.menu>
+      """)
+
+    [_, row] = Regex.run(~r{<div class="rg-account-menu__theme">(.*?)</div>}s, with_theme)
+    assert row =~ ~s(id="site-theme")
+    {pair, _} = :binary.match(with_theme, "data-pair-open")
+    {theme, _} = :binary.match(with_theme, "rg-account-menu__theme")
+    {foot, _} = :binary.match(with_theme, "rg-account-menu__foot")
+    assert pair < theme and theme < foot
+
+    refute menu("Ada", nil, @wallet) =~ "rg-account-menu__theme"
+  end
 end

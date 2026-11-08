@@ -395,7 +395,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.signed_out` | The account page before sign-in, or after a session ends | Awaiting consumer adoption |
 | `Regent.Account.identity` | The card at the top of the Account page: the person's picture, the name the site calls them and their wallet, each said once; an ENS name or short address in it opens and copies the full address | Ash Template |
 | `Regent.Account.agents` | Paired agents with World ID backing, last contact and product-owned actions | Awaiting consumer adoption |
-| `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, Manage Account and Sign out | Ash Template |
+| `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, the site's theme switch, Manage Account and Sign out | Ash Template |
 | `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
 | `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
 | `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture large, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
@@ -507,7 +507,9 @@ includes `account.css`.
   `popovertarget`. It requires `id`, `name`, `manage_href` (the site's Account page),
   `pair_window` (the id of its pairing window) and the `picture`
   (40 px) and `agents` (`agents_brief`) slots; `wallet` and `ens_name` add the wallet
-  line, left out when the name already is the wallet. Manage Account patches.
+  line, left out when the name already is the wallet. The optional `theme` slot is
+  the site's light and dark switch, a row between Pair New Agent and Manage Account
+  (Sean, 8 November 2026). Manage Account patches.
   Pair New Agent is a button naming the window with `aria-controls` and carrying
   `data-pair-open`; the site's script closes the menu and opens the window over the
   page. Sign out carries `data-account-target="sign-out"`. The site closes the menu

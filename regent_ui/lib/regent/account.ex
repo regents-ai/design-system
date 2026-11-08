@@ -278,11 +278,13 @@ defmodule Regent.Account do
   attr :rest, :global
   slot :picture, required: true, doc: "the person's picture, 40 px square"
   slot :agents, required: true, doc: "the person's agents, in `agents_brief/1`"
+  slot :theme, doc: "the site's light and dark switch, a row above Manage Account"
 
   @doc """
   The account menu: the small box the account's button at the top right of every
   page opens, hanging under it. The person's picture, name and wallet, their three
-  most recently active agents, Pair New Agent, then Manage Account and Sign out.
+  most recently active agents, Pair New Agent, the site's theme switch when it
+  passes one (`theme`), then Manage Account and Sign out.
   Everything else about the account is on the site's Account page, which
   `manage_href` leads to. It patches: a page drawn by the same LiveView as the
   Account page changes in place, and any other page loads it. Pair New Agent opens
@@ -327,6 +329,7 @@ defmodule Regent.Account do
       >
         <Icons.icon name="plus" /> Pair New Agent
       </button>
+      <div :if={@theme != []} class="rg-account-menu__theme">{render_slot(@theme)}</div>
       <div class="rg-account-menu__foot">
         <.link
           patch={@manage_href}

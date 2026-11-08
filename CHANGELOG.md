@@ -1023,3 +1023,14 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   "phoenix_html"` when it was there only for `data-confirm`, give every `data-confirm` a
   `data-confirm-action`, and stop passing `eyebrow`, `site`, `context`, `caption` and the
   technical figure's `<:caption>`.
+
+## 2026-11-08 — The account menu holds the theme switch
+
+Sean, 8 November 2026: put the light and dark switch "in the account sidepanel that
+shows when clicking the account" (the account menu).
+
+- `Regent.Account.menu` takes an optional `theme` slot, the site's light and dark
+  switch, shown in its own row (`.rg-account-menu__theme`: the switch's words at the
+  start, the switch at the end) between Pair New Agent and Manage Account. A menu given
+  none has no row. ash-template passes its glass switch; `Regent.ThemeToggle` stays
+  for the sites until each moves to that switch.
