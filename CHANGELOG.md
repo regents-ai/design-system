@@ -1135,3 +1135,30 @@ change.
   contrast test now measures dark as well as light.
 - A Regents main button in dark does not show on a Platinum panel (`rg-support-panel`);
   `CONSUMERS.md` says so. A button that sets its own `--rg-p-accent` keeps it.
+
+## 2026-11-12 — Gradients blend in oklch
+
+Sean, 12 November 2026: "use 'in oklch' for gradients, such as background:
+linear-gradient(in oklch, blue, yellow);".
+
+- `STYLE.md` gains "Gradients" under Color: every CSS gradient, hard stops included,
+  names oklch, after any direction, shape or starting angle. Panels stay flat; the rule
+  allows no new gradient.
+- Every gradient in `regent_ui/assets/css/` now says `in oklch`: the panel and window
+  edges and cuts, the edge sweep, figure dots, button cuts, edges and focus ring, the
+  select chevron, segmented rules, tab fades, ratio card marks and meter, the foil sheen,
+  the activity trace and the half-lit warning boxes, and the discussion excerpt fade. The
+  token sources and the showcase's own CSS have none.
+- The activity trace and the figure dots fade the text colour to clear. Their clear stop
+  is now that colour with no opacity, `oklch(from … l c h / 0)`: with `transparent`,
+  Chromium painted Patchbay's dark trace pink and moved the dark figure dots by up to
+  15/255.
+- Before and after pictures of the showcase, four brands, light and dark, 390 and 1280
+  wide: 80 of 160 are identical to the pixel and the other 80 differ by 1/255 on at most
+  117 pixels, where edge pixels round differently.
+- The style check gains a `gradient` rule: a `linear-`, `radial-` or `conic-gradient`, or
+  a `repeating-` one, whose first argument does not say `in oklch`, however many lines it
+  runs over. Words inside a nested function or a comment do not count. `CONSUMERS.md`
+  tells sites to convert their own gradients when they take this version.
+- Browsers without oklch gradients (before Chrome 111, Safari 16.2, Firefox 127) drop
+  each converted declaration and draw no gradient there.

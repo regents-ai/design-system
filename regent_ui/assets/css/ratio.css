@@ -30,14 +30,14 @@
   inset: -1px;
   pointer-events: none;
   background:
-    linear-gradient(currentColor, currentColor) left top / 16px 1px,
-    linear-gradient(currentColor, currentColor) left top / 1px 16px,
-    linear-gradient(currentColor, currentColor) right top / 16px 1px,
-    linear-gradient(currentColor, currentColor) right top / 1px 16px,
-    linear-gradient(currentColor, currentColor) left bottom / 16px 1px,
-    linear-gradient(currentColor, currentColor) left bottom / 1px 16px,
-    linear-gradient(currentColor, currentColor) right bottom / 16px 1px,
-    linear-gradient(currentColor, currentColor) right bottom / 1px 16px;
+    linear-gradient(in oklch, currentColor, currentColor) left top / 16px 1px,
+    linear-gradient(in oklch, currentColor, currentColor) left top / 1px 16px,
+    linear-gradient(in oklch, currentColor, currentColor) right top / 16px 1px,
+    linear-gradient(in oklch, currentColor, currentColor) right top / 1px 16px,
+    linear-gradient(in oklch, currentColor, currentColor) left bottom / 16px 1px,
+    linear-gradient(in oklch, currentColor, currentColor) left bottom / 1px 16px,
+    linear-gradient(in oklch, currentColor, currentColor) right bottom / 16px 1px,
+    linear-gradient(in oklch, currentColor, currentColor) right bottom / 1px 16px;
   background-repeat: no-repeat;
   opacity: .55;
 }
@@ -54,7 +54,7 @@
 .rg-ratio-card__metric--remainder { text-align: end; }
 .rg-ratio-card__metric--remainder .rg-ratio-card__readout { justify-content: flex-end; }
 .rg-ratio-card__change { color: var(--rg-ratio-note-ink); font-size: .75rem; }
-.rg-ratio-card__meter { block-size: var(--space-3); background: repeating-linear-gradient(90deg, transparent 0 4px, var(--rg-ratio-rule) 4px 5px); outline: 1px solid var(--rg-ratio-rule); outline-offset: -1px; }
+.rg-ratio-card__meter { block-size: var(--space-3); background: repeating-linear-gradient(90deg in oklch, transparent 0 4px, var(--rg-ratio-rule) 4px 5px); outline: 1px solid var(--rg-ratio-rule); outline-offset: -1px; }
 .rg-ratio-card__fill { display: block; block-size: 100%; background: var(--palette-tangerine-tango); }
 .rg-ratio-card__scale { display: flex; justify-content: space-between; gap: 2px; margin-block-start: var(--space-2); color: var(--rg-ratio-muted); font-size: .6875rem; }
 .rg-ratio-card__empty { padding-block: var(--space-2); color: var(--rg-ratio-muted); }

@@ -92,6 +92,34 @@ files assets -g '*.css' | while IFS= read -r file; do
   ' "$file"
 done | emit stacking
 
+# Every gradient blends in oklch: its first argument, before the first comma at the
+# gradient's own depth and however many lines it runs over, says `in oklch`. Words inside
+# a nested function, such as color-mix(in oklch, …), and comments do not count. A break is
+# reported once per line, at the line where the gradient opens.
+files assets -g '*.css' | while IFS= read -r file; do
+  perl -0777 -ne '
+    my @lines = split /\n/, $_, -1;
+    s{/\*.*?\*/}{ (my $c = $&) =~ s/[^\n]/ /g; $c }gse;
+    my %seen;
+    while (/[a-z-]*-gradient\(/gi) {
+      my $start = $-[0];
+      my ($at, $depth, $first) = (pos, 0, "");
+      while ($at < length) {
+        my $c = substr($_, $at++, 1);
+        if ($c eq "(") { $depth++ }
+        elsif ($c eq ")") { last if $depth == 0; $depth-- }
+        elsif ($c eq "," && $depth == 0) { last }
+        elsif ($depth == 0) { $first .= $c }
+      }
+      next if $first =~ /(?:^|\s)in\s+oklch(?:\s|$)/i;
+      my $line = 1 + (substr($_, 0, $start) =~ tr/\n//);
+      next if $seen{$line}++;
+      (my $shown = $lines[$line - 1]) =~ s/^\s+//;
+      print "$ARGV:$line:$shown\n";
+    }
+  ' "$file"
+done | emit gradient
+
 # Motion is transform and opacity. A test's expected values are not motion.
 search assets -g '*.{js,mjs,ts,tsx}' -g '!*.test.*' '\b(left|top|width|height|margin[A-Za-z]*):\s*\[' | emit motion
 

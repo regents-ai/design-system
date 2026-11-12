@@ -67,7 +67,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent calc(100% - 6px), var(--color-fg) calc(100% - 6px));
+  background: linear-gradient(to bottom in oklch, oklch(from var(--color-fg) l c h / 0) calc(100% - 6px), var(--color-fg) calc(100% - 6px));
   animation: rg-activity-trace 1.2s linear infinite;
 }
 @keyframes rg-activity-trace {
@@ -94,7 +94,7 @@
 .rg-activity__mark[data-state="running"]::before { background: var(--color-fg); }
 .rg-activity__mark[data-state="asks"]::before {
   border: 1px solid var(--color-warning);
-  background: linear-gradient(to top, var(--color-warning) 50%, transparent 50%) border-box;
+  background: linear-gradient(to top in oklch, var(--color-warning) 50%, transparent 50%) border-box;
 }
 .rg-activity__mark[data-state="failed"]::before { border: 2px solid var(--color-error); }
 .rg-activity__mark[data-state="done"]::before { content: none; }
@@ -183,7 +183,7 @@ a.rg-fleet__face:focus-visible {
   .rg-activity__mark::before { forced-color-adjust: none; border-color: CanvasText; }
   .rg-activity__mark[data-state="running"]::before { background: CanvasText; }
   .rg-activity__mark[data-state="asks"]::before {
-    background: linear-gradient(to top, CanvasText 50%, transparent 50%) border-box;
+    background: linear-gradient(to top in oklch, CanvasText 50%, transparent 50%) border-box;
   }
   .rg-fleet__face { border-color: CanvasText; }
 }

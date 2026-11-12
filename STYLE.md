@@ -151,6 +151,28 @@ figure compartment, Capabilities band and secondary interface panel respectively
 Status chips (`live`, `beta`, `preview`, `planned`) appear wherever a product is being
 presented, styled as bordered uppercase micro-labels, never hidden for marketing effect.
 
+### Gradients
+
+Every CSS gradient names its colour space, and the space is oklch:
+`linear-gradient(in oklch, blue, yellow)` (Sean, 12 November 2026). That covers
+`linear-`, `radial-` and `conic-gradient` and their `repeating-` forms, hard stops
+included: the rules, cuts, dots and edges the package draws with gradients say it too.
+A direction, shape or starting angle comes first and the space follows it:
+`linear-gradient(to right in oklch, …)`, `radial-gradient(circle at center in oklch, …)`,
+`conic-gradient(from 0deg in oklch, …)`.
+
+The rule says how a gradient blends, not where one may appear. Panels stay flat, and
+this rule allows no new gradient.
+
+`transparent` is black with no hue, and Chromium blending in oklch can repaint a
+near-white colour beside it in another hue: Patchbay's dark text colour turned pink at a
+hard edge. Where a gradient fades or cuts the text colour or `currentColor` to clear,
+the clear stop is that colour with no opacity: `oklch(from var(--color-fg) l c h / 0)`.
+The package's other clear stops measured the same as before and keep `transparent`.
+
+The style check's `gradient` rule reports a gradient whose first argument does not say
+`in oklch`.
+
 ## Typography
 
 One face, Vercel's Geist Serif, sets every title, heading, body line, label, control,

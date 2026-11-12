@@ -13,6 +13,18 @@ defmodule Regent.StyleCheckTest do
   .art { isolation: isolate; .piece { z-index: 2; } }
   .home { backdrop-filter: blur(20px); /* style-check: allow glass — Sean 12 Nov 2026 */ }
   .cube { box-shadow: 0 24px 48px black; /* style-check: allow shadow — Sean 12 Nov 2026 */ }
+  .lines { background: linear-gradient(in oklch, red 0 0), repeating-linear-gradient(90deg in oklch, red 0 4px, blue 4px 5px); }
+  .dots { background: radial-gradient(circle at center in oklch, red, blue), repeating-radial-gradient(in oklch, red 0 2px, blue 2px 4px); }
+  .turn { background: conic-gradient(from var(--angle) in oklch, red, blue), repeating-conic-gradient(from 0deg in oklch longer hue, red 0 10deg, blue 10deg 20deg); }
+  .mix { background: linear-gradient(to top in oklch, color-mix(in srgb, red 50%, blue) 50%, transparent 50%); }
+  /* a linear-gradient(red, blue) named in a comment */
+  .fade {
+    mask-image: linear-gradient(
+      to right in oklch,
+      transparent,
+      #000
+    );
+  }
   """
 
   @clean_heex """
@@ -105,6 +117,23 @@ defmodule Regent.StyleCheckTest do
         {"weight", "assets/css/app.css", ".d { font-weight: 600; }"},
         {"shape", "assets/css/app.css", ".e { border-radius: 9999px; }"},
         {"shape", "assets/css/app.css", ".f { border-top-left-radius: 4px; }"},
+        {"gradient", "assets/css/app.css", ".g { background: linear-gradient(red, blue); }"},
+        {"gradient", "assets/css/app.css", ".g { background: radial-gradient(red, blue); }"},
+        {"gradient", "assets/css/app.css", ".g { background: conic-gradient(red, blue); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: repeating-linear-gradient(red 0 2px, blue 2px 4px); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: repeating-radial-gradient(red 0 2px, blue 2px 4px); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: repeating-conic-gradient(red 0 10deg, blue 10deg 20deg); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: linear-gradient(to right, red, blue); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: linear-gradient(color-mix(in oklch, red, blue) 0 0); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: linear-gradient(in oklch, red, blue), radial-gradient(red, blue); }"},
+        {"gradient", "assets/css/app.css",
+         ".g { background: linear-gradient(red 0 0), linear-gradient(blue 0 0); }"},
         {"motion", "assets/js/app.ts", "animate(el, { height: [0, 120] })"},
         {"icon", "lib/app/page.html.heex", ~s(<svg viewBox="0 0 24 24"><path d="M0 0" /></svg>)},
         {"name", "lib/app/page.html.heex", "<p>Made with #{@wrong_name}</p>"},
@@ -122,5 +151,21 @@ defmodule Regent.StyleCheckTest do
       assert [found] = output |> String.split("\n") |> Enum.filter(&String.starts_with?(&1, at))
       assert found =~ " #{unquote(rule)}: "
     end
+  end
+
+  test "a gradient over several lines breaks at the line it opens", %{dir: dir} do
+    clean(dir)
+    file = Path.join(dir, "assets/css/app.css")
+    before = file |> File.read!() |> String.split("\n") |> length()
+
+    File.write!(
+      file,
+      File.read!(file) <>
+        ".g {\n  background: conic-gradient(\n    from 0deg,\n    red,\n    blue\n  );\n}\n"
+    )
+
+    assert {output, 1} = check(dir)
+    assert [found] = output |> String.split("\n") |> Enum.filter(&(&1 =~ " gradient: "))
+    assert String.starts_with?(found, "assets/css/app.css:#{before + 1}:")
   end
 end

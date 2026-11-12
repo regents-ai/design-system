@@ -23,7 +23,7 @@
      included. The conic band overlays the base edge color; the rest of the
      turn stays transparent so the border reads ruled, not glowing. */
   .rg-feature:is(:hover, :focus-within) > .rg-panel::before {
-    background-image: conic-gradient(from var(--rg-edge-angle),
+    background-image: conic-gradient(from var(--rg-edge-angle) in oklch,
       transparent 0turn .84turn,
       color-mix(in srgb, color-mix(in srgb, var(--rg-shimmer-color, var(--palette-tangerine-tango, #ff5b19)) 75%, var(--palette-platinum, #e5e3d2)) 24%, transparent) .92turn,
       transparent 1turn);
@@ -116,12 +116,12 @@
     /* From the top: the two square corners' marks, the two cuts' accents, the four
        edges, then the fill. */
     background-image:
-      linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
-      linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
-      linear-gradient(135deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
-      linear-gradient(315deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
-      linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0),
-      linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0);
+      linear-gradient(in oklch, var(--rg-dialog-mark-ink) 0 0), linear-gradient(in oklch, var(--rg-dialog-mark-ink) 0 0),
+      linear-gradient(in oklch, var(--rg-dialog-mark-ink) 0 0), linear-gradient(in oklch, var(--rg-dialog-mark-ink) 0 0),
+      linear-gradient(135deg in oklch, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+      linear-gradient(315deg in oklch, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+      linear-gradient(in oklch, var(--rg-dialog-edge) 0 0), linear-gradient(in oklch, var(--rg-dialog-edge) 0 0),
+      linear-gradient(in oklch, var(--rg-dialog-edge) 0 0), linear-gradient(in oklch, var(--rg-dialog-edge) 0 0);
     background-position:
       right top, right top, left bottom, left bottom,
       left top, right bottom,
@@ -202,7 +202,7 @@
 .rg-technical-figure__art {
   position: relative; isolation: isolate; min-inline-size: 0;
   /* The dots sit behind the drawing, inside the figure's own stacking root. */
-  &::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(currentColor .6px, transparent .9px); background-size: 4px 4px; }
+  &::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(in oklch, currentColor .6px, oklch(from currentColor l c h / 0) .9px); background-size: 4px 4px; }
 }
 .rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
 .rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }

@@ -51,7 +51,7 @@
 .rg-holo__stage::before {
   content: "";
   background:
-    linear-gradient(118deg, transparent 38%, color-mix(in srgb, var(--rg-holo-ink) 9%, transparent) 50%, transparent 62%),
+    linear-gradient(118deg in oklch, transparent 38%, color-mix(in srgb, var(--rg-holo-ink) 9%, transparent) 50%, transparent 62%),
     var(--rg-holo-graphite);
 }
 .rg-holo__canvas {

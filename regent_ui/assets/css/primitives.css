@@ -72,12 +72,12 @@
   /* Four edge tiles grow from the two square corners; the two fixed-size
      diagonals draw the cut accents. At rest every edge tile is empty. */
   background-image:
-    linear-gradient(135deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
-    linear-gradient(315deg, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
-    linear-gradient(var(--rg-button-edge-ink) 0 0), linear-gradient(var(--rg-button-edge-ink) 0 0),
-    linear-gradient(var(--rg-button-edge-ink) 0 0), linear-gradient(var(--rg-button-edge-ink) 0 0),
-    linear-gradient(135deg, var(--rg-button-ring-ink) var(--rg-ring-diagonal), transparent 0),
-    linear-gradient(315deg, var(--rg-button-ring-ink) var(--rg-ring-diagonal), transparent 0);
+    linear-gradient(135deg in oklch, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
+    linear-gradient(315deg in oklch, transparent calc(50% + var(--rg-button-cut-gap)), var(--rg-button-cut-ink) calc(50% + var(--rg-button-cut-gap)) calc(50% + var(--rg-button-cut-gap) + 1px), transparent calc(50% + var(--rg-button-cut-gap) + 1px)),
+    linear-gradient(in oklch, var(--rg-button-edge-ink) 0 0), linear-gradient(in oklch, var(--rg-button-edge-ink) 0 0),
+    linear-gradient(in oklch, var(--rg-button-edge-ink) 0 0), linear-gradient(in oklch, var(--rg-button-edge-ink) 0 0),
+    linear-gradient(135deg in oklch, var(--rg-button-ring-ink) var(--rg-ring-diagonal), transparent 0),
+    linear-gradient(315deg in oklch, var(--rg-button-ring-ink) var(--rg-ring-diagonal), transparent 0);
   background-position: left top, right bottom, right top, right top, left bottom, left bottom, left top, right bottom;
   background-size:
     var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
@@ -377,8 +377,8 @@
   --rg-select-chevron-inset: 24px;
   appearance: none; padding-right: calc(var(--rg-select-chevron-inset) + 24px);
   background-image:
-    linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
-    linear-gradient(135deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
+    linear-gradient(45deg in oklch, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
+    linear-gradient(135deg in oklch, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
   background-position: right calc(var(--rg-select-chevron-inset) + 6px) center, right var(--rg-select-chevron-inset) center;
   background-size: 6px 6px; background-repeat: no-repeat;
 }
@@ -560,7 +560,7 @@
 /* The ground inside the edge, with a hairline at each cell's start. */
 .rg-segmented__track::before {
   content: ""; position: absolute; inset: 1px;
-  background: linear-gradient(to right, var(--hairline) 0 1px, transparent 1px) -1px 0 / calc((100% + 2px) / var(--rg-segments)) 100% repeat-x, var(--color-surface);
+  background: linear-gradient(to right in oklch, var(--hairline) 0 1px, transparent 1px) -1px 0 / calc((100% + 2px) / var(--rg-segments)) 100% repeat-x, var(--color-surface);
   clip-path: polygon(var(--rg-inner-cut) 0, 100% 0, 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, 0 100%, 0 var(--rg-inner-cut));
 }
 .rg-segmented__indicator {
@@ -627,10 +627,10 @@
 @property --rg-tabs-fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
 @supports (animation-timeline: scroll()) {
   .rg-tabs {
-    mask-image: linear-gradient(to right, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent);
+    mask-image: linear-gradient(to right in oklch, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent);
     animation: rg-tabs-fade linear both; animation-timeline: scroll(self inline);
   }
-  .rg-tabs:dir(rtl) { mask-image: linear-gradient(to left, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent); }
+  .rg-tabs:dir(rtl) { mask-image: linear-gradient(to left in oklch, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent); }
 }
 @keyframes rg-tabs-fade {
   from { --rg-tabs-fade-start: 0px; --rg-tabs-fade-end: 16px; }

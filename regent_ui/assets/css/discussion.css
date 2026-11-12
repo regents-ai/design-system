@@ -57,7 +57,7 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 .rg-discussion .rg-discussion__solved-title { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--rg-discussion-good); }
 .rg-discussion__solved-by { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .35rem 0 0; color: var(--rg-page-muted); font-size: .8125rem; }
 .rg-discussion__solved-by a { color: var(--rg-page-ink); }
-.rg-discussion__excerpt { max-block-size: 7.5em; overflow: hidden; margin: .5rem 0 0; font-size: .9375rem; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+.rg-discussion__excerpt { max-block-size: 7.5em; overflow: hidden; margin: .5rem 0 0; font-size: .9375rem; -webkit-mask-image: linear-gradient(to bottom in oklch, #000 55%, transparent); mask-image: linear-gradient(to bottom in oklch, #000 55%, transparent); }
 .rg-discussion__excerpt > :first-child { margin-block-start: 0; }
 .rg-discussion .rg-discussion__excerpt :is(h1, h2, h3, h4, h5, h6) { margin: .25rem 0; font: 1.125em/1.4 var(--font-family-title); letter-spacing: normal; }
 .rg-discussion__solved > a { display: inline-block; margin-block-start: .25rem; font-size: .8125rem; }

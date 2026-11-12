@@ -290,8 +290,12 @@ skipping `assets/vendor/`, `node_modules` and anything the site's git ignores, a
 stacking numbers outside an isolated artwork root (`stacking`), glass and blur (`glass`),
 weights above 400 (`weight`), radii other than 0, 50% or a pill's half height (`shape`),
 layout properties animated from scripts (`motion`), an `<svg>` that is neither hidden
-artwork nor a named logo (`icon`), "KeyFleet" (`name`) and page words that say how a
-page is built (`words`). It exits 1 when it finds any. It needs ripgrep, awk and perl.
+artwork nor a named logo (`icon`), "KeyFleet" (`name`), page words that say how a
+page is built (`words`) and a CSS gradient that does not blend `in oklch` (`gradient`).
+It exits 1 when it finds any. It needs ripgrep, awk and perl.
+The `gradient` rule arrived on 12 November 2026: a site that takes this version converts
+its own gradients, writing `in oklch` after any direction, shape or starting angle
+(`linear-gradient(to right in oklch, …)`), as `STYLE.md` "Gradients" says.
 It exits 2, never 0, when it cannot check: one of those is not installed (it names which),
 the root has no `assets/` or `lib/`, or a file cannot be read.
 A stacking number counts as isolated when its rule sits inside the rule of the root that
