@@ -346,6 +346,9 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Icons.icon` | Any Lucide icon, by name, at the library's weight and centred on the words beside it | Ash Template |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.figure` | A figure that changes while someone watches, with equal-width digits, the width of its widest value kept and `data-count` for the motion kit's roll | Awaiting consumer adoption |
+| `Regent.Primitives.waiting` | A dashed box at the exact size of what it waits for, which then shows it: "Still working" and the page's retry once slow, "Couldn't be read" and the retry on a failure. No grey bars, shimmer or pulse | Awaiting consumer adoption |
+| `Regent.Primitives.status_word` | A status word that changes while someone watches ("Waiting" to "Done"), keeping the width of its widest word | Awaiting consumer adoption |
+| `Regent.Primitives.tick` | A step's mark: a dashed ring while it waits, a tick that draws in once it is done | Ash Template, through `Regent.Account.pairing` |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
@@ -686,9 +689,10 @@ choice and the button, and nothing else until someone asks. Too much text is a d
   itself opens it and there is no "i"), a longer one
   in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
   or page behind a link. Legal and policy text are links at the foot, never paragraphs.
-- **Show state with marks, not sentences:** a tick that draws in when a step is done, a
-  dashed box while it waits, the changed number flashing. Words appear only when
-  something went wrong or the person must act.
+- **Show state with marks, not sentences:** a tick that draws in when a step is done
+  (`Regent.Primitives.tick`), a dashed box while it waits (`Regent.Primitives.waiting`),
+  the changed number flashing. Words appear only when something went wrong or the person
+  must act.
 - **One idea per line.** No paragraph under a button, no sentence that repeats a label,
   no "you can" or "this lets you" lines. Cut every word a person would not miss.
 
@@ -728,7 +732,7 @@ site copies that check.
 
 ## Motion
 
-General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
+General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--ease-in` (leaving only), `--active-scale`.
 
 - CTA motion uses Anime.js in the template's shared motion kit. A pointer entering
   a primary or secondary CTA nudges its chevron once, then returns it to rest.
@@ -738,6 +742,12 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
   Disabled controls and reduced-motion contexts stay still. Button fills do not shimmer.
 - Feature-card edge ripples remain independent of CTA motion. Their existing
   interaction-only treatment must not be applied to button backgrounds.
+- Something waiting is a dashed box at its final size (`Regent.Primitives.waiting`),
+  never a shimmer skeleton; what lands fades in over 200ms in its place. A status word
+  that changes leaves rising 4px and fading in 140ms on `--ease-in` and the new one rises
+  4px in over 200ms on `--ease-out`, on a line as wide as its widest word. A done step's
+  tick draws in over 280ms. All three are the package's own CSS; reduced motion shows
+  each at once.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a

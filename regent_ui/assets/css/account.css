@@ -515,27 +515,12 @@
 .rg-account__renew:active svg { transform: rotate(-60deg); }
 .rg-account__renew:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
-/* Paired: a dashed ring while it waits, then a tick that draws in. */
+/* Paired: the shared tick, a dashed ring while it waits that draws its tick in. */
 .rg-account__done > span { display: flex; align-items: center; gap: 8px; }
-.rg-account__done svg {
-  flex: none;
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
-  padding: 2px;
-  border: 1px dashed var(--color-border);
-  border-radius: 50%;
-  color: transparent;
-}
-.rg-account__done[data-paired] svg { border: 1px solid var(--color-success); color: var(--color-success); }
-.rg-account__done[data-paired] svg :is(path, polyline) {
-  stroke-dasharray: 24;
-  animation: rg-account-tick var(--duration-slow) var(--ease-out) both;
-}
-@keyframes rg-account-tick { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+.rg-account__done .rg-tick { flex: none; }
 @media (prefers-reduced-motion: reduce) {
   .rg-account__renew, .rg-account__renew svg, .rg-account__choices { transition: none; }
   .rg-account__renew:active svg { transform: none; }
-  .rg-account__done[data-paired] svg :is(path, polyline) { animation: none; }
 }
 
 .rg-account__expiry { margin: 0; color: var(--color-fg-muted); font-size: var(--type-label-size); }

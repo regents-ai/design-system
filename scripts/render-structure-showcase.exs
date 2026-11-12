@@ -284,6 +284,31 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
+        <section id="waiting" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Waiting</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <.waiting :for={state <- [:loading, :slow, :error, :ready]} id={"waiting-#{state}"} state={state} class="showcase-wait">
+              <p class="showcase-wait__figure"><.figure value="1,204.50" /> USDC</p>
+              <:retry>
+                <.button variant="secondary" id={"waiting-#{state}-retry"} arrow={false}>Retry</.button>
+              </:retry>
+            </.waiting>
+            <.panel id="waiting-steps">
+              <div class="rg-panel__body showcase-stack">
+                <p class="showcase-wait__step">
+                  <.tick id="waiting-tick" />
+                  <.status_word id="waiting-word" words={["Waiting", "Done"]} current="Waiting" />
+                </p>
+                <p id="waiting-below">Below</p>
+                <div class="showcase-actions">
+                  <.button variant="secondary" id="waiting-change" arrow={false}>Change</.button>
+                </div>
+              </div>
+            </.panel>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>

@@ -33,3 +33,6 @@ body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-fami
 .showcase-nest--8 .showcase-nest__inner { --rg-cut-panel: var(--rg-cut-nested-8); }
 .showcase-nest--16 .showcase-nest__inner { --rg-cut-panel: var(--rg-cut-nested-16); }
 .showcase-nest__inner .rg-panel__body { margin: 0; padding: var(--space-3); }
+.showcase-wait { display: grid; align-content: center; block-size: 8rem; padding: var(--space-3); box-sizing: border-box; }
+.showcase-wait__figure { margin: 0; font-size: 1.5rem; }
+.showcase-wait__step { display: flex; align-items: center; gap: var(--space-1); margin: 0; }

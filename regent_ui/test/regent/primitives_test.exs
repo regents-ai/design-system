@@ -313,4 +313,48 @@ defmodule Regent.PrimitivesTest do
 
     assert resting =~ ~r/<button[^>]*disabled/
   end
+
+  test "a waiting box keeps the content out until it is ready and offers the page's retry once slow or failed" do
+    for state <- [:loading, :slow, :error, :ready] do
+      assigns = %{state: state}
+
+      html =
+        rendered_to_string(~H"""
+        <.waiting id="balance" state={@state} class="balance-size">
+          <span id="balance-figure">12.00</span>
+          <:retry><button id="balance-retry">Retry</button></:retry>
+        </.waiting>
+        """)
+
+      assert html =~ ~s(class="rg-waiting balance-size")
+      assert html =~ ~s(aria-busy="true") == state in [:loading, :slow]
+      assert html =~ "balance-figure" == (state == :ready)
+      assert html =~ "balance-retry" == state in [:slow, :error]
+      assert html =~ ~s(role="alert") == (state == :error)
+    end
+  end
+
+  test "a status word shows only the current word and refuses one it cannot show" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.status_word words={["Waiting", "Done"]} current="Done" />
+      """)
+
+    assert [_on] = Regex.scan(~r/data-on/, html)
+    assert html =~ ~r/data-on[^>]*>\s*Done/
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.status_word words={["Waiting", "Done"]} current="Paired" />
+      """)
+    end
+  end
+
+  test "a tick is marked done only once its step is done" do
+    assigns = %{}
+    refute rendered_to_string(~H"<.tick />") =~ "data-done"
+    assert rendered_to_string(~H"<.tick done />") =~ "data-done"
+  end
 end

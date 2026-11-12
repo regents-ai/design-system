@@ -161,6 +161,98 @@ defmodule Regent.Primitives do
 
   attr :id, :string, required: true
 
+  attr :state, :atom,
+    default: :loading,
+    values: [:loading, :slow, :error, :ready],
+    doc:
+      "`:loading` while the read is on its way, `:slow` once the page has waited long enough to say so (10 seconds), `:error` when it failed, `:ready` to show the content"
+
+  attr :class, :any,
+    default: nil,
+    doc: "the size class of what it stands for, so the box is that size in every state"
+
+  attr :rest, :global
+  slot :inner_block, required: true, doc: "the content, shown once `:ready`"
+  slot :retry, doc: "the page's own retry button, shown when `:slow` or `:error`"
+
+  @doc """
+  A box at the exact size of what it waits for, so nothing moves when it lands. While
+  waiting it is a dashed edge with nothing inside; screen readers hear "Loading". Once
+  `:slow` it says it is still working, and on `:error` that it could not be read, each
+  beside the page's retry button. `:ready` shows the content in the same box, fading
+  in, and reduced motion shows it at once.
+  """
+  def waiting(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      class={["rg-waiting", @class]}
+      data-state={@state}
+      aria-busy={@state in [:loading, :slow] && "true"}
+      {@rest}
+    >
+      <%= if @state == :ready do %>
+        {render_slot(@inner_block)}
+      <% else %>
+        <p class="rg-waiting__line" role={if @state == :error, do: "alert", else: "status"}>
+          {waiting_words(@state)}
+        </p>
+        <div :if={@state != :loading and @retry != []} class="rg-waiting__retry">
+          {render_slot(@retry)}
+        </div>
+      <% end %>
+    </div>
+    """
+  end
+
+  defp waiting_words(:loading), do: "Loading"
+  defp waiting_words(:slow), do: "Still working"
+  defp waiting_words(:error), do: "Couldn't be read"
+
+  attr :words, :list,
+    required: true,
+    doc: "every word it can show, such as [\"Waiting\", \"Done\"]; the line keeps the widest"
+
+  attr :current, :string, required: true, doc: "the word showing now, one of `words`"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  A status word that changes while someone watches. The old word rises out and the new
+  one rises in, and the line keeps the width of its widest word, so nothing beside it
+  moves. Reduced motion swaps the words at once.
+  """
+  def status_word(assigns) do
+    if assigns.current not in assigns.words do
+      raise ArgumentError,
+            "status_word current #{inspect(assigns.current)} is not one of #{inspect(assigns.words)}"
+    end
+
+    ~H"""
+    <span class={["rg-status-word", @class]} {@rest}>
+      <span :for={word <- @words} class="rg-status-word__word" data-on={word == @current}>
+        {word}
+      </span>
+    </span>
+    """
+  end
+
+  attr :done, :boolean, default: false, doc: "true once the step is done"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  A step's mark: a dashed ring while it waits, then a tick that draws in once it is
+  done, in place of a sentence saying so. Reduced motion shows the tick at once.
+  """
+  def tick(assigns) do
+    ~H"""
+    <Icons.icon name="check" class={["rg-tick", @class]} data-done={@done} {@rest} />
+    """
+  end
+
+  attr :id, :string, required: true
+
   attr :at, DateTime,
     default: nil,
     doc: "when the figures beside it were last read, or nil before the first reading"

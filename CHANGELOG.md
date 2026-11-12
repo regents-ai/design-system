@@ -840,3 +840,21 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   follows the round ends in `--color-focus`.
 - The showcase gains a Corners section: cuts nested 8px and 16px inside panels, and a
   primary button, a secondary button and a pill to tab through.
+
+
+## 2026-11-12 — Waiting box, status word and drawn tick
+
+- New `Regent.Primitives.waiting`: a dashed box at the exact size of what it waits for
+  (the page passes the same size class), with "Loading" for screen readers only; once
+  `:slow`, "Still working" and the page's retry button; on `:error`, "Couldn't be read"
+  and the retry; `:ready` shows the content in the same box, fading in over 200ms
+  (November bonus pack, step 4). The package had no shimmer skeleton to replace.
+- New `Regent.Primitives.status_word`: the old word rises 4px out in 140ms, the new
+  one rises 4px in over 200ms, and the line keeps its widest word's width.
+- New `Regent.Primitives.tick`: a dashed ring that draws its tick in over 280ms once
+  done. The pairing's last step uses it in place of its own tick, whose styles and
+  `data-paired` mark are gone.
+- New token `--ease-in` (`cubic-bezier(0.11, 0, 0.5, 0)`) for things leaving; the JSON
+  mirror is regenerated.
+- All three move in CSS alone, so the template's motion kit needs nothing for them;
+  reduced motion shows each at once. The showcase gains a Waiting section.

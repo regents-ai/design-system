@@ -85,6 +85,14 @@ widest value it can take). It carries `data-count`, so a site rolls it with the
 template's `MotionCount` hook on the part of the page around it; the package ships no
 roll of its own. A column of numbers takes the `rg-figure` class on each cell.
 
+Something a page waits for sits in `Regent.Primitives.waiting` with the same size
+class as what it will show; the page passes `state` from its own read (`:loading`, then
+`:slow` once it has waited 10 seconds, `:error` on a failure, `:ready`) and its retry
+button in the `retry` slot. `Regent.Primitives.status_word` takes every word it can
+show and the current one; `Regent.Primitives.tick` takes `done`. The package moves all
+three in CSS, so the motion kit needs no hook or attribute for them; a list that lands
+inside a waiting box still takes the kit's `MotionList`.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the

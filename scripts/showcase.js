@@ -69,3 +69,10 @@ document.querySelector("#figure-change").addEventListener("click", () => {
     figure.textContent = figure.textContent === one ? other : one;
   }
 });
+// A step finishes as a page's would after its read: the tick draws in and the word
+// swaps, and the line below stays where it is.
+document.querySelector("#waiting-change").addEventListener("click", () => {
+  const tick = document.querySelector("#waiting-tick");
+  tick.toggleAttribute("data-done");
+  for (const word of document.querySelectorAll("#waiting-word > span")) word.toggleAttribute("data-on");
+});
