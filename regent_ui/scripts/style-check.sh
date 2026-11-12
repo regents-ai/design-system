@@ -31,13 +31,14 @@ files() {
   rg --files "${exclude[@]}" "$@" "$dir" || true
 }
 
-# Layers stay flat.
+# Layers stay flat. An approved exception carries its marker on its own line.
 search assets -g '*.css' 'box-shadow:' |
-  { rg -v 'box-shadow:\s*(none|var\(--rg-layer)' || true; } | emit flat
+  { rg -v 'box-shadow:\s*(none|var\(--rg-layer)' || true; } |
+  { rg -v 'style-check: allow shadow — \w' || true; } | emit flat
 
-# No glass. The single approved one-off carries the marker on its own line.
+# No glass. An approved exception carries its marker on its own line.
 search assets -g '*.css' 'backdrop-filter|filter:\s*blur' |
-  { rg -v 'style-check: allow glass — \S' || true; } | emit glass
+  { rg -v 'style-check: allow glass — \w' || true; } | emit glass
 
 # No weight above 400.
 search assets -g '*.css' 'font-weight:\s*(bold|[5-9]00)' | emit weight

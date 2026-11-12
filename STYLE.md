@@ -837,9 +837,14 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
 There is no glass layer. Shared structure uses opaque semantic surfaces, no blur, and no
 animation dependency. The interaction-only shimmer is the restrained exception to
 undecorated panel skins.
-The regents.sh home's glass panel is the single approved one-off (Sean, 12 November
-2026): its line carries `/* style-check: allow glass — Sean 12 Nov 2026 */`, the only
-mark the style check accepts, and no other line may carry it.
+Two exceptions are approved, each by Sean's letter: the regents.sh home's glass panel
+(Sean, 12 November 2026) and the template's world cube lab page, whose glass panes keep
+their shadow (Sean, 13 November 2026). Each of their lines carries a marker the style
+check accepts, with who approved it and when after the dash: a blur line
+`/* style-check: allow glass — Sean 12 Nov 2026 */`, a `box-shadow:` line
+`/* style-check: allow shadow — Sean 13 Nov 2026 */`. A glass marker never excuses a
+shadow, nor a shadow marker glass. A marker is only for an exception Sean has approved
+by name; no other line may carry one.
 
 ## Artwork
 
