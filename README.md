@@ -149,9 +149,9 @@ custom color/fill/ink overrides require caller contrast review. `--rg-shimmer-du
 defaults to `1.15s`; the card edge ripple doubles it (`2.3s` per turn).
 
 Primaries rest as their plain fill, `--color-button` with `--color-fg-on-button` words: the
-site's accent pair, except in light, where Regents and Autolaunch fill Charcoal with
-Platinum words and Techtree fills its green-black with lime words, so the main action
-stands at least 3:1 against the page. Enabled hover/focus-visible brings in their marks:
+site's accent pair, except in light, where Regents fills Charcoal with Platinum words
+and Techtree fills its green-black with lime words, so their main action stands at least
+3:1 against the page. Enabled hover/focus-visible brings in their marks:
 dark primaries show blue TR/BL square-corner marks and orange TL/BR cut accents; light
 primaries show two opposite orange L-edges. Hover never takes a mark away, with **150ms
 base transitions in both directions**, including native reversal from an interrupted

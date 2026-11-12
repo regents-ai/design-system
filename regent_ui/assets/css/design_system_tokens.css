@@ -85,9 +85,9 @@
   --color-chosen: var(--color-accent);
   --color-fg-on-chosen: var(--color-fg-on-accent);
   /* A main button's fill and the words on it: the site's accent pair, except in light
-   * where that pair is too close to the page for the main action: Regents' white and
-   * Autolaunch's Tangerine take a Charcoal plate with Platinum words, and Techtree's lime
-   * moves into the words on its green-black. */
+   * where that pair is too close to the page for the main action: Regents' white takes a
+   * Charcoal plate with Platinum words, and Techtree's lime moves into the words on its
+   * green-black. */
   --color-button: var(--color-accent);
   --color-fg-on-button: var(--color-fg-on-accent);
   /* A chart's line: the site's action colour, except where that colour is too close to
@@ -251,8 +251,6 @@
   --color-accent: #FF5B19;
   --color-accent-secondary: #AECACD;
   --color-fg-on-accent: #161616;
-  --color-button: #161616;
-  --color-fg-on-button: #E5E3D2;
   --color-success: #145C3B;
   --color-error: #9C2525;
   --color-warning: #754600;
@@ -519,8 +517,6 @@ samp {
     --color-accent: #FF5B19;
     --color-accent-secondary: #AECACD;
     --color-fg-on-accent: #161616;
-    --color-button: #161616;
-    --color-fg-on-button: #E5E3D2;
     --color-success: #145C3B;
     --color-error: #9C2525;
     --color-warning: #754600;

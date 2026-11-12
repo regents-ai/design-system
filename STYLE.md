@@ -216,10 +216,10 @@ Patterns that generalize:
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
   8px below 768px, filled with `--color-button` and lettered in `--color-fg-on-button`.
   That pair is the site's accent pair, except in light, where the accent is too close
-  to the page for the main action: Regents' white and Autolaunch's Tangerine become a
-  Charcoal fill with Platinum words, and Techtree's lime moves into the words on its
-  green-black `#0F1B14`. In light a primary's fill stands at least 3:1 against the page
-  and its surfaces, and its words at least 4.5:1 on the fill (founder, 2026-11-12).
+  to the page for the main action: Regents' white becomes a Charcoal fill with Platinum
+  words, and Techtree's lime moves into the words on its green-black `#0F1B14`. Their
+  light fills stand at least 3:1 against the page and its surfaces, and every primary's
+  words stand at least 4.5:1 on its fill (founder, 2026-11-12).
   Breadcrumb chips cut the same two corners at `--rg-cut-chip` (8px) on every screen.
   A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
   150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show

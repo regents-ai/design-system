@@ -175,8 +175,6 @@
       "--color-accent": "#FF5B19",
       "--color-accent-secondary": "#AECACD",
       "--color-fg-on-accent": "#161616",
-      "--color-button": "#161616",
-      "--color-fg-on-button": "#E5E3D2",
       "--color-success": "#145C3B",
       "--color-error": "#9C2525",
       "--color-warning": "#754600",

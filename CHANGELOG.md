@@ -1069,12 +1069,12 @@ was too close to the page colour.
 
 - Two new tokens carry a main button's fill and words: `--color-button` and
   `--color-fg-on-button`. They are the site's accent pair, except in light: Regents
-  (white) and Autolaunch (Tangerine) fill Charcoal with Platinum words, and Techtree
-  fills its green-black `#0F1B14` with lime words. Patchbay's cobalt is unchanged, and
-  so is every site in dark.
-- In light the fill now stands 6.6:1 to 16.4:1 against the page (it was 1.1:1 to 2.4:1
-  outside Patchbay), and the words 7:1 to 14:1 on it. Hover, keyboard focus and
-  disabled look as before; Autolaunch's orange hover edges now show against the fill.
+  (white) fills Charcoal with Platinum words, and Techtree fills its green-black
+  `#0F1B14` with lime words. Autolaunch's Tangerine and Patchbay's cobalt are
+  unchanged, and so is every site in dark.
+- In light Regents' fill now stands 16.4:1 against the page (it was 1.1:1) and
+  Techtree's 16.1:1 (it was 1.2:1), with words at 14:1 and 13.7:1 on them. Hover,
+  keyboard focus and disabled look as before.
 - Techtree's light main buttons no longer rest with the whole cut outline; the dark
   fill does that job. A Techtree page that drew the outline itself can drop it.
 - `--color-accent` keeps its values, so accent panels, chosen tabs, chart lines and the
