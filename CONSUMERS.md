@@ -85,6 +85,79 @@ widest value it can take). It carries `data-count`, so a site rolls it with the
 template's `MotionCount` hook on the part of the page around it; the package ships no
 roll of its own. A column of numbers takes the `rg-figure` class on each cell.
 
+Something a page waits for sits in `Regent.Primitives.waiting` with the same size
+class as what it will show; the page passes `state` from its own read (`:loading`, then
+`:slow` once it has waited 10 seconds, `:error` on a failure, `:ready`) and its retry
+button in the `retry` slot. `Regent.Primitives.status_word` takes every word it can
+show and the current one; `Regent.Primitives.tick` takes `done`. The package moves all
+three in CSS, so the motion kit needs no hook or attribute for them; a list that lands
+inside a waiting box still takes the kit's `MotionList`.
+
+`Regent.Primitives.segmented` takes `id`, `label`, `name`, `options` (two to five
+`%{value, label}`) and the chosen `value`; `event` puts the page's `phx-click` on each
+choice, or the page's own form hears the radios by `name`. The server's value wins
+after its redraw. Import `segmented.mjs` (copied by `mix regent_ui.assets`) once from
+the site's `app.ts` so Home and End choose the first and last option; arrow keys work
+without it. `Regent.Primitives.tabs` takes `id`, `label` and `tabs` (`%{label, current}`
+with `href`, `patch` or `navigate`, at most five).
+
+The motion kit moves both from these marks, and the package works without it:
+
+- `data-travel` marks the control or the row of tabs for the kit's travel hook.
+- The segmented control's indicator is `data-travel-indicator`. Its edges are
+  `--rg-travel-start` and `--rg-travel-end` on the control, in cells (the second cell is
+  1 to 2). The package slides them in CSS; the kit sets `data-travel="kit"` on the
+  control once it moves them itself, which turns the CSS slide off, animates the
+  leading edge first and the trailing edge after it (`spring({bounce: 0.15, duration:
+  300})`), lets a press dragged across the cells carry the indicator and choose the
+  cell it is let go over, and then removes its own values.
+- A tab's bar is drawn by the tab with `aria-current="page"`. To slide it, the kit
+  measures the tab before and the new one, sets `--rg-travel-x` (the old tab's left
+  less the new one's, in px) and `--rg-travel-scale` (old width over new) on the new
+  tab, and animates them to `0px` and `1`. It also scrolls the new tab into view in a
+  row that scrolls.
+- Neither moves for a key press or under reduced motion.
+
+`Regent.Primitives.breadcrumb` takes `id` and `crumbs`: every level from the top, then
+the page showing, at least two. Each is `%{label, icon}` (`icon` a Lucide name) with
+`href`, `patch` or `navigate` on the levels above; a level above may carry `siblings`
+(`%{label, href}`) for its chevron menu, and the page showing `card`, a few short facts
+("PNG", "2400×3000", "4.2 MB"). Import `tip.mjs` once from the site's `app.ts` so the
+card opens on hover as well as a press. The kit moves it from these marks:
+
+- `data-crumbs` marks the list for the kit's crumbs hook; each crumb is an `li` with
+  `data-crumb` (its name) and `data-place` (`first`, `gap`, `parent` or `here`).
+- On a path change the kit compares the names: a new `here` rises 4px into place over
+  280ms on `--ease-out`, crumbs that left fade out in 140ms on `--ease-in`, and the old
+  `here`, now a level above, turns muted with no movement.
+- The `[popover]` menus and the card grow from the button that opened them.
+- Nothing moves for a key press or under reduced motion.
+
+`Regent.Agents.activity` takes `id`, `steps` and `now` (the time the page was drawn),
+and in its full form a `label` to read out ("Pira's activity"). `steps` is `:loading`,
+`:unavailable` or the steps the viewer may see, oldest first, each `%{id, kind, label,
+started_at, finished_at}`: `kind` one of `:read`, `:think`, `:tool`, `:write`,
+`:waiting_for_you`, `:done` or `:failed`, any other raises; `label` names what the step
+touched in one to four words, never a tool's inputs, a key, a wallet detail or a
+message body. The state follows the times alone: no `started_at` is next, no
+`finished_at` is running (or waiting for the person), both is done. The `action` slot
+is the page's button for a step waiting for the person, given that step; `retry` is the
+page's retry when the steps could not be read. `variant="line"` shows the latest
+started step on one line. `Regent.Agents.fleet` takes `id`, `label`, `now` and `agents`
+(`:loading`, `:unavailable` or `%{id, name, kind, href, steps}`; `href` `nil` for no
+page). Neither runs a timer: the page sends new steps and a new `now` when it has them.
+The package moves the status word, the tick and the running step's dash in CSS. The
+motion kit may use these marks:
+
+- `data-activity` marks the list of latest steps for the kit's `MotionList`; each row is
+  an `li` with `data-step` (the step's id) and `data-state` (`queued`, `running`,
+  `asks`, `done` or `failed`), so the kit can tell a row that arrived from one that
+  changed.
+- `.rg-activity__rail` is each row's line; the kit may grow a new row's line down from
+  the mark above.
+- Each step's time is a `Regent.Primitives.figure`, carrying `data-count`.
+- Nothing moves for a key press or under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the
@@ -173,6 +246,10 @@ weights above 400 (`weight`), radii other than 0, 50% or a pill's half height (`
 layout properties animated from scripts (`motion`), an `<svg>` that is neither hidden
 artwork nor a named logo (`icon`), "KeyFleet" (`name`) and page words that say how a
 page is built (`words`). It exits 1 when it finds any. It needs ripgrep, awk and perl.
+A stacking number counts as isolated when its rule sits inside the rule of the root that
+sets `isolation: isolate`, written with CSS nesting (`.art { isolation: isolate; &::before
+{ z-index: -1; } }`), as the package's own panel, button, dialog, figure and foil card do.
+design-system's own `mix check` runs it over the package and passes with no breaks.
 
 See [MOBILE.md](MOBILE.md) for the iPhone-oriented composition and acceptance contract.
 Coarse/no-hover shared buttons retain a 44px minimum hit box, and text-like `rg-field`

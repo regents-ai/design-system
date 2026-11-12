@@ -69,3 +69,36 @@ document.querySelector("#figure-change").addEventListener("click", () => {
     figure.textContent = figure.textContent === one ? other : one;
   }
 });
+// A step finishes as a page's would after its read: the tick draws in and the word
+// swaps, and the line below stays where it is.
+document.querySelector("#waiting-change").addEventListener("click", () => {
+  const tick = document.querySelector("#waiting-tick");
+  tick.toggleAttribute("data-done");
+  for (const word of document.querySelectorAll("#waiting-word > span")) word.toggleAttribute("data-on");
+});
+// The tabs stand in for a page's own links: a press marks the tab it lands on.
+for (const tab of document.querySelectorAll("#choice-tabs a")) {
+  tab.addEventListener("click", event => {
+    event.preventDefault();
+    for (const other of document.querySelectorAll("#choice-tabs a")) other.removeAttribute("aria-current");
+    tab.setAttribute("aria-current", "page");
+  });
+}
+// A step ends as a page's would after the server says so: the running mark becomes a
+// drawn tick and its travelling dash stops; the waiting line's word swaps to Done.
+document.querySelector("#activity-change").addEventListener("click", () => {
+  for (const mark of document.querySelectorAll("#activity-running [data-state='running'] .rg-activity__mark, #activity-line-running .rg-activity__mark")) {
+    const done = mark.dataset.state === "running";
+    mark.dataset.state = done ? "done" : "running";
+    mark.querySelector(".rg-tick").toggleAttribute("data-done", done);
+    mark.parentElement.querySelector(".rg-activity__trace")?.toggleAttribute("hidden", done);
+  }
+  const asks = document.querySelector("#activity-line-asks");
+  const mark = asks.querySelector(".rg-activity__mark");
+  const done = mark.dataset.state === "asks";
+  mark.dataset.state = done ? "done" : "asks";
+  mark.querySelector(".rg-tick").toggleAttribute("data-done", done);
+  for (const word of asks.querySelectorAll(".rg-status-word__word")) {
+    word.toggleAttribute("data-on", word.textContent.trim() === (done ? "Done" : "Waiting for you"));
+  }
+});

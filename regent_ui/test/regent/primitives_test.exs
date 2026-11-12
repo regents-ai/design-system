@@ -325,4 +325,156 @@ defmodule Regent.PrimitivesTest do
 
     assert resting =~ ~r/<button[^>]*disabled/
   end
+
+  test "a waiting box keeps the content out until it is ready and offers the page's retry once slow or failed" do
+    for state <- [:loading, :slow, :error, :ready] do
+      assigns = %{state: state}
+
+      html =
+        rendered_to_string(~H"""
+        <.waiting id="balance" state={@state} class="balance-size">
+          <span id="balance-figure">12.00</span>
+          <:retry><button id="balance-retry">Retry</button></:retry>
+        </.waiting>
+        """)
+
+      assert html =~ ~s(class="rg-waiting balance-size")
+      assert html =~ ~s(aria-busy="true") == state in [:loading, :slow]
+      assert html =~ "balance-figure" == (state == :ready)
+      assert html =~ "balance-retry" == state in [:slow, :error]
+      assert html =~ ~s(role="alert") == (state == :error)
+    end
+  end
+
+  test "a status word shows only the current word and refuses one it cannot show" do
+    assigns = %{}
+
+    html =
+      rendered_to_string(~H"""
+      <.status_word words={["Waiting", "Done"]} current="Done" />
+      """)
+
+    assert [_on] = Regex.scan(~r/data-on/, html)
+    assert html =~ ~r/data-on[^>]*>\s*Done/
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.status_word words={["Waiting", "Done"]} current="Paired" />
+      """)
+    end
+  end
+
+  test "a tick is marked done only once its step is done" do
+    assigns = %{}
+    refute rendered_to_string(~H"<.tick />") =~ "data-done"
+    assert rendered_to_string(~H"<.tick done />") =~ "data-done"
+  end
+
+  test "a segmented control checks the chosen option, hands each choice to the page and takes two to five options" do
+    assigns = %{options: for(p <- ~w(1D 1W 1M), do: %{value: p, label: p})}
+
+    html =
+      rendered_to_string(~H"""
+      <.segmented id="period" label="Period" name="period" value="1W" options={@options} event="period" />
+      """)
+
+    assert [_one] = Regex.scan(~r/<input[^>]*checked/, html)
+    assert html =~ ~r/<input[^>]*value="1W"[^>]*checked|<input[^>]*checked[^>]*value="1W"/
+    assert [_, _, _] = Regex.scan(~r/phx-click="period"/, html)
+
+    for options <- [Enum.take(assigns.options, 1), assigns.options ++ assigns.options] do
+      assigns = %{options: options}
+
+      assert_raise ArgumentError, fn ->
+        rendered_to_string(~H"""
+        <.segmented id="period" label="Period" name="period" value="1D" options={@options} />
+        """)
+      end
+    end
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.segmented id="period" label="Period" name="period" value="1Y" options={@options} />
+      """)
+    end
+  end
+
+  test "tabs are links, the page showing is current, and a sixth tab is refused" do
+    assigns = %{
+      tabs: [
+        %{label: "Profile", patch: "/account", current: false},
+        %{label: "Points", patch: "/account/points", current: true}
+      ]
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <.tabs id="account-tabs" label="Account" tabs={@tabs} />
+      """)
+
+    assert html =~ ~s(data-phx-link="patch")
+    assert [_one] = Regex.scan(~r/aria-current="page"/, html)
+
+    assert html =~
+             ~r{href="/account/points"[^>]*aria-current="page"|aria-current="page"[^>]*href="/account/points"}
+
+    assigns = %{tabs: for(i <- 1..6, do: %{label: "Tab #{i}", href: "/#{i}", current: i == 1})}
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.tabs id="many" label="Many" tabs={@tabs} />
+      """)
+    end
+  end
+
+  test "a breadcrumb keeps the top, the parent and the page showing, with the levels between in a menu" do
+    assigns = %{
+      crumbs: [
+        %{label: "Home", icon: "house", href: "/"},
+        %{label: "Studio", icon: "folder", href: "/studio"},
+        %{label: "Clients", icon: "folder", href: "/studio/clients"},
+        %{
+          label: "Brand kit",
+          icon: "folder",
+          href: "/studio/clients/kit",
+          siblings: [%{label: "Templates", href: "/studio/templates"}]
+        },
+        %{label: "Crown.png", icon: "image", card: ["PNG", "4.2 MB"]}
+      ]
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <.breadcrumb id="trail" crumbs={@crumbs} />
+      """)
+
+    [menu] = Regex.run(~r{<span id="trail-hidden".*?</span>\s*</li>}s, html)
+
+    for path <- ~w(/ /studio /studio/clients), do: assert(menu =~ ~s(href="#{path}"))
+    refute menu =~ "/studio/clients/kit"
+    assert html =~ ~s(data-holds="between")
+    assert [_one] = Regex.scan(~r/aria-current="page"/, html)
+    assert html =~ ~r/data-place="here"[^>]*>\s*<span[^>]*aria-current="page"/
+    assert [_one] = Regex.scan(~r/popovertarget="trail-\d-beside"/, html)
+    assert html =~ ~s(popovertarget="trail-card")
+
+    assigns = %{crumbs: [hd(assigns.crumbs), %{label: "Studio", icon: "folder"}]}
+
+    html =
+      rendered_to_string(~H"""
+      <.breadcrumb id="short" crumbs={@crumbs} />
+      """)
+
+    refute html =~ "short-hidden"
+    refute html =~ "beside"
+    refute html =~ "short-card"
+
+    assigns = %{crumbs: [hd(assigns.crumbs)]}
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.breadcrumb id="lone" crumbs={@crumbs} />
+      """)
+    end
+  end
 end

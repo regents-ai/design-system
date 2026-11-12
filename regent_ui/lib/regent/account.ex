@@ -540,9 +540,9 @@ defmodule Regent.Account do
           <.expiry message={@message} iso={@expires_iso} at={@expires} />
         </li>
         <li>Paste it to {@chosen_label || "your agent"}</li>
-        <li class="rg-account__done" data-paired={@paired && "true"}>
+        <li class="rg-account__done">
           <span role="status">
-            <Icons.icon name="check" />
+            <Primitives.tick done={@paired != nil} />
             <span :if={@paired}>{@paired} paired</span>
             <span :if={!@paired}>Wait for it to pair</span>
           </span>

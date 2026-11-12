@@ -43,12 +43,13 @@
   border-radius: 0; cursor: pointer; overflow: visible;
   background: transparent; color: var(--rg-p-on-accent);
   text-decoration: none;
+  /* Its own stacking root: the paint stays behind the label. */
+  &::before {
+    content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
+    transform: scale(var(--rg-press-scale, 1));
+  }
 }
 .rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; overflow-x: clip; text-overflow: ellipsis; background: transparent; transform: scale(var(--rg-press-scale, 1)); }
-.rg-button::before {
-  content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
-  transform: scale(var(--rg-press-scale, 1));
-}
 /* Registered private paint values interpolate colors and the diagonal inset.
    Public override properties remain inherited and unset on the host. */
 @property --rg-button-edge-ink { syntax: "<color>"; inherits: false; initial-value: #ff5b19; }
@@ -315,7 +316,7 @@
 /* A field to fix doubles its edge in the error ink, inside the edge so nothing moves. */
 .rg-field [aria-invalid="true"] {
   border-color: var(--rg-local-ink, var(--rg-p-error));
-  box-shadow: inset 0 0 0 1px var(--rg-local-ink, var(--rg-p-error));
+  outline: 1px solid var(--rg-local-ink, var(--rg-p-error)); outline-offset: -2px;
 }
 /* The line under a field that says what to fix keeps its space while empty, so an
    error showing up never moves the fields below it. */
@@ -492,4 +493,284 @@
 @media (prefers-reduced-motion: reduce) {
   .rg-last-read .rg-last-read__again svg { transition: none; }
   .rg-last-read .rg-last-read__again.phx-click-loading svg { animation: none; }
+}
+/* The waiting box stands at the exact size of what it waits for (the page passes the
+   same size class), so nothing jumps when the content lands. While waiting it is a
+   dashed edge that takes no room of its own, with nothing inside but words for screen
+   readers; once slow or failed, one line and the page's retry button. No bars, no
+   shimmer, no pulse. Content that lands fades in. */
+.rg-waiting:not([data-state="ready"]) {
+  position: relative; display: grid; place-content: center; justify-items: center; gap: var(--space-1);
+  outline: 1px dashed var(--hairline-strong); outline-offset: -1px;
+  color: var(--color-fg-muted, currentColor); text-align: center;
+}
+.rg-waiting__line { margin: 0; }
+.rg-waiting[data-state="loading"] .rg-waiting__line {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.rg-waiting[data-state="ready"] { animation: rg-waiting-arrive var(--duration-base) var(--ease-out); }
+@keyframes rg-waiting-arrive { from { opacity: 0; } }
+/* A status word: every word it can show stacked in one cell, so the line keeps the
+   widest. The old word rises 4px out and fades; the new one rises 4px in. The two
+   moves add up: a word at rest sits 4px low (-4px of transform and 8px of translate),
+   leaves upward on its transform, and drops to its rest only once it is unseen. */
+.rg-status-word { display: inline-grid; }
+.rg-status-word__word {
+  grid-area: 1 / 1; white-space: nowrap;
+  opacity: 0; visibility: hidden; transform: translateY(-4px); translate: 0 8px;
+  transition: opacity var(--duration-fast) var(--ease-in), transform var(--duration-fast) var(--ease-in),
+    translate 0s var(--duration-fast), visibility 0s var(--duration-fast);
+}
+.rg-status-word__word[data-on] {
+  opacity: 1; visibility: visible; transform: none; translate: 0 0;
+  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out),
+    translate var(--duration-base) var(--ease-out);
+}
+/* A step's mark: a dashed ring while it waits, then a tick that draws in. */
+.rg-tick {
+  inline-size: 1.25rem; block-size: 1.25rem; padding: 2px; box-sizing: border-box;
+  border: 1px dashed var(--hairline-strong); border-radius: 50%;
+  stroke-dasharray: 24; stroke-dashoffset: 24;
+}
+.rg-tick[data-done] {
+  border: 1px solid var(--color-success, currentColor); color: var(--color-success, currentColor);
+  stroke-dashoffset: 0; transition: stroke-dashoffset var(--duration-slow) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .rg-waiting[data-state="ready"] { animation: none; }
+  .rg-status-word__word, .rg-status-word__word[data-on], .rg-tick[data-done] { transition: none; }
+}
+@media (forced-colors: active) {
+  .rg-waiting:not([data-state="ready"]) { outline-color: CanvasText; }
+  .rg-tick { border-color: CanvasText; }
+}
+/* A segmented control: one frame cut at two corners like a primary button, equal
+   cells split by hairlines, and one filled indicator on the chosen cell. The frame
+   and the indicator are an inert skin clipped to the cut; the cells, their words and
+   the focus ring are never clipped. The indicator's edges are --rg-travel-start and
+   --rg-travel-end, in cells, set from the chosen radio; they slide on a press, sit
+   still for a key press (the radio then shows keyboard focus) and under reduced
+   motion. The motion kit marks the control data-travel="kit" when it moves them
+   itself, with the stretch that leads with the new side. */
+@property --rg-travel-start { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --rg-travel-end { syntax: "<number>"; inherits: true; initial-value: 1; }
+.rg-segmented {
+  --rg-segment-h: 2.5rem; --rg-shape-cut: var(--rg-cut-control);
+  position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  inline-size: max-content; min-inline-size: min(100%, calc(var(--rg-segments) * 4rem)); max-inline-size: 100%;
+  block-size: var(--rg-segment-h); margin: 0; padding: 0; border: 0; box-sizing: border-box;
+  color: var(--color-fg); font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+  transition: --rg-travel-start var(--duration-base) var(--ease-out), --rg-travel-end var(--duration-base) var(--ease-out);
+}
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(2) > :checked) { --rg-travel-start: 1; --rg-travel-end: 2; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(3) > :checked) { --rg-travel-start: 2; --rg-travel-end: 3; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(4) > :checked) { --rg-travel-start: 3; --rg-travel-end: 4; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(5) > :checked) { --rg-travel-start: 4; --rg-travel-end: 5; }
+.rg-segmented:is([data-travel="kit"], :has(:focus-visible)) { transition: none; }
+.rg-segmented__track {
+  --rg-inner-cut: max(0px, calc(var(--rg-cut-control) - var(--rg-cut-nest) * 1px));
+  position: absolute; inset: 0; pointer-events: none;
+  background: var(--hairline-strong);
+  clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
+}
+/* The ground inside the edge, with a hairline at each cell's start. */
+.rg-segmented__track::before {
+  content: ""; position: absolute; inset: 1px;
+  background: linear-gradient(to right, var(--hairline) 0 1px, transparent 1px) -1px 0 / calc((100% + 2px) / var(--rg-segments)) 100% repeat-x, var(--color-surface);
+  clip-path: polygon(var(--rg-inner-cut) 0, 100% 0, 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, 0 100%, 0 var(--rg-inner-cut));
+}
+.rg-segmented__indicator {
+  position: absolute; inset-block: 0; inset-inline-start: 0; inline-size: calc(100% / var(--rg-segments));
+  background: var(--color-chosen); transform-origin: left;
+  transform: translateX(calc(var(--rg-travel-start) * 100%)) scaleX(calc(var(--rg-travel-end) - var(--rg-travel-start)));
+}
+.rg-segmented:dir(rtl) .rg-segmented__indicator {
+  transform-origin: right;
+  transform: translateX(calc(var(--rg-travel-start) * -100%)) scaleX(calc(var(--rg-travel-end) - var(--rg-travel-start)));
+}
+.rg-segmented__cell {
+  position: relative; display: grid; place-items: center; min-inline-size: 0;
+  padding-inline: var(--space-2); cursor: pointer; white-space: nowrap;
+}
+.rg-segmented__cell:has(:checked) { color: var(--color-fg-on-chosen); }
+.rg-segmented__input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; appearance: none; }
+.rg-segmented__label { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; }
+/* Keyboard focus rings a whole segmented control or breadcrumb chip and follows its
+   cut (--rg-shape-cut): ring cut = cut + 0.59 ×
+   reach outside, and the gap inside it cut = cut + 0.59 × offset. */
+:is(.rg-segmented, .rg-crumbs__chip):has(:focus-visible)::after {
+  --rg-ring-reach: calc(var(--rg-ring-width) + var(--rg-ring-offset));
+  --rg-ring-cut: calc(var(--rg-shape-cut) + var(--rg-cut-nest) * var(--rg-ring-reach));
+  --rg-ring-gap-cut: calc(var(--rg-shape-cut) + var(--rg-cut-nest) * var(--rg-ring-offset));
+  content: ""; position: absolute; inset: calc(-1 * var(--rg-ring-reach)); pointer-events: none;
+  background: var(--color-focus);
+  clip-path: polygon(evenodd,
+    var(--rg-ring-cut) 0, 100% 0, 100% calc(100% - var(--rg-ring-cut)), calc(100% - var(--rg-ring-cut)) 100%,
+    0 100%, 0 var(--rg-ring-cut), var(--rg-ring-cut) 0,
+    calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)) var(--rg-ring-width),
+    calc(100% - var(--rg-ring-width)) var(--rg-ring-width),
+    calc(100% - var(--rg-ring-width)) calc(100% - var(--rg-ring-width) - var(--rg-ring-gap-cut)),
+    calc(100% - var(--rg-ring-width) - var(--rg-ring-gap-cut)) calc(100% - var(--rg-ring-width)),
+    var(--rg-ring-width) calc(100% - var(--rg-ring-width)),
+    var(--rg-ring-width) calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)),
+    calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)) var(--rg-ring-width),
+    var(--rg-ring-cut) 0);
+}
+/* Link tabs: words on a hairline baseline; the page showing has the full ink and a
+   2px bar on the baseline, which the motion kit slides from the tab before through
+   --rg-travel-x and --rg-travel-scale on the new tab. A row too wide scrolls inside
+   itself, fading 16px at the edge that hides more. The 4px of padding keeps every
+   tab's focus ring inside the row that scrolls. */
+.rg-tabs {
+  display: flex; gap: var(--space-3); overflow-x: auto; scrollbar-width: none;
+  padding: 4px 4px 4px; border-block-end: 1px solid var(--hairline);
+  font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+}
+.rg-tabs::-webkit-scrollbar { display: none; }
+.rg-tabs .rg-tabs__tab {
+  position: relative; display: inline-flex; flex: none; align-items: center;
+  min-block-size: 2.25rem; color: var(--color-fg-muted); text-decoration: none; white-space: nowrap;
+}
+.rg-tabs .rg-tabs__tab[aria-current="page"] { color: var(--color-fg); }
+.rg-tabs .rg-tabs__tab[aria-current="page"]::after {
+  content: ""; position: absolute; inset-inline: 0; inset-block-end: -4px; block-size: 2px;
+  background: var(--color-chosen); transform-origin: left;
+  transform: translateX(var(--rg-travel-x, 0px)) scaleX(var(--rg-travel-scale, 1));
+}
+@media (hover: hover) and (pointer: fine) { .rg-tabs .rg-tabs__tab:hover { color: var(--color-fg); } }
+.rg-tabs .rg-tabs__tab:focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset); }
+@property --rg-tabs-fade-start { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --rg-tabs-fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@supports (animation-timeline: scroll()) {
+  .rg-tabs {
+    mask-image: linear-gradient(to right, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent);
+    animation: rg-tabs-fade linear both; animation-timeline: scroll(self inline);
+  }
+  .rg-tabs:dir(rtl) { mask-image: linear-gradient(to left, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent); }
+}
+@keyframes rg-tabs-fade {
+  from { --rg-tabs-fade-start: 0px; --rg-tabs-fade-end: 16px; }
+  1% { --rg-tabs-fade-start: 16px; }
+  99% { --rg-tabs-fade-end: 16px; }
+  to { --rg-tabs-fade-start: 16px; --rg-tabs-fade-end: 0px; }
+}
+@media (max-width: 47.99rem) {
+  .rg-segmented { --rg-cut-control: 8px; }
+}
+@media (hover: none), (pointer: coarse) {
+  .rg-segmented { --rg-segment-h: 44px; }
+  .rg-tabs .rg-tabs__tab { min-block-size: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rg-segmented { transition: none; }
+}
+@media (forced-colors: active) {
+  .rg-segmented { border: 1px solid ButtonText; }
+  .rg-segmented__track { display: none; }
+  .rg-segmented__cell:has(:checked) { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+  .rg-segmented:has(:focus-visible) { outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset); }
+  .rg-tabs .rg-tabs__tab[aria-current="page"]::after { background: Highlight; }
+  .rg-tabs .rg-tabs__tab:focus-visible { outline-color: Highlight; }
+}
+/* A breadcrumb: joined chips cut at two corners, the page showing last. Each chip's
+   edge is an inert skin, a 1px ring clipped to the cut; the words, the menus and the
+   focus ring are not clipped. The row never wraps: the page showing ends in an
+   ellipsis, and the row measures itself, so a narrow row shows each level above as its
+   icon and first two letters, and the narrowest keeps only the parent and the page
+   showing, the rest in the "…" menu. The levels between the top and the parent are
+   always in that menu. */
+.rg-crumbs {
+  container: rg-crumbs / inline-size;
+  font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+}
+.rg-crumbs__list { display: flex; align-items: center; min-inline-size: 0; margin: 0; padding: 0; list-style: none; }
+.rg-crumbs__crumb { display: flex; flex: none; align-items: center; min-inline-size: 0; }
+.rg-crumbs__crumb[data-place="here"] { flex: 0 1 auto; }
+/* The line that joins a chip to the next. */
+.rg-crumbs__crumb:not(:last-child)::after {
+  content: ""; flex: none; inline-size: var(--space-1); block-size: 1px; background: var(--hairline-strong);
+}
+.rg-crumbs__chip {
+  --rg-shape-cut: var(--rg-cut-chip);
+  --rg-chip-inner-cut: max(0px, calc(var(--rg-cut-chip) - var(--rg-cut-nest) * 1px));
+  position: relative; display: inline-flex; align-items: stretch; min-inline-size: 0;
+  block-size: 2rem; color: var(--color-fg-muted);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.rg-crumbs__chip[aria-current="page"] { color: var(--color-fg); }
+.rg-crumbs__chip::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--hairline-strong);
+  clip-path: polygon(evenodd,
+    var(--rg-cut-chip) 0, 100% 0, 100% calc(100% - var(--rg-cut-chip)), calc(100% - var(--rg-cut-chip)) 100%,
+    0 100%, 0 var(--rg-cut-chip), var(--rg-cut-chip) 0,
+    calc(1px + var(--rg-chip-inner-cut)) 1px, calc(100% - 1px) 1px,
+    calc(100% - 1px) calc(100% - 1px - var(--rg-chip-inner-cut)), calc(100% - 1px - var(--rg-chip-inner-cut)) calc(100% - 1px),
+    1px calc(100% - 1px), 1px calc(1px + var(--rg-chip-inner-cut)), calc(1px + var(--rg-chip-inner-cut)) 1px);
+}
+.rg-crumbs .rg-crumbs__link,
+.rg-crumbs .rg-tip .rg-tip-button.rg-tip-button--figure {
+  position: relative; display: inline-flex; align-items: center; gap: .375rem; min-inline-size: 0;
+  margin: 0; padding: 0 .75rem; border: 0; background: transparent; color: inherit;
+  font: inherit; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.rg-crumbs span.rg-crumbs__link { cursor: default; }
+.rg-crumbs .rg-tip.rg-crumbs__card { display: flex; min-inline-size: 0; }
+.rg-crumbs .rg-tip .rg-tip-button.rg-tip-button--figure .rg-crumbs__name { text-decoration: underline dotted; text-decoration-color: var(--color-fg-muted); text-underline-offset: .2em; }
+.rg-crumbs .rg-crumbs__chip :focus-visible { outline: none; }
+.rg-crumbs__name { min-inline-size: 0; max-inline-size: 14rem; overflow: hidden; text-overflow: ellipsis; }
+.rg-crumbs__initials { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .rg-crumbs a.rg-crumbs__link:hover, .rg-crumbs button.rg-crumbs__link:hover { color: var(--color-fg); }
+}
+/* A level's pages beside it open from a chevron after its chip. */
+.rg-crumbs .rg-crumbs__beside {
+  display: inline-grid; place-items: center; flex: none; inline-size: 1.5rem; block-size: 2rem;
+  margin: 0; padding: 0; border: 0; background: transparent; color: var(--color-fg-muted); cursor: pointer;
+}
+.rg-crumbs .rg-crumbs__beside:focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset); }
+@media (hover: hover) and (pointer: fine) { .rg-crumbs .rg-crumbs__beside:hover { color: var(--color-fg); } }
+/* The menus: on the Tip layer, a firm edge and the raised fill, one level a line. */
+.rg-crumbs__menu {
+  inline-size: max-content; min-inline-size: 12.5rem; max-inline-size: min(20rem, calc(100vw - 16px));
+  margin: auto; padding: var(--space-0); border: 1px solid var(--color-border); border-radius: 0;
+  background: var(--color-surface-elevated, var(--color-surface)); color: var(--color-fg);
+  box-shadow: var(--rg-layer-tip-shadow);
+  font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+}
+.rg-crumbs__menu:popover-open { display: grid; }
+.rg-crumbs__menu a {
+  display: flex; align-items: center; gap: .5rem; min-block-size: 2.5rem; padding-inline: var(--space-2);
+  color: inherit; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rg-crumbs__menu a:hover { background: var(--hairline); }
+.rg-crumbs__menu a:focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: calc(-1 * var(--rg-ring-width)); }
+@supports (position-area: block-end) {
+  .rg-crumbs__menu { inset: auto; margin: var(--space-1) 0; position-area: block-end span-inline-end; position-try-fallbacks: flip-inline; }
+}
+/* The card of facts on the page showing, a fact a line. */
+.rg-crumbs__card .rg-tip-body:popover-open { display: grid; gap: 2px; }
+/* A wide row keeps the top level, the "…" menu of the levels between, the parent and
+   the page showing; the top level is not in the menu while it shows as a chip. */
+.rg-crumbs__crumb[data-holds="first"], .rg-crumbs__menu [data-place="first"] { display: none; }
+@container rg-crumbs (width < 40rem) {
+  .rg-crumbs__crumb:not([data-place="here"]) .rg-crumbs__name { display: none; }
+  .rg-crumbs__initials { display: inline; }
+}
+@container rg-crumbs (width < 24rem) {
+  .rg-crumbs__crumb[data-place="first"] { display: none; }
+  .rg-crumbs__crumb[data-holds="first"] { display: flex; }
+  .rg-crumbs__menu a[data-place="first"] { display: flex; }
+}
+@media (hover: none), (pointer: coarse) {
+  .rg-crumbs__chip, .rg-crumbs .rg-crumbs__beside { block-size: 44px; }
+  .rg-crumbs .rg-crumbs__beside { inline-size: 44px; }
+  .rg-crumbs__menu a { min-block-size: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .rg-crumbs__chip { transition: none; } }
+@media (forced-colors: active) {
+  .rg-crumbs__chip::before { display: none; }
+  .rg-crumbs__chip { border: 1px solid CanvasText; }
+  .rg-crumbs .rg-crumbs__chip:has(:focus-visible) { outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset); }
+  :is(.rg-segmented, .rg-crumbs__chip):has(:focus-visible)::after { display: none; }
 }

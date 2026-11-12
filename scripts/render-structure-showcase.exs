@@ -284,6 +284,160 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
+        <section id="waiting" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Waiting</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <.waiting :for={state <- [:loading, :slow, :error, :ready]} id={"waiting-#{state}"} state={state} class="showcase-wait">
+              <p class="showcase-wait__figure"><.figure value="1,204.50" /> USDC</p>
+              <:retry>
+                <.button variant="secondary" id={"waiting-#{state}-retry"} arrow={false}>Retry</.button>
+              </:retry>
+            </.waiting>
+            <.panel id="waiting-steps">
+              <div class="rg-panel__body showcase-stack">
+                <p class="showcase-wait__step">
+                  <.tick id="waiting-tick" />
+                  <.status_word id="waiting-word" words={["Waiting", "Done"]} current="Waiting" />
+                </p>
+                <p id="waiting-below">Below</p>
+                <div class="showcase-actions">
+                  <.button variant="secondary" id="waiting-change" arrow={false}>Change</.button>
+                </div>
+              </div>
+            </.panel>
+          </div>
+        </section>
+        <section id="choices" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Choices</h2>
+          </.section_bar>
+          <div class="showcase-stack">
+            <.segmented
+              id="choice-period"
+              label="Period"
+              name="period"
+              value="1W"
+              options={for p <- ~w(1D 1W 1M 1Y All), do: %{value: p, label: p}}
+            />
+            <.segmented
+              id="choice-whose"
+              label="Whose"
+              name="whose"
+              value="mine"
+              options={[%{value: "mine", label: "Mine"}, %{value: "all", label: "All"}]}
+            />
+            <.tabs
+              id="choice-tabs"
+              label="Account"
+              tabs={[
+                %{label: "Profile", href: "#profile", current: true},
+                %{label: "Points", href: "#points", current: false},
+                %{label: "Agents", href: "#agents", current: false},
+                %{label: "Activity", href: "#activity", current: false},
+                %{label: "Settings", href: "#settings", current: false}
+              ]}
+            />
+            <p id="choices-below">Below</p>
+          </div>
+        </section>
+        <section id="crumbs" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Breadcrumb</h2>
+          </.section_bar>
+          <div class="showcase-stack">
+            <.breadcrumb id="crumbs-long" crumbs={sample_crumbs()} />
+            <.breadcrumb id="crumbs-short" crumbs={Enum.take(sample_crumbs(), -3)} />
+            <div class="showcase-crumbs-narrow">
+              <.breadcrumb id="crumbs-narrow" crumbs={sample_crumbs()} />
+            </div>
+            <div class="showcase-crumbs-narrowest">
+              <.breadcrumb id="crumbs-narrowest" crumbs={sample_crumbs()} />
+            </div>
+          </div>
+        </section>
+        <section id="cards" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Cards</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <Regent.HolographicCard.card id="cards-foil">
+              <p class="showcase-wait__figure">Foil</p>
+              <p>Graphite, lit only under the pointer.</p>
+            </Regent.HolographicCard.card>
+            <.capability_card id="cards-foil-face" title="Foil face" description="A panel face in foil." index="004">
+              <:foil><Regent.HolographicCard.foil id="cards-foil-face-foil" class="rg-holo-foil--face" /></:foil>
+              <:media>
+                <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                  <circle cx="120" cy="120" r="80" /><circle cx="120" cy="120" r="44" />
+                </svg>
+              </:media>
+            </.capability_card>
+            <.panel id="cards-tip-panel">
+              <div class="rg-panel__body showcase-stack">
+                <p>
+                  Fee <.tip id="cards-tip" label="About the fee">Paid once, in USDC.</.tip>
+                </p>
+                <.panel id="cards-inner-panel" class="rg-support-panel">
+                  <p class="rg-panel__body">Inner</p>
+                </.panel>
+              </div>
+            </.panel>
+            <Regent.Discussion.posts id="cards-posts">
+              <Regent.Discussion.post
+                :for={{id, author, solution, house} <- [{"cards-answer", "Ada", true, false}, {"cards-house", "Regents", false, true}]}
+                id={id}
+                author={author}
+                at={~U[2026-11-10 09:00:00Z]}
+                ago="1 day ago"
+                href={"##{id}"}
+                solution={solution}
+                house={house}
+              >
+                <:avatar><Regent.Account.agent_mark kind="muse" /></:avatar>
+                <p>{if solution, do: "The marked answer.", else: "A reply from the site."}</p>
+              </Regent.Discussion.post>
+            </Regent.Discussion.posts>
+          </div>
+        </section>
+        <section id="activity" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Activity</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <Regent.Agents.activity id="activity-running" label="Pira" steps={sample_steps(:running)} now={sample_now()} />
+            <Regent.Agents.activity id="activity-asks" label="Night shift" steps={sample_steps(:asks)} now={sample_now()}>
+              <:action>
+                <.button type="button" id="activity-approve" arrow={false}>Approve</.button>
+              </:action>
+            </Regent.Agents.activity>
+            <Regent.Agents.activity id="activity-failed" label="Wren" steps={sample_steps(:failed)} now={sample_now()} />
+            <Regent.Agents.activity id="activity-empty" label="Ilex" steps={[]} now={sample_now()} />
+            <Regent.Agents.activity id="activity-loading" label="Pira" steps={:loading} now={sample_now()} />
+            <Regent.Agents.activity id="activity-unavailable" label="Pira" steps={:unavailable} now={sample_now()}>
+              <:retry><.button variant="secondary" id="activity-retry" arrow={false}>Retry</.button></:retry>
+            </Regent.Agents.activity>
+            <div class="showcase-stack">
+              <Regent.Agents.activity
+                :for={state <- [:running, :asks, :failed, :done]}
+                id={"activity-line-#{state}"}
+                steps={sample_steps(state)}
+                now={sample_now()}
+                variant="line"
+              />
+              <Regent.Agents.activity id="activity-line-none" steps={[]} now={sample_now()} variant="line" />
+              <div class="showcase-actions">
+                <.button variant="secondary" id="activity-change" arrow={false}>Change</.button>
+              </div>
+            </div>
+          </div>
+          <Regent.Agents.fleet id="activity-fleet" label="Fleet" agents={sample_fleet()} now={sample_now()} />
+          <div class="showcase-figures">
+            <Regent.Agents.fleet id="activity-fleet-empty" label="Fleet" agents={[]} now={sample_now()} />
+            <Regent.Agents.fleet id="activity-fleet-loading" label="Fleet" agents={:loading} now={sample_now()} />
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -467,6 +621,51 @@ defmodule Regent.StructureShowcase do
     ]
   end
 
+  defp sample_now, do: ~U[2026-11-12 10:00:00Z]
+
+  # Steps oldest first, at seconds before sample_now/0; nil means not yet.
+  defp sample_steps(last) do
+    done = [
+      {:read, "Offers board", 900, 860},
+      {:think, "Pricing", 860, 700},
+      {:tool, "Search notes", 700, 640},
+      {:read, "Stake form", 640, 600},
+      {:write, "Offer draft", 600, 400},
+      {:think, "Next offer", 400, 60}
+    ]
+
+    tail =
+      case last do
+        :running -> [{:tool, "Search notes", 12, nil}, {:write, "Reply", nil, nil}]
+        :asks -> [{:waiting_for_you, "Approve offer", 45, nil}]
+        :failed -> [{:failed, "Offer draft", 30, 28}]
+        :done -> [{:done, "Offer placed", 20, 20}]
+      end
+
+    for {{kind, label, started, finished}, i} <- Enum.with_index(done ++ tail) do
+      %{
+        id: "#{last}-#{i}",
+        kind: kind,
+        label: label,
+        started_at: started && DateTime.add(sample_now(), -started),
+        finished_at: finished && DateTime.add(sample_now(), -finished)
+      }
+    end
+  end
+
+  defp sample_fleet do
+    for {id, name, kind, last} <- [
+          {"a1", "Pira", "muse", :running},
+          {"a2", "Night shift", "claude_code", :asks},
+          {"a3", "An agent with a deliberately long name", "codex", :done},
+          {"a4", "Wren", "hermes", :failed},
+          {"a5", "Ilex", "other", nil}
+        ] do
+      steps = if last, do: sample_steps(last), else: []
+      %{id: id, name: name, kind: kind, href: "#activity", steps: steps}
+    end
+  end
+
   # Most agents have no World ID, as on the live sites; one name is short, one long.
   defp sample_agents do
     for {id, name, kind, harness, backed, ago, wallet, light} <- [
@@ -533,6 +732,26 @@ defmodule Regent.StructureShowcase do
     ]
   end
 
+  defp sample_crumbs do
+    [
+      %{label: "Home", icon: "house", href: "#crumbs"},
+      %{
+        label: "Studio",
+        icon: "folder",
+        href: "#crumbs",
+        siblings: [%{label: "Archive", href: "#crumbs"}, %{label: "Shared", href: "#crumbs"}]
+      },
+      %{label: "Clients", icon: "folder", href: "#crumbs"},
+      %{
+        label: "Brand kit",
+        icon: "folder",
+        href: "#crumbs",
+        siblings: [%{label: "Templates", href: "#crumbs"}, %{label: "Clients", href: "#crumbs"}]
+      },
+      %{label: "regents-crown-gradient.png", icon: "image", card: ["PNG", "2400×3000", "4.2 MB", "Edited 2 hours ago"]}
+    ]
+  end
+
   defp features do
     [
       {"Clear boundaries",
@@ -563,7 +782,9 @@ html = """
 <link rel="stylesheet" href="/css/design_system_tokens.css">
 <link rel="stylesheet" href="/css/primitives.css">
 <link rel="stylesheet" href="/showcase.css">
-<script src="/showcase.js" defer></script></head>
+<script src="/showcase.js" defer></script>
+<script src="/js/segmented.mjs" type="module"></script>
+<script src="/js/tip.mjs" type="module"></script></head>
 <body>#{body}</body></html>
 """
 
@@ -575,6 +796,11 @@ File.cp_r!(Path.join(root, "regent_ui/priv/static/fonts"), Path.join(out, "fonts
 File.rm_rf!(Path.join(out, "images"))
 File.mkdir_p!(Path.join(out, "images"))
 File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "images/regent-ui"))
+
+File.rm_rf!(Path.join(out, "js"))
+File.mkdir_p!(Path.join(out, "js"))
+for name <- ~w(segmented.mjs tip.mjs),
+    do: File.cp!(Path.join(root, "regent_ui/assets/js/" <> name), Path.join(out, "js/" <> name))
 
 for name <- ~w(showcase.css showcase.js),
     do: File.cp!(Path.join(root, "scripts/" <> name), Path.join(out, name))

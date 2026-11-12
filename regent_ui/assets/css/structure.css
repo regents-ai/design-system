@@ -2,6 +2,7 @@
 @import "./blog.css";
 @import "./discussion.css";
 @import "./account.css";
+@import "./agents.css";
 @import "./points.css";
 
 /* Shared ruled-sheet structure. Import tokens first; palettes remain product-owned. */
@@ -82,14 +83,15 @@
   --rg-panel-edge: color-mix(in srgb, var(--rg-panel-ink) 22%, var(--rg-panel-fill));
   position: relative; isolation: isolate; min-inline-size: 0;
   color: var(--rg-panel-ink); background: transparent; border: 0; border-radius: 0; overflow: visible;
+  /* Its own stacking root: the edge and the fill stay behind its contents. */
+  &::before, &::after { content: ""; position: absolute; pointer-events: none; }
+  &::before { z-index: -2; inset: 0; background: var(--rg-panel-edge); clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut)); }
+  &::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - var(--rg-cut-nest) * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
 }
 .rg-panel--accent { --rg-panel-fill: var(--color-accent); --rg-panel-ink: var(--color-fg-on-accent); }
 .rg-panel.rg-support-panel { --rg-panel-fill: var(--support-panel-surface); --rg-panel-ink: var(--support-panel-ink); }
 .rg-support-band { background: var(--support-band-surface); color: var(--support-band-ink); padding-inline: var(--space-2); }
 .rg-support-figure .rg-technical-figure__art { background: var(--support-figure-surface); color: var(--support-figure-ink); }
-.rg-panel::before, .rg-panel::after { content: ""; position: absolute; pointer-events: none; }
-.rg-panel::before { z-index: -2; inset: 0; background: var(--rg-panel-edge); clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut)); }
-.rg-panel::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - var(--rg-cut-nest) * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
 .rg-panel__body { padding: var(--rg-panel-padding); }
 /* Every modal or window: a native dialog in the shared frame. Two opposite corners
    are cut, each with an accent along its cut, and the other two are square with a
@@ -107,6 +109,31 @@
   inline-size: min(var(--rg-dialog-size, 32rem), calc(100vw - 2rem)); max-inline-size: none; max-block-size: calc(100dvh - 2rem);
   margin: auto; padding: 0; border: 0; border-radius: 0; overflow: visible;
   background: transparent; color: var(--color-fg);
+  /* Its own stacking root: the frame stays behind the contents. */
+  &::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    /* From the top: the two square corners' marks, the two cuts' accents, the four
+       edges, then the fill. */
+    background-image:
+      linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
+      linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
+      linear-gradient(135deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+      linear-gradient(315deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
+      linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0),
+      linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0);
+    background-position:
+      right top, right top, left bottom, left bottom,
+      left top, right bottom,
+      left top, left bottom, left top, right top;
+    background-size:
+      var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
+      var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
+      var(--rg-dialog-cut) var(--rg-dialog-cut), var(--rg-dialog-cut) var(--rg-dialog-cut),
+      100% 1px, 100% 1px, 1px 100%, 1px 100%;
+    background-repeat: no-repeat;
+    background-color: var(--rg-dialog-fill);
+    clip-path: polygon(var(--rg-dialog-cut) 0, 100% 0, 100% calc(100% - var(--rg-dialog-cut)), calc(100% - var(--rg-dialog-cut)) 100%, 0 100%, 0 var(--rg-dialog-cut));
+  }
 }
 :root:is([data-theme="dark"], :not([data-theme])) .rg-dialog {
   --rg-dialog-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
@@ -129,30 +156,6 @@
   :root:not([data-theme]) .rg-dialog::backdrop {
     background: color-mix(in oklab, var(--palette-charcoal) 32%, transparent);
   }
-}
-.rg-dialog::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  /* From the top: the two square corners' marks, the two cuts' accents, the four
-     edges, then the fill. */
-  background-image:
-    linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
-    linear-gradient(var(--rg-dialog-mark-ink) 0 0), linear-gradient(var(--rg-dialog-mark-ink) 0 0),
-    linear-gradient(135deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
-    linear-gradient(315deg, transparent 50%, var(--rg-dialog-cut-ink) 50% calc(50% + 2px), transparent calc(50% + 2px)),
-    linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0),
-    linear-gradient(var(--rg-dialog-edge) 0 0), linear-gradient(var(--rg-dialog-edge) 0 0);
-  background-position:
-    right top, right top, left bottom, left bottom,
-    left top, right bottom,
-    left top, left bottom, left top, right top;
-  background-size:
-    var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
-    var(--rg-dialog-mark-length) 2px, 2px var(--rg-dialog-mark-length),
-    var(--rg-dialog-cut) var(--rg-dialog-cut), var(--rg-dialog-cut) var(--rg-dialog-cut),
-    100% 1px, 100% 1px, 1px 100%, 1px 100%;
-  background-repeat: no-repeat;
-  background-color: var(--rg-dialog-fill);
-  clip-path: polygon(var(--rg-dialog-cut) 0, 100% 0, 100% calc(100% - var(--rg-dialog-cut)), calc(100% - var(--rg-dialog-cut)) 100%, 0 100%, 0 var(--rg-dialog-cut));
 }
 .rg-dialog__body {
   min-block-size: 0; overflow: auto; overscroll-behavior: contain;
@@ -180,8 +183,11 @@
 .rg-feature .rg-panel__index { min-inline-size: 0; white-space: normal; overflow-wrap: anywhere; }
 .rg-feature__face .rg-technical-figure__art > :is(img, svg) { display: block; width: 100%; max-inline-size: 100%; block-size: auto; aspect-ratio: 1; object-fit: contain; }
 .rg-technical-figure { display: grid; align-content: center; min-inline-size: 0; margin: 0; padding: var(--rg-panel-padding); color: inherit; }
-.rg-technical-figure__art { position: relative; isolation: isolate; min-inline-size: 0; }
-.rg-technical-figure__art::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(currentColor .6px, transparent .9px); background-size: 4px 4px; }
+.rg-technical-figure__art {
+  position: relative; isolation: isolate; min-inline-size: 0;
+  /* The dots sit behind the drawing, inside the figure's own stacking root. */
+  &::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .1; background-image: radial-gradient(currentColor .6px, transparent .9px); background-size: 4px 4px; }
+}
 .rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
 .rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }
 .rg-technical-figure svg text { font-family: var(--font-family-ui); font-size: 12px; fill: currentColor; stroke: none; }

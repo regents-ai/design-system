@@ -161,6 +161,337 @@ defmodule Regent.Primitives do
 
   attr :id, :string, required: true
 
+  attr :state, :atom,
+    default: :loading,
+    values: [:loading, :slow, :error, :ready],
+    doc:
+      "`:loading` while the read is on its way, `:slow` once the page has waited long enough to say so (10 seconds), `:error` when it failed, `:ready` to show the content"
+
+  attr :class, :any,
+    default: nil,
+    doc: "the size class of what it stands for, so the box is that size in every state"
+
+  attr :rest, :global
+  slot :inner_block, required: true, doc: "the content, shown once `:ready`"
+  slot :retry, doc: "the page's own retry button, shown when `:slow` or `:error`"
+
+  @doc """
+  A box at the exact size of what it waits for, so nothing moves when it lands. While
+  waiting it is a dashed edge with nothing inside; screen readers hear "Loading". Once
+  `:slow` it says it is still working, and on `:error` that it could not be read, each
+  beside the page's retry button. `:ready` shows the content in the same box, fading
+  in, and reduced motion shows it at once.
+  """
+  def waiting(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      class={["rg-waiting", @class]}
+      data-state={@state}
+      aria-busy={@state in [:loading, :slow] && "true"}
+      {@rest}
+    >
+      <%= if @state == :ready do %>
+        {render_slot(@inner_block)}
+      <% else %>
+        <p class="rg-waiting__line" role={if @state == :error, do: "alert", else: "status"}>
+          {waiting_words(@state)}
+        </p>
+        <div :if={@state != :loading and @retry != []} class="rg-waiting__retry">
+          {render_slot(@retry)}
+        </div>
+      <% end %>
+    </div>
+    """
+  end
+
+  defp waiting_words(:loading), do: "Loading"
+  defp waiting_words(:slow), do: "Still working"
+  defp waiting_words(:error), do: "Couldn't be read"
+
+  attr :words, :list,
+    required: true,
+    doc: "every word it can show, such as [\"Waiting\", \"Done\"]; the line keeps the widest"
+
+  attr :current, :string, required: true, doc: "the word showing now, one of `words`"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  A status word that changes while someone watches. The old word rises out and the new
+  one rises in, and the line keeps the width of its widest word, so nothing beside it
+  moves. Reduced motion swaps the words at once.
+  """
+  def status_word(assigns) do
+    if assigns.current not in assigns.words do
+      raise ArgumentError,
+            "status_word current #{inspect(assigns.current)} is not one of #{inspect(assigns.words)}"
+    end
+
+    ~H"""
+    <span class={["rg-status-word", @class]} {@rest}>
+      <span :for={word <- @words} class="rg-status-word__word" data-on={word == @current}>
+        {word}
+      </span>
+    </span>
+    """
+  end
+
+  attr :done, :boolean, default: false, doc: "true once the step is done"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  A step's mark: a dashed ring while it waits, then a tick that draws in once it is
+  done, in place of a sentence saying so. Reduced motion shows the tick at once.
+  """
+  def tick(assigns) do
+    ~H"""
+    <Icons.icon name="check" class={["rg-tick", @class]} data-done={@done} {@rest} />
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :label, :string, required: true, doc: "what the choice is, read out, such as \"Period\""
+  attr :name, :string, required: true, doc: "the field name the chosen value is sent as"
+
+  attr :options, :list,
+    required: true,
+    doc: "two to five `%{value, label}`, labels of one or two words, such as \"1W\""
+
+  attr :value, :string, required: true, doc: "the chosen option's value"
+
+  attr :event, :string,
+    default: nil,
+    doc:
+      "the page's event for a choice (`phx-click`, carrying `value`); leave out when the page's own form takes the choice"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Two to five views of the same thing, such as 1D / 1W / 1M or Mine / All: one cut
+  frame of equal cells and one filled indicator on the chosen cell. They are radio
+  buttons, so arrow keys move and choose, and Home and End jump with `segmented.mjs`.
+  A press slides the indicator to its cell; a key press puts it there at once. A
+  choice never changes the control's height or moves anything below it.
+  """
+  def segmented(assigns) do
+    values = Enum.map(assigns.options, & &1.value)
+
+    if length(values) not in 2..5 or assigns.value not in values do
+      raise ArgumentError,
+            "segmented #{assigns.id} takes two to five options and one of their values, got #{inspect(values)} and #{inspect(assigns.value)}"
+    end
+
+    ~H"""
+    <fieldset
+      id={@id}
+      class={["rg-segmented", @class]}
+      role="radiogroup"
+      aria-label={@label}
+      style={"--rg-segments: #{length(@options)}"}
+      data-travel
+      {@rest}
+    >
+      <span class="rg-segmented__track" aria-hidden="true">
+        <span class="rg-segmented__indicator" data-travel-indicator></span>
+      </span>
+      <label :for={option <- @options} class="rg-segmented__cell">
+        <input
+          type="radio"
+          class="rg-segmented__input"
+          name={@name}
+          value={option.value}
+          checked={option.value == @value}
+          phx-click={@event}
+        />
+        <span class="rg-segmented__label">{option.label}</span>
+      </label>
+    </fieldset>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :label, :string, required: true, doc: "what the tabs move between, read out"
+
+  attr :tabs, :list,
+    required: true,
+    doc:
+      "at most five `%{label, current}`, each with its own address as `href`, `patch` or `navigate`, and `current: true` on the page showing"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Tabs between sibling sections of one page, each its own address, so a link to a tab
+  lands on it. They are links: the page showing carries `aria-current="page"` and a
+  bar on the baseline, which slides to the new tab with the motion kit. Too many for
+  the width scroll sideways inside their row. More than five means the page does two
+  things; split it.
+  """
+  def tabs(assigns) do
+    if length(assigns.tabs) > 5 or Enum.count(assigns.tabs, & &1.current) > 1 do
+      raise ArgumentError,
+            "tabs #{assigns.id} takes at most five tabs and at most one current tab"
+    end
+
+    ~H"""
+    <nav id={@id} class={["rg-tabs", @class]} aria-label={@label} data-travel {@rest}>
+      <.link
+        :for={tab <- @tabs}
+        class="rg-tabs__tab"
+        href={tab[:href]}
+        patch={tab[:patch]}
+        navigate={tab[:navigate]}
+        aria-current={tab.current && "page"}
+      >
+        {tab.label}
+      </.link>
+    </nav>
+    """
+  end
+
+  attr :id, :string, required: true
+
+  attr :crumbs, :list,
+    required: true,
+    doc:
+      "every level from the top, then the page showing, at least two: `%{label, icon}` (`icon` is a Lucide name) with `href`, `patch` or `navigate` on each level above; a level above may carry `siblings` (`%{label, href}`, the pages beside it) and the page showing `card` (a few facts, such as [\"PNG\", \"2400×3000\", \"4.2 MB\"])"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Where a deep page sits, and the way back up: joined chips cut at two corners, the
+  page showing last. A long path keeps the top level, the parent and the page showing,
+  with the levels between in a "…" menu; a narrow row shows each level above as its
+  icon and first two letters, and the narrowest only the parent and the page showing.
+  A level's chevron opens the pages beside it; the page showing opens its card of
+  facts. The row never wraps; a long name ends in an ellipsis.
+  """
+  def breadcrumb(assigns) do
+    if length(assigns.crumbs) < 2 do
+      raise ArgumentError, "breadcrumb #{assigns.id} takes at least two crumbs"
+    end
+
+    {above, [here]} = Enum.split(assigns.crumbs, -1)
+    {first_and_between, [parent]} = Enum.split(above, -1)
+
+    assigns =
+      assign(assigns,
+        here: here,
+        parent: {parent, length(above) - 1},
+        first: List.first(first_and_between),
+        hidden: first_and_between,
+        between: Enum.drop(first_and_between, 1)
+      )
+
+    ~H"""
+    <nav id={@id} class={["rg-crumbs", @class]} aria-label="Breadcrumb" {@rest}>
+      <ol class="rg-crumbs__list" data-crumbs>
+        <.crumb :if={@first} id={"#{@id}-0"} crumb={@first} place="first" />
+        <li
+          :if={@hidden != []}
+          class="rg-crumbs__crumb"
+          data-place="gap"
+          data-holds={if @between == [], do: "first", else: "between"}
+        >
+          <span class="rg-crumbs__chip">
+            <button
+              type="button"
+              class="rg-crumbs__link"
+              popovertarget={"#{@id}-hidden"}
+              aria-label="More levels"
+              title="More levels"
+            >
+              <Icons.icon name="ellipsis" />
+            </button>
+          </span>
+          <span id={"#{@id}-hidden"} class="rg-crumbs__menu" popover>
+            <.link
+              :for={{crumb, index} <- Enum.with_index(@hidden)}
+              href={crumb[:href]}
+              patch={crumb[:patch]}
+              navigate={crumb[:navigate]}
+              data-place={index == 0 && "first"}
+            >
+              <Icons.icon name={crumb.icon} />
+              <span>{crumb.label}</span>
+            </.link>
+          </span>
+        </li>
+        <.crumb
+          id={"#{@id}-#{elem(@parent, 1)}"}
+          crumb={elem(@parent, 0)}
+          place="parent"
+        />
+        <li class="rg-crumbs__crumb" data-place="here" data-crumb={@here.label}>
+          <span class="rg-crumbs__chip" aria-current="page">
+            <%= if @here[:card] do %>
+              <.tip id={"#{@id}-card"} class="rg-crumbs__card">
+                <:figure>
+                  <Icons.icon name={@here.icon} />
+                  <span class="rg-crumbs__name">{@here.label}</span>
+                </:figure>
+                <span :for={fact <- @here.card} class="rg-crumbs__fact rg-figure">{fact}</span>
+              </.tip>
+            <% else %>
+              <span class="rg-crumbs__link" title={@here.label}>
+                <Icons.icon name={@here.icon} />
+                <span class="rg-crumbs__name">{@here.label}</span>
+              </span>
+            <% end %>
+          </span>
+        </li>
+      </ol>
+    </nav>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :crumb, :map, required: true
+  attr :place, :string, required: true
+
+  defp crumb(assigns) do
+    assigns = assign(assigns, :siblings, Map.get(assigns.crumb, :siblings, []))
+
+    ~H"""
+    <li class="rg-crumbs__crumb" data-place={@place} data-crumb={@crumb.label}>
+      <span class="rg-crumbs__chip">
+        <.link
+          class="rg-crumbs__link"
+          href={@crumb[:href]}
+          patch={@crumb[:patch]}
+          navigate={@crumb[:navigate]}
+          aria-label={@crumb.label}
+          title={@crumb.label}
+        >
+          <Icons.icon name={@crumb.icon} />
+          <span class="rg-crumbs__name">{@crumb.label}</span>
+          <span class="rg-crumbs__initials" aria-hidden="true">{String.slice(@crumb.label, 0, 2)}</span>
+        </.link>
+      </span>
+      <%= if @siblings != [] do %>
+        <button
+          type="button"
+          class="rg-crumbs__beside"
+          popovertarget={"#{@id}-beside"}
+          aria-label={"Pages beside #{@crumb.label}"}
+          title={"Pages beside #{@crumb.label}"}
+        >
+          <Icons.icon name="chevron-down" />
+        </button>
+        <span id={"#{@id}-beside"} class="rg-crumbs__menu" popover>
+          <a :for={sibling <- @siblings} href={sibling.href}>{sibling.label}</a>
+        </span>
+      <% end %>
+    </li>
+    """
+  end
+
+  attr :id, :string, required: true
+
   attr :at, DateTime,
     default: nil,
     doc: "when the figures beside it were last read, or nil before the first reading"

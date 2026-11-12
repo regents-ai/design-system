@@ -1,7 +1,7 @@
 /* Shared Techtree prism motif. The application owns theme state and events.
-   The button is a borderless 2.75rem press target; the prism shows as a 1.75rem box with
-   slightly rounded corners in its middle, so it sits beside header icons at their height
-   instead of filling the bar.
+   The button is a borderless 2.75rem press target; the prism shows as a flat, square
+   1.75rem box in its middle, so it sits beside header icons at their height instead of
+   filling the bar.
    Pointing at it shows the other theme's colours, which is what a press switches to.
    Its beam is Tangerine in light and Powder Blue in dark, unless the brand sets
    --rg-theme-laser-light and --rg-theme-laser-dark. */
@@ -22,7 +22,6 @@
   width: 1.75rem;
   height: 1.75rem;
   overflow: hidden;
-  border-radius: .25rem;
   background: var(--rg-p-surface);
   transform-style: preserve-3d;
   --prism-laser: var(--rg-theme-laser-light, var(--palette-tangerine-tango));
@@ -47,7 +46,6 @@
   left: calc(50% - .0625rem);
   width: .125rem;
   background: var(--prism-laser);
-  box-shadow: 0 0 .3rem var(--prism-laser);
 }
 .rg-theme-toggle .theme-toggle__cube {
   position: absolute;
@@ -92,10 +90,7 @@
 }
 @media (hover: hover) and (forced-colors: none) {
   .rg-theme-toggle:hover .theme-toggle__stage { background: var(--rg-p-text); }
-  .rg-theme-toggle:hover .theme-toggle__laser {
-    background: var(--prism-laser-next);
-    box-shadow: 0 0 .3rem var(--prism-laser-next);
-  }
+  .rg-theme-toggle:hover .theme-toggle__laser { background: var(--prism-laser-next); }
   .rg-theme-toggle:hover .theme-toggle__face { border-color: var(--prism-edge-next); }
 }
 @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
@@ -103,7 +98,7 @@
   .rg-theme-toggle .theme-toggle__cube { animation: regent-theme-prism 6s linear infinite paused; }
   .rg-theme-toggle:is(:hover, :focus-visible) .theme-toggle__cube { animation-play-state: running; }
   .rg-theme-toggle :is(.theme-toggle__stage, .theme-toggle__laser, .theme-toggle__face) {
-    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    transition: background-color 140ms ease, border-color 140ms ease;
   }
 }
 @keyframes regent-theme-prism {
@@ -112,5 +107,5 @@
 }
 @media (forced-colors: active) {
   .rg-theme-toggle .theme-toggle__face { border-color: ButtonText; background: Canvas; }
-  .rg-theme-toggle .theme-toggle__laser { background: Highlight; box-shadow: none; }
+  .rg-theme-toggle .theme-toggle__laser { background: Highlight; }
 }

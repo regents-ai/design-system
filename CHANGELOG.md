@@ -841,6 +841,107 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - The showcase gains a Corners section: cuts nested 8px and 16px inside panels, and a
   primary button, a secondary button and a pill to tab through.
 
+
+## 2026-11-12 — Waiting box, status word and drawn tick
+
+- New `Regent.Primitives.waiting`: a dashed box at the exact size of what it waits for
+  (the page passes the same size class), with "Loading" for screen readers only; once
+  `:slow`, "Still working" and the page's retry button; on `:error`, "Couldn't be read"
+  and the retry; `:ready` shows the content in the same box, fading in over 200ms
+  (November bonus pack, step 4). The package had no shimmer skeleton to replace.
+- New `Regent.Primitives.status_word`: the old word rises 4px out in 140ms, the new
+  one rises 4px in over 200ms, and the line keeps its widest word's width.
+- New `Regent.Primitives.tick`: a dashed ring that draws its tick in over 280ms once
+  done. The pairing's last step uses it in place of its own tick, whose styles and
+  `data-paired` mark are gone.
+- New token `--ease-in` (`cubic-bezier(0.11, 0, 0.5, 0)`) for things leaving; the JSON
+  mirror is regenerated.
+- All three move in CSS alone, so the template's motion kit needs nothing for them;
+  reduced motion shows each at once. The showcase gains a Waiting section.
+
+
+## 2026-11-12 — Segmented control and link tabs
+
+- New `Regent.Primitives.segmented`: two to five views of the same thing as radio
+  buttons in one frame cut at two corners, equal cells split by hairlines, and one
+  filled indicator on the chosen cell that slides there in 200ms on a press and jumps
+  for a key press or under reduced motion. The frame and the indicator are a clipped
+  skin; the words and the cut focus ring round the whole control are not. A choice
+  never changes its height (November bonus pack, step 5).
+- New `regent_ui/assets/js/segmented.mjs`, copied by `mix regent_ui.assets`: Home and
+  End choose the first and last option.
+- New `Regent.Primitives.tabs`: links between sibling sections, at most five, the page
+  showing marked `aria-current="page"` with a 2px bar on a hairline baseline; a row too
+  wide scrolls inside itself and fades 16px at the edge that hides more.
+- `Regent.Discussion.replies` draws its filters with the new tabs; its own filter
+  styles, with their inset shadow and fixed Tangerine bar, are gone.
+- New tokens `--color-chosen` and `--color-fg-on-chosen`: the site's action pair, ink
+  on the page for Regents and the band green for Techtree light; the JSON mirror is
+  regenerated.
+- The motion kit's marks are `data-travel`, `data-travel-indicator`, `data-travel="kit"`,
+  `--rg-travel-start` and `--rg-travel-end` (segmented) and `--rg-travel-x` and
+  `--rg-travel-scale` (tabs); `CONSUMERS.md` says how it uses them. The showcase gains a
+  Choices section.
+
+## 2026-11-12 — Breadcrumb
+
+- New `Regent.Primitives.breadcrumb`: joined chips cut at two corners, each a Lucide
+  icon and a name, the page showing last and marked `aria-current="page"`. A long path
+  keeps the top level, the parent and the page showing and puts the levels between in
+  a "…" menu; below 40rem the levels above show their icon and first two letters, and
+  below 24rem only the parent and the page showing remain. The row never wraps and
+  keeps its height (November bonus pack, step 8).
+- A level with `siblings` gets a chevron that opens the pages beside it; the page
+  showing with `card` opens a card of its facts.
+- New token `--rg-cut-chip` (8px); the JSON mirror is regenerated.
+- The motion kit's marks are `data-crumbs`, `data-crumb` and `data-place`;
+  `CONSUMERS.md` says how it uses them. The showcase gains a Breadcrumb section.
+- Forced colours: the chosen cell of a segmented control drops the text backplate that
+  hid its word.
+
+## 2026-11-12 — The package passes its own style check
+
+- The 24 breaks `scripts/style-check.sh` found in the package's own styles are gone,
+  and `mix check` now runs the check, so a new break fails it. README says so.
+- Inset lines drawn with `box-shadow` are now real lines, looking the same and showing
+  in forced colours, where shadows are dropped: Points chips, done points, the "You"
+  tag, bonus tiers and activity status take a 1px outline drawn inside; the forced-colour
+  "You" row and held tier a 2px Highlight outline; the marked discussion answer a 3px
+  start border (its padding is 3px less, so the words stay put); the checked agent in
+  pairing a 1px outline; and the late and stopped check-in lights a 1.5px border.
+  Chrome draws that border at 1px, a hair thinner than the shadow was.
+- Theme switch: its beam loses the soft glow and its prism box the .25rem rounding; it
+  is now flat and square. A small deliberate change in look; the beams keep their
+  Tangerine and Powder Blue.
+- Stacking numbers inside the panel's edge and fill, the button's paint, the window's
+  frame, the technical figure's dots and the foil card sit nested inside the root rule
+  that sets `isolation: isolate`, so they cannot reach the page's layers; nothing moves.
+  The foil card's stage and its still face no longer state numbers they did not need.
+- The showcase gains a Cards section: the foil card, a foil feature card, a tip opening
+  over a panel inside a panel, and a marked answer and a house reply.
+
+## 2026-11-12 — Agent at work
+
+- New `Regent.Agents.activity`: an agent's steps, the latest six on a hairline rail and
+  older ones folded under "Earlier", each a mark, a verb, what it touched and its time.
+  Each state has its own shape, so none rests on colour: a dashed square next, a filled
+  square running, a half-filled square waiting for the person (with the page's button),
+  a tick done, an empty square stopped. `variant="line"` shows the latest started step on
+  one line. Loading, unread and empty steps have their own states (November bonus pack,
+  step 10).
+- New `Regent.Agents.fleet`: a grid of tiles, each an agent's picture, name and latest
+  step; a tile with a page is one link named by the agent.
+- The only motion is a short dash travelling down the rail under a running step; it
+  stops when the step ends and never shows under reduced motion or forced colours.
+  Marks follow the steps the page passes; nothing runs on a timer. It reuses
+  `status_word`, `tick` and `figure`, and `waiting` while the steps load.
+- New stylesheet `agents.css`, imported by `structure.css`. No new tokens and no new
+  colours: only the foreground, muted, success, warning and error colours.
+- The motion kit's marks are `data-activity`, `data-step` and `data-state`;
+  `CONSUMERS.md` says how. The showcase gains an Activity section.
+- `Regent.Account.agents_brief` still shows its own line; moving it to the line form is
+  left for its own change.
+
 ## 2026-11-12 — Fields keep their error line and show every state
 
 - `Regent.Primitives.field` always renders its error line (`#<id>-errors`, now a `div`
@@ -868,12 +969,20 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   every Regent site, up to 80 characters) moves beside the Profile heading, as a page
   title carries its own, so the field has no hint line.
 
+## 2026-11-12 — A field to fix doubles its edge with an outline
+
+- `.rg-field [aria-invalid="true"]` drew its second edge with an inset `box-shadow`, which
+  the style check (now part of `mix check`) refuses and forced colours drops. It is a 1px
+  outline just inside the border: the same look, nothing moves, and keyboard focus still
+  shows its own ring.
+
 ## 2026-11-12 — The pairing window's picture is a low band, and its list moves by the motion kit
 
 - `Regent.Account.pairing`: the chosen agent's picture sits in a band a quarter as tall
-  as it is wide (it was 16 by 9), with a 56px picture, so the window is about 130px
-  shorter at 1280 wide and 100px shorter on a phone (founder, 11 Nov: "the image area
-  can be much smaller"). Choosing still changes no height.
+  as it is wide (it was 16 by 9), at 48px, its own size, so it stays sharp on a phone's
+  screen too. The window is about 130px shorter at 1280 wide and 100px shorter on a
+  phone (founder, 11 Nov: "the image area can be much smaller"). Choosing still changes
+  no height.
 - The agent list is `data-panel="list"`, and `account.css` drops its own opening
   transition: the template's motion kit moves the list in and out, so every site's list
   moves the same way and reduced motion keeps it still. `STYLE.md` says so.

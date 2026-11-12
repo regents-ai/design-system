@@ -29,11 +29,13 @@
   isolation: isolate;
   min-inline-size: 0;
   color: var(--rg-holo-ink);
+  /* Its own stacking root: the still foil, wash then plain face, covers the canvas
+     until the GPU draws. */
+  & .rg-holo__stage::before, & .rg-holo__stage::after { z-index: 1; }
 }
 .rg-holo__stage {
   position: absolute;
   inset: 0;
-  z-index: -1;
   background: var(--rg-holo-edge);
   clip-path: var(--rg-holo-clip);
 }
@@ -48,7 +50,6 @@
 }
 .rg-holo__stage::before {
   content: "";
-  z-index: 1;
   background:
     linear-gradient(118deg, transparent 38%, color-mix(in srgb, var(--rg-holo-ink) 9%, transparent) 50%, transparent 62%),
     var(--rg-holo-graphite);
@@ -64,7 +65,6 @@
   --rg-holo-inner-cut: calc(var(--rg-holo-frame) * .414214);
   content: "";
   position: absolute;
-  z-index: 1;
   inset: calc(1px + var(--rg-holo-frame));
   background: var(--rg-holo-graphite);
   clip-path: polygon(
@@ -88,13 +88,16 @@
 .rg-panel.rg-holo-ground {
   --rg-panel-fill: #101216;
   --rg-panel-ink: var(--palette-platinum, #e5e3d2);
+  isolation: isolate;
+  /* Inside the panel's own stacking root the foil sits over its edge and under its
+     contents; the panel's fill covers it until the GPU draws. */
+  & .rg-holo-foil--face { z-index: -1; }
 }
 .rg-holo-foil { position: absolute; pointer-events: none; }
 .rg-holo-foil__canvas { display: block; inline-size: 100%; block-size: 100%; }
 .rg-holo-foil--face {
   --rg-holo-foil-cut: max(0px, calc(var(--rg-cut) - var(--rg-cut-nest) * var(--rg-edge)));
   inset: var(--rg-edge);
-  z-index: -1;
   visibility: hidden;
   clip-path: polygon(
     var(--rg-holo-foil-cut) 0, calc(100% - var(--rg-holo-foil-cut)) 0,

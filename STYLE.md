@@ -215,6 +215,7 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
   8px below 768px, filled with the site's own accent/on-accent pair in both themes.
+  Breadcrumb chips cut the same two corners at `--rg-cut-chip` (8px) on every screen.
   A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
   150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show
   Powder Blue marks at the square corners and Tangerine accents along the cuts; light
@@ -274,7 +275,9 @@ Patterns that generalize:
   (see Motion); the media stays still. Only an inert visual skin clips; text, media and
   focus stay unclipped. No lift, idle animation or moving reduced-motion state.
 - Active navigation has a visible structural indicator and text emphasis, not a pill or
-  color alone. Essential field/control boundaries are stronger than decorative hairlines.
+  color alone. A chosen cell or tab takes `--color-chosen` with `--color-fg-on-chosen`:
+  the site's action pair, except Regents (ink on the page) and Techtree light (its band
+  green), whose action pair is too close to the page to mark a choice. Essential field/control boundaries are stronger than decorative hairlines.
 
 ### Dialogs
 
@@ -346,6 +349,12 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Icons.icon` | Any Lucide icon, by name, at the library's weight and centred on the words beside it | Ash Template |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.figure` | A figure that changes while someone watches, with equal-width digits, the width of its widest value kept and `data-count` for the motion kit's roll | Awaiting consumer adoption |
+| `Regent.Primitives.waiting` | A dashed box at the exact size of what it waits for, which then shows it: "Still working" and the page's retry once slow, "Couldn't be read" and the retry on a failure. No grey bars, shimmer or pulse | Awaiting consumer adoption |
+| `Regent.Primitives.status_word` | A status word that changes while someone watches ("Waiting" to "Done"), keeping the width of its widest word | Awaiting consumer adoption |
+| `Regent.Primitives.tick` | A step's mark: a dashed ring while it waits, a tick that draws in once it is done | Ash Template, through `Regent.Account.pairing` |
+| `Regent.Primitives.segmented` | Two to five views of the same thing (1D / 1W / 1M, Mine / All): a cut frame of equal cells whose filled indicator slides to the chosen one; arrow keys, Home and End choose, and a choice never changes the height | Awaiting consumer adoption |
+| `Regent.Primitives.tabs` | Links between sibling sections of one page, each its own address, at most five; the page showing has a bar on the baseline that slides to the next | Patchbay; Ash Template (showcase); both through `Regent.Discussion.replies` |
+| `Regent.Primitives.breadcrumb` | Where a deep page sits and the way back up: joined chips cut at two corners, each an icon and a name, the page showing last; a long path folds the levels between into a "…" menu, a narrow row shows each level above as its icon and first two letters, a level's chevron opens the pages beside it and the page showing opens a card of its facts | Awaiting consumer adoption |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
@@ -367,7 +376,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.thread` | Forum thread: title, Solved mark, counts and the Compact replies switch | Ash Template (showcase), Patchbay |
 | `Regent.Discussion.post` | Opening post or reply with picture, name, time, words and actions; with `author_address`, a wallet author's ENS name or short address is drawn with `Regent.Primitives.address` and the picture links their page | Ash Template (showcase) |
 | `Regent.Discussion.solved` | Solved box quoting the marked answer under the opening post; `author_address` draws a wallet author the same way | Ash Template (showcase) |
-| `Regent.Discussion.replies` | Replies heading, filters, list and empty line | Ash Template (showcase) |
+| `Regent.Discussion.replies` | Replies heading, filters (as `Regent.Primitives.tabs`), list and empty line | Ash Template (showcase) |
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
@@ -380,6 +389,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture in a low band, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
+| `Regent.Agents.activity` | An agent at work, from the steps the server sends: the latest six on a hairline rail with older ones folded under "Earlier", each a mark whose shape says its state (dashed square next, filled square running, half-filled square waiting for the person with the page's button, a tick done, an empty square stopped), a verb, what it touched and its time; `variant="line"` shows the latest started step on one line for menus and lists | Awaiting consumer adoption |
+| `Regent.Agents.fleet` | Many agents at once: a grid of tiles, each the agent's picture, name and latest step on one line; a tile with a page is a link named by the agent | Awaiting consumer adoption |
 | `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
 | `Regent.Account.history` | Read-only formatted Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
@@ -622,7 +633,12 @@ Never in a soft shadow.
   stay flat (Sean, LAYERS-DEPTH a, 27 October 2026); nothing floats on a soft
   shadow.
 - Artwork that orders its own pieces (a cube, the crown, a hero) keeps its own numbers
-  inside itself; they never meet the page's layers.
+  inside itself; they never meet the page's layers. Its root sets `isolation: isolate`
+  and the numbered rules sit nested inside that root's rule, so the style check sees
+  them contained. A panel's edge and fill, a button's paint, a window's frame, a
+  figure's dots and the foil card's layers are such pieces.
+- A thin line inside a box (a chip's edge, a chosen tile, a check-in ring) is a real
+  border or outline, never an inset shadow, so forced colours still draws it.
 - With reduced motion asked for, nothing moves: a page's headline and its cards fade
   in, and windows, panels and menus are simply there.
 - The template's `/showcase/grammar` shows the pieces by name, how they move and the
@@ -688,9 +704,10 @@ choice and the button, and nothing else until someone asks. Too much text is a d
   itself opens it and there is no "i"), a longer one
   in a dropdown (`Regent.Primitives.disclosure`), and a whole topic in its own dialog
   or page behind a link. Legal and policy text are links at the foot, never paragraphs.
-- **Show state with marks, not sentences:** a tick that draws in when a step is done, a
-  dashed box while it waits, the changed number flashing. Words appear only when
-  something went wrong or the person must act.
+- **Show state with marks, not sentences:** a tick that draws in when a step is done
+  (`Regent.Primitives.tick`), a dashed box while it waits (`Regent.Primitives.waiting`),
+  the changed number flashing. Words appear only when something went wrong or the person
+  must act.
 - **One idea per line.** No paragraph under a button, no sentence that repeats a label,
   no "you can" or "this lets you" lines. Cut every word a person would not miss.
 
@@ -741,7 +758,7 @@ site copies that check.
 
 ## Motion
 
-General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--active-scale`.
+General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--ease-in` (leaving only), `--active-scale`.
 
 - CTA motion uses Anime.js in the template's shared motion kit. A pointer entering
   a primary or secondary CTA nudges its chevron once, then returns it to rest.
@@ -751,6 +768,27 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
   Disabled controls and reduced-motion contexts stay still. Button fills do not shimmer.
 - Feature-card edge ripples remain independent of CTA motion. Their existing
   interaction-only treatment must not be applied to button backgrounds.
+- Something waiting is a dashed box at its final size (`Regent.Primitives.waiting`),
+  never a shimmer skeleton; what lands fades in over 200ms in its place. A status word
+  that changes leaves rising 4px and fading in 140ms on `--ease-in` and the new one rises
+  4px in over 200ms on `--ease-out`, on a line as wide as its widest word. A done step's
+  tick draws in over 280ms. All three are the package's own CSS; reduced motion shows
+  each at once.
+- A segmented control's indicator and a tab's bar travel to the new choice on a
+  press; a key press puts them there at once, and so does reduced motion. They move by
+  transform alone and the words never move. The package slides the segmented indicator
+  in CSS; the template's motion kit adds the stretch that leads with the new side, and
+  slides the tabs' bar from the tab before.
+- An agent's running step is the one moving thing in its activity: a 6px dash travels
+  down the rail under it every 1.2s, by transform alone, and stops when the step
+  ends. Marks follow the data the page passes and never a timer; a finished step's
+  tick draws in, and a new verb changes like any status word. Reduced motion and forced
+  colours hide the dash; the filled square still says it runs.
+- A breadcrumb keeps its row height and never wraps. When the path changes, the
+  template's motion kit raises the new page showing 4px into place over 280ms, fades
+  the crumbs that went in 140ms, and the old page showing turns to a plain level; its
+  menus and card grow from the button that opened them. Without the kit the new path
+  simply shows.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a
