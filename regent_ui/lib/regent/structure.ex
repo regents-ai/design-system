@@ -134,14 +134,14 @@ defmodule Regent.Structure do
           <div class="rg-ratio-card__metric">
             <dt id={"#{@id}-label"} class="rg-ratio-card__label">{@label}</dt>
             <dd class="rg-ratio-card__readout">
-              <span class="rg-ratio-card__value">{@value}{if @value_bps != nil, do: "%"}</span>
+              <span class="rg-ratio-card__value rg-figure">{@value}{if @value_bps != nil, do: "%"}</span>
               <span :if={@change} class="rg-ratio-card__change">{@change}</span>
             </dd>
           </div>
           <div class="rg-ratio-card__metric rg-ratio-card__metric--remainder">
             <dt id={"#{@id}-remainder-label"} class="rg-ratio-card__label">{@remainder_label}</dt>
             <dd class="rg-ratio-card__readout">
-              <span class="rg-ratio-card__value">{@remainder}{if @value_bps != nil, do: "%"}</span>
+              <span class="rg-ratio-card__value rg-figure">{@remainder}{if @value_bps != nil, do: "%"}</span>
             </dd>
           </div>
         </dl>
@@ -157,7 +157,7 @@ defmodule Regent.Structure do
           >
             <span class="rg-ratio-card__fill" style={"inline-size: #{@value}%"} aria-hidden="true"></span>
           </div>
-          <div class="rg-ratio-card__scale" aria-hidden="true">
+          <div class="rg-ratio-card__scale rg-figure" aria-hidden="true">
             <span :for={tick <- [0, 25, 50, 75, 100]}>{tick}%</span>
           </div>
         <% else %>

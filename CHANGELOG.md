@@ -806,3 +806,18 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   glow, its prism's rounded corners, the pill select's `999px` radius, and the negative
   stacking numbers of the panel, figure, button and foil skins. They are left as they
   are here.
+
+
+## 2026-11-12 — Figures: `rg-figure` and `Regent.Primitives.figure`
+
+- New `rg-figure` class: equal-width digits on any figure or column of numbers; a
+  table cell with it lines up on the right. Geist Serif carries the `tnum` feature
+  (checked against `regent_ui/priv/static/fonts/GeistSerif-Regular.woff2`).
+- New `Regent.Primitives.figure` for a figure that changes while someone watches. Its
+  `width` keeps the characters of its widest value, so the words beside it and the line
+  below stay put when it changes, and it carries `data-count` for the motion kit's
+  `MotionCount` roll (November bonus pack, step 2).
+- The Points, ratio card, account history, agents' last action and last-read figures
+  now take `rg-figure` instead of setting `tabular-nums` themselves.
+- The showcase gains a Figures section: two live figures with a Change button, and a
+  column of numbers.

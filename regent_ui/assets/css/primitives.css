@@ -394,10 +394,17 @@
   .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
   .rg-field :is(input, select, textarea):focus-visible { outline-color: Highlight; }
 }
+/* A figure: equal-width digits, so a figure that changes or sits in a column never
+   shakes, and a column of them lines up on the right. `Regent.Primitives.figure`
+   reserves the width of the widest value a live figure can take, so the words beside
+   it never move when it changes. */
+.rg-figure { font-variant-numeric: tabular-nums; }
+:is(td, th).rg-figure { text-align: end; }
+.rg-figure--reserved { display: inline-block; min-inline-size: var(--rg-figure-width); }
 /* When the figures beside it were last read, then an icon that reads them again. The
    icon looks and moves like the copy icon, and turns while its press is on its way.
    Two classes deep, so a site's plain-button look does not reach it. */
-.rg-last-read { display: inline-flex; align-items: center; gap: .25rem; color: var(--color-fg-muted, currentColor); font-variant-numeric: tabular-nums; }
+.rg-last-read { display: inline-flex; align-items: center; gap: .25rem; color: var(--color-fg-muted, currentColor); }
 .rg-last-read .rg-last-read__again {
   display: inline-grid; place-items: center; flex: none; box-sizing: border-box;
   inline-size: 1.75rem; block-size: 1.75rem; min-inline-size: 0; min-block-size: 1.75rem; padding: 0;

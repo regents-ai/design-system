@@ -80,6 +80,11 @@ in the product's form with `type="submit"`. Import `discussion.mjs` (copied by
 `mix regent_ui.assets`) once to remember the Compact replies choice; the switch works
 without it and survives LiveView patches.
 
+A live figure is `Regent.Primitives.figure` (`value`, and `width`, the characters of the
+widest value it can take). It carries `data-count`, so a site rolls it with the
+template's `MotionCount` hook on the part of the page around it; the package ships no
+roll of its own. A column of numbers takes the `rg-figure` class on each cell.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the

@@ -247,7 +247,7 @@ defmodule Regent.Account do
         <li :for={agent <- @agents} id={"#{@id}-agent-#{agent.id}"}>
           <.agent_mark kind={agent.kind} />
           <strong>{agent.name}</strong>
-          <span class="rg-account__brief-last">
+          <span class="rg-account__brief-last rg-figure">
             <.light light={agent.light} label={agent.light_label} />
             <span>{agent.last_action}</span>
             <span :if={agent.last_action_at} aria-hidden="true">·</span>
@@ -792,7 +792,7 @@ defmodule Regent.Account do
         <ol :if={@rows != []} class="rg-account__history">
           <li :for={row <- @rows}>
             <p class="rg-account__activity">{row.label}</p>
-            <p class="rg-account__amount">{display_value(row.amount)}</p>
+            <p class="rg-account__amount rg-figure">{display_value(row.amount)}</p>
             <p class="rg-account__when">
               <span :if={Map.get(row, :status)}>{row.status} · </span>{row.occurred_at}
               <span :if={Map.get(row, :link)}>

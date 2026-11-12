@@ -137,8 +137,8 @@ defmodule Regent.StructureTest do
       assert html =~ ~s(id="ratio-label")
       assert html =~ ~s(id="ratio-remainder-label")
       assert html =~ ~s(class="rg-ratio-card__header-badge">#{allocated}%</span>)
-      assert html =~ ~s(class="rg-ratio-card__value">#{allocated}%</span>)
-      assert html =~ ~s(class="rg-ratio-card__value">#{remaining}%</span>)
+      assert html =~ ~s(class="rg-ratio-card__value rg-figure">#{allocated}%</span>)
+      assert html =~ ~s(class="rg-ratio-card__value rg-figure">#{remaining}%</span>)
       assert html =~ ~s(role="meter")
       assert html =~ ~s(aria-labelledby="ratio-title ratio-label")
       assert html =~ ~s(aria-valuemin="0")
@@ -161,7 +161,7 @@ defmodule Regent.StructureTest do
   test "ratio card unknown state does not fabricate a zero meter" do
     for attrs <- [[], [value_bps: nil]] do
       html = ratio_card(attrs)
-      assert length(Regex.scan(~r/class="rg-ratio-card__value">—<\/span>/, html)) == 2
+      assert length(Regex.scan(~r/class="rg-ratio-card__value rg-figure">—<\/span>/, html)) == 2
       assert html =~ ~s(class="rg-ratio-card__header-badge">No data</span>)
       assert html =~ "No data"
       refute html =~ ~s(role="meter")

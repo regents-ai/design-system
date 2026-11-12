@@ -163,7 +163,7 @@
   border-block-start: 1px solid var(--color-border);
 }
 .rg-account__history p { margin: 0; overflow-wrap: anywhere; }
-.rg-account__amount { font-family: var(--font-family-ui); font-variant-numeric: tabular-nums; }
+.rg-account__amount { font-family: var(--font-family-ui); }
 .rg-account__when { grid-column: 1 / -1; font-size: var(--type-label-size); }
 
 /* An agent's picture. The pictures are drawn for a light ground, such as NVIDIA's
@@ -320,7 +320,6 @@
 }
 .rg-account__brief-last > span { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rg-account__brief-last > [aria-hidden="true"], .rg-account__brief-last time { flex: none; }
-.rg-account__brief-last time { font-variant-numeric: tabular-nums; }
 
 /* An agent's check-in light, before its last-contact line; it never moves the line. */
 .rg-account__light {

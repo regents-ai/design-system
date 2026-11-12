@@ -65,10 +65,10 @@ defmodule Regent.Points do
         </p>
       </header>
       <div class="rg-points-total__main">
-        <p class="rg-points-total__figure">{figure(@total, @state)}</p>
+        <p class="rg-points-total__figure rg-figure">{figure(@total, @state)}</p>
         <p :if={@inner_block != []} class="rg-points-total__about">{render_slot(@inner_block)}</p>
       </div>
-      <dl class="rg-points-total__days">
+      <dl class="rg-points-total__days rg-figure">
         <div>
           <dt>Today</dt>
           <dd>{gain(@today, @state)}</dd>
@@ -117,7 +117,7 @@ defmodule Regent.Points do
       {render_slot(@inner_block)}
       <div :for={group <- @groups} :if={group.items != []} class="rg-points-todo__group">
         <h3>{group.title}</h3>
-        <p :if={group[:limit]} class="rg-points-todo__limit">
+        <p :if={group[:limit]} class="rg-points-todo__limit rg-figure">
           <span>{group.limit.label}</span>
           <progress max={group.limit.of} value={group.limit.used}>{group.limit.value}</progress>
           <span>{group.limit.value}</span>
@@ -141,7 +141,7 @@ defmodule Regent.Points do
             >
               {item.count.done} of {item.count.of}
             </progress>
-            <span :if={item.points} class="rg-points-todo__points">{item.points}</span>
+            <span :if={item.points} class="rg-points-todo__points rg-figure">{item.points}</span>
           </li>
         </ul>
       </div>
@@ -200,7 +200,7 @@ defmodule Regent.Points do
           <span class="rg-points-board__points">{row.points}</span>
         </li>
       </ol>
-      <p :if={@state in [:ready, :stale] and @you} class="rg-points-board__you">
+      <p :if={@state in [:ready, :stale] and @you} class="rg-points-board__you rg-figure">
         <span class="rg-points-board__rank">{@you.rank}</span>
         <span class="rg-points-board__name">You</span>
         <span class="rg-points-board__points">{@you.points}</span>
@@ -240,7 +240,10 @@ defmodule Regent.Points do
       aria-busy={@state == :loading && "true"}
     >
       <h2 id={"#{@id}-title"}>Bonus {render_slot(@tip)}</h2>
-      <p class="rg-points-bonus__held" role={if @state == :error, do: "alert", else: "status"}>
+      <p
+        class="rg-points-bonus__held rg-figure"
+        role={if @state == :error, do: "alert", else: "status"}
+      >
         <%= case @state do %>
           <% :closed -> %>
             Counted once earning opens.
@@ -253,13 +256,13 @@ defmodule Regent.Points do
             <span>{@nfts} {if @nfts == 1, do: "NFT", else: "NFTs"} held</span>
         <% end %>
       </p>
-      <ol class="rg-points-bonus__tiers">
+      <ol class="rg-points-bonus__tiers rg-figure">
         <li :for={tier <- @tiers} data-held={to_string(@state == :ready and tier.held)}>
           <span>{tier.range}</span>
           <strong>+{tier.percent}%</strong>
         </li>
       </ol>
-      <dl :if={@periods != []} class="rg-points-bonus__periods">
+      <dl :if={@periods != []} class="rg-points-bonus__periods rg-figure">
         <div :for={period <- @periods}>
           <dt>{period.label}</dt>
           <dd>{period.value}</dd>
@@ -294,7 +297,7 @@ defmodule Regent.Points do
             <small>{row.by} · {row.at}</small>
           </span>
           <span :if={row[:status]} class="rg-points-activity__status">{row.status}</span>
-          <span class="rg-points-activity__points">{row.points}</span>
+          <span class="rg-points-activity__points rg-figure">{row.points}</span>
         </li>
       </ol>
       <p :if={@more} class="rg-points-activity__more">Latest 50 shown.</p>

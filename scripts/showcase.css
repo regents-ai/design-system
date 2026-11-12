@@ -21,3 +21,10 @@ body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-fami
 #sample-dialog { color: var(--color-fg); background: var(--color-surface); border: 1px solid currentColor; padding: 32px; max-inline-size: min(32rem, calc(100% - 64px)); }
 #sample-dialog::backdrop { background: rgb(0 0 0 / .5); }
 @media (max-width: 767px) { .showcase-toolbar { padding-inline: 16px; } }
+.showcase-figures { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.showcase-figure-list { display: grid; gap: var(--space-2); margin: 0; }
+.showcase-figure-list dt { color: var(--color-fg-muted); }
+.showcase-figure-list dd { margin: 0; font-size: 1.5rem; }
+.showcase-table { border-collapse: collapse; inline-size: 100%; }
+.showcase-table :is(th, td) { padding: var(--space-1) 0; border-block-end: 1px solid var(--hairline); font-weight: 400; }
+.showcase-table th:not(.rg-figure) { text-align: start; }

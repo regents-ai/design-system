@@ -222,6 +222,41 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
+        <section id="figures" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Figures</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <.panel id="figure-panel">
+              <div class="rg-panel__body showcase-stack">
+                <dl class="showcase-figure-list">
+                  <div>
+                    <dt>Balance</dt>
+                    <dd><.figure id="figure-balance" value="9.99" width={5} /> USDC</dd>
+                  </div>
+                  <div>
+                    <dt>Points</dt>
+                    <dd><.figure id="figure-points" value="98" width={5} /> today</dd>
+                  </div>
+                </dl>
+                <p id="figure-below">Below</p>
+                <div class="showcase-actions">
+                  <.button variant="secondary" id="figure-change" arrow={false}>Change</.button>
+                </div>
+              </div>
+            </.panel>
+            <table class="showcase-table">
+              <thead>
+                <tr><th scope="col">Day</th><th scope="col" class="rg-figure">Points</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Monday</td><td class="rg-figure">1,204.50</td></tr>
+                <tr><td>Tuesday</td><td class="rg-figure">87.00</td></tr>
+                <tr><td>Wednesday</td><td class="rg-figure">11.10</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>

@@ -165,8 +165,18 @@ the license ships beside the files.
 | Geist Mono | `"Geist Mono"` | `--font-family-mono` | Code blocks, code spans and command lines only |
 
 The three role tokens stay separate so a role can be retuned in one place; today each
-resolves to `--font-family-serif`. Addresses, hashes, amounts and indices use
-`--font-family-ui` with `font-variant-numeric: tabular-nums`.
+resolves to `--font-family-serif`. Addresses and hashes use `--font-family-ui` with
+`font-variant-numeric: tabular-nums`.
+
+Every figure that can change while someone watches (a balance, a count, a price, a
+timer, a percentage) and every column of numbers carries `rg-figure`, the one place
+its digits are made equal width; no rule sets `tabular-nums` on an element of its own.
+Geist Serif carries the `tnum` feature this uses. A column of figures in a table lines up on
+the right, with the same number of decimals down the column. A live figure is
+`Regent.Primitives.figure`: it keeps `width` characters, the widest value it can take
+(5 for `10.00`), so the words beside it and the line below never move when it changes,
+and it carries `data-count`, so the motion kit's `MotionCount` rolls the digits that
+changed and reduced motion leaves it still.
 
 Vercel ships Geist Serif in **regular upright 400 only**. The root sets
 `font-synthesis-weight: none`, so `strong`, `b` and headings render at 400 rather than as a
@@ -191,7 +201,7 @@ Patterns that generalize:
 - Uppercase micro-labels at 0.6–0.7rem with 0.14–0.22em tracking (`--tracking-microlabel`)
   for kickers, figure labels ("FIG.1 — Identity"), column headings, and chips.
 - Mono for anything an operator might copy: commands, slugs, versions, addresses.
-- `font-variant-numeric: tabular-nums` on counters and money figures.
+- `rg-figure` on counters, money figures and columns of numbers.
 - Type scale tokens (`--type-*`) govern app surfaces; marketing heroes may clamp beyond the
   scale but stay on the assigned title/body/technical roles.
 
@@ -324,6 +334,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.copy_button` | Copies a value, an element's text or a page fetched when pressed, and says "Copied" (or "Selected", or "Couldn't copy") on the button and to screen readers | Ash Template, Patchbay |
 | `Regent.Icons.icon` | Any Lucide icon, by name, at the library's weight and centred on the words beside it | Ash Template |
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
+| `Regent.Primitives.figure` | A figure that changes while someone watches, with equal-width digits, the width of its widest value kept and `data-count` for the motion kit's roll | Awaiting consumer adoption |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |

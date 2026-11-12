@@ -60,3 +60,12 @@ document.querySelector(".showcase-menu").addEventListener("keydown", event => {
     document.querySelector("#menu-trigger").focus();
   }
 });
+// A live figure changes as a page's figure would after a read: the widths it keeps
+// mean the words beside it and the line below stay where they are.
+const figureValues = {"figure-balance": ["9.99", "10.00"], "figure-points": ["98", "1,024"]};
+document.querySelector("#figure-change").addEventListener("click", () => {
+  for (const [id, [one, other]] of Object.entries(figureValues)) {
+    const figure = document.getElementById(id);
+    figure.textContent = figure.textContent === one ? other : one;
+  }
+});

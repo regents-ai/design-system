@@ -133,6 +133,32 @@ defmodule Regent.Primitives do
     """
   end
 
+  attr :value, :string, required: true, doc: "the figure as the page shows it, such as \"9.99\""
+
+  attr :width, :integer,
+    default: nil,
+    doc:
+      "characters to keep for the widest value it can take, such as 5 for \"10.00\", so the words beside it never move"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  A figure that changes while someone watches: a balance, a count, a price, a timer.
+  Its digits are equal width, and it carries `data-count`, so the motion kit's
+  `MotionCount` rolls the digits that changed and reduced motion leaves it still.
+  """
+  def figure(assigns) do
+    ~H"""
+    <span
+      class={["rg-figure", @width && "rg-figure--reserved", @class]}
+      style={@width && "--rg-figure-width: #{@width}ch"}
+      data-count
+      {@rest}
+    >{@value}</span>
+    """
+  end
+
   attr :id, :string, required: true
 
   attr :at, DateTime,
@@ -157,7 +183,7 @@ defmodule Regent.Primitives do
   """
   def last_read(assigns) do
     ~H"""
-    <span id={@id} class={["rg-last-read", @class]}>
+    <span id={@id} class={["rg-last-read", "rg-figure", @class]}>
       <time :if={@at} datetime={DateTime.to_iso8601(@at)}>
         Updated {Calendar.strftime(@at, "%-d %b, %H:%M UTC")}
       </time>
