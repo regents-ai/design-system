@@ -810,5 +810,6 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 ## 2026-11-12 — The profile form drops its helper line
 
 - `Regent.Profile.panel` no longer says "The name people see for you." under Public
-  Display Name: the label already names it. The field's tip keeps the details (the same
-  name on every Regent site, up to 80 characters).
+  Display Name: the label already names it. The tip with the details (the same name on
+  every Regent site, up to 80 characters) moves beside the Profile heading, as a page
+  title carries its own, so the field has no hint line.

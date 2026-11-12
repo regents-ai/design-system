@@ -377,6 +377,8 @@
 .rg-pill-select > :is(select, summary):focus-visible { outline: 2px solid var(--rg-p-text); outline-offset: 2px; }
 
 /* The page that holds the form places it, as it does its other panels. */
+/* The heading carries the form's tip beside it, as a page title does. */
+.rg-profile > header { display: flex; align-items: center; gap: var(--space-1); }
 .rg-profile form { display: grid; gap: var(--space-3); }
 .rg-profile input { width: 100%; min-width: 0; }
 /* The status sits beside Save in a smaller size, so two lines of it stay within
