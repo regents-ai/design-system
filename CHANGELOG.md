@@ -1208,3 +1208,13 @@ design system. using vgpu.sh".
   390 and 1280, light and dark, for all four brands, and no element's box moves, with
   or without the hook's ready mark.
 - The canvas's shape changes for every hook at once; the template's hook follows it.
+
+## 2026-11-12 — Far-apart colours blend through a neutral
+
+- `STYLE.md`, "Gradients": two colours far apart on the wheel, Tangerine and Powder
+  Blue, no longer blend straight into each other, because in oklch that blend passes
+  through gold and green. The brand's pale neutral sits between them; where the
+  gradient lies against a surface of that colour, the muted text colour does. Sean
+  chose this on 12 November 2026 after seeing the template's Enter App ring and
+  Fractal still. Words only: the package draws no such gradient, and each site changes
+  its own.

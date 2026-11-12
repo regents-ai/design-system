@@ -170,6 +170,19 @@ hard edge. Where a gradient fades or cuts the text colour or `currentColor` to c
 the clear stop is that colour with no opacity: `oklch(from var(--color-fg) l c h / 0)`.
 The package's other clear stops measured the same as before and keep `transparent`.
 
+Two colours far apart on the wheel do not blend straight into each other. In oklch the
+blend travels round the wheel, so Tangerine to Powder Blue passes through gold and
+green, hues no brand chose. Put the theme's neutral between them, so each half blends
+a colour to the neutral: `linear-gradient(in oklch, tangerine, neutral, powder-blue)`
+(Sean, 12 November 2026). The neutral is the brand's pale neutral, Platinum for
+Regents: the page colour in the light theme and the text colour in the dark one.
+Where the gradient lies against a surface of that same colour, as a ring round the
+dark theme's Platinum main button does, the neutral is `var(--color-fg-muted)`
+instead, so it never melts into the surface. Look
+at the picture: the neutral should read as a soft pale band, not a stripe; pull its
+neighbours' stops toward it if it does. A fade from one colour to clear is not this
+case and stays as it is.
+
 The style check's `gradient` rule reports a gradient whose first argument does not say
 `in oklch`.
 
