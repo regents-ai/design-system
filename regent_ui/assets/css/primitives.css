@@ -316,7 +316,7 @@
 /* A field to fix doubles its edge in the error ink, inside the edge so nothing moves. */
 .rg-field [aria-invalid="true"] {
   border-color: var(--rg-local-ink, var(--rg-p-error));
-  box-shadow: inset 0 0 0 1px var(--rg-local-ink, var(--rg-p-error));
+  outline: 1px solid var(--rg-local-ink, var(--rg-p-error)); outline-offset: -2px;
 }
 /* The line under a field that says what to fix keeps its space while empty, so an
    error showing up never moves the fields below it. */

@@ -968,3 +968,10 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   Display Name: the label already names it. The tip with the details (the same name on
   every Regent site, up to 80 characters) moves beside the Profile heading, as a page
   title carries its own, so the field has no hint line.
+
+## 2026-11-12 — A field to fix doubles its edge with an outline
+
+- `.rg-field [aria-invalid="true"]` drew its second edge with an inset `box-shadow`, which
+  the style check (now part of `mix check`) refuses and forced colours drops. It is a 1px
+  outline just inside the border: the same look, nothing moves, and keyboard focus still
+  shows its own ring.
