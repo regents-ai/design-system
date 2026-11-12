@@ -12,7 +12,7 @@ defmodule Regent.StyleCheckTest do
   .dot { border-radius: 50%; font-weight: 400; }
   .art { isolation: isolate; .piece { z-index: 2; } }
   .home { backdrop-filter: blur(20px); /* style-check: allow glass — Sean 12 Nov 2026 */ }
-  .cube { box-shadow: 0 24px 48px black; /* style-check: allow shadow — Sean 13 Nov 2026 */ }
+  .cube { box-shadow: 0 24px 48px black; /* style-check: allow shadow — Sean 12 Nov 2026 */ }
   """
 
   @clean_heex """
@@ -70,7 +70,7 @@ defmodule Regent.StyleCheckTest do
         {"glass", "assets/css/app.css",
          ".c { backdrop-filter: blur(4px); /* style-check: allow glass — */ }"},
         {"glass", "assets/css/app.css",
-         ".c { backdrop-filter: blur(4px); /* style-check: allow shadow — Sean 13 Nov 2026 */ }"},
+         ".c { backdrop-filter: blur(4px); /* style-check: allow shadow — Sean 12 Nov 2026 */ }"},
         {"weight", "assets/css/app.css", ".d { font-weight: 600; }"},
         {"shape", "assets/css/app.css", ".e { border-radius: 9999px; }"},
         {"shape", "assets/css/app.css", ".f { border-top-left-radius: 4px; }"},

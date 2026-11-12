@@ -1081,9 +1081,9 @@ was too close to the page colour.
   theme switch's prism look as they did. A site that recolours one button still sets
   `--rg-p-accent` and `--rg-p-on-accent` on it.
 
-## 2026-11-13 — A second approved exception: the world cube keeps its glass and shadow
+## 2026-11-12 — A second approved exception: the world cube keeps its glass and shadow
 
-Sean, 13 November 2026: the template's world cube lab page keeps its glass panes and
+Sean, 12 November 2026: the template's world cube lab page keeps its glass panes and
 their shadow, "marked in the style check the same way as the regents.sh home".
 
 - `regent_ui/scripts/style-check.sh`: the flat rule skips a `box-shadow:` line that
@@ -1094,5 +1094,5 @@ their shadow, "marked in the style check the same way as the regents.sh home".
   so `/* style-check: allow glass — */` passed on the comment's closing star. No site
   carries a marker yet.
 - `STYLE.md`'s Glass section names the two exceptions, the regents.sh home (12 Nov) and
-  the world cube lab page (13 Nov), and how to write each marker: a marker is only for
+  the world cube lab page (12 Nov), and how to write each marker: a marker is only for
   an exception Sean has approved by name.

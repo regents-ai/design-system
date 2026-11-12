@@ -839,10 +839,10 @@ animation dependency. The interaction-only shimmer is the restrained exception t
 undecorated panel skins.
 Two exceptions are approved, each by Sean's letter: the regents.sh home's glass panel
 (Sean, 12 November 2026) and the template's world cube lab page, whose glass panes keep
-their shadow (Sean, 13 November 2026). Each of their lines carries a marker the style
+their shadow (Sean, 12 November 2026). Each of their lines carries a marker the style
 check accepts, with who approved it and when after the dash: a blur line
 `/* style-check: allow glass — Sean 12 Nov 2026 */`, a `box-shadow:` line
-`/* style-check: allow shadow — Sean 13 Nov 2026 */`. A glass marker never excuses a
+`/* style-check: allow shadow — Sean 12 Nov 2026 */`. A glass marker never excuses a
 shadow, nor a shadow marker glass. A marker is only for an exception Sean has approved
 by name; no other line may carry one.
 
