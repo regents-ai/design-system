@@ -26,11 +26,12 @@
 /* A main button cuts two corners and rests as its plain fill. Hover and keyboard
    focus bring in its marks in the site's own colours, or the brand's
    --rg-button-mark-color and --rg-button-border-color when it sets them: in dark,
-   Powder Blue marks at the two square corners and Tangerine along the two cuts; in
-   light, two opposite Tangerine L-edges. Hover never takes a mark away (founder,
-   2026-10-19). Every button but a quiet one, a copy button, the theme toggle, a
-   tab and one that shows something rather than going on (`.rg-button--no-arrow`)
-   carries an arrow. The site's motion kit nudges the arrow on hover
+   Powder Blue marks at the two square corners and Tangerine along the two cuts, both
+   in --color-button-mark when the theme sets it; in light, two opposite Tangerine
+   L-edges. Hover never takes a mark away (founder, 2026-10-19). Every button but a
+   quiet one, a copy button, the theme toggle, a tab and one that shows something
+   rather than going on (`.rg-button--no-arrow`) carries an arrow. The site's motion
+   kit nudges the arrow on hover
    (--rg-chevron-x) and gives the paint and label a little on press
    (--rg-press-scale); the button's own box never moves, so a press held at its
    edge still ends on the button. */
@@ -101,10 +102,11 @@
     calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px), var(--rg-ring-tile) var(--rg-ring-tile), var(--rg-ring-tile) var(--rg-ring-tile);
 }
 /* Dark when dark is showing (chosen, or no choice made and the device does not ask
-   for light): Powder Blue marks at the square corners, Tangerine along the cuts. */
+   for light): Powder Blue marks at the square corners, Tangerine along the cuts, or
+   both in the theme's --color-button-mark where its plate would hide them. */
 :root:is([data-theme="dark"], :not([data-theme])) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
-  --rg-button-edge-ink: var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd));
-  --rg-button-cut-ink: var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19));
+  --rg-button-edge-ink: var(--color-button-mark, var(--rg-button-mark-color, var(--palette-powder-blue, #aecacd)));
+  --rg-button-cut-ink: var(--color-button-mark, var(--rg-button-mark-color, var(--palette-tangerine-tango, #ff5b19)));
   background-size:
     var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
     var(--rg-cut-control) 1px, 1px var(--rg-cut-control),

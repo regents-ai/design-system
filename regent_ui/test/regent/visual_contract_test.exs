@@ -177,7 +177,7 @@ defmodule Regent.VisualContractTest do
              "outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset);"
   end
 
-  test "in light, main buttons stand out from the page and their words read on them" do
+  test "in light and dark, main buttons stand out from the page and their words read on them" do
     selectors =
       File.read!(Path.join(@repository_root, "design_system_tokens.json"))
       |> Jason.decode!()
@@ -186,25 +186,26 @@ defmodule Regent.VisualContractTest do
     # Autolaunch's Tangerine is its brand fill, so it is held to the words target only.
     stands_out = ~w(platform patchbay techtree)
 
-    for brand <- ~w(platform autolaunch patchbay techtree) do
+    for brand <- ~w(platform autolaunch patchbay techtree), theme <- ~w(light dark) do
       tokens =
         [
           ":root",
           ~s(:root[data-brand="#{brand}"]),
-          ~s(:root[data-brand="#{brand}"][data-theme="light"])
+          ~s(:root[data-brand="#{brand}"][data-theme="#{theme}"])
         ]
         |> Enum.map(&Map.get(selectors, &1, %{}))
         |> Enum.reduce(&Map.merge(&2, &1))
 
       shade = &luminance(resolve(tokens, &1))
       fill = shade.("--color-button")
+      site = "#{brand} in #{theme}"
 
       if brand in stands_out do
-        assert contrast(fill, shade.("--color-bg")) >= 3, brand
-        assert contrast(fill, shade.("--color-surface")) >= 3, brand
+        assert contrast(fill, shade.("--color-bg")) >= 3, site
+        assert contrast(fill, shade.("--color-surface")) >= 3, site
       end
 
-      assert contrast(shade.("--color-fg-on-button"), fill) >= 4.5, brand
+      assert contrast(shade.("--color-fg-on-button"), fill) >= 4.5, site
     end
   end
 

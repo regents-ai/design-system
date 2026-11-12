@@ -244,13 +244,17 @@ roles expose the other three palette constants per brand; use their paired utili
 classes coherently, not random per-card accents.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
 forced-colors appearance. Primary CTAs cut two corners and fill with `--color-button`
-and `--color-fg-on-button`: the site's accent pair, except in light, where Regents
-fills Charcoal with Platinum words and Techtree fills its green-black with lime words.
+and `--color-fg-on-button`: the site's accent pair, except where it sits too close to
+the page: Regents fills Charcoal with Platinum words in light and Platinum with
+Charcoal words in dark, and Techtree in light fills its green-black with lime words.
 A site part drawn to match the main button reads `--color-button`, not
 `--color-accent`; to recolour one button, set `--rg-p-accent` (fill) and
 `--rg-p-on-accent` (words) on it. Primaries show Powder Blue and Tangerine marks in
 dark mode and Tangerine L-edges in light mode that grow into a cut outline on hover
-and focus. Secondary CTAs
+and focus; Regents' dark Platinum primaries show Tangerine at both marks
+(`--color-button-mark`). A Regents main button in dark is Platinum, so it does not
+show on a Platinum panel (`rg-support-panel`); put it on the page or a surface there,
+or give that one button a pair of its own. Secondary CTAs
 use the site's surface and foreground with a visible border.
 The template's `hooks/motion/buttons.ts` supplies a single chevron nudge on pointer
 entry and a small press response on pointer-down through Anime.js. Copy that module

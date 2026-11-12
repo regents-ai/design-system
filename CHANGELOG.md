@@ -1111,3 +1111,27 @@ machine without ripgrep, even on a site with a glass line: every search ended in
 - A root without `assets/` or `lib/` stops the check with exit 2. Before, it skipped
   that folder's rules, so a run from the wrong folder passed.
 - `CONSUMERS.md`'s Style check section says so.
+
+## 2026-11-12 — The main button stands out in dark too
+
+Sean, 12 November 2026: strengthen the main button in dark as well, following the light
+change.
+
+- Regents' dark main button was Charcoal on a near-black page: 1.1:1 against the page
+  and 1.0:1 against its surfaces. It is now the mirror of light, a Platinum `#E5E3D2`
+  fill with Charcoal words: 15.2:1 against the page, 14.3:1 against the surface, and
+  words at 14:1 on it. A chosen dark theme and the device's dark both change.
+- Autolaunch (6.2:1), Patchbay (8.8:1) and Techtree (14.3:1) already stood out in dark
+  and are unchanged. Autolaunch keeps its Tangerine.
+- Powder Blue marks barely show on Platinum (1.3:1), so a new token,
+  `--color-button-mark`, draws both of a main button's dark hover and focus marks in
+  one colour where a theme sets it. Regents' dark theme sets Tangerine: 2.4:1 on the
+  fill, 6.3:1 against the page. Its windows' marks and the theme switch's beam keep
+  Powder Blue. Keyboard focus keeps its Powder Blue ring (11.4:1 against the page), and
+  a disabled button stays inert grey, now 7.9:1 apart from a resting one.
+- The confirm window's going-ahead button takes a tenth of Charcoal into its Platinum:
+  11.7:1 against the window, words at 11.5:1 on it.
+- Light is unchanged, picture for picture, and so are secondary and quiet buttons. The
+  contrast test now measures dark as well as light.
+- A Regents main button in dark does not show on a Platinum panel (`rg-support-panel`);
+  `CONSUMERS.md` says so. A button that sets its own `--rg-p-accent` keeps it.

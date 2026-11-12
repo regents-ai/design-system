@@ -108,7 +108,7 @@ action color.
 
 | Product | Identity | Token |
 | --- | --- | --- |
-| Regents Labs / Platform | Charcoal ground; Charcoal main button with Platinum words in both themes; white accent with Charcoal text in light | — |
+| Regents Labs / Platform | Charcoal ground; Charcoal main button with Platinum words in light, Platinum with Charcoal words in dark; white accent with Charcoal text in light | — |
 | Agent Formation | Tangerine Tango | `--product-formation` |
 | Autolaunch | Tangerine Tango | `--product-autolaunch` |
 | Techtree | Canopy on its own site; Powder Blue where other sites name it | `--product-techtree` |
@@ -215,22 +215,27 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
   8px below 768px, filled with `--color-button` and lettered in `--color-fg-on-button`.
-  That pair is the site's accent pair, except in light, where the accent is too close
-  to the page for the main action: Regents' white becomes a Charcoal fill with Platinum
-  words, and Techtree's lime moves into the words on its green-black `#0F1B14`. Their
-  light fills stand at least 3:1 against the page and its surfaces, and every primary's
-  words stand at least 4.5:1 on its fill (founder, 2026-11-12).
+  That pair is the site's accent pair, except where the accent is too close to the page
+  for the main action: Regents' white in light becomes a Charcoal fill with Platinum
+  words and its charcoal in dark a Platinum fill with Charcoal words, and Techtree's
+  lime in light moves into the words on its green-black `#0F1B14`. Every fill but
+  Autolaunch's Tangerine, its brand fill, stands at least 3:1 against the page and its
+  surfaces in both themes, and every primary's words stand at least 4.5:1 on its fill
+  (founder, 2026-11-12).
   Breadcrumb chips cut the same two corners at `--rg-cut-chip` (8px) on every screen.
   A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
   150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show
   Powder Blue marks at the square corners and Tangerine accents along the cuts; light
   primaries show two opposite Tangerine L-edges.
   A brand may set `--rg-button-mark-color` for both dark marks and
-  `--rg-button-border-color` for the light edges; Techtree sets both
-  to `#238450`. The theme switch's beam follows `--rg-theme-laser-light` and
-  `--rg-theme-laser-dark` the same way: a brand that sets its own button marks sets
-  the beam to match, as Techtree does, and every other brand keeps the shared beam,
-  Tangerine in light and Powder Blue in dark, the colours of its button marks.
+  `--rg-button-border-color` for the light edges, on its buttons and windows alike;
+  Techtree sets both to `#238450`. The theme switch's beam follows
+  `--rg-theme-laser-light` and `--rg-theme-laser-dark` the same way: a brand that sets
+  its own button marks sets the beam to match, as Techtree does, and every other brand
+  keeps the shared beam, Tangerine in light and Powder Blue in dark.
+  Powder Blue does not show on Regents' dark Platinum fill, so its dark theme sets
+  `--color-button-mark` and its main buttons draw both dark marks in Tangerine. That
+  token reaches the main button alone: Regents' windows and beam keep Powder Blue.
   Two buttons side by side in a header never look the same: one is primary, the other
   secondary (founder, 2026-10-19).
   An Approve button and the button it unlocks (Buy, Stake) are the same size. Once the

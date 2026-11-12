@@ -84,10 +84,13 @@
    * the page to mark a choice: Regents' white and charcoal actions, Techtree's lime in light. */
   --color-chosen: var(--color-accent);
   --color-fg-on-chosen: var(--color-fg-on-accent);
-  /* A main button's fill and the words on it: the site's accent pair, except in light
-   * where that pair is too close to the page for the main action: Regents' white takes a
-   * Charcoal plate with Platinum words, and Techtree's lime moves into the words on its
-   * green-black. */
+  /* A main button's fill and the words on it: the site's accent pair, except where that
+   * pair is too close to the page for the main action: Regents' white in light takes a
+   * Charcoal plate with Platinum words and its charcoal in dark a Platinum plate with
+   * Charcoal words, and Techtree's lime in light moves into the words on its green-black.
+   * Where a plate in dark would hide the shared Powder Blue marks, the theme sets
+   * --color-button-mark and the button draws its corner marks and cut accents in that
+   * one colour: Regents' Platinum takes Tangerine. Windows keep their own marks. */
   --color-button: var(--color-accent);
   --color-fg-on-button: var(--color-fg-on-accent);
   /* A chart's line: the site's action colour, except where that colour is too close to
@@ -228,6 +231,9 @@
   --color-accent: #161616;
   --color-accent-secondary: #FF5B19;
   --color-fg-on-accent: #E5E3D2;
+  --color-button: #E5E3D2;
+  --color-fg-on-button: #161616;
+  --color-button-mark: #FF5B19;
   --color-success: #7ED8A9;
   --color-error: #FF9B8F;
   --color-warning: #F5C16C;
