@@ -93,6 +93,31 @@ show and the current one; `Regent.Primitives.tick` takes `done`. The package mov
 three in CSS, so the motion kit needs no hook or attribute for them; a list that lands
 inside a waiting box still takes the kit's `MotionList`.
 
+`Regent.Primitives.segmented` takes `id`, `label`, `name`, `options` (two to five
+`%{value, label}`) and the chosen `value`; `event` puts the page's `phx-click` on each
+choice, or the page's own form hears the radios by `name`. The server's value wins
+after its redraw. Import `segmented.mjs` (copied by `mix regent_ui.assets`) once from
+the site's `app.ts` so Home and End choose the first and last option; arrow keys work
+without it. `Regent.Primitives.tabs` takes `id`, `label` and `tabs` (`%{label, current}`
+with `href`, `patch` or `navigate`, at most five).
+
+The motion kit moves both from these marks, and the package works without it:
+
+- `data-travel` marks the control or the row of tabs for the kit's travel hook.
+- The segmented control's indicator is `data-travel-indicator`. Its edges are
+  `--rg-travel-start` and `--rg-travel-end` on the control, in cells (the second cell is
+  1 to 2). The package slides them in CSS; the kit sets `data-travel="kit"` on the
+  control once it moves them itself, which turns the CSS slide off, animates the
+  leading edge first and the trailing edge after it (`spring({bounce: 0.15, duration:
+  300})`), lets a press dragged across the cells carry the indicator and choose the
+  cell it is let go over, and then removes its own values.
+- A tab's bar is drawn by the tab with `aria-current="page"`. To slide it, the kit
+  measures the tab before and the new one, sets `--rg-travel-x` (the old tab's left
+  less the new one's, in px) and `--rg-travel-scale` (old width over new) on the new
+  tab, and animates them to `0px` and `1`. It also scrolls the new tab into view in a
+  row that scrolls.
+- Neither moves for a key press or under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the

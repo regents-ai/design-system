@@ -309,6 +309,39 @@ defmodule Regent.StructureShowcase do
             </.panel>
           </div>
         </section>
+        <section id="choices" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Choices</h2>
+          </.section_bar>
+          <div class="showcase-stack">
+            <.segmented
+              id="choice-period"
+              label="Period"
+              name="period"
+              value="1W"
+              options={for p <- ~w(1D 1W 1M 1Y All), do: %{value: p, label: p}}
+            />
+            <.segmented
+              id="choice-whose"
+              label="Whose"
+              name="whose"
+              value="mine"
+              options={[%{value: "mine", label: "Mine"}, %{value: "all", label: "All"}]}
+            />
+            <.tabs
+              id="choice-tabs"
+              label="Account"
+              tabs={[
+                %{label: "Profile", href: "#profile", current: true},
+                %{label: "Points", href: "#points", current: false},
+                %{label: "Agents", href: "#agents", current: false},
+                %{label: "Activity", href: "#activity", current: false},
+                %{label: "Settings", href: "#settings", current: false}
+              ]}
+            />
+            <p id="choices-below">Below</p>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -588,7 +621,8 @@ html = """
 <link rel="stylesheet" href="/css/design_system_tokens.css">
 <link rel="stylesheet" href="/css/primitives.css">
 <link rel="stylesheet" href="/showcase.css">
-<script src="/showcase.js" defer></script></head>
+<script src="/showcase.js" defer></script>
+<script src="/js/segmented.mjs" type="module"></script></head>
 <body>#{body}</body></html>
 """
 
@@ -600,6 +634,10 @@ File.cp_r!(Path.join(root, "regent_ui/priv/static/fonts"), Path.join(out, "fonts
 File.rm_rf!(Path.join(out, "images"))
 File.mkdir_p!(Path.join(out, "images"))
 File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "images/regent-ui"))
+
+File.rm_rf!(Path.join(out, "js"))
+File.mkdir_p!(Path.join(out, "js"))
+File.cp!(Path.join(root, "regent_ui/assets/js/segmented.mjs"), Path.join(out, "js/segmented.mjs"))
 
 for name <- ~w(showcase.css showcase.js),
     do: File.cp!(Path.join(root, "scripts/" <> name), Path.join(out, name))

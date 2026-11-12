@@ -240,7 +240,7 @@ defmodule Regent.Discussion do
   attr :filters, :list,
     default: [],
     doc:
-      "`%{label: \"All replies\", href: ..., current: true}` for each filter; none hides the row."
+      "`%{label: \"All replies\", href: ..., current: true}` for each filter, at most five, drawn as `Regent.Primitives.tabs`; none hides the row."
 
   attr :empty, :string, default: "No replies yet."
   slot :inner_block, required: true, doc: "The replies, each a `post/1`."
@@ -252,11 +252,13 @@ defmodule Regent.Discussion do
       <h2 id={"#{@id}-title"} class="rg-discussion__replies-title">
         Replies <span>{@count}</span>
       </h2>
-      <nav :if={@filters != []} class="rg-discussion__filters" aria-label="Filter replies">
-        <a :for={filter <- @filters} href={filter.href} aria-current={filter.current && "page"}>
-          {filter.label}
-        </a>
-      </nav>
+      <Regent.Primitives.tabs
+        :if={@filters != []}
+        id={"#{@id}-filters"}
+        class="rg-discussion__filters"
+        label="Filter replies"
+        tabs={@filters}
+      />
       <ol :if={@shown > 0} class="rg-discussion__replies" role="list">
         {render_slot(@inner_block)}
       </ol>

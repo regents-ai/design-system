@@ -523,3 +523,131 @@
   .rg-waiting:not([data-state="ready"]) { outline-color: CanvasText; }
   .rg-tick { border-color: CanvasText; }
 }
+/* A segmented control: one frame cut at two corners like a primary button, equal
+   cells split by hairlines, and one filled indicator on the chosen cell. The frame
+   and the indicator are an inert skin clipped to the cut; the cells, their words and
+   the focus ring are never clipped. The indicator's edges are --rg-travel-start and
+   --rg-travel-end, in cells, set from the chosen radio; they slide on a press, sit
+   still for a key press (the radio then shows keyboard focus) and under reduced
+   motion. The motion kit marks the control data-travel="kit" when it moves them
+   itself, with the stretch that leads with the new side. */
+@property --rg-travel-start { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --rg-travel-end { syntax: "<number>"; inherits: true; initial-value: 1; }
+.rg-segmented {
+  --rg-segment-h: 2.5rem;
+  position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  inline-size: max-content; min-inline-size: min(100%, calc(var(--rg-segments) * 4rem)); max-inline-size: 100%;
+  block-size: var(--rg-segment-h); margin: 0; padding: 0; border: 0; box-sizing: border-box;
+  color: var(--color-fg); font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+  transition: --rg-travel-start var(--duration-base) var(--ease-out), --rg-travel-end var(--duration-base) var(--ease-out);
+}
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(2) > :checked) { --rg-travel-start: 1; --rg-travel-end: 2; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(3) > :checked) { --rg-travel-start: 2; --rg-travel-end: 3; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(4) > :checked) { --rg-travel-start: 3; --rg-travel-end: 4; }
+.rg-segmented:has(> .rg-segmented__cell:nth-of-type(5) > :checked) { --rg-travel-start: 4; --rg-travel-end: 5; }
+.rg-segmented:is([data-travel="kit"], :has(:focus-visible)) { transition: none; }
+.rg-segmented__track {
+  --rg-inner-cut: max(0px, calc(var(--rg-cut-control) - var(--rg-cut-nest) * 1px));
+  position: absolute; inset: 0; pointer-events: none;
+  background: var(--hairline-strong);
+  clip-path: polygon(var(--rg-cut-control) 0, 100% 0, 100% calc(100% - var(--rg-cut-control)), calc(100% - var(--rg-cut-control)) 100%, 0 100%, 0 var(--rg-cut-control));
+}
+/* The ground inside the edge, with a hairline at each cell's start. */
+.rg-segmented__track::before {
+  content: ""; position: absolute; inset: 1px;
+  background: linear-gradient(to right, var(--hairline) 0 1px, transparent 1px) -1px 0 / calc((100% + 2px) / var(--rg-segments)) 100% repeat-x, var(--color-surface);
+  clip-path: polygon(var(--rg-inner-cut) 0, 100% 0, 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, 0 100%, 0 var(--rg-inner-cut));
+}
+.rg-segmented__indicator {
+  position: absolute; inset-block: 0; inset-inline-start: 0; inline-size: calc(100% / var(--rg-segments));
+  background: var(--color-chosen); transform-origin: left;
+  transform: translateX(calc(var(--rg-travel-start) * 100%)) scaleX(calc(var(--rg-travel-end) - var(--rg-travel-start)));
+}
+.rg-segmented:dir(rtl) .rg-segmented__indicator {
+  transform-origin: right;
+  transform: translateX(calc(var(--rg-travel-start) * -100%)) scaleX(calc(var(--rg-travel-end) - var(--rg-travel-start)));
+}
+.rg-segmented__cell {
+  position: relative; display: grid; place-items: center; min-inline-size: 0;
+  padding-inline: var(--space-2); cursor: pointer; white-space: nowrap;
+}
+.rg-segmented__cell:has(:checked) { color: var(--color-fg-on-chosen); }
+.rg-segmented__input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; appearance: none; }
+.rg-segmented__label { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; }
+/* Keyboard focus rings the whole control and follows its cut: ring cut = cut + 0.59 ×
+   reach outside, and the gap inside it cut = cut + 0.59 × offset. */
+.rg-segmented:has(:focus-visible)::after {
+  --rg-ring-reach: calc(var(--rg-ring-width) + var(--rg-ring-offset));
+  --rg-ring-cut: calc(var(--rg-cut-control) + var(--rg-cut-nest) * var(--rg-ring-reach));
+  --rg-ring-gap-cut: calc(var(--rg-cut-control) + var(--rg-cut-nest) * var(--rg-ring-offset));
+  content: ""; position: absolute; inset: calc(-1 * var(--rg-ring-reach)); pointer-events: none;
+  background: var(--color-focus);
+  clip-path: polygon(evenodd,
+    var(--rg-ring-cut) 0, 100% 0, 100% calc(100% - var(--rg-ring-cut)), calc(100% - var(--rg-ring-cut)) 100%,
+    0 100%, 0 var(--rg-ring-cut), var(--rg-ring-cut) 0,
+    calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)) var(--rg-ring-width),
+    calc(100% - var(--rg-ring-width)) var(--rg-ring-width),
+    calc(100% - var(--rg-ring-width)) calc(100% - var(--rg-ring-width) - var(--rg-ring-gap-cut)),
+    calc(100% - var(--rg-ring-width) - var(--rg-ring-gap-cut)) calc(100% - var(--rg-ring-width)),
+    var(--rg-ring-width) calc(100% - var(--rg-ring-width)),
+    var(--rg-ring-width) calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)),
+    calc(var(--rg-ring-width) + var(--rg-ring-gap-cut)) var(--rg-ring-width),
+    var(--rg-ring-cut) 0);
+}
+/* Link tabs: words on a hairline baseline; the page showing has the full ink and a
+   2px bar on the baseline, which the motion kit slides from the tab before through
+   --rg-travel-x and --rg-travel-scale on the new tab. A row too wide scrolls inside
+   itself, fading 16px at the edge that hides more. The 4px of padding keeps every
+   tab's focus ring inside the row that scrolls. */
+.rg-tabs {
+  display: flex; gap: var(--space-3); overflow-x: auto; scrollbar-width: none;
+  padding: 4px 4px 4px; border-block-end: 1px solid var(--hairline);
+  font-family: var(--font-family-ui); font-size: var(--type-label-size); line-height: var(--type-label-line);
+}
+.rg-tabs::-webkit-scrollbar { display: none; }
+.rg-tabs .rg-tabs__tab {
+  position: relative; display: inline-flex; flex: none; align-items: center;
+  min-block-size: 2.25rem; color: var(--color-fg-muted); text-decoration: none; white-space: nowrap;
+}
+.rg-tabs .rg-tabs__tab[aria-current="page"] { color: var(--color-fg); }
+.rg-tabs .rg-tabs__tab[aria-current="page"]::after {
+  content: ""; position: absolute; inset-inline: 0; inset-block-end: -4px; block-size: 2px;
+  background: var(--color-chosen); transform-origin: left;
+  transform: translateX(var(--rg-travel-x, 0px)) scaleX(var(--rg-travel-scale, 1));
+}
+@media (hover: hover) and (pointer: fine) { .rg-tabs .rg-tabs__tab:hover { color: var(--color-fg); } }
+.rg-tabs .rg-tabs__tab:focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset); }
+@property --rg-tabs-fade-start { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --rg-tabs-fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@supports (animation-timeline: scroll()) {
+  .rg-tabs {
+    mask-image: linear-gradient(to right, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent);
+    animation: rg-tabs-fade linear both; animation-timeline: scroll(self inline);
+  }
+  .rg-tabs:dir(rtl) { mask-image: linear-gradient(to left, transparent, #000 var(--rg-tabs-fade-start), #000 calc(100% - var(--rg-tabs-fade-end)), transparent); }
+}
+@keyframes rg-tabs-fade {
+  from { --rg-tabs-fade-start: 0px; --rg-tabs-fade-end: 16px; }
+  1% { --rg-tabs-fade-start: 16px; }
+  99% { --rg-tabs-fade-end: 16px; }
+  to { --rg-tabs-fade-start: 16px; --rg-tabs-fade-end: 0px; }
+}
+@media (max-width: 47.99rem) {
+  .rg-segmented { --rg-cut-control: 8px; }
+}
+@media (hover: none), (pointer: coarse) {
+  .rg-segmented { --rg-segment-h: 44px; }
+  .rg-tabs .rg-tabs__tab { min-block-size: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rg-segmented { transition: none; }
+}
+@media (forced-colors: active) {
+  .rg-segmented { border: 1px solid ButtonText; }
+  .rg-segmented__track { display: none; }
+  .rg-segmented__cell:has(:checked) { background: Highlight; color: HighlightText; }
+  .rg-segmented:has(:focus-visible)::after { display: none; }
+  .rg-segmented:has(:focus-visible) { outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset); }
+  .rg-tabs .rg-tabs__tab[aria-current="page"]::after { background: Highlight; }
+  .rg-tabs .rg-tabs__tab:focus-visible { outline-color: Highlight; }
+}

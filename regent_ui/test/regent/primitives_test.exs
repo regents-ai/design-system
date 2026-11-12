@@ -357,4 +357,61 @@ defmodule Regent.PrimitivesTest do
     refute rendered_to_string(~H"<.tick />") =~ "data-done"
     assert rendered_to_string(~H"<.tick done />") =~ "data-done"
   end
+
+  test "a segmented control checks the chosen option, hands each choice to the page and takes two to five options" do
+    assigns = %{options: for(p <- ~w(1D 1W 1M), do: %{value: p, label: p})}
+
+    html =
+      rendered_to_string(~H"""
+      <.segmented id="period" label="Period" name="period" value="1W" options={@options} event="period" />
+      """)
+
+    assert [_one] = Regex.scan(~r/<input[^>]*checked/, html)
+    assert html =~ ~r/<input[^>]*value="1W"[^>]*checked|<input[^>]*checked[^>]*value="1W"/
+    assert [_, _, _] = Regex.scan(~r/phx-click="period"/, html)
+
+    for options <- [Enum.take(assigns.options, 1), assigns.options ++ assigns.options] do
+      assigns = %{options: options}
+
+      assert_raise ArgumentError, fn ->
+        rendered_to_string(~H"""
+        <.segmented id="period" label="Period" name="period" value="1D" options={@options} />
+        """)
+      end
+    end
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.segmented id="period" label="Period" name="period" value="1Y" options={@options} />
+      """)
+    end
+  end
+
+  test "tabs are links, the page showing is current, and a sixth tab is refused" do
+    assigns = %{
+      tabs: [
+        %{label: "Profile", patch: "/account", current: false},
+        %{label: "Points", patch: "/account/points", current: true}
+      ]
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <.tabs id="account-tabs" label="Account" tabs={@tabs} />
+      """)
+
+    assert html =~ ~s(data-phx-link="patch")
+    assert [_one] = Regex.scan(~r/aria-current="page"/, html)
+
+    assert html =~
+             ~r{href="/account/points"[^>]*aria-current="page"|aria-current="page"[^>]*href="/account/points"}
+
+    assigns = %{tabs: for(i <- 1..6, do: %{label: "Tab #{i}", href: "/#{i}", current: i == 1})}
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.tabs id="many" label="Many" tabs={@tabs} />
+      """)
+    end
+  end
 end

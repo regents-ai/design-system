@@ -252,6 +252,107 @@ defmodule Regent.Primitives do
   end
 
   attr :id, :string, required: true
+  attr :label, :string, required: true, doc: "what the choice is, read out, such as \"Period\""
+  attr :name, :string, required: true, doc: "the field name the chosen value is sent as"
+
+  attr :options, :list,
+    required: true,
+    doc: "two to five `%{value, label}`, labels of one or two words, such as \"1W\""
+
+  attr :value, :string, required: true, doc: "the chosen option's value"
+
+  attr :event, :string,
+    default: nil,
+    doc:
+      "the page's event for a choice (`phx-click`, carrying `value`); leave out when the page's own form takes the choice"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Two to five views of the same thing, such as 1D / 1W / 1M or Mine / All: one cut
+  frame of equal cells and one filled indicator on the chosen cell. They are radio
+  buttons, so arrow keys move and choose, and Home and End jump with `segmented.mjs`.
+  A press slides the indicator to its cell; a key press puts it there at once. A
+  choice never changes the control's height or moves anything below it.
+  """
+  def segmented(assigns) do
+    values = Enum.map(assigns.options, & &1.value)
+
+    if length(values) not in 2..5 or assigns.value not in values do
+      raise ArgumentError,
+            "segmented #{assigns.id} takes two to five options and one of their values, got #{inspect(values)} and #{inspect(assigns.value)}"
+    end
+
+    ~H"""
+    <fieldset
+      id={@id}
+      class={["rg-segmented", @class]}
+      role="radiogroup"
+      aria-label={@label}
+      style={"--rg-segments: #{length(@options)}"}
+      data-travel
+      {@rest}
+    >
+      <span class="rg-segmented__track" aria-hidden="true">
+        <span class="rg-segmented__indicator" data-travel-indicator></span>
+      </span>
+      <label :for={option <- @options} class="rg-segmented__cell">
+        <input
+          type="radio"
+          class="rg-segmented__input"
+          name={@name}
+          value={option.value}
+          checked={option.value == @value}
+          phx-click={@event}
+        />
+        <span class="rg-segmented__label">{option.label}</span>
+      </label>
+    </fieldset>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :label, :string, required: true, doc: "what the tabs move between, read out"
+
+  attr :tabs, :list,
+    required: true,
+    doc:
+      "at most five `%{label, current}`, each with its own address as `href`, `patch` or `navigate`, and `current: true` on the page showing"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Tabs between sibling sections of one page, each its own address, so a link to a tab
+  lands on it. They are links: the page showing carries `aria-current="page"` and a
+  bar on the baseline, which slides to the new tab with the motion kit. Too many for
+  the width scroll sideways inside their row. More than five means the page does two
+  things; split it.
+  """
+  def tabs(assigns) do
+    if length(assigns.tabs) > 5 or Enum.count(assigns.tabs, & &1.current) > 1 do
+      raise ArgumentError,
+            "tabs #{assigns.id} takes at most five tabs and at most one current tab"
+    end
+
+    ~H"""
+    <nav id={@id} class={["rg-tabs", @class]} aria-label={@label} data-travel {@rest}>
+      <.link
+        :for={tab <- @tabs}
+        class="rg-tabs__tab"
+        href={tab[:href]}
+        patch={tab[:patch]}
+        navigate={tab[:navigate]}
+        aria-current={tab.current && "page"}
+      >
+        {tab.label}
+      </.link>
+    </nav>
+    """
+  end
+
+  attr :id, :string, required: true
 
   attr :at, DateTime,
     default: nil,

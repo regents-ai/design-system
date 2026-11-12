@@ -858,3 +858,27 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   mirror is regenerated.
 - All three move in CSS alone, so the template's motion kit needs nothing for them;
   reduced motion shows each at once. The showcase gains a Waiting section.
+
+
+## 2026-11-12 — Segmented control and link tabs
+
+- New `Regent.Primitives.segmented`: two to five views of the same thing as radio
+  buttons in one frame cut at two corners, equal cells split by hairlines, and one
+  filled indicator on the chosen cell that slides there in 200ms on a press and jumps
+  for a key press or under reduced motion. The frame and the indicator are a clipped
+  skin; the words and the cut focus ring round the whole control are not. A choice
+  never changes its height (November bonus pack, step 5).
+- New `regent_ui/assets/js/segmented.mjs`, copied by `mix regent_ui.assets`: Home and
+  End choose the first and last option.
+- New `Regent.Primitives.tabs`: links between sibling sections, at most five, the page
+  showing marked `aria-current="page"` with a 2px bar on a hairline baseline; a row too
+  wide scrolls inside itself and fades 16px at the edge that hides more.
+- `Regent.Discussion.replies` draws its filters with the new tabs; its own filter
+  styles, with their inset shadow and fixed Tangerine bar, are gone.
+- New tokens `--color-chosen` and `--color-fg-on-chosen`: the site's action pair, ink
+  on the page for Regents and the band green for Techtree light; the JSON mirror is
+  regenerated.
+- The motion kit's marks are `data-travel`, `data-travel-indicator`, `data-travel="kit"`,
+  `--rg-travel-start` and `--rg-travel-end` (segmented) and `--rg-travel-x` and
+  `--rg-travel-scale` (tabs); `CONSUMERS.md` says how it uses them. The showcase gains a
+  Choices section.

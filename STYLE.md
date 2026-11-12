@@ -274,7 +274,9 @@ Patterns that generalize:
   (see Motion); the media stays still. Only an inert visual skin clips; text, media and
   focus stay unclipped. No lift, idle animation or moving reduced-motion state.
 - Active navigation has a visible structural indicator and text emphasis, not a pill or
-  color alone. Essential field/control boundaries are stronger than decorative hairlines.
+  color alone. A chosen cell or tab takes `--color-chosen` with `--color-fg-on-chosen`:
+  the site's action pair, except Regents (ink on the page) and Techtree light (its band
+  green), whose action pair is too close to the page to mark a choice. Essential field/control boundaries are stronger than decorative hairlines.
 
 ### Dialogs
 
@@ -349,6 +351,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.waiting` | A dashed box at the exact size of what it waits for, which then shows it: "Still working" and the page's retry once slow, "Couldn't be read" and the retry on a failure. No grey bars, shimmer or pulse | Awaiting consumer adoption |
 | `Regent.Primitives.status_word` | A status word that changes while someone watches ("Waiting" to "Done"), keeping the width of its widest word | Awaiting consumer adoption |
 | `Regent.Primitives.tick` | A step's mark: a dashed ring while it waits, a tick that draws in once it is done | Ash Template, through `Regent.Account.pairing` |
+| `Regent.Primitives.segmented` | Two to five views of the same thing (1D / 1W / 1M, Mine / All): a cut frame of equal cells whose filled indicator slides to the chosen one; arrow keys, Home and End choose, and a choice never changes the height | Awaiting consumer adoption |
+| `Regent.Primitives.tabs` | Links between sibling sections of one page, each its own address, at most five; the page showing has a bar on the baseline that slides to the next | Patchbay; Ash Template (showcase); both through `Regent.Discussion.replies` |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
@@ -370,7 +374,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Discussion.thread` | Forum thread: title, Solved mark, counts and the Compact replies switch | Ash Template (showcase), Patchbay |
 | `Regent.Discussion.post` | Opening post or reply with picture, name, time, words and actions; with `author_address`, a wallet author's ENS name or short address is drawn with `Regent.Primitives.address` and the picture links their page | Ash Template (showcase) |
 | `Regent.Discussion.solved` | Solved box quoting the marked answer under the opening post; `author_address` draws a wallet author the same way | Ash Template (showcase) |
-| `Regent.Discussion.replies` | Replies heading, filters, list and empty line | Ash Template (showcase) |
+| `Regent.Discussion.replies` | Replies heading, filters (as `Regent.Primitives.tabs`), list and empty line | Ash Template (showcase) |
 | `Regent.Discussion.like` | Heart with its count and the first few who liked the post | Ash Template (showcase) |
 | `Regent.Discussion.posts` | Posts listed outside a thread, such as one person's replies | Patchbay (tool history) |
 | `Regent.Discussion.label` | Label after a name, such as Solution or Official | Ash Template (showcase) |
@@ -748,6 +752,11 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
   4px in over 200ms on `--ease-out`, on a line as wide as its widest word. A done step's
   tick draws in over 280ms. All three are the package's own CSS; reduced motion shows
   each at once.
+- A segmented control's indicator and a tab's bar travel to the new choice on a
+  press; a key press puts them there at once, and so does reduced motion. They move by
+  transform alone and the words never move. The package slides the segmented indicator
+  in CSS; the template's motion kit adds the stretch that leads with the new side, and
+  slides the tabs' bar from the tab before.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a

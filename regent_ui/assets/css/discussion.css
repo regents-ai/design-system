@@ -67,9 +67,7 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 .rg-discussion__conversation { margin-block-start: 1.5rem; }
 .rg-discussion .rg-discussion__replies-title { margin: 0; }
 .rg-discussion__replies-title span { color: var(--rg-page-muted); }
-.rg-discussion__filters { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: .75rem 0 0; border-block-end: 1px solid var(--rg-discussion-rule); }
-.rg-discussion__filters a { display: inline-flex; align-items: center; min-block-size: 2.75rem; color: var(--rg-page-muted); font-size: .75rem; text-decoration: none; }
-.rg-discussion__filters a[aria-current="page"] { color: var(--rg-page-ink); box-shadow: inset 0 -2px var(--palette-tangerine-tango); }
+.rg-discussion__filters { margin-block-start: .75rem; }
 .rg-discussion__replies { display: grid; gap: 0; margin: .5rem 0 0; padding: 0; list-style: none; }
 
 /* A heart and its count, in a thread or under any message; a like the reader gave is filled in. */
@@ -90,7 +88,6 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 }
 @media (forced-colors: active) {
   .rg-discussion__heart[aria-pressed="true"] { color: Highlight; }
-  .rg-discussion__filters a[aria-current="page"] { outline: 2px solid LinkText; outline-offset: -2px; }
 }
 
 /* Compact replies: no pictures, small close-set plain-text type, headings and code

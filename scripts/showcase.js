@@ -76,3 +76,11 @@ document.querySelector("#waiting-change").addEventListener("click", () => {
   tick.toggleAttribute("data-done");
   for (const word of document.querySelectorAll("#waiting-word > span")) word.toggleAttribute("data-on");
 });
+// The tabs stand in for a page's own links: a press marks the tab it lands on.
+for (const tab of document.querySelectorAll("#choice-tabs a")) {
+  tab.addEventListener("click", event => {
+    event.preventDefault();
+    for (const other of document.querySelectorAll("#choice-tabs a")) other.removeAttribute("aria-current");
+    tab.setAttribute("aria-current", "page");
+  });
+}

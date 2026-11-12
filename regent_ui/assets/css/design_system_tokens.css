@@ -77,6 +77,11 @@
   /* Every focus ring: this wide, this far outside the shape it follows. */
   --rg-ring-width: 2px;
   --rg-ring-offset: 2px;
+  /* What is chosen in a segmented control or a row of tabs: the indicator's fill and
+   * the words on it. The site's action pair, except where that pair is too close to
+   * the page to mark a choice: Regents' white and charcoal actions, Techtree's lime in light. */
+  --color-chosen: var(--color-accent);
+  --color-fg-on-chosen: var(--color-fg-on-accent);
   --rg-rule-width: 1px;
 
   --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);
@@ -136,6 +141,8 @@
  * A brand may set its own button marks and theme-switch beams here; the others
  * keep Powder Blue and Tangerine. */
 :root[data-brand="platform"] {
+  --color-chosen: var(--color-fg);
+  --color-fg-on-chosen: var(--color-bg);
   --support-figure-surface: var(--palette-powder-blue);
   --support-figure-ink: var(--palette-charcoal);
   --support-band-surface: var(--palette-tangerine-tango);
@@ -288,6 +295,8 @@
   --support-figure-ink: #0F1B14;
   --support-band-surface: #1E6B45;
   --support-band-ink: #F3F5EF;
+  --color-chosen: #1E6B45;
+  --color-fg-on-chosen: #F3F5EF;
   --support-panel-surface: #0F1B14;
   --support-panel-ink: #E8F0EA;
 }
@@ -523,6 +532,8 @@ samp {
     --support-figure-ink: #0F1B14;
     --support-band-surface: #1E6B45;
     --support-band-ink: #F3F5EF;
+    --color-chosen: #1E6B45;
+    --color-fg-on-chosen: #F3F5EF;
     --support-panel-surface: #0F1B14;
     --support-panel-ink: #E8F0EA;
   }
