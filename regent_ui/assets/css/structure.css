@@ -165,9 +165,9 @@
 @media (max-width: 47.99rem) {
   .rg-dialog { --rg-dialog-cut: 12px; }
 }
-/* A window's main button shows against the window. Where the site's action fill is the
-   window's own (Regents' white and charcoal), a tenth of its text colour goes into the
-   fill; a brand fill only deepens a little. */
+/* A window's main button shows against the window. Where the button's fill is the
+   window's own (Regents' charcoal in dark), a tenth of its words' colour goes into the
+   fill; every other fill only shifts a little. */
 .rg-dialog .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
   background-color: color-mix(in srgb, currentColor 10%, var(--rg-p-accent));
 }

@@ -243,9 +243,14 @@ Geist Mono 400 for code only. Never synthesize bold. The generator packages
 roles expose the other three palette constants per brand; use their paired utility
 classes coherently, not random per-card accents.
 Shared selects reserve a 24px right chevron inset and 48px text padding, with native
-forced-colors appearance. Primary CTAs cut two corners and use the site's accent
-pair in both themes, with Powder Blue and Tangerine marks in dark mode and Tangerine
-L-edges in light mode that grow into a cut outline on hover and focus. Secondary CTAs
+forced-colors appearance. Primary CTAs cut two corners and fill with `--color-button`
+and `--color-fg-on-button`: the site's accent pair, except in light, where Regents and
+Autolaunch fill Charcoal with Platinum words and Techtree fills its green-black with
+lime words. A site part drawn to match the main button reads `--color-button`, not
+`--color-accent`; to recolour one button, set `--rg-p-accent` (fill) and
+`--rg-p-on-accent` (words) on it. Primaries show Powder Blue and Tangerine marks in
+dark mode and Tangerine L-edges in light mode that grow into a cut outline on hover
+and focus. Secondary CTAs
 use the site's surface and foreground with a visible border.
 The template's `hooks/motion/buttons.ts` supplies a single chevron nudge on pointer
 entry and a small press response on pointer-down through Anime.js. Copy that module

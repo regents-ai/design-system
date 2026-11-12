@@ -108,7 +108,7 @@ action color.
 
 | Product | Identity | Token |
 | --- | --- | --- |
-| Regents Labs / Platform | Charcoal ground; Charcoal action in dark, white action with Charcoal text in light | — |
+| Regents Labs / Platform | Charcoal ground; Charcoal main button with Platinum words in both themes; white accent with Charcoal text in light | — |
 | Agent Formation | Tangerine Tango | `--product-formation` |
 | Autolaunch | Tangerine Tango | `--product-autolaunch` |
 | Techtree | Canopy on its own site; Powder Blue where other sites name it | `--product-techtree` |
@@ -214,7 +214,12 @@ Patterns that generalize:
   keeps frames, navigation, fields, statuses, tables, secondary controls and disclosures square.
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
-  8px below 768px, filled with the site's own accent/on-accent pair in both themes.
+  8px below 768px, filled with `--color-button` and lettered in `--color-fg-on-button`.
+  That pair is the site's accent pair, except in light, where the accent is too close
+  to the page for the main action: Regents' white and Autolaunch's Tangerine become a
+  Charcoal fill with Platinum words, and Techtree's lime moves into the words on its
+  green-black `#0F1B14`. In light a primary's fill stands at least 3:1 against the page
+  and its surfaces, and its words at least 4.5:1 on the fill (founder, 2026-11-12).
   Breadcrumb chips cut the same two corners at `--rg-cut-chip` (8px) on every screen.
   A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
   150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show
@@ -226,8 +231,6 @@ Patterns that generalize:
   `--rg-theme-laser-dark` the same way: a brand that sets its own button marks sets
   the beam to match, as Techtree does, and every other brand keeps the shared beam,
   Tangerine in light and Powder Blue in dark, the colours of its button marks.
-  Techtree's lime is too pale on its light page for the fill alone, so in light its
-  primaries rest with a whole cut outline in `#238450`.
   Two buttons side by side in a header never look the same: one is primary, the other
   secondary (founder, 2026-10-19).
   An Approve button and the button it unlocks (Buy, Stake) are the same size. Once the

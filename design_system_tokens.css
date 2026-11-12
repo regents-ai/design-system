@@ -84,6 +84,12 @@
    * the page to mark a choice: Regents' white and charcoal actions, Techtree's lime in light. */
   --color-chosen: var(--color-accent);
   --color-fg-on-chosen: var(--color-fg-on-accent);
+  /* A main button's fill and the words on it: the site's accent pair, except in light
+   * where that pair is too close to the page for the main action: Regents' white and
+   * Autolaunch's Tangerine take a Charcoal plate with Platinum words, and Techtree's lime
+   * moves into the words on its green-black. */
+  --color-button: var(--color-accent);
+  --color-fg-on-button: var(--color-fg-on-accent);
   /* A chart's line: the site's action colour, except where that colour is too close to
    * the page to draw with: Regents' white and charcoal actions take Tangerine, and
    * Techtree's lime in light takes its green marks. */
@@ -196,6 +202,8 @@
   --color-accent: #FFFFFF;
   --color-accent-secondary: #FF5B19;
   --color-fg-on-accent: #161616;
+  --color-button: #161616;
+  --color-fg-on-button: #E5E3D2;
   --color-success: #145C3B;
   --color-error: #9C2525;
   --color-warning: #754600;
@@ -243,6 +251,8 @@
   --color-accent: #FF5B19;
   --color-accent-secondary: #AECACD;
   --color-fg-on-accent: #161616;
+  --color-button: #161616;
+  --color-fg-on-button: #E5E3D2;
   --color-success: #145C3B;
   --color-error: #9C2525;
   --color-warning: #754600;
@@ -290,6 +300,8 @@
   --color-accent: #C8F25C;
   --color-accent-secondary: #2FA866;
   --color-fg-on-accent: #0F1B14;
+  --color-button: #0F1B14;
+  --color-fg-on-button: #C8F25C;
   --color-success: #145C3B;
   --color-error: #9C2525;
   --color-warning: #754600;
@@ -482,6 +494,8 @@ samp {
     --color-accent: #FFFFFF;
     --color-accent-secondary: #FF5B19;
     --color-fg-on-accent: #161616;
+    --color-button: #161616;
+    --color-fg-on-button: #E5E3D2;
     --color-success: #145C3B;
     --color-error: #9C2525;
     --color-warning: #754600;
@@ -505,6 +519,8 @@ samp {
     --color-accent: #FF5B19;
     --color-accent-secondary: #AECACD;
     --color-fg-on-accent: #161616;
+    --color-button: #161616;
+    --color-fg-on-button: #E5E3D2;
     --color-success: #145C3B;
     --color-error: #9C2525;
     --color-warning: #754600;
@@ -528,6 +544,8 @@ samp {
     --color-accent: #C8F25C;
     --color-accent-secondary: #2FA866;
     --color-fg-on-accent: #0F1B14;
+    --color-button: #0F1B14;
+    --color-fg-on-button: #C8F25C;
     --color-success: #145C3B;
     --color-error: #9C2525;
     --color-warning: #754600;

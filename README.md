@@ -148,14 +148,16 @@ This restrained orange mix preserves default label contrast without an opaque pa
 custom color/fill/ink overrides require caller contrast review. `--rg-shimmer-duration`
 defaults to `1.15s`; the card edge ripple doubles it (`2.3s` per turn).
 
-Primaries rest as their plain fill. Enabled hover/focus-visible brings in their marks:
+Primaries rest as their plain fill, `--color-button` with `--color-fg-on-button` words: the
+site's accent pair, except in light, where Regents and Autolaunch fill Charcoal with
+Platinum words and Techtree fills its green-black with lime words, so the main action
+stands at least 3:1 against the page. Enabled hover/focus-visible brings in their marks:
 dark primaries show blue TR/BL square-corner marks and orange TL/BR cut accents; light
 primaries show two opposite orange L-edges. Hover never takes a mark away, with **150ms
 base transitions in both directions**, including native reversal from an interrupted
 state. Set inherited `--rg-button-border-color` to override the light edges; it falls
 back to shimmer color, then Tangerine. Set `--rg-button-mark-color` to draw both dark
-marks in one color instead of blue and orange. Techtree's light primaries rest with the
-whole cut outline, since its lime is too pale on the light page for its fill alone. No JavaScript or additional markup is required. The
+marks in one color instead of blue and orange. No JavaScript or additional markup is required. The
 `span.rg-button__label` that `Regent.Primitives.button` renders for every variant is transparent;
 plain-text primary links work.
 Primary text does not underline, including under consumer `.sc a:hover` rules.

@@ -13,8 +13,9 @@
   --rg-p-control-border: color-mix(in srgb, var(--rg-p-text) 65%, var(--rg-p-surface));
   /* An action that cannot run right now fills inert gray instead of a dimmed accent. */
   --rg-p-disabled-fill: color-mix(in srgb, var(--rg-p-text) 22%, var(--rg-p-surface));
-  --rg-p-accent: var(--color-accent, currentColor);
-  --rg-p-on-accent: var(--color-fg-on-accent, var(--color-bg, Canvas));
+  /* A main button's fill and words; a site recolours one button by setting these on it. */
+  --rg-p-accent: var(--color-button, currentColor);
+  --rg-p-on-accent: var(--color-fg-on-button, var(--color-bg, Canvas));
   --rg-p-error: var(--color-error, currentColor);
   --rg-p-success: var(--color-success, currentColor);
   --rg-p-warning: var(--color-warning, currentColor);
@@ -113,27 +114,6 @@
   :root:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible)::before {
     --rg-button-edge-ink: var(--rg-button-active-border);
     --rg-button-cut-ink: transparent;
-    background-size:
-      var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
-      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
-      calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px), var(--rg-ring-tile) var(--rg-ring-tile), var(--rg-ring-tile) var(--rg-ring-tile);
-  }
-}
-/* Techtree's lime is too pale on its light page for its fill alone, so in light
-   its main buttons rest with the whole cut outline in its own mark green (3:1 on
-   the page), and keep it on hover. */
-:root[data-brand="techtree"][data-theme="light"] .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before {
-  --rg-button-cut-ink: var(--rg-button-active-border);
-  --rg-button-cut-gap: 0px;
-  background-size:
-    var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
-    calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),
-    calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px), var(--rg-ring-tile) var(--rg-ring-tile), var(--rg-ring-tile) var(--rg-ring-tile);
-}
-@media (prefers-color-scheme: light) {
-  :root[data-brand="techtree"]:not([data-theme]) .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before {
-    --rg-button-cut-ink: var(--rg-button-active-border);
-    --rg-button-cut-gap: 0px;
     background-size:
       var(--rg-cut-control) var(--rg-cut-control), var(--rg-cut-control) var(--rg-cut-control),
       calc(100% - var(--rg-cut-control) + 1px) 1px, 1px calc(100% - var(--rg-cut-control) + 1px),

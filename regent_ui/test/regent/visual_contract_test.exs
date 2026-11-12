@@ -177,28 +177,29 @@ defmodule Regent.VisualContractTest do
              "outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset);"
   end
 
-  test "Techtree's lime buttons draw the whole cut outline at rest in light, and only in light" do
-    css = File.read!(Path.join(@package_root, "assets/css/primitives.css"))
+  test "in light, every site's main button stands out from the page and its words read on it" do
+    selectors =
+      File.read!(Path.join(@repository_root, "design_system_tokens.json"))
+      |> Jason.decode!()
+      |> Map.fetch!("selectors")
 
-    main_button =
-      ~s|.rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet)):not(:disabled):not([disabled]):not([aria-disabled="true"])::before|
+    for brand <- ~w(platform autolaunch patchbay techtree) do
+      tokens =
+        [
+          ":root",
+          ~s(:root[data-brand="#{brand}"]),
+          ~s(:root[data-brand="#{brand}"][data-theme="light"])
+        ]
+        |> Enum.map(&Map.get(selectors, &1, %{}))
+        |> Enum.reduce(&Map.merge(&2, &1))
 
-    chosen_light = ~s|:root[data-brand="techtree"][data-theme="light"] | <> main_button
-    device_light = ~s|:root[data-brand="techtree"]:not([data-theme]) | <> main_button
+      shade = &luminance(resolve(tokens, &1))
+      fill = shade.("--color-button")
 
-    for selector <- [chosen_light, device_light] do
-      [before, rest] = String.split(css, selector <> " {", parts: 2)
-      [rule | _] = String.split(rest, "}", parts: 2)
-
-      assert rule =~ "--rg-button-cut-ink: var(--rg-button-active-border);"
-      assert rule =~ "--rg-button-cut-gap: 0px;"
-      assert rule =~ "calc(100% - var(--rg-cut-control) + 1px) 1px"
-
-      if selector == device_light,
-        do: assert(before =~ ~r/@media \(prefers-color-scheme: light\) \{\s*\z/)
+      assert contrast(fill, shade.("--color-bg")) >= 3, brand
+      assert contrast(fill, shade.("--color-surface")) >= 3, brand
+      assert contrast(shade.("--color-fg-on-button"), fill) >= 4.5, brand
     end
-
-    refute css =~ ~s|:root[data-brand="techtree"][data-theme="dark"] .rg-button|
   end
 
   test "feature cards ripple the panel edge on interaction" do
@@ -278,4 +279,27 @@ defmodule Regent.VisualContractTest do
     assert face =~ "font-style: normal;"
     assert css =~ "font-synthesis-weight: none;"
   end
+
+  defp resolve(tokens, name) do
+    case Map.fetch!(tokens, name) do
+      "var(" <> reference -> resolve(tokens, String.trim_trailing(reference, ")"))
+      "#" <> _ = hex -> hex
+    end
+  end
+
+  # WCAG relative luminance of a #RRGGBB colour.
+  defp luminance("#" <> hex) do
+    [r, g, b] =
+      for <<pair::binary-size(2) <- hex>> do
+        channel = String.to_integer(pair, 16) / 255
+
+        if channel <= 0.04045,
+          do: channel / 12.92,
+          else: :math.pow((channel + 0.055) / 1.055, 2.4)
+      end
+
+    0.2126 * r + 0.7152 * g + 0.0722 * b
+  end
+
+  defp contrast(a, b), do: (max(a, b) + 0.05) / (min(a, b) + 0.05)
 end

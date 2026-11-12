@@ -26,9 +26,9 @@
   transform-style: preserve-3d;
   --prism-laser: var(--rg-theme-laser-light, var(--palette-tangerine-tango));
   --prism-laser-next: var(--rg-theme-laser-dark, var(--palette-powder-blue));
-  --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--rg-p-accent));
-  --prism-edge-next: color-mix(in oklch, var(--rg-p-surface) 55%, var(--rg-p-accent));
-  --prism-face: color-mix(in oklch, var(--rg-p-accent) 28%, transparent);
+  --prism-edge: color-mix(in oklch, var(--rg-p-text) 55%, var(--color-accent));
+  --prism-edge-next: color-mix(in oklch, var(--rg-p-surface) 55%, var(--color-accent));
+  --prism-face: color-mix(in oklch, var(--color-accent) 28%, transparent);
 }
 :root:is([data-theme="dark"], :not([data-theme])) .rg-theme-toggle .theme-toggle__stage {
   --prism-laser: var(--rg-theme-laser-dark, var(--palette-powder-blue));
