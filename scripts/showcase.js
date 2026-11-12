@@ -102,3 +102,43 @@ document.querySelector("#activity-change").addEventListener("click", () => {
     word.toggleAttribute("data-on", word.textContent.trim() === (done ? "Done" : "Waiting for you"));
   }
 });
+// A stand-in for the motion kit's chart hook, only to show its marks at work: the rule
+// snaps to the nearest point under the pointer or the arrow keys, and the figure above
+// reads that point; leaving puts back the latest.
+for (const chart of document.querySelectorAll("[data-chart]")) {
+  const plot = chart.querySelector("[data-chart-plot]");
+  if (!plot) continue;
+  const rows = [...chart.querySelectorAll("[data-chart-point]")];
+  const figure = chart.querySelector("[data-chart-readout='figure']");
+  const time = chart.querySelector("[data-chart-readout='time']");
+  const latest = [figure.textContent, time.textContent];
+  const lines = plot.querySelector(".rg-chart__lines");
+  const show = index => {
+    const row = rows[index];
+    chart.dataset.chartAt = index;
+    chart.style.setProperty("--rg-chart-x", row.dataset.x);
+    figure.textContent = row.querySelector("td").textContent || "—";
+    time.textContent = row.querySelector("th").textContent;
+  };
+  const leave = () => {
+    delete chart.dataset.chartAt;
+    [figure.textContent, time.textContent] = latest;
+  };
+  plot.tabIndex = 0;
+  plot.addEventListener("pointermove", event => {
+    const box = lines.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width * 100;
+    let best = 0;
+    rows.forEach((row, i) => { if (Math.abs(row.dataset.x - x) < Math.abs(rows[best].dataset.x - x)) best = i; });
+    show(best);
+  });
+  plot.addEventListener("pointerleave", leave);
+  plot.addEventListener("blur", leave);
+  plot.addEventListener("keydown", event => {
+    const step = {ArrowLeft: -1, ArrowRight: 1}[event.key];
+    if (!step) return;
+    event.preventDefault();
+    const at = chart.dataset.chartAt === undefined ? rows.length - 1 : Number(chart.dataset.chartAt) + step;
+    show(Math.min(rows.length - 1, Math.max(0, at)));
+  });
+}

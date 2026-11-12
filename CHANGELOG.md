@@ -975,3 +975,23 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   the style check (now part of `mix check`) refuses and forced colours drops. It is a 1px
   outline just inside the border: the same look, nothing moves, and keyboard focus still
   shows its own ring.
+
+## 2026-11-12 — Charts
+
+- New `Regent.Charts.line`: a price, stake or earnings line drawn as SVG on the server
+  from the page's points, with no chart library and no script (November bonus pack,
+  step 9). One series in the chart colour, or two with the second muted and dashed so
+  they differ by shape too; an optional flat 10% fill under a lone series; a hairline
+  baseline and at most four hairline rules, labelled on the right in equal-width
+  figures. Above it, the latest figure and its time beside the page's period choice.
+- Every chart carries a table of its points, read by screen readers and agents in
+  place of the drawing. Loading and failed reads show the waiting box at the plot's
+  size, and an empty read says "No activity yet.", so the chart keeps one height.
+- New token `--color-chart-line`: the site's action colour, Tangerine on Regents (its
+  white and charcoal actions vanish on its pages) and `#238450` on Techtree in light.
+- New stylesheet `charts.css`, imported by `structure.css`. The motion kit's marks are
+  `data-chart`, `data-chart-at`, `--rg-chart-x`, `data-chart-plot`, `data-chart-point`,
+  `data-chart-readout` and `data-chart-line`; `CONSUMERS.md` says how. The showcase
+  gains a Charts section with a stand-in for the kit's pointer rule.
+- Not built here: Liveline's per-frame smoothing, momentum arrows, order book and
+  candlesticks, and flow diagrams beyond the existing technical figure.

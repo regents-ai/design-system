@@ -438,6 +438,34 @@ defmodule Regent.StructureShowcase do
             <Regent.Agents.fleet id="activity-fleet-loading" label="Fleet" agents={:loading} now={sample_now()} />
           </div>
         </section>
+        <section id="charts" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Charts</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <Regent.Charts.line id="chart-price" label="Price (USDC)" series={[sample_series("Price", 0)]} fill>
+              <:period>
+                <.segmented
+                  id="chart-period"
+                  label="Period"
+                  name="chart-period"
+                  value="1M"
+                  options={for p <- ~w(1D 1W 1M), do: %{value: p, label: p}}
+                />
+              </:period>
+            </Regent.Charts.line>
+            <Regent.Charts.line
+              id="chart-stake"
+              label="Stake (REGENT)"
+              series={[sample_series("Staked", 1), sample_series("Earned", 2)]}
+            />
+            <Regent.Charts.line id="chart-empty" label="Earnings (USDC)" series={[%{name: "Earnings", points: []}]} />
+            <Regent.Charts.line id="chart-loading" label="Price (USDC)" series={:loading} />
+            <Regent.Charts.line id="chart-unavailable" label="Price (USDC)" series={:unavailable}>
+              <:retry><.button variant="secondary" id="chart-retry" arrow={false}>Retry</.button></:retry>
+            </Regent.Charts.line>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -622,6 +650,30 @@ defmodule Regent.StructureShowcase do
   end
 
   defp sample_now, do: ~U[2026-11-12 10:00:00Z]
+
+  # Thirty days to sample_now/0, one point a day; each curve is a fixed made-up shape.
+  defp sample_series(name, shape) do
+    points =
+      for day <- 0..29 do
+        value =
+          case shape do
+            0 -> 1180 + 60 * :math.sin(day / 4) + day * 3.2
+            1 -> 42_000 + day * 310 + 900 * :math.cos(day / 5)
+            2 -> 38_000.0 + day * 180
+          end
+
+        at = DateTime.add(sample_now(), (day - 29) * 86_400)
+        %{at: at, value: value, figure: sample_figure(value), time: Calendar.strftime(at, "%-d %b")}
+      end
+
+    %{name: name, points: points}
+  end
+
+  defp sample_figure(value) do
+    [whole, cents] = value |> :erlang.float_to_binary(decimals: 2) |> String.split(".")
+    grouped = whole |> String.reverse() |> String.replace(~r/(\d{3})(?=\d)/, "\\1,") |> String.reverse()
+    grouped <> "." <> cents
+  end
 
   # Steps oldest first, at seconds before sample_now/0; nil means not yet.
   defp sample_steps(last) do

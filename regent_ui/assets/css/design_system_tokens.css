@@ -84,6 +84,10 @@
    * the page to mark a choice: Regents' white and charcoal actions, Techtree's lime in light. */
   --color-chosen: var(--color-accent);
   --color-fg-on-chosen: var(--color-fg-on-accent);
+  /* A chart's line: the site's action colour, except where that colour is too close to
+   * the page to draw with: Regents' white and charcoal actions take Tangerine, and
+   * Techtree's lime in light takes its green marks. */
+  --color-chart-line: var(--color-accent);
   --rg-rule-width: 1px;
 
   --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);
@@ -144,6 +148,7 @@
  * keep Powder Blue and Tangerine. */
 :root[data-brand="platform"] {
   --color-chosen: var(--color-fg);
+  --color-chart-line: var(--palette-tangerine-tango);
   --color-fg-on-chosen: var(--color-bg);
   --support-figure-surface: var(--palette-powder-blue);
   --support-figure-ink: var(--palette-charcoal);
@@ -299,6 +304,7 @@
   --support-band-ink: #F3F5EF;
   --color-chosen: #1E6B45;
   --color-fg-on-chosen: #F3F5EF;
+  --color-chart-line: #238450;
   --support-panel-surface: #0F1B14;
   --support-panel-ink: #E8F0EA;
 }
@@ -536,6 +542,7 @@ samp {
     --support-band-ink: #F3F5EF;
     --color-chosen: #1E6B45;
     --color-fg-on-chosen: #F3F5EF;
+    --color-chart-line: #238450;
     --support-panel-surface: #0F1B14;
     --support-panel-ink: #E8F0EA;
   }

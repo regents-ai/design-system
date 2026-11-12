@@ -1,0 +1,136 @@
+/* A chart (Regent.Charts): the label and the figure read from the line above, the
+   page's period choice beside them, then the plot at a fixed height in every state.
+   Lines are 1.5px whatever the chart's width; the first series takes the chart colour,
+   the second the muted foreground, dashed, so the two differ by shape as well as
+   colour. Rules are hairlines, labelled on the right in equal-width figures. Nothing
+   moves here: the motion kit follows the pointer and moves the line. */
+.rg-chart {
+  --rg-chart-height: 12rem;
+  --rg-chart-pad: .75rem;
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  font-family: var(--font-family-ui);
+  color: var(--color-fg);
+}
+.rg-chart__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.rg-chart__reading { display: grid; gap: .25rem; min-inline-size: 0; }
+.rg-chart__label {
+  margin: 0;
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+  color: var(--color-fg-muted);
+}
+.rg-chart__readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-1);
+  margin: 0;
+}
+.rg-chart__readout[data-unused] { visibility: hidden; }
+.rg-chart__figure { font-size: var(--type-title-size); line-height: var(--type-title-line); }
+.rg-chart__time { color: var(--color-fg-muted); font-size: var(--type-label-size); }
+.rg-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-fg-muted);
+  font-size: var(--type-label-size);
+}
+.rg-chart__legend > li { display: inline-flex; align-items: center; gap: .5rem; }
+.rg-chart__legend > li::before {
+  content: "";
+  inline-size: 1rem;
+  border-block-start: 1.5px solid var(--color-chart-line);
+}
+.rg-chart__legend > li[data-series="1"]::before { border-block-start: 1.5px dashed var(--color-fg-muted); }
+.rg-chart__period { flex: none; max-inline-size: 100%; }
+
+/* The plot: the lines on the left, the rule labels in their own column on the right.
+   Its padding holds the half of the top and bottom labels that sit past their rule. */
+.rg-chart__plot {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: var(--space-1);
+  block-size: var(--rg-chart-height);
+  box-sizing: border-box;
+  padding-block: var(--rg-chart-pad);
+}
+.rg-chart__plot.rg-waiting { grid-template-columns: none; grid-template-rows: none; }
+.rg-chart__plot--none { grid-template-columns: none; grid-template-rows: none; place-content: center; }
+.rg-chart__none { margin: 0; color: var(--color-fg-muted); }
+.rg-chart__plot[data-chart-plot]:focus-visible {
+  outline: var(--rg-ring-width) solid var(--color-focus);
+  outline-offset: var(--rg-ring-offset);
+}
+.rg-chart__lines { position: relative; min-inline-size: 0; }
+.rg-chart__lines > svg { display: block; inline-size: 100%; block-size: 100%; overflow: visible; }
+.rg-chart__grid { stroke: var(--hairline); stroke-width: 1px; }
+.rg-chart__line {
+  fill: none;
+  stroke: var(--color-chart-line);
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.rg-chart__line[data-chart-line="1"] { stroke: var(--color-fg-muted); stroke-dasharray: 4 3; }
+.rg-chart__fill { fill: color-mix(in oklch, var(--color-chart-line) 10%, transparent); stroke: none; }
+.rg-chart__ticks { display: grid; }
+.rg-chart__tick {
+  grid-area: 1 / 1;
+  align-self: start;
+  position: relative;
+  inset-block-start: var(--rg-chart-y);
+  translate: 0 -50%;
+  justify-self: end;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--tracking-microlabel);
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+}
+
+/* The rule that follows the pointer. The motion kit sets data-chart-at on the chart
+   and --rg-chart-x, the point's place across the lines from 0 to 100. */
+.rg-chart__rule {
+  position: absolute;
+  inset-block: 0;
+  left: calc(var(--rg-chart-x, 0) * 1%);
+  inline-size: 1px;
+  translate: -50% 0;
+  background: var(--hairline-strong);
+  visibility: hidden;
+  pointer-events: none;
+}
+.rg-chart[data-chart-at] .rg-chart__rule { visibility: visible; }
+
+/* The points as a table, read by screen readers and agents in place of the drawing. */
+.rg-chart__table {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .rg-chart__grid { stroke: GrayText; }
+  .rg-chart__line, .rg-chart__line[data-chart-line="1"] { stroke: CanvasText; }
+  .rg-chart__fill { fill: none; }
+  .rg-chart__rule { forced-color-adjust: none; background: Highlight; }
+  .rg-chart__legend > li::before { border-color: CanvasText; }
+  .rg-chart__plot[data-chart-plot]:focus-visible { outline-color: Highlight; }
+}
