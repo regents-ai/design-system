@@ -44,6 +44,7 @@ defmodule RegentUi.MixProject do
         "compile --warnings-as-errors",
         "deps.unlock --check-unused",
         "format --check-formatted",
+        "cmd sh scripts/style-check.sh",
         "test --warnings-as-errors"
       ],
       precommit: ["check"]

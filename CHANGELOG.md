@@ -898,3 +898,25 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   `CONSUMERS.md` says how it uses them. The showcase gains a Breadcrumb section.
 - Forced colours: the chosen cell of a segmented control drops the text backplate that
   hid its word.
+
+## 2026-11-12 — The package passes its own style check
+
+- The 24 breaks `scripts/style-check.sh` found in the package's own styles are gone,
+  and `mix check` now runs the check, so a new break fails it. README says so.
+- Inset lines drawn with `box-shadow` are now real lines, looking the same and showing
+  in forced colours, where shadows are dropped: Points chips, done points, the "You"
+  tag, bonus tiers and activity status take a 1px outline drawn inside; the forced-colour
+  "You" row and held tier a 2px Highlight outline; the marked discussion answer a 3px
+  start border (its padding is 3px less, so the words stay put); the checked agent in
+  pairing a 1px outline; and the late and stopped check-in lights a 1.5px border.
+  Chrome draws that border at 1px, a hair thinner than the shadow was.
+- Theme switch: its beam loses the soft glow and its prism box the .25rem rounding; it
+  is now flat and square. A small deliberate change in look; the beams keep their
+  Tangerine and Powder Blue.
+- Stacking numbers inside the panel's edge and fill, the button's paint, the window's
+  frame, the technical figure's dots and the foil card sit nested inside the root rule
+  that sets `isolation: isolate`, so they cannot reach the page's layers; nothing moves.
+  The foil card's stage and its still face no longer state numbers they did not need.
+- The showcase gains a Cards section: the foil card, a foil feature card, a tip opening
+  over a panel inside a panel, and a marked answer and a house reply.
+

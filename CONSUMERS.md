@@ -221,6 +221,10 @@ weights above 400 (`weight`), radii other than 0, 50% or a pill's half height (`
 layout properties animated from scripts (`motion`), an `<svg>` that is neither hidden
 artwork nor a named logo (`icon`), "KeyFleet" (`name`) and page words that say how a
 page is built (`words`). It exits 1 when it finds any. It needs ripgrep, awk and perl.
+A stacking number counts as isolated when its rule sits inside the rule of the root that
+sets `isolation: isolate`, written with CSS nesting (`.art { isolation: isolate; &::before
+{ z-index: -1; } }`), as the package's own panel, button, dialog, figure and foil card do.
+design-system's own `mix check` runs it over the package and passes with no breaks.
 
 See [MOBILE.md](MOBILE.md) for the iPhone-oriented composition and acceptance contract.
 Coarse/no-hover shared buttons retain a 44px minimum hit box, and text-like `rg-field`

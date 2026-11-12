@@ -357,6 +357,50 @@ defmodule Regent.StructureShowcase do
             </div>
           </div>
         </section>
+        <section id="cards" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Cards</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <Regent.HolographicCard.card id="cards-foil">
+              <p class="showcase-wait__figure">Foil</p>
+              <p>Graphite, lit only under the pointer.</p>
+            </Regent.HolographicCard.card>
+            <.capability_card id="cards-foil-face" title="Foil face" description="A panel face in foil." index="004">
+              <:foil><Regent.HolographicCard.foil id="cards-foil-face-foil" class="rg-holo-foil--face" /></:foil>
+              <:media>
+                <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                  <circle cx="120" cy="120" r="80" /><circle cx="120" cy="120" r="44" />
+                </svg>
+              </:media>
+            </.capability_card>
+            <.panel id="cards-tip-panel">
+              <div class="rg-panel__body showcase-stack">
+                <p>
+                  Fee <.tip id="cards-tip" label="About the fee">Paid once, in USDC.</.tip>
+                </p>
+                <.panel id="cards-inner-panel" class="rg-support-panel">
+                  <p class="rg-panel__body">Inner</p>
+                </.panel>
+              </div>
+            </.panel>
+            <Regent.Discussion.posts id="cards-posts">
+              <Regent.Discussion.post
+                :for={{id, author, solution, house} <- [{"cards-answer", "Ada", true, false}, {"cards-house", "Regents", false, true}]}
+                id={id}
+                author={author}
+                at={~U[2026-11-10 09:00:00Z]}
+                ago="1 day ago"
+                href={"##{id}"}
+                solution={solution}
+                house={house}
+              >
+                <:avatar><Regent.Account.agent_mark kind="muse" /></:avatar>
+                <p>{if solution, do: "The marked answer.", else: "A reply from the site."}</p>
+              </Regent.Discussion.post>
+            </Regent.Discussion.posts>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>

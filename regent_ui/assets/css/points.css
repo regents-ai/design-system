@@ -218,7 +218,8 @@
 .rg-points-todo__left[data-none="true"] {
   background: transparent;
   color: var(--color-success);
-  box-shadow: inset 0 0 0 1px currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: -1px;
 }
 
 .rg-points-todo__group { display: grid; gap: var(--space-1); min-inline-size: 0; }
@@ -264,7 +265,8 @@
 .rg-points-todo li[data-done="true"] .rg-points-todo__points {
   background: transparent;
   color: var(--color-fg-muted);
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  outline: 1px solid var(--hairline-strong);
+  outline-offset: -1px;
 }
 
 /* Leaderboard. */
@@ -316,7 +318,8 @@
   padding: 0 6px;
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-line);
-  box-shadow: inset 0 0 0 1px currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: -1px;
 }
 
 .rg-points-board__points { grid-column: 4; white-space: nowrap; }
@@ -355,14 +358,15 @@
   display: grid;
   gap: 2px;
   padding: 10px 12px;
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  outline: 1px solid var(--hairline-strong);
+  outline-offset: -1px;
 }
 .rg-points-bonus__tiers span { color: var(--color-fg-muted); font-size: var(--type-label-size); line-height: var(--type-label-line); }
 .rg-points-bonus__tiers strong { font-size: var(--type-headline-size); font-weight: inherit; line-height: var(--type-headline-line); }
 .rg-points-bonus__tiers li[data-held="true"] {
   background: var(--support-figure-surface);
   color: var(--support-figure-ink);
-  box-shadow: none;
+  outline: 0;
 }
 .rg-points-bonus__tiers li[data-held="true"] span { color: inherit; }
 
@@ -394,7 +398,8 @@
   color: var(--color-fg-muted);
   font-size: var(--type-caption-size);
   line-height: var(--type-label-line);
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  outline: 1px solid var(--hairline-strong);
+  outline-offset: -1px;
   white-space: nowrap;
 }
 .rg-points-activity__points { grid-column: 3; white-space: nowrap; }
@@ -415,8 +420,9 @@
   .rg-points-bonus__tiers li[data-held="true"] {
     background: Canvas;
     color: CanvasText;
-    box-shadow: inset 0 0 0 1px CanvasText;
+    outline: 1px solid CanvasText;
+    outline-offset: -1px;
   }
   .rg-points-board li[data-you="true"],
-  .rg-points-bonus__tiers li[data-held="true"] { box-shadow: inset 0 0 0 2px Highlight; }
+  .rg-points-bonus__tiers li[data-held="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
 }

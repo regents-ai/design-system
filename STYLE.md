@@ -629,7 +629,12 @@ Never in a soft shadow.
   stay flat (Sean, LAYERS-DEPTH a, 27 October 2026); nothing floats on a soft
   shadow.
 - Artwork that orders its own pieces (a cube, the crown, a hero) keeps its own numbers
-  inside itself; they never meet the page's layers.
+  inside itself; they never meet the page's layers. Its root sets `isolation: isolate`
+  and the numbered rules sit nested inside that root's rule, so the style check sees
+  them contained. A panel's edge and fill, a button's paint, a window's frame, a
+  figure's dots and the foil card's layers are such pieces.
+- A thin line inside a box (a chip's edge, a chosen tile, a check-in ring) is a real
+  border or outline, never an inset shadow, so forced colours still draws it.
 - With reduced motion asked for, nothing moves: a page's headline and its cards fade
   in, and windows, panels and menus are simply there.
 - The template's `/showcase/grammar` shows the pieces by name, how they move and the

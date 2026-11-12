@@ -43,12 +43,13 @@
   border-radius: 0; cursor: pointer; overflow: visible;
   background: transparent; color: var(--rg-p-on-accent);
   text-decoration: none;
+  /* Its own stacking root: the paint stays behind the label. */
+  &::before {
+    content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
+    transform: scale(var(--rg-press-scale, 1));
+  }
 }
 .rg-button__label { position: relative; min-inline-size: 0; max-inline-size: 100%; overflow-x: clip; text-overflow: ellipsis; background: transparent; transform: scale(var(--rg-press-scale, 1)); }
-.rg-button::before {
-  content: ""; position: absolute; inset: -1px; z-index: -1; pointer-events: none;
-  transform: scale(var(--rg-press-scale, 1));
-}
 /* Registered private paint values interpolate colors and the diagonal inset.
    Public override properties remain inherited and unset on the host. */
 @property --rg-button-edge-ink { syntax: "<color>"; inherits: false; initial-value: #ff5b19; }

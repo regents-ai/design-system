@@ -328,6 +328,7 @@
   inline-size: 8px;
   block-size: 8px;
   margin-inline-end: 6px;
+  box-sizing: border-box;
   border-radius: 50%;
   vertical-align: 0.05em;
   background: var(--color-error);
@@ -337,10 +338,10 @@
    when late, an empty ring once stopped. */
 .rg-account__light[data-light="on"] { background: var(--color-success); }
 .rg-account__light[data-light="late"] {
-  box-shadow: inset 0 0 0 1.5px var(--color-warning);
-  background: linear-gradient(to top, var(--color-warning) 50%, transparent 50%);
+  border: 1.5px solid var(--color-warning);
+  background: linear-gradient(to top, var(--color-warning) 50%, transparent 50%) border-box;
 }
-.rg-account__light[data-light="off"] { box-shadow: inset 0 0 0 1.5px var(--color-error); background: transparent; }
+.rg-account__light[data-light="off"] { border: 1.5px solid var(--color-error); background: transparent; }
 
 /* Pairing, in the pairing window or on the pairing page: the agent dropdown, the
    chosen agent's picture large, then three numbered steps. What a state lacks keeps
@@ -406,7 +407,7 @@
 @media (hover: hover) {
   .rg-account__choice:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
-.rg-account__choice:has(input:checked) { box-shadow: inset 0 0 0 1px var(--color-fg); }
+.rg-account__choice:has(input:checked) { outline: 1px solid var(--color-fg); outline-offset: -1px; }
 .rg-account__choice:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 .rg-account__choice .rg-account__mark { inline-size: 1.75rem; block-size: 1.75rem; }
 .rg-account__radio {
@@ -647,6 +648,6 @@
   .rg-account { background: Canvas; color: CanvasText; border-color: CanvasText; }
   .rg-account__history li, .rg-account__agents li { border-color: CanvasText; }
   .rg-account__status[data-state] { color: CanvasText; }
-  .rg-account__choice:has(input:checked) { border-color: Highlight; box-shadow: inset 0 0 0 1px Highlight; }
+  .rg-account__choice:has(input:checked) { border-color: Highlight; outline-color: Highlight; }
 }
 

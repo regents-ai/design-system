@@ -226,8 +226,8 @@ animation, data loading, authentication, wallet or product workflow is included.
 
 `regent_ui/scripts/style-check.sh` checks a site's own CSS, scripts and templates
 against the `STYLE.md` rules and prints `file:line` for each break; `mix regent_ui.assets`
-delivers it to every site (see "Style check" in `CONSUMERS.md`). Run it here over the
-package's own files with `sh scripts/style-check.sh` from `regent_ui/`.
+delivers it to every site (see "Style check" in `CONSUMERS.md`). `mix check` runs it over
+the package's own files, and a single break fails the check.
 
 ### Package checks
 
@@ -239,8 +239,9 @@ cd regent_ui && mix check
 
 It first verifies that every generated mirror of the canonical token sources is current
 (`node scripts/generate-tokens-json.mjs --check`, so Node.js is required), then compiles
-with warnings as errors, verifies no unused dependency locks, checks formatting, and runs
-the test suite with warnings as errors.
+with warnings as errors, verifies no unused dependency locks, checks formatting, runs the
+style check (`sh scripts/style-check.sh`, which needs ripgrep and Perl) over the package's
+own styles and templates, and runs the test suite with warnings as errors.
 
 The token verification only makes sense inside this repository checkout, where the root
 CSS sources and `scripts/` exist. The copy of `regent_ui` in an app's release build context

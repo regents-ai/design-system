@@ -49,7 +49,7 @@ a.rg-discussion__author:hover { text-decoration: underline; }
 /* The marked answer has a green rule down its left; the site's own replies sit on
    darker paper; both keep room inside the colour. */
 .rg-discussion__post--solution, .rg-discussion__post--house { padding-inline: .75rem; }
-.rg-discussion__post--solution { box-shadow: inset 3px 0 var(--rg-discussion-good); }
+.rg-discussion__post--solution { padding-inline-start: calc(.75rem - 3px); border-inline-start: 3px solid var(--rg-discussion-good); }
 .rg-discussion__post--house { background: var(--rg-discussion-sunk); }
 
 /* The Solved box under the question: who answered, when, the opening lines fading out. */
