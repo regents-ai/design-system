@@ -508,9 +508,9 @@ defmodule Regent.StructureShowcase do
                 <div class="rg-panel__body">
                   <Regent.Cells.meter
                     id="cells-supply"
-                    label="REGENT supply by holder"
+                    label="Sample token supply by holder"
                     used="612.4M"
-                    capacity="1B REGENT"
+                    capacity="1B SAMPLE"
                     max={1_000_000_000}
                     parts={sample_cells_supply()}
                   >
