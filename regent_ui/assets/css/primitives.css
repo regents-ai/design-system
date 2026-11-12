@@ -312,8 +312,26 @@
   border: 1px solid var(--rg-p-control-border); border-radius: var(--radius);
   color: var(--rg-p-text); background: var(--rg-p-surface); font: inherit;
 }
-.rg-field [aria-invalid="true"] { border-width: 2px; border-color: var(--rg-p-text); }
-.rg-field-errors { margin: 0; padding-inline-start: var(--space-3); color: var(--rg-local-ink, var(--rg-p-error)); }
+/* A field to fix doubles its edge in the error ink, inside the edge so nothing moves. */
+.rg-field [aria-invalid="true"] {
+  border-color: var(--rg-local-ink, var(--rg-p-error));
+  box-shadow: inset 0 0 0 1px var(--rg-local-ink, var(--rg-p-error));
+}
+/* The line under a field that says what to fix keeps its space while empty, so an
+   error showing up never moves the fields below it. */
+.rg-field-errors {
+  min-block-size: var(--type-label-line);
+  font-size: var(--type-label-size); line-height: var(--type-label-line);
+  color: var(--rg-local-ink, var(--rg-p-error));
+}
+.rg-field-errors p { margin: 0; }
+/* A field that cannot take input rests on the inert gray of a disabled action. */
+.rg-field :is(input, select, textarea):disabled {
+  border-color: var(--rg-p-border); background: var(--rg-p-disabled-fill); color: var(--rg-p-muted); cursor: not-allowed;
+}
+/* While a LiveView form is on its way its fields are read-only and its submit button
+   shows its phx-disable-with words; the words in the fields dim to match. */
+.phx-submit-loading .rg-field :is(input, select, textarea) { color: var(--rg-p-muted); cursor: progress; }
 .rg-muted { color: var(--rg-p-muted, inherit); }
 .rg-status { display: inline-flex; width: fit-content; padding: var(--space-0) var(--space-1); border: 1px solid var(--rg-p-tone, currentColor); border-radius: var(--radius); font-size: .8125rem; }
 .rg-tone--error { --rg-p-tone: var(--rg-p-error); color: var(--rg-local-ink, var(--rg-p-error)); }
@@ -404,6 +422,8 @@
 .rg-pill-select > :is(select, summary):focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset); }
 
 /* The page that holds the form places it, as it does its other panels. */
+/* The heading carries the form's tip beside it, as a page title does. */
+.rg-profile > header { display: flex; align-items: center; gap: var(--space-1); }
 .rg-profile form { display: grid; gap: var(--space-3); }
 .rg-profile input { width: 100%; min-width: 0; }
 /* The status sits beside Save in a smaller size, so two lines of it stay within
@@ -432,6 +452,7 @@
   .rg-button::after { background: ButtonText; }
   .rg-button:disabled { color: GrayText; opacity: 1; }
   .rg-field :is(input, select, textarea) { border-color: CanvasText; }
+  .rg-field [aria-invalid="true"] { outline: 1px solid CanvasText; outline-offset: -2px; }
   .rg-field select { appearance: auto; background-image: none; }
   .rg-pill-select > select { appearance: auto; padding-right: 18px; }
   .rg-pill-select:not(details)::after { display: none; }
