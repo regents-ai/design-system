@@ -401,6 +401,43 @@ defmodule Regent.StructureShowcase do
             </Regent.Discussion.posts>
           </div>
         </section>
+        <section id="activity" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Activity</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <Regent.Agents.activity id="activity-running" label="Pira" steps={sample_steps(:running)} now={sample_now()} />
+            <Regent.Agents.activity id="activity-asks" label="Night shift" steps={sample_steps(:asks)} now={sample_now()}>
+              <:action>
+                <.button type="button" id="activity-approve" arrow={false}>Approve</.button>
+              </:action>
+            </Regent.Agents.activity>
+            <Regent.Agents.activity id="activity-failed" label="Wren" steps={sample_steps(:failed)} now={sample_now()} />
+            <Regent.Agents.activity id="activity-empty" label="Ilex" steps={[]} now={sample_now()} />
+            <Regent.Agents.activity id="activity-loading" label="Pira" steps={:loading} now={sample_now()} />
+            <Regent.Agents.activity id="activity-unavailable" label="Pira" steps={:unavailable} now={sample_now()}>
+              <:retry><.button variant="secondary" id="activity-retry" arrow={false}>Retry</.button></:retry>
+            </Regent.Agents.activity>
+            <div class="showcase-stack">
+              <Regent.Agents.activity
+                :for={state <- [:running, :asks, :failed, :done]}
+                id={"activity-line-#{state}"}
+                steps={sample_steps(state)}
+                now={sample_now()}
+                variant="line"
+              />
+              <Regent.Agents.activity id="activity-line-none" steps={[]} now={sample_now()} variant="line" />
+              <div class="showcase-actions">
+                <.button variant="secondary" id="activity-change" arrow={false}>Change</.button>
+              </div>
+            </div>
+          </div>
+          <Regent.Agents.fleet id="activity-fleet" label="Fleet" agents={sample_fleet()} now={sample_now()} />
+          <div class="showcase-figures">
+            <Regent.Agents.fleet id="activity-fleet-empty" label="Fleet" agents={[]} now={sample_now()} />
+            <Regent.Agents.fleet id="activity-fleet-loading" label="Fleet" agents={:loading} now={sample_now()} />
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -582,6 +619,51 @@ defmodule Regent.StructureShowcase do
       %{id: "1", label: "First note written by your agent", by: "Pira", at: "6 Nov, 10:40 UTC", points: "+10"},
       %{id: "2", label: "Patchbay Offer placed", by: "You", at: "4 Nov, 18:45 UTC", points: "+0", status: "Limit reached"}
     ]
+  end
+
+  defp sample_now, do: ~U[2026-11-12 10:00:00Z]
+
+  # Steps oldest first, at seconds before sample_now/0; nil means not yet.
+  defp sample_steps(last) do
+    done = [
+      {:read, "Offers board", 900, 860},
+      {:think, "Pricing", 860, 700},
+      {:tool, "Search notes", 700, 640},
+      {:read, "Stake form", 640, 600},
+      {:write, "Offer draft", 600, 400},
+      {:think, "Next offer", 400, 60}
+    ]
+
+    tail =
+      case last do
+        :running -> [{:tool, "Search notes", 12, nil}, {:write, "Reply", nil, nil}]
+        :asks -> [{:waiting_for_you, "Approve offer", 45, nil}]
+        :failed -> [{:failed, "Offer draft", 30, 28}]
+        :done -> [{:done, "Offer placed", 20, 20}]
+      end
+
+    for {{kind, label, started, finished}, i} <- Enum.with_index(done ++ tail) do
+      %{
+        id: "#{last}-#{i}",
+        kind: kind,
+        label: label,
+        started_at: started && DateTime.add(sample_now(), -started),
+        finished_at: finished && DateTime.add(sample_now(), -finished)
+      }
+    end
+  end
+
+  defp sample_fleet do
+    for {id, name, kind, last} <- [
+          {"a1", "Pira", "muse", :running},
+          {"a2", "Night shift", "claude_code", :asks},
+          {"a3", "An agent with a deliberately long name", "codex", :done},
+          {"a4", "Wren", "hermes", :failed},
+          {"a5", "Ilex", "other", nil}
+        ] do
+      steps = if last, do: sample_steps(last), else: []
+      %{id: id, name: name, kind: kind, href: "#activity", steps: steps}
+    end
   end
 
   # Most agents have no World ID, as on the live sites; one name is short, one long.

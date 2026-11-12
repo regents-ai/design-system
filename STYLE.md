@@ -389,6 +389,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture large, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
+| `Regent.Agents.activity` | An agent at work, from the steps the server sends: the latest six on a hairline rail with older ones folded under "Earlier", each a mark whose shape says its state (dashed square next, filled square running, half-filled square waiting for the person with the page's button, a tick done, an empty square stopped), a verb, what it touched and its time; `variant="line"` shows the latest started step on one line for menus and lists | Awaiting consumer adoption |
+| `Regent.Agents.fleet` | Many agents at once: a grid of tiles, each the agent's picture, name and latest step on one line; a tile with a page is a link named by the agent | Awaiting consumer adoption |
 | `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
 | `Regent.Account.history` | Read-only formatted Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
@@ -764,6 +766,11 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
   transform alone and the words never move. The package slides the segmented indicator
   in CSS; the template's motion kit adds the stretch that leads with the new side, and
   slides the tabs' bar from the tab before.
+- An agent's running step is the one moving thing in its activity: a 6px dash travels
+  down the rail under it every 1.2s, by transform alone, and stops when the step
+  ends. Marks follow the data the page passes and never a timer; a finished step's
+  tick draws in, and a new verb changes like any status word. Reduced motion and forced
+  colours hide the dash; the filled square still says it runs.
 - A breadcrumb keeps its row height and never wraps. When the path changes, the
   template's motion kit raises the new page showing 4px into place over 280ms, fades
   the crumbs that went in 140ms, and the old page showing turns to a plain level; its

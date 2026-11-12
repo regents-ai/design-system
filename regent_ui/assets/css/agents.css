@@ -1,0 +1,189 @@
+/* An agent at work (Regent.Agents): one line per step on a hairline rail, a mark per
+   step whose shape says its state, so no state rests on colour alone: a dashed square
+   waits to start, a filled square runs, a half-filled square waits for the person, a
+   tick is done and an empty square has stopped. The one moving thing is a short dash
+   travelling down the rail under a running step, and only while the step runs. */
+.rg-activity {
+  --rg-activity-line: 1.5rem;
+  --rg-activity-pad: var(--space-1);
+  --rg-activity-centre: calc(var(--rg-activity-pad) + var(--rg-activity-line) / 2);
+  font-family: var(--font-family-ui);
+  line-height: var(--rg-activity-line);
+  color: var(--color-fg-muted);
+}
+.rg-activity--full.rg-waiting, .rg-fleet.rg-waiting { min-block-size: 10rem; }
+.rg-activity--line.rg-waiting { min-block-size: var(--rg-activity-line); }
+.rg-activity__none { margin: 0; color: var(--color-fg-muted); }
+.rg-activity__steps { display: grid; margin: 0; padding: 0; list-style: none; }
+.rg-activity__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1rem auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: var(--space-1);
+  min-block-size: calc(var(--rg-activity-line) + 2 * var(--rg-activity-pad));
+  padding-block: var(--rg-activity-pad);
+  box-sizing: border-box;
+}
+.rg-activity__verb { color: var(--color-fg); white-space: nowrap; }
+.rg-activity__label { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-activity__step[data-state="asks"] .rg-activity__label { color: var(--color-fg); }
+.rg-activity__step[data-state="queued"] .rg-activity__verb { color: var(--color-fg-muted); }
+.rg-activity__time { justify-self: end; white-space: nowrap; }
+.rg-activity__time[data-unused] { visibility: hidden; }
+.rg-activity__action { display: flex; }
+/* In a narrow list the person's button goes under its step's words. */
+.rg-activity--full { container-type: inline-size; }
+@container (max-width: 28rem) {
+  .rg-activity__action { grid-column: 2 / -1; padding-block-start: var(--space-1); }
+}
+
+/* The rail: above and below each mark, with a gap round it; it starts at the first
+   mark and ends at the last, unless the last is running. */
+.rg-activity__rail {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(.5rem - .5px);
+  inline-size: 1px;
+  pointer-events: none;
+}
+.rg-activity__rail::before, .rg-activity__rail::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  background: var(--hairline);
+}
+.rg-activity__rail::before { inset-block: 0 calc(100% - var(--rg-activity-centre) + 6px); }
+.rg-activity__rail::after { inset-block: calc(var(--rg-activity-centre) + 6px) 0; }
+.rg-activity__step:first-child > .rg-activity__rail::before,
+.rg-activity__step:last-child:not([data-state="running"]) > .rg-activity__rail::after { content: none; }
+.rg-activity__trace {
+  position: absolute;
+  inset-block: calc(var(--rg-activity-centre) + 6px) 0;
+  inset-inline: 0;
+  overflow: hidden;
+}
+.rg-activity__trace::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent calc(100% - 6px), var(--color-fg) calc(100% - 6px));
+  animation: rg-activity-trace 1.2s linear infinite;
+}
+@keyframes rg-activity-trace {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(6px); }
+}
+
+/* The marks: an 8px square, or the drawn tick once done. */
+.rg-activity__mark {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1rem;
+  block-size: var(--rg-activity-line);
+}
+.rg-activity__mark::before {
+  content: "";
+  box-sizing: border-box;
+  inline-size: 8px;
+  block-size: 8px;
+}
+.rg-activity__mark[data-state="queued"]::before { border: 1px dashed var(--hairline-strong); }
+.rg-activity__mark[data-state="running"]::before { background: var(--color-fg); }
+.rg-activity__mark[data-state="asks"]::before {
+  border: 1px solid var(--color-warning);
+  background: linear-gradient(to top, var(--color-warning) 50%, transparent 50%) border-box;
+}
+.rg-activity__mark[data-state="failed"]::before { border: 2px solid var(--color-error); }
+.rg-activity__mark[data-state="done"]::before { content: none; }
+.rg-activity .rg-activity__mark .rg-tick {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  inline-size: 1rem;
+  block-size: 1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--color-success);
+}
+.rg-activity__state {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Earlier steps fold under one line. */
+.rg-activity__earlier > summary {
+  display: flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  gap: .25rem;
+  color: var(--color-fg-muted);
+  cursor: pointer;
+  list-style: none;
+}
+.rg-activity__earlier > summary::-webkit-details-marker { display: none; }
+.rg-activity__fold { flex: none; transition: transform var(--duration-fast) var(--ease-out); }
+.rg-activity__earlier[open] > summary .rg-activity__fold { transform: rotate(90deg); }
+.rg-activity__earlier > summary:focus-visible {
+  outline: var(--rg-ring-width) solid var(--color-focus);
+  outline-offset: var(--rg-ring-offset);
+}
+
+/* One line: mark, verb, label, time. The verb keeps the width of its widest word, so
+   lines stacked in a list keep their labels in one column. */
+.rg-activity--line { display: flex; align-items: center; gap: var(--space-1); min-inline-size: 0; margin: 0; }
+.rg-activity--line .rg-activity__label { flex: 1 1 auto; }
+
+/* Many agents: a grid of square tiles, each picture, name and its latest step. */
+.rg-fleet__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rg-fleet__face {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  grid-template-areas: "mark name" "line line";
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  block-size: 100%;
+  box-sizing: border-box;
+  padding: var(--space-2);
+  border: 1px solid var(--hairline);
+  background: var(--color-surface);
+  color: var(--color-fg);
+  text-decoration: none;
+}
+.rg-fleet__mark { grid-area: mark; inline-size: 2.5rem; block-size: 2.5rem; }
+.rg-fleet__name { grid-area: name; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-fleet__face > .rg-activity { grid-area: line; }
+a.rg-fleet__face:hover { border-color: var(--hairline-strong); }
+a.rg-fleet__face:focus-visible {
+  outline: var(--rg-ring-width) solid var(--color-focus);
+  outline-offset: var(--rg-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-activity__trace { display: none; }
+  .rg-activity__fold { transition: none; }
+}
+@media (forced-colors: active) {
+  .rg-activity__trace { display: none; }
+  .rg-activity__rail::before, .rg-activity__rail::after { background: CanvasText; }
+  .rg-activity__mark::before { forced-color-adjust: none; border-color: CanvasText; }
+  .rg-activity__mark[data-state="running"]::before { background: CanvasText; }
+  .rg-activity__mark[data-state="asks"]::before {
+    background: linear-gradient(to top, CanvasText 50%, transparent 50%) border-box;
+  }
+  .rg-fleet__face { border-color: CanvasText; }
+}

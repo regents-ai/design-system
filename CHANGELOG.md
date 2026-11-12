@@ -920,3 +920,24 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - The showcase gains a Cards section: the foil card, a foil feature card, a tip opening
   over a panel inside a panel, and a marked answer and a house reply.
 
+## 2026-11-12 — Agent at work
+
+- New `Regent.Agents.activity`: an agent's steps, the latest six on a hairline rail and
+  older ones folded under "Earlier", each a mark, a verb, what it touched and its time.
+  Each state has its own shape, so none rests on colour: a dashed square next, a filled
+  square running, a half-filled square waiting for the person (with the page's button),
+  a tick done, an empty square stopped. `variant="line"` shows the latest started step on
+  one line. Loading, unread and empty steps have their own states (November bonus pack,
+  step 10).
+- New `Regent.Agents.fleet`: a grid of tiles, each an agent's picture, name and latest
+  step; a tile with a page is one link named by the agent.
+- The only motion is a short dash travelling down the rail under a running step; it
+  stops when the step ends and never shows under reduced motion or forced colours.
+  Marks follow the steps the page passes; nothing runs on a timer. It reuses
+  `status_word`, `tick` and `figure`, and `waiting` while the steps load.
+- New stylesheet `agents.css`, imported by `structure.css`. No new tokens and no new
+  colours: only the foreground, muted, success, warning and error colours.
+- The motion kit's marks are `data-activity`, `data-step` and `data-state`;
+  `CONSUMERS.md` says how. The showcase gains an Activity section.
+- `Regent.Account.agents_brief` still shows its own line; moving it to the line form is
+  left for its own change.

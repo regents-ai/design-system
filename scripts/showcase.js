@@ -84,3 +84,21 @@ for (const tab of document.querySelectorAll("#choice-tabs a")) {
     tab.setAttribute("aria-current", "page");
   });
 }
+// A step ends as a page's would after the server says so: the running mark becomes a
+// drawn tick and its travelling dash stops; the waiting line's word swaps to Done.
+document.querySelector("#activity-change").addEventListener("click", () => {
+  for (const mark of document.querySelectorAll("#activity-running [data-state='running'] .rg-activity__mark, #activity-line-running .rg-activity__mark")) {
+    const done = mark.dataset.state === "running";
+    mark.dataset.state = done ? "done" : "running";
+    mark.querySelector(".rg-tick").toggleAttribute("data-done", done);
+    mark.parentElement.querySelector(".rg-activity__trace")?.toggleAttribute("hidden", done);
+  }
+  const asks = document.querySelector("#activity-line-asks");
+  const mark = asks.querySelector(".rg-activity__mark");
+  const done = mark.dataset.state === "asks";
+  mark.dataset.state = done ? "done" : "asks";
+  mark.querySelector(".rg-tick").toggleAttribute("data-done", done);
+  for (const word of asks.querySelectorAll(".rg-status-word__word")) {
+    word.toggleAttribute("data-on", word.textContent.trim() === (done ? "Done" : "Waiting for you"));
+  }
+});

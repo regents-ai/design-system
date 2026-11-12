@@ -2,6 +2,7 @@
 @import "./blog.css";
 @import "./discussion.css";
 @import "./account.css";
+@import "./agents.css";
 @import "./points.css";
 
 /* Shared ruled-sheet structure. Import tokens first; palettes remain product-owned. */

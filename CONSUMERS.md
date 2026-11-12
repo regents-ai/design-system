@@ -133,6 +133,31 @@ card opens on hover as well as a press. The kit moves it from these marks:
 - The `[popover]` menus and the card grow from the button that opened them.
 - Nothing moves for a key press or under reduced motion.
 
+`Regent.Agents.activity` takes `id`, `steps` and `now` (the time the page was drawn),
+and in its full form a `label` to read out ("Pira's activity"). `steps` is `:loading`,
+`:unavailable` or the steps the viewer may see, oldest first, each `%{id, kind, label,
+started_at, finished_at}`: `kind` one of `:read`, `:think`, `:tool`, `:write`,
+`:waiting_for_you`, `:done` or `:failed`, any other raises; `label` names what the step
+touched in one to four words, never a tool's inputs, a key, a wallet detail or a
+message body. The state follows the times alone: no `started_at` is next, no
+`finished_at` is running (or waiting for the person), both is done. The `action` slot
+is the page's button for a step waiting for the person, given that step; `retry` is the
+page's retry when the steps could not be read. `variant="line"` shows the latest
+started step on one line. `Regent.Agents.fleet` takes `id`, `label`, `now` and `agents`
+(`:loading`, `:unavailable` or `%{id, name, kind, href, steps}`; `href` `nil` for no
+page). Neither runs a timer: the page sends new steps and a new `now` when it has them.
+The package moves the status word, the tick and the running step's dash in CSS. The
+motion kit may use these marks:
+
+- `data-activity` marks the list of latest steps for the kit's `MotionList`; each row is
+  an `li` with `data-step` (the step's id) and `data-state` (`queued`, `running`,
+  `asks`, `done` or `failed`), so the kit can tell a row that arrived from one that
+  changed.
+- `.rg-activity__rail` is each row's line; the kit may grow a new row's line down from
+  the mark above.
+- Each step's time is a `Regent.Primitives.figure`, carrying `data-count`.
+- Nothing moves for a key press or under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the
