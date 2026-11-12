@@ -1187,3 +1187,11 @@ design system. using vgpu.sh".
 - `STYLE.md` gains "Cells", and the showcase a Cells section: Points today by source,
   counting, a token's supply with a long name and a holder at zero, a fleet's nine
   roles, a single part, and 320 wide.
+
+## 2026-11-12 — Social posts blend in oklch
+
+- The 20 gradients in `social-posts/src/index.css` now say `in oklch`, as `STYLE.md`
+  "Gradients" asks; they were the last outside `regent_ui/`. The four posts on its two
+  pages draw the same to the pixel, in the preview and the build. The two post
+  backgrounds no page uses yet move by at most 4/255, most where the Greco base blends
+  dark violet into dark brown.

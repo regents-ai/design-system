@@ -24,11 +24,11 @@
   inset: 0;
   border-radius: inherit;
   padding: 1.4px;
-  background: linear-gradient(180deg,
+  background: linear-gradient(180deg in oklch,
     rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
     rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
     rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(in oklch, #fff 0 0) content-box, linear-gradient(in oklch, #fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
@@ -73,7 +73,7 @@
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
-    to bottom,
+    to bottom in oklch,
     rgba(255,255,255,0),
     rgba(255,255,255,0) 50%,
     rgba(0,0,0,0.15) 50%,
@@ -136,21 +136,21 @@
   background:
     /* column pillar highlights */
     repeating-linear-gradient(
-      90deg,
+      90deg in oklch,
       transparent 0px, transparent 44px,
       rgba(210, 180, 100, 0.06) 44px, rgba(210, 180, 100, 0.06) 56px,
       transparent 56px, transparent 100px
     ),
     /* violet dome top glow */
-    radial-gradient(ellipse 130% 55% at 50% -5%, rgba(130, 50, 230, 0.65) 0%, transparent 68%),
+    radial-gradient(ellipse 130% 55% at 50% -5% in oklch, rgba(130, 50, 230, 0.65) 0%, transparent 68%),
     /* bio-lab left teal glow */
-    radial-gradient(ellipse 55% 70% at 5% 55%, rgba(60, 210, 150, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 70% at 5% 55% in oklch, rgba(60, 210, 150, 0.22) 0%, transparent 60%),
     /* bio-lab right cyan glow */
-    radial-gradient(ellipse 55% 70% at 95% 45%, rgba(60, 195, 240, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 70% at 95% 45% in oklch, rgba(60, 195, 240, 0.15) 0%, transparent 60%),
     /* warm gold floor */
-    radial-gradient(ellipse 150% 45% at 50% 108%, rgba(210, 155, 35, 0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 150% 45% at 50% 108% in oklch, rgba(210, 155, 35, 0.45) 0%, transparent 65%),
     /* deep base */
-    linear-gradient(180deg, #0b0713 0%, #110819 45%, #190d07 100%);
+    linear-gradient(180deg in oklch, #0b0713 0%, #110819 45%, #190d07 100%);
 }
 
 /* fluted column edges via pseudo */
@@ -162,7 +162,7 @@
   z-index: 1;
   background:
     repeating-linear-gradient(
-      90deg,
+      90deg in oklch,
       transparent 0px, transparent 43px,
       rgba(255, 240, 180, 0.08) 43px, rgba(255, 240, 180, 0.08) 45px,
       transparent 45px, transparent 55px,
@@ -177,21 +177,21 @@
   background:
     /* graph paper minor grid */
     repeating-linear-gradient(
-      0deg,
+      0deg in oklch,
       transparent 0px, transparent 19px,
       rgba(255,255,255,0.055) 19px, rgba(255,255,255,0.055) 20px
     ),
     repeating-linear-gradient(
-      90deg,
+      90deg in oklch,
       transparent 0px, transparent 19px,
       rgba(255,255,255,0.055) 19px, rgba(255,255,255,0.055) 20px
     ),
     /* canopy darkness */
-    radial-gradient(ellipse 140% 55% at 50% -5%, rgba(18, 68, 18, 0.95) 0%, transparent 72%),
+    radial-gradient(ellipse 140% 55% at 50% -5% in oklch, rgba(18, 68, 18, 0.95) 0%, transparent 72%),
     /* forest floor */
-    radial-gradient(ellipse 120% 40% at 50% 108%, rgba(12, 48, 12, 0.98) 0%, transparent 70%),
+    radial-gradient(ellipse 120% 40% at 50% 108% in oklch, rgba(12, 48, 12, 0.98) 0%, transparent 70%),
     /* ambient mid green */
-    linear-gradient(180deg, #0d1f0d 0%, #182e18 35%, #142814 70%, #0e1e0e 100%);
+    linear-gradient(180deg in oklch, #0d1f0d 0%, #182e18 35%, #142814 70%, #0e1e0e 100%);
 }
 
 /* voxel block tree silhouettes */
@@ -203,9 +203,9 @@
   z-index: 1;
   background:
     /* tree canopy blocks at varying x positions and heights */
-    linear-gradient(to bottom, transparent 18%, rgba(24,72,24,0.75) 18%, rgba(24,72,24,0.75) 42%, transparent 42%),
+    linear-gradient(to bottom in oklch, transparent 18%, rgba(24,72,24,0.75) 18%, rgba(24,72,24,0.75) 42%, transparent 42%),
     repeating-linear-gradient(
-      90deg,
+      90deg in oklch,
       rgba(18, 62, 18, 0.6)  0px,  rgba(18, 62, 18, 0.6)  40px,
       transparent             40px, transparent             80px,
       rgba(22, 74, 22, 0.5)  80px,  rgba(22, 74, 22, 0.5)  130px,
@@ -230,12 +230,12 @@
   z-index: 2;
   background:
     repeating-linear-gradient(
-      0deg,
+      0deg in oklch,
       transparent 0px, transparent 99px,
       rgba(255,255,255,0.1) 99px, rgba(255,255,255,0.1) 100px
     ),
     repeating-linear-gradient(
-      90deg,
+      90deg in oklch,
       transparent 0px, transparent 99px,
       rgba(255,255,255,0.1) 99px, rgba(255,255,255,0.1) 100px
     );
