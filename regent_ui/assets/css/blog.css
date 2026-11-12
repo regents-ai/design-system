@@ -4,7 +4,6 @@
 .rg-blog :where(p,li,td,th,a) { overflow-wrap: anywhere; }
 .rg-blog__intro { padding: clamp(24px, 5vw, 72px) clamp(20px, 4vw, 48px); border-block-end: 1px solid var(--rg-page-rule); }
 .rg-blog__intro h1 { max-inline-size: 20ch; margin: 0; font-size: clamp(2.25rem, 4.5vw, 4rem); }
-.rg-blog__eyebrow { margin: 0 0 16px; font-size: 1rem; }
 .rg-blog__grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; list-style: none; margin: 0; padding: 24px; }
 .rg-blog__grid > li { min-inline-size: 0; }
 .rg-blog__card { block-size: 100%; border: 1px solid var(--rg-page-rule); }

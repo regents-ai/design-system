@@ -82,7 +82,6 @@ defmodule Regent.Account do
 
     ~H"""
     <section id={@id} class={["rg-account-identity", @class]} aria-label="Your account" {@rest}>
-      <p class="rg-account-identity__kicker">Your account</p>
       <div class="rg-account-identity__who">
         <div :if={@picture != []} class="rg-account-identity__picture">{render_slot(@picture)}</div>
         <div class="rg-account-identity__name">
@@ -279,11 +278,13 @@ defmodule Regent.Account do
   attr :rest, :global
   slot :picture, required: true, doc: "the person's picture, 40 px square"
   slot :agents, required: true, doc: "the person's agents, in `agents_brief/1`"
+  slot :theme, doc: "the site's light and dark switch, a row above Manage Account"
 
   @doc """
   The account menu: the small box the account's button at the top right of every
   page opens, hanging under it. The person's picture, name and wallet, their three
-  most recently active agents, Pair New Agent, then Manage Account and Sign out.
+  most recently active agents, Pair New Agent, the site's theme switch when it
+  passes one (`theme`), then Manage Account and Sign out.
   Everything else about the account is on the site's Account page, which
   `manage_href` leads to. It patches: a page drawn by the same LiveView as the
   Account page changes in place, and any other page loads it. Pair New Agent opens
@@ -328,6 +329,7 @@ defmodule Regent.Account do
       >
         <Icons.icon name="plus" /> Pair New Agent
       </button>
+      <div :if={@theme != []} class="rg-account-menu__theme">{render_slot(@theme)}</div>
       <div class="rg-account-menu__foot">
         <.link
           patch={@manage_href}
@@ -632,7 +634,12 @@ defmodule Regent.Account do
 
       <form class="rg-account__name" phx-submit={@rename_event} phx-target={@target}>
         <input type="hidden" name="agent_id" value={@agent.id} />
-        <Primitives.field :let={field} id={"#{@id}-name"} label="Name">
+        <Primitives.field
+          :let={field}
+          id={"#{@id}-name"}
+          label="Name"
+          errors={List.wrap(@name_error)}
+        >
           <div class="rg-account__name-row">
             <input
               id={field.id}
@@ -641,20 +648,18 @@ defmodule Regent.Account do
               maxlength="80"
               required
               autocomplete="off"
-              aria-invalid={@name_error && "true"}
+              aria-invalid={field.aria_invalid}
               aria-describedby={field.described_by}
             />
             <Primitives.button type="submit">Save</Primitives.button>
           </div>
-          <:hint>
-            <span :if={@name_error} role="alert">{@name_error}</span>
-            <span :if={!@name_error}>Only you see this name.</span>
+          <:tip>
             <Primitives.tip id={"#{@id}-name-about"} label="About this name">
               Your agent chose this name when it paired. Only you and the agent see it.
               A new name shows on your account on every Regent site. It may hold up to
               80 characters, with no hidden characters.
             </Primitives.tip>
-          </:hint>
+          </:tip>
         </Primitives.field>
       </form>
 

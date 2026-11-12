@@ -33,11 +33,6 @@
 
 .rg-account-identity p { margin: 0; }
 
-.rg-account-identity__kicker {
-  color: var(--color-fg-muted);
-  font-size: .875rem;
-}
-
 .rg-account-identity__who {
   display: flex;
   align-items: center;
@@ -259,6 +254,8 @@
 @media (hover: hover) {
   .rg-account-menu__pair:hover { background: color-mix(in oklch, var(--color-fg) 6%, transparent); }
 }
+/* The site's theme switch: its words at the start, the switch at the end. */
+.rg-account-menu__theme { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
 .rg-account-menu__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); }
 .rg-account-menu__foot .rg-button { justify-content: center; min-block-size: 2.25rem; margin: 0; padding-inline: var(--space-1); font-size: .8125rem; white-space: nowrap; }
 @media (pointer: coarse) { .rg-account-menu__foot .rg-button { min-block-size: 2.75rem; } }
@@ -544,15 +541,11 @@
   text-transform: uppercase;
 }
 
-/* The name's form: the field and Save on one line; its hint or the refusal in its
-   place keeps one line, so a refusal never moves the facts below. */
+/* The name's form: the field and Save on one line; a refusal takes the field's error
+   line, which is always there, so it never moves the facts below. */
 .rg-account__name { margin: 0 0 var(--space-3); }
 .rg-account__name-row { display: flex; align-items: center; gap: var(--space-2); }
 .rg-account__name-row input { flex: 1; min-width: 0; }
-.rg-account__name .rg-muted { display: flex; align-items: center; gap: 6px; }
-.rg-account__name .rg-muted > span:first-child {
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
 
 .rg-account__facts {
   display: grid;

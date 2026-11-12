@@ -158,10 +158,47 @@ motion kit may use these marks:
 - Each step's time is a `Regent.Primitives.figure`, carrying `data-count`.
 - Nothing moves for a key press or under reduced motion.
 
+`Regent.Charts.line` takes `id`, `label` (one or two words with the unit, such as
+"Price (USDC)") and `series`: `:loading`, `:slow` (once the page has waited 10 seconds),
+`:unavailable`, or one or two `%{name, points}`, points oldest first, each `%{at, value,
+figure, time}`: `at` a `DateTime`, `NaiveDateTime` or `Date`, `value` a number, and
+`figure` and `time` as the page shows them ("1,204.50", "12 Nov"). Anything else raises.
+`fill` puts a flat fill under a lone series. The `period` slot holds the page's
+`Regent.Primitives.segmented` and the `retry` slot its retry button. The rules are worked
+out from the values; their labels group thousands and show the decimals the step needs,
+so the label carries the unit. `--rg-chart-height` (12rem) sets the plot's height. The
+package draws the chart still and runs no script; the motion kit's chart hook uses these
+marks:
+
+- `data-chart` marks the chart. The kit sets `data-chart-at` on it (the index of the
+  point shown) and `--rg-chart-x` (that point's place across, 0 to 100), which shows the
+  1px rule there; it removes `data-chart-at` when the pointer leaves or focus goes.
+- `data-chart-plot` is the area the pointer follows. The kit gives it `tabindex="0"`, so
+  Left and Right step through the points; it already carries `role="img"` and its label.
+- Each point is a `tr` with `data-chart-point`, `data-x` and `data-y` (its place across
+  and down, 0 to 100) in the chart's table, oldest first; its `th` is the time and each
+  `td` a series' figure.
+- `data-chart-readout="figure"` (a `Regent.Primitives.figure`, so `MotionCount` rolls it)
+  and `data-chart-readout="time"` are the words above the chart; the kit writes the
+  point's figure and time there, and puts the latest back when it lets go.
+- `data-chart-line` (`0`, `1`) marks each series' path. On a new period the kit morphs
+  the path to the new one (`svg.morphTo`, 280ms `--ease-in-out`) when the point counts
+  match, otherwise crossfades it over 200ms.
+- Nothing moves for a key press or under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the
 page). A `select` pill needs nothing.
+
+Render `Regent.Structure.confirm` once in the root layout and import `confirm.mjs`
+(copied by `mix regent_ui.assets`) once from the site's `app.ts`, before the LiveSocket
+connects and in place of `phoenix_html`'s script: a press on any control with
+`data-confirm` (the question) and `data-confirm-action` (one or two words on the button
+that goes ahead, such as "Delete") then asks in that window, and the browser's own
+confirm box never shows. Every `data-confirm` gets a `data-confirm-action`. The window
+carries `data-opened-by="key"` or `"pointer"` while it is open, so the motion kit opens
+it at once after a key press.
 
 Import `tip.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`: a
 `Regent.Primitives.tip` then opens while a mouse rests on its "i" or figure and closes a

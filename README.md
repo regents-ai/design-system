@@ -179,10 +179,22 @@ icon and an arrow to Basescan, Etherscan or Blockscout, tight together. On a tes
 with no explorer `chain="test"` leaves the arrow out, and a long ID such as a Uniswap v4
 pool ID takes `kind="id"`, copied with no arrow.
 
+A question before an action that can't be undone opens the one shared window,
+`Regent.Structure.confirm`, never the browser's own box: the control carries
+`data-confirm` (the question) and `data-confirm-action` (one or two words on the button
+that goes ahead). Each press of that button does what the original press would have done,
+once.
+
 ```heex
 <Regent.Structure.dialog id="buy-key" phx-hook="ModalDialog" aria-labelledby="buy-key-title">
   <h2 id="buy-key-title">Buy Key</h2>
 </Regent.Structure.dialog>
+
+<%!-- once, in the root layout, with confirm.mjs imported --%>
+<Regent.Structure.confirm />
+<button data-confirm="Delete this note?" data-confirm-action="Delete" phx-click="delete">
+  Delete
+</button>
 
 <Regent.Primitives.address id="treasury" address={@treasury} />
 <Regent.Primitives.address id="sent" address={@tx_hash} kind="tx" />
@@ -209,8 +221,7 @@ Required strings: unique `id` and `title`. `value_bps` accepts integer `0..10000
 (default `nil`); `5620` renders **56.2% / 43.8%** from the same integer basis.
 The named read-only meter uses matching `0..100` values and fill. Invalid values
 raise `ArgumentError`; unknown data renders two em dashes and `No data`, not a zero meter.
-Optional strings: `eyebrow="Allocation"`, `label="Allocated"`,
-`remainder_label="Remaining"`, `footer_label="Details"`, `change={nil}`.
+Optional strings: `label="Allocated"`, `remainder_label="Remaining"`, `footer_label="Details"`, `change={nil}`.
 The caller defines the change's units/period; it is display text only. Optional
 `:footer` and `:footer_badge` slots provide content; `rg-ratio-card__tile` styles
 static footer tiles without inventing buttons. `class` and global attributes reach

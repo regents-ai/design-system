@@ -986,3 +986,70 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - The agent list is `data-panel="list"`, and `account.css` drops its own opening
   transition: the template's motion kit moves the list in and out, so every site's list
   moves the same way and reduced motion keeps it still. `STYLE.md` says so.
+
+## 2026-11-12 — Charts
+
+- New `Regent.Charts.line`: a price, stake or earnings line drawn as SVG on the server
+  from the page's points, with no chart library and no script (November bonus pack,
+  step 9). One series in the chart colour, or two with the second muted and dashed so
+  they differ by shape too; an optional flat 10% fill under a lone series; a hairline
+  baseline and at most four hairline rules, labelled on the right in equal-width
+  figures. Above it, the latest figure and its time beside the page's period choice.
+- Every chart carries a table of its points, read by screen readers and agents in
+  place of the drawing. Loading and failed reads show the waiting box at the plot's
+  size, and an empty read says "No activity yet.", so the chart keeps one height.
+- New token `--color-chart-line`: the site's action colour, Tangerine on Regents (its
+  white and charcoal actions vanish on its pages) and `#238450` on Techtree in light.
+- New stylesheet `charts.css`, imported by `structure.css`. The motion kit's marks are
+  `data-chart`, `data-chart-at`, `--rg-chart-x`, `data-chart-plot`, `data-chart-point`,
+  `data-chart-readout` and `data-chart-line`; `CONSUMERS.md` says how. The showcase
+  gains a Charts section with a stand-in for the kit's pointer rule.
+- Not built here: Liveline's per-frame smoothing, momentum arrows, order book and
+  candlesticks, and flow diagrams beyond the existing technical figure.
+
+## 2026-11-12 — One window asks before an action that can't be undone
+
+- New `Regent.Structure.confirm` and `regent_ui/assets/js/confirm.mjs`: a press on a
+  control carrying `data-confirm` asks in the shared cut-corner window instead of the
+  browser's own confirm box. The window holds the control's question and two buttons:
+  Cancel, which takes focus first, and the button that goes ahead, worded by the
+  control's `data-confirm-action` (Delete, Unpair, Block). Cancel or Escape hands focus
+  back to the control. Every press of the button that goes ahead does what the original
+  press would have done, once, the moment it is pressed; nothing blocks or merges
+  repeat presses. The window carries `data-opened-by` (`key` or `pointer`) for the
+  motion kit. `mix regent_ui.assets` copies `confirm.mjs`.
+- A primary button inside any window keeps a visible fill against the window's own
+  surface (Regents' white and charcoal actions matched it).
+- Shared parts carry no taglines, helper text or small labels (founder, 2 Nov): the
+  ratio card loses `eyebrow`, the technical figure its `caption` slot, the blog
+  gallery its `site` attribute and tagline, the utility page its `context` label, the
+  account card its "Your account" label, and the blog's empty and Not found pages their
+  helper lines. Discussion's Solved sentence moves into a tip beside the heading
+  (`caption` attribute removed). The agent's name refusal now shows in the name field's
+  error line; its "Only you see this name." line is gone and its tip stays.
+  `Regent.Primitives.field` gains a `tip` slot beside the label. STYLE.md's "Few words
+  on screen" gains the rule.
+- Consumers: render `<Regent.Structure.confirm />` once in the root layout, import
+  `confirm.mjs` from `app.ts` before the LiveSocket connects and drop `import
+  "phoenix_html"` when it was there only for `data-confirm`, give every `data-confirm` a
+  `data-confirm-action`, and stop passing `eyebrow`, `site`, `context`, `caption` and the
+  technical figure's `<:caption>`.
+
+## 2026-11-08 — The account menu holds the theme switch
+
+Sean, 8 November 2026: put the light and dark switch "in the account sidepanel that
+shows when clicking the account" (the account menu).
+
+- `Regent.Account.menu` takes an optional `theme` slot, the site's light and dark
+  switch, shown in its own row (`.rg-account-menu__theme`: the switch's words at the
+  start, the switch at the end) between Pair New Agent and Manage Account. A menu given
+  none has no row. ash-template passes its glass switch; `Regent.ThemeToggle` stays
+  for the sites until each moves to that switch.
+
+## 2026-11-12 — Points and like counts are shared figures
+
+- `Regent.Points` (the total, each board row's points and your own row) and the like
+  count on `Regent.Discussion`'s heart are now `Regent.Primitives.figure`, so they carry
+  `data-count` and equal-width digits. A site that marks the part around them with its
+  count motion rolls only the digits that changed; a site that does nothing sees no
+  change. The template asked for this after moving its own live figures over.

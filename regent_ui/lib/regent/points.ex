@@ -65,7 +65,9 @@ defmodule Regent.Points do
         </p>
       </header>
       <div class="rg-points-total__main">
-        <p class="rg-points-total__figure rg-figure">{figure(@total, @state)}</p>
+        <p class="rg-points-total__figure">
+          <Regent.Primitives.figure value={figure(@total, @state)} />
+        </p>
         <p :if={@inner_block != []} class="rg-points-total__about">{render_slot(@inner_block)}</p>
       </div>
       <dl class="rg-points-total__days rg-figure">
@@ -197,13 +199,13 @@ defmodule Regent.Points do
             />
             <span :if={row.you} class="rg-points-board__tag">You</span>
           </span>
-          <span class="rg-points-board__points">{row.points}</span>
+          <Regent.Primitives.figure class="rg-points-board__points" value={to_string(row.points)} />
         </li>
       </ol>
       <p :if={@state in [:ready, :stale] and @you} class="rg-points-board__you rg-figure">
         <span class="rg-points-board__rank">{@you.rank}</span>
         <span class="rg-points-board__name">You</span>
-        <span class="rg-points-board__points">{@you.points}</span>
+        <Regent.Primitives.figure class="rg-points-board__points" value={to_string(@you.points)} />
       </p>
     </section>
     """

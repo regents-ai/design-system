@@ -138,14 +138,15 @@ defmodule Regent.AccountTest do
     assert html =~ ~r/<input[^>]*type="hidden"[^>]*name="agent_id"[^>]*value="agent-1"/
     assert html =~ ~r/<input[^>]*name="name"[^>]*value="Night Shift"/
     assert html =~ ~r/<input[^>]*name="name"[^>]*maxlength="80"/
-    assert html =~ "Only you see this name."
-    assert html =~ "Only you and the agent see it."
-    refute html =~ ~s(role="alert")
+    assert html =~ ~r/<input[^>]*name="name"[^>]*aria-invalid="false"/
+    assert html =~ ~r/id="d-name-errors"[^>]*aria-live="polite">\s*<\/div>/
 
     refused = detail.(%{assigns | error: "That name can't be used."})
-    assert refused =~ ~r/<span role="alert">That name can(&#39;|')t be used.<\/span>/
+
+    assert refused =~
+             ~r/id="d-name-errors"[^>]*aria-live="polite">\s*<p>That name can(&#39;|')t be used.<\/p>/
+
     assert refused =~ ~r/<input[^>]*name="name"[^>]*aria-invalid="true"/
-    refute refused =~ "Only you see this name."
   end
 
   test "an ended session asks the person to sign in again" do
@@ -251,5 +252,29 @@ defmodule Regent.AccountTest do
     end
 
     refute menu("0xaBaB..aBaB", nil, lower) =~ "0xabab..abab"
+  end
+
+  # Invariant: a site's theme switch sits in its own row between Pair New Agent and
+  # Manage Account, and a menu given none has no empty row (Sean, 2026-11-08).
+  test "the account menu holds the site's theme switch above Manage Account" do
+    assigns = %{}
+
+    with_theme =
+      rendered_to_string(~H"""
+      <Regent.Account.menu id="who" name="Ada" manage_href="/account" pair_window="pairing-window">
+        <:picture></:picture>
+        <:agents></:agents>
+        <:theme><button id="site-theme" role="switch"></button></:theme>
+      </Regent.Account.menu>
+      """)
+
+    [_, row] = Regex.run(~r{<div class="rg-account-menu__theme">(.*?)</div>}s, with_theme)
+    assert row =~ ~s(id="site-theme")
+    {pair, _} = :binary.match(with_theme, "data-pair-open")
+    {theme, _} = :binary.match(with_theme, "rg-account-menu__theme")
+    {foot, _} = :binary.match(with_theme, "rg-account-menu__foot")
+    assert pair < theme and theme < foot
+
+    refute menu("Ada", nil, @wallet) =~ "rg-account-menu__theme"
   end
 end
