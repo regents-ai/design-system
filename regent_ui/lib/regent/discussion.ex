@@ -305,7 +305,11 @@ defmodule Regent.Discussion do
         {@rest}
       >
         <Icons.icon name="heart" class="rg-discussion__icon" />
-        <span :if={@count > 0} aria-hidden="true">{@count}</span>
+        <Regent.Primitives.figure
+          :if={@count > 0}
+          value={Integer.to_string(@count)}
+          aria-hidden="true"
+        />
         <span class="rg-discussion__hidden">Like, {count(@count, "like", "likes")}</span>
       </button>
       <span :if={@likers != []} class="rg-discussion__liked-by">

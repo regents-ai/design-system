@@ -1034,3 +1034,11 @@ shows when clicking the account" (the account menu).
   start, the switch at the end) between Pair New Agent and Manage Account. A menu given
   none has no row. ash-template passes its glass switch; `Regent.ThemeToggle` stays
   for the sites until each moves to that switch.
+
+## 2026-11-12 — Points and like counts are shared figures
+
+- `Regent.Points` (the total, each board row's points and your own row) and the like
+  count on `Regent.Discussion`'s heart are now `Regent.Primitives.figure`, so they carry
+  `data-count` and equal-width digits. A site that marks the part around them with its
+  count motion rolls only the digits that changed; a site that does nothing sees no
+  change. The template asked for this after moving its own live figures over.
