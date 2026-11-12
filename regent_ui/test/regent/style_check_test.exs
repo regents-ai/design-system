@@ -41,7 +41,20 @@ defmodule Regent.StyleCheckTest do
     %{dir: dir}
   end
 
-  defp check(dir), do: System.cmd("bash", [@script, dir], stderr_to_stdout: true)
+  defp check(dir, env \\ []),
+    do: System.cmd("bash", [@script, dir], stderr_to_stdout: true, env: env)
+
+  # A PATH holding every tool the script runs except ripgrep.
+  defp without_rg(dir) do
+    bin = Path.join(dir, "bin")
+    File.mkdir_p!(bin)
+
+    for tool <- ~w(awk perl sed mktemp rm cat wc tr) do
+      File.ln_s!(System.find_executable(tool), Path.join(bin, tool))
+    end
+
+    [{"PATH", bin}]
+  end
 
   defp clean(dir) do
     site(dir, %{
@@ -55,6 +68,33 @@ defmodule Regent.StyleCheckTest do
 
   test "a clean site passes, vendored copies included", %{dir: dir} do
     assert {_, 0} = dir |> clean() |> check()
+  end
+
+  test "without ripgrep a site with a break does not pass, and ripgrep is named", %{dir: dir} do
+    clean(dir)
+    File.write!(Path.join(dir, "assets/css/app.css"), ".c { backdrop-filter: blur(4px); }\n")
+
+    assert {output, 2} = check(dir, without_rg(dir))
+    assert output =~ "ripgrep"
+  end
+
+  test "without ripgrep a clean site does not pass either", %{dir: dir} do
+    clean(dir)
+    assert {_, 2} = check(dir, without_rg(dir))
+  end
+
+  test "an unreadable template stops the check", %{dir: dir} do
+    clean(dir)
+    file = Path.join(dir, "lib/app/page.html.heex")
+    File.write!(file, "<p>Runs on LiveView.</p>\n")
+    File.chmod!(file, 0o000)
+
+    assert {_, 2} = check(dir)
+  end
+
+  test "a root without lib/ stops the check", %{dir: dir} do
+    site(dir, %{"assets/css/app.css" => @clean_css})
+    assert {_, 2} = check(dir)
   end
 
   for {rule, path, line} <- [

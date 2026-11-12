@@ -1096,3 +1096,18 @@ their shadow, "marked in the style check the same way as the regents.sh home".
 - `STYLE.md`'s Glass section names the two exceptions, the regents.sh home (12 Nov) and
   the world cube lab page (12 Nov), and how to write each marker: a marker is only for
   an exception Sean has approved by name.
+
+## 2026-11-12 — The style check never passes when it could not check
+
+The template's release lead found that `regent_ui/scripts/style-check.sh` passed on a
+machine without ripgrep, even on a site with a glass line: every search ended in
+`|| true`, which also hid "command not found".
+
+- The script first looks for ripgrep, awk and perl. When one is not installed it stops
+  with exit 2 and names it on one line. Exit 1 still means breaks were found.
+- A search now passes only when ripgrep finds nothing (its exit 1). Any other ripgrep
+  error, such as a file it cannot read, stops the check with exit 2. An unreadable
+  template had passed before.
+- A root without `assets/` or `lib/` stops the check with exit 2. Before, it skipped
+  that folder's rules, so a run from the wrong folder passed.
+- `CONSUMERS.md`'s Style check section says so.

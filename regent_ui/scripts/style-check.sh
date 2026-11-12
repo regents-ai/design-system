@@ -3,8 +3,19 @@
 # CSS, JS and templates, and exits 1 when it finds any. Vendored and ignored files are
 # skipped. Usage: style-check.sh [root], where root holds the site's assets/ and lib/
 # (a site's platform/ directory, or design-system's regent_ui/); the default is "."
-# Needs ripgrep, awk and perl.
+# Needs ripgrep, awk and perl. It exits 2, never 0, when it could not check: one of them
+# is not installed, root lacks assets/ or lib/, or a file could not be read.
 set -euo pipefail
+trap 'echo "style check: cannot finish, see the error above" >&2; exit 2' ERR
+
+missing=""
+command -v rg >/dev/null || missing="$missing ripgrep"
+command -v awk >/dev/null || missing="$missing awk"
+command -v perl >/dev/null || missing="$missing perl"
+if [ -n "$missing" ]; then
+  echo "style check: cannot run, not installed:$missing" >&2
+  exit 2
+fi
 
 cd "${1:-.}"
 
@@ -17,35 +28,39 @@ emit() {
   sed -E -e "s#^\./##" -e "s/^([^:]+:[0-9]+):[[:space:]]*/\1: $1: /" >>"$found"
 }
 
+# rg exits 1 when nothing matches, a clean result. Any other exit (2 for a missing
+# folder or an unreadable file) stops the check.
+rg_or_none() {
+  rg "$@" || [ $? -eq 1 ]
+}
+
 search() {
   local dir=$1
   shift
-  [ -d "$dir" ] || return 0
-  rg --no-heading --with-filename --line-number "${exclude[@]}" "$@" "$dir" || true
+  rg_or_none --no-heading --with-filename --line-number "${exclude[@]}" "$@" "$dir"
 }
 
 files() {
   local dir=$1
   shift
-  [ -d "$dir" ] || return 0
-  rg --files "${exclude[@]}" "$@" "$dir" || true
+  rg_or_none --files "${exclude[@]}" "$@" "$dir"
 }
 
 # Layers stay flat. An approved exception carries its marker on its own line.
 search assets -g '*.css' 'box-shadow:' |
-  { rg -v 'box-shadow:\s*(none|var\(--rg-layer)' || true; } |
-  { rg -v 'style-check: allow shadow — \w' || true; } | emit flat
+  rg_or_none -v 'box-shadow:\s*(none|var\(--rg-layer)' |
+  rg_or_none -v 'style-check: allow shadow — \w' | emit flat
 
 # No glass. An approved exception carries its marker on its own line.
 search assets -g '*.css' 'backdrop-filter|filter:\s*blur' |
-  { rg -v 'style-check: allow glass — \w' || true; } | emit glass
+  rg_or_none -v 'style-check: allow glass — \w' | emit glass
 
 # No weight above 400.
 search assets -g '*.css' 'font-weight:\s*(bold|[5-9]00)' | emit weight
 
 # Square or cut; pills take their radius from their height.
 search assets -g '*.css' -e '9999px' -e 'border-[a-z-]*radius:' |
-  { rg -v 'border-[a-z-]*radius:\s*(0|0px|50%|var\(--radius\)|calc\(var\(--pill-h\) / 2\))\s*(;|\}|$)' || true; } |
+  rg_or_none -v 'border-[a-z-]*radius:\s*(0|0px|50%|var\(--radius\)|calc\(var\(--pill-h\) / 2\))\s*(;|\}|$)' |
   emit shape
 
 # No stacking numbers of our own, except inside a rule (or a rule nested in one) that
