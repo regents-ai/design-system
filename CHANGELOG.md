@@ -1053,3 +1053,11 @@ shows when clicking the account" (the account menu).
   `data-count` and equal-width digits. A site that marks the part around them with its
   count motion rolls only the digits that changed; a site that does nothing sees no
   change. The template asked for this after moving its own live figures over.
+
+## 2026-11-12 — The style check's motion rule skips test files
+
+- `regent_ui/scripts/style-check.sh`: the motion rule (animate transform and opacity,
+  never left, top, width, height or margin) no longer reads `*.test.*` files. The
+  template's `parts_motion.test.ts` holds a test's expected value with a `left:` key,
+  which is not motion. Nothing else in the check changes: the glass and flat-layer
+  rules stay as they are.

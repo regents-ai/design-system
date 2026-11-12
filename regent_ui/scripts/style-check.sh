@@ -76,8 +76,8 @@ files assets -g '*.css' | while IFS= read -r file; do
   ' "$file"
 done | emit stacking
 
-# Motion is transform and opacity.
-search assets -g '*.{js,mjs,ts,tsx}' '\b(left|top|width|height|margin[A-Za-z]*):\s*\[' | emit motion
+# Motion is transform and opacity. A test's expected values are not motion.
+search assets -g '*.{js,mjs,ts,tsx}' -g '!*.test.*' '\b(left|top|width|height|margin[A-Za-z]*):\s*\[' | emit motion
 
 # Icons are Lucide through the shared component: any other <svg> is artwork marked
 # aria-hidden or a logo that names itself (role="img").
