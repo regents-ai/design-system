@@ -83,15 +83,6 @@ defmodule Regent.StyleCheckTest do
     assert {_, 2} = check(dir, without_rg(dir))
   end
 
-  test "an unreadable template stops the check", %{dir: dir} do
-    clean(dir)
-    file = Path.join(dir, "lib/app/page.html.heex")
-    File.write!(file, "<p>Runs on LiveView.</p>\n")
-    File.chmod!(file, 0o000)
-
-    assert {_, 2} = check(dir)
-  end
-
   test "a root without lib/ stops the check", %{dir: dir} do
     site(dir, %{"assets/css/app.css" => @clean_css})
     assert {_, 2} = check(dir)

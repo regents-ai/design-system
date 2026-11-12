@@ -253,7 +253,7 @@ cd regent_ui && mix check
 It first verifies that every generated mirror of the canonical token sources is current
 (`node scripts/generate-tokens-json.mjs --check`, so Node.js is required), then compiles
 with warnings as errors, verifies no unused dependency locks, checks formatting, runs the
-style check (`sh scripts/style-check.sh`, which needs ripgrep and Perl) over the package's
+style check (`sh scripts/style-check.sh`, which needs ripgrep, awk and Perl) over the package's
 own styles and templates, and runs the test suite with warnings as errors.
 
 The token verification only makes sense inside this repository checkout, where the root
