@@ -941,3 +941,30 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   `CONSUMERS.md` says how. The showcase gains an Activity section.
 - `Regent.Account.agents_brief` still shows its own line; moving it to the line form is
   left for its own change.
+
+## 2026-11-12 — Fields keep their error line and show every state
+
+- `Regent.Primitives.field` always renders its error line (`#<id>-errors`, now a `div`
+  of `p`s, `aria-live="polite"`), empty until the field has an error; it keeps one
+  label line of space, so an error showing up on blur never moves the fields below it.
+  `aria-describedby` names it only while it holds an error, as before.
+- `primitives.css`: a field to fix doubles its edge in the error colour (an inset line,
+  so its size holds) instead of a thicker edge in the text colour; errors drop their
+  bullet and use the label size. A disabled field rests on the inert gray of a disabled
+  action, and the fields of a LiveView form on its way (`phx-submit-loading`) dim their
+  words while its submit button shows its `phx-disable-with` words.
+- `STYLE.md` gains a Fields section saying so, with the rule to check a field when the
+  person leaves it and to word errors as what to do.
+
+## 2026-11-12 — The account card takes the page's spacing
+
+- `.rg-account-identity` loses its own 24px block padding. It sat 64px under the page
+  title where every other first section sits 40px under it, and 72px above the next
+  panel where sections stand 48px apart. The page's section gap now places it.
+
+## 2026-11-12 — The profile form drops its helper line
+
+- `Regent.Profile.panel` no longer says "The name people see for you." under Public
+  Display Name: the label already names it. The tip with the details (the same name on
+  every Regent site, up to 80 characters) moves beside the Profile heading, as a page
+  title carries its own, so the field has no hint line.

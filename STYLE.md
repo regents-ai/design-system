@@ -732,6 +732,17 @@ keep the space with the line unseen (`visibility: hidden`) rather than adding an
 removing it. Switching tabs above a list must leave the list's top edge where it was.
 Check every state at desktop and phone width; the box below must not move.
 
+### Fields
+
+`Regent.Primitives.field` puts the label above its input and keeps a line under it for
+errors, empty until the field has one, so an error never moves the fields below it, and a
+screen reader says the error as it appears. A form checks a field when the person leaves
+it (`phx-debounce="blur"`), never while they type, and its errors say what to do ("Fill
+this in.", "Add at least 2."), never which rule broke. Keyboard focus draws the 2px ring;
+a field to fix doubles its edge in the error colour without changing size; a disabled
+field rests on the inert gray of a disabled action; while a LiveView form is on its way
+its fields' words dim and its submit button shows its `phx-disable-with` words.
+
 ### The account menu hangs under its button
 
 Signed in, the account's button at the top right of every page opens the account menu

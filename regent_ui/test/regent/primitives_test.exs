@@ -22,6 +22,18 @@ defmodule Regent.PrimitivesTest do
     assert html =~ ~s(aria-invalid="true")
     assert html =~ "&lt;invalid&gt;"
     assert html =~ ~s(id="amount-hint")
+
+    html =
+      rendered_to_string(~H"""
+      <.field :let={field} id="amount" label="Amount">
+        <input id={field.id} aria-describedby={field.described_by} aria-invalid={field.aria_invalid} />
+        <:hint>Use whole units</:hint>
+      </.field>
+      """)
+
+    assert html =~ ~s(aria-describedby="amount-hint")
+    assert html =~ ~s(aria-invalid="false")
+    assert html =~ ~s(id="amount-errors")
   end
 
   test "disclosure keeps its full body while collapsed and accepts an explicit open state" do
