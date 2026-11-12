@@ -5,7 +5,8 @@
    split, blur or crawl as the page resizes. Parts take the chart colours in turn, the
    chart colour then the muted foreground, and each run draws a 1px edge round its
    cells, so two runs side by side never merge. The rest of the capacity is dim cells.
-   A site's hook may draw the moving picture on the canvas behind; once it marks the
+   A site's hook may draw the moving picture on the canvas behind, which reaches
+   --rg-cells-headroom above the bar for the sparks; once it marks the
    root data-cells-ready="true", the still cells give way to it. */
 .rg-cells {
   --rg-cells-cell: 3px;
@@ -13,6 +14,9 @@
   --rg-cells-rows: 10;
   --rg-cells-pitch: calc(var(--rg-cells-cell) + var(--rg-cells-gap));
   --rg-cells-bar: calc(var(--rg-cells-rows) * var(--rg-cells-pitch) - var(--rg-cells-gap));
+  /* The canvas reaches this far above the bar, one bar high, so sparks rise over the
+     status line. A plain length, so a hook reads it with parseFloat. */
+  --rg-cells-headroom: 48px;
   --rg-cells-line: var(--type-label-line);
   --rg-cells-dim: var(--hairline);
   /* Columns and rows of cells; a cell is kept where both meet. */
@@ -62,14 +66,21 @@
 .rg-cells__line > :last-child:not(.rg-figure) { flex: 1 1 0; }
 .rg-cells__line-name { color: var(--color-fg); }
 
-.rg-cells__stage,
 .rg-cells__track,
 .rg-cells__run {
   position: absolute;
   inset-block-start: calc(var(--rg-cells-line) + var(--space-1));
   block-size: var(--rg-cells-bar);
 }
-.rg-cells__stage { inset-inline: 0; }
+/* The canvas is the bar and the headroom above it, out of the flow: it moves nothing,
+   and presses and text selection pass through it to the words under it. */
+.rg-cells__stage {
+  position: absolute;
+  inset-block-start: calc(var(--rg-cells-line) + var(--space-1) - var(--rg-cells-headroom));
+  inset-inline: 0;
+  block-size: calc(var(--rg-cells-headroom) + var(--rg-cells-bar));
+  pointer-events: none;
+}
 .rg-cells__canvas { display: block; inline-size: 100%; block-size: 100%; }
 
 /* The bar is as many whole cells as fit across. */

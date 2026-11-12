@@ -657,6 +657,9 @@ value against its limit is a progress bar.
 - **Flat without the picture.** The package draws the meter still, in CSS. The moving
   picture, the cells that twinkle, the bright head while counting and the sparks when a
   part is released, belongs to a site's vgpu canvas behind the cells, never to CSS glow.
+  The canvas reaches one bar's height above the bar, so released cells rise as sparks
+  over the status line; it takes up no room, so nothing moves with or without it, and
+  the words under it stay selectable.
   Reduced motion keeps only the short fade of a lit part; forced colours draw the parts
   in the text colour with their edges, the rest in grey, and a lit part in the
   highlight colour.

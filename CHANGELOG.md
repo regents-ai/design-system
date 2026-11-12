@@ -1195,3 +1195,16 @@ design system. using vgpu.sh".
   pages draw the same to the pixel, in the preview and the build. The two post
   backgrounds no page uses yet move by at most 4/255, most where the Greco base blends
   dark violet into dark brown.
+
+## 2026-11-12 — The Cells canvas has room above the bar
+
+- `[data-cells-canvas]` now reaches `--rg-cells-headroom` (48px, one bar high) above the
+  bar, over the status line, so a released part's sparks rise past the bar's top edge as
+  they do in the reference film, instead of being cut off there. The canvas is the
+  headroom plus the bar tall; a hook reads the headroom once from the root's computed
+  style and draws the cells that far down. `CONSUMERS.md` and `STYLE.md` say so.
+- The stage stays out of the flow and lets presses and text selection through to the
+  status line and the total. Without a hook the showcase draws the same to the pixel at
+  390 and 1280, light and dark, for all four brands, and no element's box moves, with
+  or without the hook's ready mark.
+- The canvas's shape changes for every hook at once; the template's hook follows it.

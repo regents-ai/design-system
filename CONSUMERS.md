@@ -204,10 +204,16 @@ the cells, using these marks:
   its colour is the computed `--rg-cells-color`. The part's `.rg-cells__run` is the
   run's box in the bar: pointing at it, or at the row, lights the part, so the hook
   follows `pointerover` and `focusin` on `[data-cells-key]` to light it on the canvas.
-- `[data-cells-canvas]` sits in a `phx-update="ignore"` stage the size of the bar,
-  `aria-hidden`, behind the runs and the list, with no stacking number. The cells'
-  measures are `--rg-cells-cell` (3px), `--rg-cells-gap` (2px) and `--rg-cells-rows`
-  (10); the bar is as many whole cells as fit.
+- `[data-cells-canvas]` sits in a `phx-update="ignore"` stage, `aria-hidden`, behind the
+  runs and the list, with no stacking number. It is as wide as the bar and reaches
+  `--rg-cells-headroom` (48px, one bar high) above it, over the status line, so sparks
+  can rise there: its height is the headroom plus the bar, and the bar's top edge is
+  the headroom down from the canvas's top. Read the headroom once from the root's
+  computed style (`parseFloat`, CSS px) and draw every cell that far down; the
+  headroom holds only what leaves the bar. The canvas takes up no room and lets presses
+  and text selection through to the words under it. The cells' measures are
+  `--rg-cells-cell` (3px), `--rg-cells-gap` (2px) and `--rg-cells-rows` (10); the bar is
+  as many whole cells as fit.
 - Once a frame has drawn, the hook marks the root `data-cells-ready="true"`: the still
   cells give way to the canvas, as the foil card's do to its renderer, and the runs stay
   to be pointed at. The twinkle, the bright head while counting and the sparks when a
