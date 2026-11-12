@@ -465,6 +465,106 @@ defmodule Regent.StructureShowcase do
             </Regent.Charts.line>
           </div>
         </section>
+        <section id="cells" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Cells</h2>
+          </.section_bar>
+          <div class="showcase-stack">
+            <.panel id="cells-points-panel">
+              <div class="rg-panel__body">
+                <Regent.Cells.meter
+                  id="cells-points"
+                  label="Points today by source"
+                  used="64"
+                  capacity="100 Points"
+                  max={100}
+                  parts={sample_cells_points()}
+                >
+                  <:status>36 left today</:status>
+                  <:footer>
+                    <p>Resets at 00:00 UTC</p>
+                    <.button variant="secondary" id="cells-points-history" arrow={false}>History</.button>
+                  </:footer>
+                </Regent.Cells.meter>
+              </div>
+            </.panel>
+            <div class="showcase-figures">
+              <.panel id="cells-counting-panel">
+                <div class="rg-panel__body">
+                  <Regent.Cells.meter
+                    id="cells-counting"
+                    label="Points today by source"
+                    used="50"
+                    capacity="100 Points"
+                    max={100}
+                    parts={sample_cells_points() |> Enum.take(3)}
+                    busy
+                  >
+                    <:status>Counting</:status>
+                  </Regent.Cells.meter>
+                </div>
+              </.panel>
+              <.panel id="cells-supply-panel">
+                <div class="rg-panel__body">
+                  <Regent.Cells.meter
+                    id="cells-supply"
+                    label="REGENT supply by holder"
+                    used="612.4M"
+                    capacity="1B REGENT"
+                    max={1_000_000_000}
+                    parts={sample_cells_supply()}
+                  >
+                    <:status>387.6M left to mint</:status>
+                  </Regent.Cells.meter>
+                </div>
+              </.panel>
+              <.panel id="cells-seats-panel">
+                <div class="rg-panel__body">
+                  <Regent.Cells.meter
+                    id="cells-seats"
+                    label="Fleet seats by role"
+                    used="14"
+                    capacity="16 seats"
+                    max={16}
+                    parts={sample_cells_seats()}
+                  >
+                    <:status>2 open</:status>
+                  </Regent.Cells.meter>
+                </div>
+              </.panel>
+              <.panel id="cells-vault-panel">
+                <div class="rg-panel__body">
+                  <Regent.Cells.meter
+                    id="cells-vault"
+                    label="Vault deposits"
+                    used="7,250"
+                    capacity="10,000 USDC"
+                    max={10_000}
+                    parts={[%{key: "deposited", name: "Deposited", value: 7250, amount: "7,250 USDC", icon: "wallet"}]}
+                  >
+                    <:status>2,750 USDC left</:status>
+                  </Regent.Cells.meter>
+                </div>
+              </.panel>
+            </div>
+            <div class="showcase-cells-narrow">
+              <.panel id="cells-narrow-panel">
+                <div class="rg-panel__body">
+                  <Regent.Cells.meter
+                    id="cells-narrow"
+                    label="Points today by source"
+                    used="64"
+                    capacity="100 Points"
+                    max={100}
+                    parts={sample_cells_points()}
+                  >
+                    <:status>36 left today</:status>
+                  </Regent.Cells.meter>
+                </div>
+              </.panel>
+            </div>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -672,6 +772,48 @@ defmodule Regent.StructureShowcase do
       %{id: "1", label: "First note written by your agent", by: "Pira", at: "6 Nov, 10:40 UTC", points: "+10"},
       %{id: "2", label: "Patchbay Offer placed", by: "You", at: "4 Nov, 18:45 UTC", points: "+0", status: "Limit reached"}
     ]
+  end
+
+  # Today's Points against the daily limit, by where they were earned.
+  defp sample_cells_points do
+    [
+      %{key: "patchbay", name: "Patchbay offers", value: 20, amount: "20", icon: "arrow-left-right",
+        note: "4 offers placed"},
+      %{key: "techtree", name: "Techtree notes", value: 18, amount: "18", icon: "pen-line",
+        note: "Your agent wrote 3 notes"},
+      %{key: "replies", name: "Replies", value: 12, amount: "12", icon: "message-square"},
+      %{key: "referrals", name: "Referrals", value: 10, amount: "10", icon: "users",
+        note: "2 people joined with your link"},
+      %{key: "checkin", name: "Check-in", value: 4, amount: "4", icon: "calendar-check"}
+    ]
+  end
+
+  # A long name, and a holder with nothing yet.
+  defp sample_cells_supply do
+    for {key, name, value, amount, note} <- [
+          {"stakers", "Stakers", 214_800_000, "214.8M", "Locked for 30 days or more"},
+          {"treasury", "Treasury", 150_000_000, "150M", nil},
+          {"pools", "Liquidity pools on Base and Ethereum mainnet", 96_200_000, "96.2M", nil},
+          {"team", "Team", 80_000_000, "80M", "Unlocks monthly from June 2027"},
+          {"airdrop", "Airdrop", 0, "0", nil},
+          {"agents", "Agents", 71_400_000, "71.4M", nil}
+        ],
+        do: %{key: key, name: name, value: value, amount: amount, note: note}
+  end
+
+  defp sample_cells_seats do
+    for {name, seats} <- [
+          {"Research", 3},
+          {"Trading", 2},
+          {"Writing", 2},
+          {"Operations", 2},
+          {"Support", 1},
+          {"Design", 1},
+          {"Review", 1},
+          {"Data", 1},
+          {"Legal", 1}
+        ],
+        do: %{key: String.downcase(name), name: name, value: seats, amount: "#{seats}"}
   end
 
   defp sample_now, do: ~U[2026-11-12 10:00:00Z]

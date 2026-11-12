@@ -1162,3 +1162,28 @@ linear-gradient(in oklch, blue, yellow);".
   tells sites to convert their own gradients when they take this version.
 - Browsers without oklch gradients (before Chrome 111, Safari 16.2, Firefox 127) drop
   each converted declaration and draw no gradient there.
+
+## 2026-11-12 — Cells
+
+Sean, 12 November 2026: "whatever this style is, I want to make it part of our general
+design system. using vgpu.sh".
+
+- New `Regent.Cells.meter` (`cells.css`, imported by `structure.css`): one total split
+  among a few named parts against a capacity. The total and the capacity above, a
+  status line, a bar of square cells (3px with 2px between, ten rows) in which each
+  part is a run as wide as its share and the rest is dim cells, and the parts as a list
+  of mark, name and amount, three columns, then two, then one.
+- Every edge lands on a whole cell, so the cells stay crisp and still as the page
+  resizes. Parts take the chart colour and the muted foreground in turn, each run with
+  a 1px edge; a part worth nothing draws no run. Parts that add up to more than the
+  capacity raise.
+- Pointing at a part or its row, or focusing a row with a note, lights the part, dims
+  the others and puts its name, amount and note in the status line, in CSS alone.
+  Screen readers read each part once, as its name and amount, then its note.
+- The moving picture is a site's vgpu canvas behind the cells: `CONSUMERS.md` lists the
+  marks (`data-cells-state`, `data-cells-capacity`, `data-cells-key`,
+  `--rg-cells-start`, `--rg-cells-share`, `--rg-cells-color`, `data-cells-canvas` and
+  `data-cells-ready`). The package draws no twinkle, bright head or sparks.
+- `STYLE.md` gains "Cells", and the showcase a Cells section: Points today by source,
+  counting, a token's supply with a long name and a holder at zero, a fleet's nine
+  roles, a single part, and 320 wide.

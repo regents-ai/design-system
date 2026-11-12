@@ -434,6 +434,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Agents.activity` | An agent at work, from the steps the server sends: the latest six on a hairline rail with older ones folded under "Earlier", each a mark whose shape says its state (dashed square next, filled square running, half-filled square waiting for the person with the page's button, a tick done, an empty square stopped), a verb, what it touched and its time; `variant="line"` shows the latest started step on one line for menus and lists | Awaiting consumer adoption |
 | `Regent.Agents.fleet` | Many agents at once: a grid of tiles, each the agent's picture, name and latest step on one line; a tile with a page is a link named by the agent | Awaiting consumer adoption |
 | `Regent.Charts.line` | A price, stake or earnings line over time, drawn from the page's points: one series in the chart colour, or two with the second muted and dashed, on a hairline baseline and at most four hairline rules labelled on the right; the latest figure and its time above, beside the page's period choice; a table of every point for screen readers and agents; the waiting box while it loads and "No activity yet." for an empty read, at one height | Awaiting consumer adoption |
+| `Regent.Cells.meter` | One total split among a few named parts against a capacity: the total and the capacity above, a status line, a bar of square cells with a run per part as wide as its share and dim cells for the rest, and the parts listed with a mark, name and amount; pointing at a part lights it and puts its note in the status line | Awaiting consumer adoption |
 | `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
 | `Regent.Account.history` | Read-only formatted Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
@@ -627,6 +628,38 @@ Package checks and synthetic rendering do not establish real consumer acceptance
 Feature groups remain small HTML compositions, not a page-builder API.
 Use three/two/one feature columns and 1px gaps; an odd final card never spans a whole row.
 Use approved marks or Geist Serif brand text, never borrowed wordmarks or invented metrics.
+
+### Cells
+
+`Regent.Cells.meter` shows one total split among a few named parts against a
+capacity: a balance by asset, Points by source, a fleet's seats, a token's supply (Sean,
+12 November 2026: "whatever this style is, I want to make it part of our general design
+system. using vgpu.sh"). A trend over time is a chart (`Regent.Charts.line`); a single
+value against its limit is a progress bar.
+
+- **Built from square cells.** The bar is rows of 3px cells with 2px between them, as
+  many whole cells as fit. Each part is a run of cells as wide as its share of the
+  capacity, starting and ending on a cell edge, with a 1px edge in its colour; the rest
+  of the capacity is dim cells. Corners are square; there is no shadow, blur or glow.
+  A part worth nothing draws no run.
+- **Chart colours, in turn.** Parts take the chart's two series colours in order: the
+  chart colour, then the muted foreground, then the chart colour again. A chart takes
+  at most two series; the meter keeps going in turn, and each run's edge keeps two
+  neighbours of one colour apart. Status colours never carry a part.
+- **One line above the bar.** It holds the page's status, such as what is left.
+  Pointing at a part, in the bar or the list, or focusing its row, lights that part,
+  dims the others and puts its name, amount and note in that line; the line keeps its
+  height, so nothing moves. A row is a keyboard stop only when its part has a note.
+- **The list.** Three columns where they fit, then two, then one; each row a Lucide
+  icon or a small square of cells in the part's colour, the name, which ends in an
+  ellipsis, and the amount in equal-width figures on the right. Screen readers read each
+  part once, as its name and amount, then its note; the bar is hidden from them.
+- **Flat without the picture.** The package draws the meter still, in CSS. The moving
+  picture, the cells that twinkle, the bright head while counting and the sparks when a
+  part is released, belongs to a site's vgpu canvas behind the cells, never to CSS glow.
+  Reduced motion keeps only the short fade of a lit part; forced colours draw the parts
+  in the text colour with their edges, the rest in grey, and a lit part in the
+  highlight colour.
 
 ### Mobile controls and acceptance
 

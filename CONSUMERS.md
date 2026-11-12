@@ -186,6 +186,33 @@ marks:
   match, otherwise crossfades it over 200ms.
 - Nothing moves for a key press or under reduced motion.
 
+`Regent.Cells.meter` takes `id`, `label` (what the meter shows, for screen readers),
+`used` and `capacity` as the page shows them ("64", "100 Points"), `max` (the capacity
+as a number above zero), `parts` in order, each `%{key, name, value, amount}` with
+optional `icon` (a Lucide name) and `note` (one line), and `busy` (true while the total
+is still being counted). `key` stays the same across renders and `value` is a number;
+the values add up to at most `max`, and anything else raises. The `status` slot holds the
+line above the bar and the `footer` slot the line under the parts, such as the page's
+button. The package draws the meter still, in CSS, and runs no script. A site's hook
+(passed like any attribute) may draw the moving picture with vgpu on the canvas behind
+the cells, using these marks:
+
+- The root carries `data-cells-state` (`idle`, or `counting` while `busy`, when it also
+  carries `aria-busy="true"`) and `data-cells-capacity` (`max`).
+- Each part is an `li` with `data-cells-key`, and in its `style` `--rg-cells-start` and
+  `--rg-cells-share` (where it starts and how wide it is, as fractions of the capacity);
+  its colour is the computed `--rg-cells-color`. The part's `.rg-cells__run` is the
+  run's box in the bar: pointing at it, or at the row, lights the part, so the hook
+  follows `pointerover` and `focusin` on `[data-cells-key]` to light it on the canvas.
+- `[data-cells-canvas]` sits in a `phx-update="ignore"` stage the size of the bar,
+  `aria-hidden`, behind the runs and the list, with no stacking number. The cells'
+  measures are `--rg-cells-cell` (3px), `--rg-cells-gap` (2px) and `--rg-cells-rows`
+  (10); the bar is as many whole cells as fit.
+- Once a frame has drawn, the hook marks the root `data-cells-ready="true"`: the still
+  cells give way to the canvas, as the foil card's do to its renderer, and the runs stay
+  to be pointed at. The twinkle, the bright head while counting and the sparks when a
+  part is released are the canvas's alone; the hook keeps still under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the

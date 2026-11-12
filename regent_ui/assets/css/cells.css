@@ -1,0 +1,183 @@
+/* Cells (Regent.Cells.meter): one total split among named parts, against a capacity.
+   The bar is square cells, --rg-cells-cell wide with --rg-cells-gap between them, in
+   --rg-cells-rows rows. Every edge lands on a whole cell: the bar is as many cells as
+   fit, and each part's run starts and ends on the nearest cell edge, so cells never
+   split, blur or crawl as the page resizes. Parts take the chart colours in turn, the
+   chart colour then the muted foreground, and each run draws a 1px edge round its
+   cells, so two runs side by side never merge. The rest of the capacity is dim cells.
+   A site's hook may draw the moving picture on the canvas behind; once it marks the
+   root data-cells-ready="true", the still cells give way to it. */
+.rg-cells {
+  --rg-cells-cell: 3px;
+  --rg-cells-gap: 2px;
+  --rg-cells-rows: 10;
+  --rg-cells-pitch: calc(var(--rg-cells-cell) + var(--rg-cells-gap));
+  --rg-cells-bar: calc(var(--rg-cells-rows) * var(--rg-cells-pitch) - var(--rg-cells-gap));
+  --rg-cells-line: var(--type-label-line);
+  --rg-cells-dim: var(--hairline);
+  /* Columns and rows of cells; a cell is kept where both meet. */
+  --rg-cells-across: repeating-linear-gradient(to right in oklch, #000 0 var(--rg-cells-cell), transparent var(--rg-cells-cell) var(--rg-cells-pitch));
+  --rg-cells-down: repeating-linear-gradient(to bottom in oklch, #000 0 var(--rg-cells-cell), transparent var(--rg-cells-cell) var(--rg-cells-pitch));
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  font-family: var(--font-family-ui);
+  color: var(--color-fg);
+}
+.rg-cells__total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-1);
+  margin: 0;
+}
+.rg-cells__used { font-size: var(--type-title-size); line-height: var(--type-title-line); }
+.rg-cells__capacity { color: var(--color-fg-muted); font-size: var(--type-label-size); }
+
+/* The status line and the bar sit above the list, in space the list keeps for them;
+   the runs, the lit part's line and the canvas are placed in it. */
+.rg-cells__meter {
+  position: relative;
+  container-type: inline-size;
+  padding-block-start: calc(var(--rg-cells-line) + var(--space-1) + var(--rg-cells-bar) + var(--space-3));
+}
+.rg-cells__status,
+.rg-cells__line {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: var(--rg-cells-line);
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--type-label-size);
+  line-height: var(--rg-cells-line);
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* The lit part's line: its name, then its amount, then its note, which gives way first. */
+.rg-cells__line { display: flex; gap: var(--space-1); visibility: hidden; }
+.rg-cells__line > * { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; }
+.rg-cells__line > .rg-figure { flex: none; }
+.rg-cells__line > :last-child:not(.rg-figure) { flex: 1 1 0; }
+.rg-cells__line-name { color: var(--color-fg); }
+
+.rg-cells__stage,
+.rg-cells__track,
+.rg-cells__run {
+  position: absolute;
+  inset-block-start: calc(var(--rg-cells-line) + var(--space-1));
+  block-size: var(--rg-cells-bar);
+}
+.rg-cells__stage { inset-inline: 0; }
+.rg-cells__canvas { display: block; inline-size: 100%; block-size: 100%; }
+
+/* The bar is as many whole cells as fit across. */
+.rg-cells__track,
+.rg-cells__run {
+  --rg-cells-columns: round(down, 100cqi + var(--rg-cells-gap), var(--rg-cells-pitch));
+}
+.rg-cells__track {
+  inset-inline-start: 0;
+  inline-size: calc(var(--rg-cells-columns) - var(--rg-cells-gap));
+  background: var(--rg-cells-dim);
+  mask-image: var(--rg-cells-across), var(--rg-cells-down);
+  mask-composite: intersect;
+}
+.rg-cells__run {
+  --rg-cells-from: round(var(--rg-cells-start) * var(--rg-cells-columns), var(--rg-cells-pitch));
+  --rg-cells-to: round((var(--rg-cells-start) + var(--rg-cells-share)) * var(--rg-cells-columns), var(--rg-cells-pitch));
+  inset-inline-start: var(--rg-cells-from);
+  inline-size: max(0px, var(--rg-cells-to) - var(--rg-cells-from) - var(--rg-cells-gap));
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+/* A run's cells and its edge: the edge is four 1px strips added to the cells. */
+.rg-cells__run::before,
+.rg-cells__mark--cell {
+  background: var(--rg-cells-color);
+  mask:
+    linear-gradient(in oklch, #000 0 0) top / 100% 1px no-repeat,
+    linear-gradient(in oklch, #000 0 0) bottom / 100% 1px no-repeat,
+    linear-gradient(in oklch, #000 0 0) left / 1px 100% no-repeat,
+    linear-gradient(in oklch, #000 0 0) right / 1px 100% no-repeat,
+    var(--rg-cells-across),
+    var(--rg-cells-down);
+  mask-composite: add, add, add, add, intersect;
+}
+.rg-cells__run::before { content: ""; position: absolute; inset: 0; }
+
+/* The parts: three columns where they fit, then two, then one. */
+.rg-cells__parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(13rem, calc((100% - 2 * var(--space-3)) / 3)), 1fr));
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rg-cells__part {
+  --rg-cells-color: var(--color-chart-line);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: 2rem;
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-line);
+}
+.rg-cells__part:nth-child(even) { --rg-cells-color: var(--color-fg-muted); }
+.rg-cells__part:focus-visible {
+  outline: var(--rg-ring-width) solid var(--color-focus);
+  outline-offset: var(--rg-ring-offset);
+}
+.rg-cells__mark { color: var(--rg-cells-color); transition: opacity var(--duration-fast) var(--ease-out); }
+.rg-cells__mark--cell {
+  inline-size: calc(3 * var(--rg-cells-pitch) - var(--rg-cells-gap));
+  block-size: calc(3 * var(--rg-cells-pitch) - var(--rg-cells-gap));
+}
+.rg-cells__name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.rg-cells__amount { color: var(--color-fg-muted); text-align: end; white-space: nowrap; }
+.rg-cells__hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A lit part: pointed at, in the bar or the list, or its row focused. The others
+   dim (in forced colours the lit part takes Highlight instead), and its line takes
+   the status line's place. */
+@media (forced-colors: none) {
+  .rg-cells__parts:has(> .rg-cells__part:is(:hover, :focus-visible))
+    > .rg-cells__part:not(:hover, :focus-visible) :is(.rg-cells__run, .rg-cells__mark) { opacity: .3; }
+}
+.rg-cells__part:is(:hover, :focus-visible) .rg-cells__line { visibility: visible; }
+.rg-cells__meter:has(.rg-cells__part:is(:hover, :focus-visible)) .rg-cells__status { visibility: hidden; }
+
+/* The hook has drawn: the canvas shows the cells, and the runs stay to be pointed at. */
+.rg-cells[data-cells-ready="true"] .rg-cells__track { visibility: hidden; }
+.rg-cells[data-cells-ready="true"] .rg-cells__run::before { content: none; }
+
+.rg-cells__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--hairline);
+  color: var(--color-fg-muted);
+  font-size: var(--type-label-size);
+}
+.rg-cells__foot > p { margin: 0; }
+
+@media (forced-colors: active) {
+  .rg-cells :is(.rg-cells__track, .rg-cells__run, .rg-cells__mark--cell) { forced-color-adjust: none; }
+  .rg-cells__track { background: GrayText; }
+  .rg-cells__part,
+  .rg-cells__part:nth-child(even) { --rg-cells-color: CanvasText; }
+  .rg-cells__part:is(:hover, :focus-visible) { --rg-cells-color: Highlight; }
+  .rg-cells__part:focus-visible { outline-color: Highlight; }
+}

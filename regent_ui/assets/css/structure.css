@@ -5,6 +5,7 @@
 @import "./agents.css";
 @import "./charts.css";
 @import "./points.css";
+@import "./cells.css";
 
 /* Shared ruled-sheet structure. Import tokens first; palettes remain product-owned. */
 /* The shared sweep is interaction-only and never replaces a content/focus host.
