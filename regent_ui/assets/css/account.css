@@ -19,12 +19,14 @@
 .rg-account h2 { font-size: 1.125rem; line-height: 1.35; }
 .rg-account h3 { font-size: var(--type-body-size); }
 
-/* The account card: the picture, the name and the wallet beneath it. */
+/* The account card: the picture, the name and the wallet beneath it. It has no
+   padding of its own: the page's section spacing places it, as it does the
+   panels below it. */
 .rg-account-identity {
   display: grid;
   gap: 1rem;
   min-inline-size: 0;
-  padding: 1.5rem 0;
+  padding: 0;
   color: var(--color-fg);
   font-family: var(--font-family-ui);
 }
