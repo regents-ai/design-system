@@ -28,3 +28,8 @@ body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-fami
 .showcase-table { border-collapse: collapse; inline-size: 100%; }
 .showcase-table :is(th, td) { padding: var(--space-1) 0; border-block-end: 1px solid var(--hairline); font-weight: 400; }
 .showcase-table th:not(.rg-figure) { text-align: start; }
+.showcase-nest--8 { padding: var(--space-1); }
+.showcase-nest--16 { padding: var(--space-2); }
+.showcase-nest--8 .showcase-nest__inner { --rg-cut-panel: var(--rg-cut-nested-8); }
+.showcase-nest--16 .showcase-nest__inner { --rg-cut-panel: var(--rg-cut-nested-16); }
+.showcase-nest__inner .rg-panel__body { margin: 0; padding: var(--space-3); }

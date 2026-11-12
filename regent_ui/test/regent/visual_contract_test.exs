@@ -169,8 +169,12 @@ defmodule Regent.VisualContractTest do
     assert label =~ "text-overflow: ellipsis"
     assert css =~ "border: 1px solid ButtonText; color: ButtonText; background: ButtonFace;"
     assert css =~ ".rg-button:disabled { color: GrayText; opacity: 1; }"
-    assert css =~ "outline: 2px solid var(--rg-p-text); outline-offset: 4px;"
-    assert css =~ "outline-color: Highlight;"
+
+    assert css =~
+             "outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset);"
+
+    assert css =~
+             "outline: var(--rg-ring-width) solid Highlight; outline-offset: var(--rg-ring-offset);"
   end
 
   test "Techtree's lime buttons draw the whole cut outline at rest in light, and only in light" do

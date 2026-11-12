@@ -257,6 +257,33 @@ defmodule Regent.StructureShowcase do
             </table>
           </div>
         </section>
+        <section id="corners" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Corners</h2>
+          </.section_bar>
+          <div class="showcase-figures">
+            <.panel id="corner-nest-8" class="showcase-nest showcase-nest--8">
+              <.panel id="corner-inner-8" class="showcase-nest__inner rg-support-figure">
+                <p class="rg-panel__body">8px</p>
+              </.panel>
+            </.panel>
+            <.panel id="corner-nest-16" class="showcase-nest showcase-nest--16">
+              <.panel id="corner-inner-16" class="showcase-nest__inner rg-support-figure">
+                <p class="rg-panel__body">16px</p>
+              </.panel>
+            </.panel>
+            <div class="showcase-actions" id="corner-rings">
+              <.button id="ring-primary">Continue</.button>
+              <.button id="ring-secondary" variant="secondary">Back</.button>
+              <label class="rg-pill-select">
+                <select id="ring-pill" aria-label="Sort">
+                  <option>Newest</option>
+                  <option>Oldest</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>

@@ -89,7 +89,7 @@
 .rg-support-figure .rg-technical-figure__art { background: var(--support-figure-surface); color: var(--support-figure-ink); }
 .rg-panel::before, .rg-panel::after { content: ""; position: absolute; pointer-events: none; }
 .rg-panel::before { z-index: -2; inset: 0; background: var(--rg-panel-edge); clip-path: polygon(var(--rg-cut) 0, calc(100% - var(--rg-cut)) 0, 100% var(--rg-cut), 100% calc(100% - var(--rg-cut)), calc(100% - var(--rg-cut)) 100%, var(--rg-cut) 100%, 0 calc(100% - var(--rg-cut)), 0 var(--rg-cut)); }
-.rg-panel::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - .585786 * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
+.rg-panel::after { --rg-inner-cut: max(0px, calc(var(--rg-cut) - var(--rg-cut-nest) * var(--rg-edge))); z-index: -1; inset: var(--rg-edge); background: var(--rg-panel-fill); clip-path: polygon(var(--rg-inner-cut) 0, calc(100% - var(--rg-inner-cut)) 0, 100% var(--rg-inner-cut), 100% calc(100% - var(--rg-inner-cut)), calc(100% - var(--rg-inner-cut)) 100%, var(--rg-inner-cut) 100%, 0 calc(100% - var(--rg-inner-cut)), 0 var(--rg-inner-cut)); }
 .rg-panel__body { padding: var(--rg-panel-padding); }
 /* Every modal or window: a native dialog in the shared frame. Two opposite corners
    are cut, each with an accent along its cut, and the other two are square with a
@@ -197,8 +197,8 @@
   .rg-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 47.99rem) {
-  .rg-sheet { --rg-page-gutter: var(--space-2); --rg-section-gap: var(--space-5); --rg-cut-panel: 12px; --rg-cut-control: 8px; }
-  .rg-panel { --rg-cut-panel: 12px; }
+  .rg-sheet { --rg-page-gutter: var(--space-2); --rg-section-gap: var(--space-5); --rg-cut-panel: 12px; --rg-cut-control: 8px; --rg-cut-nested-8: 8px; --rg-cut-nested-16: 0px; }
+  .rg-panel { --rg-cut-panel: 12px; --rg-cut-nested-8: 8px; --rg-cut-nested-16: 0px; }
   .rg-feature-grid { grid-template-columns: minmax(0, 1fr); }
   .rg-section-bar__leader { display: none; }
 }

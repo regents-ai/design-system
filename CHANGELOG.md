@@ -821,3 +821,22 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   now take `rg-figure` instead of setting `tabular-nums` themselves.
 - The showcase gains a Figures section: two live figures with a Change button, and a
   column of numbers.
+
+
+## 2026-11-12 — Corners: nested cuts, pills from height, rings that follow the shape
+
+- New tokens: `--rg-cut-nest` (0.585786, 2 − √2: inner cut = outer cut − 0.59 × gap),
+  `--rg-cut-nested-8` (12px) and `--rg-cut-nested-16` (8px), which a phone's 12px panel
+  cut makes 8px and square, and `--rg-ring-width` and `--rg-ring-offset` (2px each).
+  The JSON mirror is regenerated (November bonus pack, step 3).
+- The panel's inner skin and the holographic card's foil take their nested cut from
+  `--rg-cut-nest` instead of a written number; the card's still foil now uses the same
+  rule instead of taking 1px off.
+- A primary button's keyboard focus ring is cut to follow its corners, 2px of
+  `--color-focus` 2px outside it, in place of the square outline that sat round it.
+  Secondary buttons, disclosures and fields keep a square ring, now 2px outside in
+  `--color-focus`; forced colours draw a plain Highlight ring.
+- `rg-pill-select` takes its radius from `--pill-h` instead of `999px`, and its ring
+  follows the round ends in `--color-focus`.
+- The showcase gains a Corners section: cuts nested 8px and 16px inside panels, and a
+  primary button, a secondary button and a pill to tab through.

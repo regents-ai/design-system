@@ -43,7 +43,7 @@
 .rg-holo__canvas {
   position: absolute;
   inset: 1px;
-  --rg-holo-cut: max(0px, calc(var(--rg-cut-panel, 16px) - 1px));
+  --rg-holo-cut: max(0px, calc(var(--rg-cut-panel, 16px) - var(--rg-cut-nest) * 1px));
   clip-path: var(--rg-holo-clip);
 }
 .rg-holo__stage::before {
@@ -92,7 +92,7 @@
 .rg-holo-foil { position: absolute; pointer-events: none; }
 .rg-holo-foil__canvas { display: block; inline-size: 100%; block-size: 100%; }
 .rg-holo-foil--face {
-  --rg-holo-foil-cut: max(0px, calc(var(--rg-cut) - .585786 * var(--rg-edge)));
+  --rg-holo-foil-cut: max(0px, calc(var(--rg-cut) - var(--rg-cut-nest) * var(--rg-edge)));
   inset: var(--rg-edge);
   z-index: -1;
   visibility: hidden;

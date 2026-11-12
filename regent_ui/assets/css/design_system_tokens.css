@@ -67,6 +67,16 @@
   --rg-section-gap: var(--space-8);
   --rg-cut-panel: 16px;
   --rg-cut-control: 12px;
+  /* A cut inside a cut keeps its diagonal parallel: inner cut = outer cut − 0.59 × gap
+   * (2 − √2), floored at 0; a focus ring outside adds instead: ring cut = cut + 0.59 ×
+   * reach. The nested cuts are a panel's cut less 8px and 16px gaps, to the nearest 4px,
+   * square at 4px or less; a phone's 12px panel cut makes them 8px and square. */
+  --rg-cut-nest: .585786;
+  --rg-cut-nested-8: 12px;
+  --rg-cut-nested-16: 8px;
+  /* Every focus ring: this wide, this far outside the shape it follows. */
+  --rg-ring-width: 2px;
+  --rg-ring-offset: 2px;
   --rg-rule-width: 1px;
 
   --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);

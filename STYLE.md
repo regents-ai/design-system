@@ -243,6 +243,17 @@ Patterns that generalize:
   diagonal arrow up and to the right in place of its chevron, nudged the same way on
   hover; nothing else is added to its label.
   Disabled actions use inert gray. External keyboard focus rings remain visible.
+- A cut inside a cut keeps its diagonal parallel: inner cut = outer cut − 0.59 × gap
+  (`--rg-cut-nest`, 2 − √2), floored at 0. A child 8px from a panel's cut corner takes
+  `--rg-cut-nested-8` (12px, which lines up with a primary button), 16px takes
+  `--rg-cut-nested-16` (8px); on a phone they are 8px and square. Only a child that
+  touches a cut corner is cut; one away from the corner stays square.
+- A pill takes its radius from its height: `--pill-h` on the pill and
+  `border-radius: calc(var(--pill-h) / 2)`, never `999px`.
+- Every focus ring is `--rg-ring-width` (2px) of `--color-focus`, `--rg-ring-offset`
+  (2px) outside the shape, and follows it: square for square, round for a pill, cut for
+  a cut button, its cut the button's plus 0.59 × its reach. A ring adds to the shape and
+  never cuts into it.
 - Clip visual pseudo-elements only. Panel and button hosts have no clipping or hidden
   overflow, so menus, focus rings and expanded validation remain visible. Two inset
   skins supply the diagonal perimeter. Never fake a diagonal stroke with a clipped CSS border.
