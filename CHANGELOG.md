@@ -806,3 +806,9 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - `.rg-account-identity` loses its own 24px block padding. It sat 64px under the page
   title where every other first section sits 40px under it, and 72px above the next
   panel where sections stand 48px apart. The page's section gap now places it.
+
+## 2026-11-12 — The profile form drops its helper line
+
+- `Regent.Profile.panel` no longer says "The name people see for you." under Public
+  Display Name: the label already names it. The field's tip keeps the details (the same
+  name on every Regent site, up to 80 characters).

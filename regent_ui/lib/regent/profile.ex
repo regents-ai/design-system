@@ -29,7 +29,6 @@ defmodule Regent.Profile do
             autocomplete="nickname"
           />
           <:hint>
-            The name people see for you.
             <.tip id={"#{@id}-name-about"} label="About your Public Display Name">
               People see this name beside what you post on every Regent site, and it is
               the same on all of them. It may hold up to 80 characters, with no hidden
