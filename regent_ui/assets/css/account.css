@@ -353,7 +353,8 @@
 
 /* The dropdown: the shared details dropdown (`rg-pill-select`, which closes it on
    Escape and on a press outside), with a field's square corners, the whole width.
-   Its list drops over what is below, on the Tip layer, so opening it moves nothing. */
+   Its list drops over what is below, on the Tip layer, so opening it moves nothing.
+   The list is `data-panel="list"`: the site's motion script moves it in and out. */
 .rg-account__pick.rg-pill-select { display: flex; }
 /* No block padding: the chosen agent's picture fits inside the pill's 44px, so a
    choice never makes it taller. */
@@ -378,12 +379,6 @@
   border: 1px solid var(--hairline-strong);
   background: var(--color-surface-elevated, var(--color-surface));
   box-shadow: var(--rg-layer-tip-shadow);
-  transition:
-    opacity var(--duration-base) var(--ease-out),
-    transform var(--duration-base) var(--ease-out);
-}
-@starting-style {
-  .rg-account__pick[open] > .rg-account__choices { opacity: 0; transform: translateY(-4px); }
 }
 .rg-account__choices legend {
   position: absolute;
@@ -423,16 +418,16 @@
   .rg-account__choices { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* The chosen agent's picture, large. */
+/* The chosen agent's picture, centred in a low band a quarter as tall as it is wide. */
 .rg-account__stage {
   display: grid;
   place-items: center;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 1;
   border: 1px solid var(--color-border);
   background: var(--color-bg);
 }
 .rg-account__stage[data-waiting] { border-style: dashed; }
-.rg-account__stage .rg-account__mark { inline-size: 4.5rem; block-size: 4.5rem; }
+.rg-account__stage .rg-account__mark { inline-size: 3.5rem; block-size: 3.5rem; }
 
 /* The steps, numbered 01 to 03 in a column of their own. */
 .rg-account__steps { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; counter-reset: rg-step; }
@@ -535,7 +530,7 @@
 }
 @keyframes rg-account-tick { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .rg-account__renew, .rg-account__renew svg, .rg-account__choices { transition: none; }
+  .rg-account__renew, .rg-account__renew svg { transition: none; }
   .rg-account__renew:active svg { transform: none; }
   .rg-account__done[data-paired] svg :is(path, polyline) { animation: none; }
 }

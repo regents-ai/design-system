@@ -465,13 +465,14 @@ defmodule Regent.Account do
 
   @doc """
   Pairing an agent, as the pairing window and the pairing page show it: a dropdown
-  of the agents by name and picture, the chosen agent's picture large under it, then
+  of the agents by name and picture, the chosen agent's picture in a low band under it, then
   three numbered steps: the message with its code in a short box with icons to copy
   it and make a new code, pasting it to the agent, and a tick once it has paired.
 
   Choosing an agent sends the form's change event; the new-code icon submits it.
   The dropdown is open while no agent is chosen and closes when the next redraw
-  follows a choice. Every state shares one layout, and what a state lacks keeps its
+  follows a choice. The list is `data-panel="list"`, which the site's motion script
+  moves in and out. Every state shares one layout, and what a state lacks keeps its
   space unseen, so choosing never changes the height; boxes still waiting are dashed.
   """
   def pairing(assigns) do
@@ -491,7 +492,7 @@ defmodule Regent.Account do
           <.agent_mark :if={@chosen} kind={@chosen} />
           <span>{@chosen_label || "Choose agent"}</span>
         </summary>
-        <fieldset class="rg-account__choices">
+        <fieldset class="rg-account__choices" data-panel="list">
           <legend>Agent</legend>
           <label :for={harness <- @harnesses} class="rg-account__choice">
             <input

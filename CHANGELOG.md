@@ -867,3 +867,13 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   Display Name: the label already names it. The tip with the details (the same name on
   every Regent site, up to 80 characters) moves beside the Profile heading, as a page
   title carries its own, so the field has no hint line.
+
+## 2026-11-12 — The pairing window's picture is a low band, and its list moves by the motion kit
+
+- `Regent.Account.pairing`: the chosen agent's picture sits in a band a quarter as tall
+  as it is wide (it was 16 by 9), with a 56px picture, so the window is about 130px
+  shorter at 1280 wide and 100px shorter on a phone (founder, 11 Nov: "the image area
+  can be much smaller"). Choosing still changes no height.
+- The agent list is `data-panel="list"`, and `account.css` drops its own opening
+  transition: the template's motion kit moves the list in and out, so every site's list
+  moves the same way and reduced motion keeps it still. `STYLE.md` says so.

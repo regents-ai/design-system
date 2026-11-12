@@ -377,7 +377,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.menu` | The account menu every page opens from the account's button at the top right: picture, name and wallet, three agents, Pair New Agent, Manage Account and Sign out | Ash Template |
 | `Regent.Account.layout` | The Account page's sections in the one order and layout every site shares, with the site's own parts first | Ash Template |
 | `Regent.Account.agents_brief` | The person's agents in the account menu, three at most, each with where it was last active and how long ago; Manage beside the heading may lead to where agents are managed | Ash Template |
-| `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture large, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
+| `Regent.Account.pairing` | The pairing window's insides: an agent dropdown with names and pictures, the chosen agent's picture in a low band, then three numbered steps (copy the message, paste it, a tick once paired) | Ash Template |
 | `Regent.Account.agent_detail` | One agent's own view: facts, World ID backing, what it may do, activity across the sites | Ash Template |
 | `Regent.Account.agent_mark` | An agent's square picture | Ash Template |
 | `Regent.Points.layout`, `total`, `todo`, `board`, `bonus`, `activity` | The Points page: the total on the band colour with today, yesterday and rank; the actions left; the leaderboard; the NFT bonus; the activity | Ash Template |
@@ -499,8 +499,8 @@ includes `account.css`.
   person may choose; `value` is the harness value, which picks its picture). In order:
   the agent dropdown, a `details.rg-pill-select` with a field's square corners whose
   list (each agent's picture and name, two to a row) drops over what is below and is
-  open while nothing is chosen; the chosen agent's picture large; then three numbered
-  steps: the message in a short box that scrolls, with small copy and new-code icons
+  open while nothing is chosen; the chosen agent's picture, centred in a band a quarter
+  as tall as it is wide; then three numbered steps: the message in a short box that scrolls, with small copy and new-code icons
   in their own column at its right and the expiry line under it; "Paste it to" the
   chosen agent; and a dashed ring that becomes a tick drawing in once the agent paired.
   The site keeps each agent's code until it expires, so choosing another agent and
@@ -510,8 +510,10 @@ includes `account.css`.
   used or `:unavailable` when none could be made. The product's events sit on the
   form: `phx-change` (choosing) and `phx-submit` (the new-code icon) both carry
   `harness`. The redraw after a choice closes the dropdown, and `pill_select.mjs`
-  hands focus back to its summary. What a state lacks keeps its space unseen, so
-  choosing an agent never changes the height, and a box still waiting is dashed.
+  hands focus back to its summary. The list is `data-panel="list"`: it moves in and
+  out by the template's motion script, which a site copies, never by this library's
+  styles. What a state lacks keeps its space unseen, so choosing an agent never
+  changes the height, and a box still waiting is dashed.
 - `agent_detail` is a `<dialog>` the product renders while one agent is open, with its
   own hook to open it and report the close. It requires `id`, `agent`
   (`%{id, name, kind, harness, wallet, listing, paired_at, last_contact,
