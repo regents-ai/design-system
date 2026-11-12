@@ -215,6 +215,7 @@ Patterns that generalize:
 - Major panels use four fixed 45-degree cuts: `--rg-cut-panel` is 16px desktop,
   12px below 768px. Primary buttons cut top-left and bottom-right, 12px desktop and
   8px below 768px, filled with the site's own accent/on-accent pair in both themes.
+  Breadcrumb chips cut the same two corners at `--rg-cut-chip` (8px) on every screen.
   A primary rests as its plain fill. Hover and keyboard focus bring in its marks in
   150ms, and hover never takes them away (founder, 2026-10-19): dark primaries show
   Powder Blue marks at the square corners and Tangerine accents along the cuts; light
@@ -353,6 +354,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.tick` | A step's mark: a dashed ring while it waits, a tick that draws in once it is done | Ash Template, through `Regent.Account.pairing` |
 | `Regent.Primitives.segmented` | Two to five views of the same thing (1D / 1W / 1M, Mine / All): a cut frame of equal cells whose filled indicator slides to the chosen one; arrow keys, Home and End choose, and a choice never changes the height | Awaiting consumer adoption |
 | `Regent.Primitives.tabs` | Links between sibling sections of one page, each its own address, at most five; the page showing has a bar on the baseline that slides to the next | Patchbay; Ash Template (showcase); both through `Regent.Discussion.replies` |
+| `Regent.Primitives.breadcrumb` | Where a deep page sits and the way back up: joined chips cut at two corners, each an icon and a name, the page showing last; a long path folds the levels between into a "…" menu, a narrow row shows each level above as its icon and first two letters, a level's chevron opens the pages beside it and the page showing opens a card of its facts | Awaiting consumer adoption |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
 | `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
@@ -757,6 +759,11 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
   transform alone and the words never move. The package slides the segmented indicator
   in CSS; the template's motion kit adds the stretch that leads with the new side, and
   slides the tabs' bar from the tab before.
+- A breadcrumb keeps its row height and never wraps. When the path changes, the
+  template's motion kit raises the new page showing 4px into place over 280ms, fades
+  the crumbs that went in 140ms, and the old page showing turns to a plain level; its
+  menus and card grow from the button that opened them. Without the kit the new path
+  simply shows.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a

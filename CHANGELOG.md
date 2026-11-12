@@ -882,3 +882,19 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   `--rg-travel-start` and `--rg-travel-end` (segmented) and `--rg-travel-x` and
   `--rg-travel-scale` (tabs); `CONSUMERS.md` says how it uses them. The showcase gains a
   Choices section.
+
+## 2026-11-12 — Breadcrumb
+
+- New `Regent.Primitives.breadcrumb`: joined chips cut at two corners, each a Lucide
+  icon and a name, the page showing last and marked `aria-current="page"`. A long path
+  keeps the top level, the parent and the page showing and puts the levels between in
+  a "…" menu; below 40rem the levels above show their icon and first two letters, and
+  below 24rem only the parent and the page showing remain. The row never wraps and
+  keeps its height (November bonus pack, step 8).
+- A level with `siblings` gets a chevron that opens the pages beside it; the page
+  showing with `card` opens a card of its facts.
+- New token `--rg-cut-chip` (8px); the JSON mirror is regenerated.
+- The motion kit's marks are `data-crumbs`, `data-crumb` and `data-place`;
+  `CONSUMERS.md` says how it uses them. The showcase gains a Breadcrumb section.
+- Forced colours: the chosen cell of a segmented control drops the text backplate that
+  hid its word.

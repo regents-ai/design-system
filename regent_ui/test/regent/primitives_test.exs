@@ -414,4 +414,55 @@ defmodule Regent.PrimitivesTest do
       """)
     end
   end
+
+  test "a breadcrumb keeps the top, the parent and the page showing, with the levels between in a menu" do
+    assigns = %{
+      crumbs: [
+        %{label: "Home", icon: "house", href: "/"},
+        %{label: "Studio", icon: "folder", href: "/studio"},
+        %{label: "Clients", icon: "folder", href: "/studio/clients"},
+        %{
+          label: "Brand kit",
+          icon: "folder",
+          href: "/studio/clients/kit",
+          siblings: [%{label: "Templates", href: "/studio/templates"}]
+        },
+        %{label: "Crown.png", icon: "image", card: ["PNG", "4.2 MB"]}
+      ]
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <.breadcrumb id="trail" crumbs={@crumbs} />
+      """)
+
+    [menu] = Regex.run(~r{<span id="trail-hidden".*?</span>\s*</li>}s, html)
+
+    for path <- ~w(/ /studio /studio/clients), do: assert(menu =~ ~s(href="#{path}"))
+    refute menu =~ "/studio/clients/kit"
+    assert html =~ ~s(data-holds="between")
+    assert [_one] = Regex.scan(~r/aria-current="page"/, html)
+    assert html =~ ~r/data-place="here"[^>]*>\s*<span[^>]*aria-current="page"/
+    assert [_one] = Regex.scan(~r/popovertarget="trail-\d-beside"/, html)
+    assert html =~ ~s(popovertarget="trail-card")
+
+    assigns = %{crumbs: [hd(assigns.crumbs), %{label: "Studio", icon: "folder"}]}
+
+    html =
+      rendered_to_string(~H"""
+      <.breadcrumb id="short" crumbs={@crumbs} />
+      """)
+
+    refute html =~ "short-hidden"
+    refute html =~ "beside"
+    refute html =~ "short-card"
+
+    assigns = %{crumbs: [hd(assigns.crumbs)]}
+
+    assert_raise ArgumentError, fn ->
+      rendered_to_string(~H"""
+      <.breadcrumb id="lone" crumbs={@crumbs} />
+      """)
+    end
+  end
 end

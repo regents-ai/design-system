@@ -74,6 +74,8 @@
   --rg-cut-nest: .585786;
   --rg-cut-nested-8: 12px;
   --rg-cut-nested-16: 8px;
+  /* A chip, such as a breadcrumb's, cut at two corners like a primary button. */
+  --rg-cut-chip: 8px;
   /* Every focus ring: this wide, this far outside the shape it follows. */
   --rg-ring-width: 2px;
   --rg-ring-offset: 2px;

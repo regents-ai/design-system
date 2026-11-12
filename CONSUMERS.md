@@ -118,6 +118,21 @@ The motion kit moves both from these marks, and the package works without it:
   row that scrolls.
 - Neither moves for a key press or under reduced motion.
 
+`Regent.Primitives.breadcrumb` takes `id` and `crumbs`: every level from the top, then
+the page showing, at least two. Each is `%{label, icon}` (`icon` a Lucide name) with
+`href`, `patch` or `navigate` on the levels above; a level above may carry `siblings`
+(`%{label, href}`) for its chevron menu, and the page showing `card`, a few short facts
+("PNG", "2400×3000", "4.2 MB"). Import `tip.mjs` once from the site's `app.ts` so the
+card opens on hover as well as a press. The kit moves it from these marks:
+
+- `data-crumbs` marks the list for the kit's crumbs hook; each crumb is an `li` with
+  `data-crumb` (its name) and `data-place` (`first`, `gap`, `parent` or `here`).
+- On a path change the kit compares the names: a new `here` rises 4px into place over
+  280ms on `--ease-out`, crumbs that left fade out in 140ms on `--ease-in`, and the old
+  `here`, now a level above, turns muted with no movement.
+- The `[popover]` menus and the card grow from the button that opened them.
+- Nothing moves for a key press or under reduced motion.
+
 Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 `app.ts`: an open `details.rg-pill-select` menu a person can see then closes on Escape, handing focus back
 to its summary, and on a press outside it in its own layer (its window, or else the

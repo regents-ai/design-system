@@ -354,6 +354,144 @@ defmodule Regent.Primitives do
 
   attr :id, :string, required: true
 
+  attr :crumbs, :list,
+    required: true,
+    doc:
+      "every level from the top, then the page showing, at least two: `%{label, icon}` (`icon` is a Lucide name) with `href`, `patch` or `navigate` on each level above; a level above may carry `siblings` (`%{label, href}`, the pages beside it) and the page showing `card` (a few facts, such as [\"PNG\", \"2400×3000\", \"4.2 MB\"])"
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @doc """
+  Where a deep page sits, and the way back up: joined chips cut at two corners, the
+  page showing last. A long path keeps the top level, the parent and the page showing,
+  with the levels between in a "…" menu; a narrow row shows each level above as its
+  icon and first two letters, and the narrowest only the parent and the page showing.
+  A level's chevron opens the pages beside it; the page showing opens its card of
+  facts. The row never wraps; a long name ends in an ellipsis.
+  """
+  def breadcrumb(assigns) do
+    if length(assigns.crumbs) < 2 do
+      raise ArgumentError, "breadcrumb #{assigns.id} takes at least two crumbs"
+    end
+
+    {above, [here]} = Enum.split(assigns.crumbs, -1)
+    {first_and_between, [parent]} = Enum.split(above, -1)
+
+    assigns =
+      assign(assigns,
+        here: here,
+        parent: {parent, length(above) - 1},
+        first: List.first(first_and_between),
+        hidden: first_and_between,
+        between: Enum.drop(first_and_between, 1)
+      )
+
+    ~H"""
+    <nav id={@id} class={["rg-crumbs", @class]} aria-label="Breadcrumb" {@rest}>
+      <ol class="rg-crumbs__list" data-crumbs>
+        <.crumb :if={@first} id={"#{@id}-0"} crumb={@first} place="first" />
+        <li
+          :if={@hidden != []}
+          class="rg-crumbs__crumb"
+          data-place="gap"
+          data-holds={if @between == [], do: "first", else: "between"}
+        >
+          <span class="rg-crumbs__chip">
+            <button
+              type="button"
+              class="rg-crumbs__link"
+              popovertarget={"#{@id}-hidden"}
+              aria-label="More levels"
+              title="More levels"
+            >
+              <Icons.icon name="ellipsis" />
+            </button>
+          </span>
+          <span id={"#{@id}-hidden"} class="rg-crumbs__menu" popover>
+            <.link
+              :for={{crumb, index} <- Enum.with_index(@hidden)}
+              href={crumb[:href]}
+              patch={crumb[:patch]}
+              navigate={crumb[:navigate]}
+              data-place={index == 0 && "first"}
+            >
+              <Icons.icon name={crumb.icon} />
+              <span>{crumb.label}</span>
+            </.link>
+          </span>
+        </li>
+        <.crumb
+          id={"#{@id}-#{elem(@parent, 1)}"}
+          crumb={elem(@parent, 0)}
+          place="parent"
+        />
+        <li class="rg-crumbs__crumb" data-place="here" data-crumb={@here.label}>
+          <span class="rg-crumbs__chip" aria-current="page">
+            <%= if @here[:card] do %>
+              <.tip id={"#{@id}-card"} class="rg-crumbs__card">
+                <:figure>
+                  <Icons.icon name={@here.icon} />
+                  <span class="rg-crumbs__name">{@here.label}</span>
+                </:figure>
+                <span :for={fact <- @here.card} class="rg-crumbs__fact rg-figure">{fact}</span>
+              </.tip>
+            <% else %>
+              <span class="rg-crumbs__link" title={@here.label}>
+                <Icons.icon name={@here.icon} />
+                <span class="rg-crumbs__name">{@here.label}</span>
+              </span>
+            <% end %>
+          </span>
+        </li>
+      </ol>
+    </nav>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :crumb, :map, required: true
+  attr :place, :string, required: true
+
+  defp crumb(assigns) do
+    assigns = assign(assigns, :siblings, Map.get(assigns.crumb, :siblings, []))
+
+    ~H"""
+    <li class="rg-crumbs__crumb" data-place={@place} data-crumb={@crumb.label}>
+      <span class="rg-crumbs__chip">
+        <.link
+          class="rg-crumbs__link"
+          href={@crumb[:href]}
+          patch={@crumb[:patch]}
+          navigate={@crumb[:navigate]}
+          aria-label={@crumb.label}
+          title={@crumb.label}
+        >
+          <Icons.icon name={@crumb.icon} />
+          <span class="rg-crumbs__name">{@crumb.label}</span>
+          <span class="rg-crumbs__initials" aria-hidden="true">{String.slice(@crumb.label, 0, 2)}</span>
+        </.link>
+      </span>
+      <%= if @siblings != [] do %>
+        <button
+          type="button"
+          class="rg-crumbs__beside"
+          popovertarget={"#{@id}-beside"}
+          aria-label={"Pages beside #{@crumb.label}"}
+          title={"Pages beside #{@crumb.label}"}
+        >
+          <Icons.icon name="chevron-down" />
+        </button>
+        <span id={"#{@id}-beside"} class="rg-crumbs__menu" popover>
+          <a :for={sibling <- @siblings} href={sibling.href}>{sibling.label}</a>
+        </span>
+      <% end %>
+    </li>
+    """
+  end
+
+  attr :id, :string, required: true
+
   attr :at, DateTime,
     default: nil,
     doc: "when the figures beside it were last read, or nil before the first reading"

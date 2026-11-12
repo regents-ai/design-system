@@ -342,6 +342,21 @@ defmodule Regent.StructureShowcase do
             <p id="choices-below">Below</p>
           </div>
         </section>
+        <section id="crumbs" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Breadcrumb</h2>
+          </.section_bar>
+          <div class="showcase-stack">
+            <.breadcrumb id="crumbs-long" crumbs={sample_crumbs()} />
+            <.breadcrumb id="crumbs-short" crumbs={Enum.take(sample_crumbs(), -3)} />
+            <div class="showcase-crumbs-narrow">
+              <.breadcrumb id="crumbs-narrow" crumbs={sample_crumbs()} />
+            </div>
+            <div class="showcase-crumbs-narrowest">
+              <.breadcrumb id="crumbs-narrowest" crumbs={sample_crumbs()} />
+            </div>
+          </div>
+        </section>
         <section id="account" class="rg-inset">
           <.section_bar>
             <h2 class="rg-section-bar__label">Account / every state</h2>
@@ -591,6 +606,26 @@ defmodule Regent.StructureShowcase do
     ]
   end
 
+  defp sample_crumbs do
+    [
+      %{label: "Home", icon: "house", href: "#crumbs"},
+      %{
+        label: "Studio",
+        icon: "folder",
+        href: "#crumbs",
+        siblings: [%{label: "Archive", href: "#crumbs"}, %{label: "Shared", href: "#crumbs"}]
+      },
+      %{label: "Clients", icon: "folder", href: "#crumbs"},
+      %{
+        label: "Brand kit",
+        icon: "folder",
+        href: "#crumbs",
+        siblings: [%{label: "Templates", href: "#crumbs"}, %{label: "Clients", href: "#crumbs"}]
+      },
+      %{label: "regents-crown-gradient.png", icon: "image", card: ["PNG", "2400×3000", "4.2 MB", "Edited 2 hours ago"]}
+    ]
+  end
+
   defp features do
     [
       {"Clear boundaries",
@@ -622,7 +657,8 @@ html = """
 <link rel="stylesheet" href="/css/primitives.css">
 <link rel="stylesheet" href="/showcase.css">
 <script src="/showcase.js" defer></script>
-<script src="/js/segmented.mjs" type="module"></script></head>
+<script src="/js/segmented.mjs" type="module"></script>
+<script src="/js/tip.mjs" type="module"></script></head>
 <body>#{body}</body></html>
 """
 
@@ -637,7 +673,8 @@ File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "imag
 
 File.rm_rf!(Path.join(out, "js"))
 File.mkdir_p!(Path.join(out, "js"))
-File.cp!(Path.join(root, "regent_ui/assets/js/segmented.mjs"), Path.join(out, "js/segmented.mjs"))
+for name <- ~w(segmented.mjs tip.mjs),
+    do: File.cp!(Path.join(root, "regent_ui/assets/js/" <> name), Path.join(out, "js/" <> name))
 
 for name <- ~w(showcase.css showcase.js),
     do: File.cp!(Path.join(root, "scripts/" <> name), Path.join(out, name))
