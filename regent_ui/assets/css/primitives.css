@@ -308,6 +308,7 @@
 .rg-button:focus-visible, .rg-disclosure > summary:focus-visible,
 .rg-field :is(input, select, textarea):focus-visible { outline: var(--rg-ring-width) solid var(--color-focus); outline-offset: var(--rg-ring-offset); }
 .rg-field { display: grid; gap: var(--space-1); }
+.rg-field__label { display: flex; align-items: center; gap: .375rem; }
 .rg-field :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
   min-width: 0; width: 100%; min-height: 2.75rem; box-sizing: border-box; padding: var(--space-1) var(--space-2);
   border: 1px solid var(--rg-p-control-border); border-radius: var(--radius);

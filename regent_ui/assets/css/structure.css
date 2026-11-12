@@ -165,6 +165,21 @@
 @media (max-width: 47.99rem) {
   .rg-dialog { --rg-dialog-cut: 12px; }
 }
+/* A window's main button shows against the window. Where the site's action fill is the
+   window's own (Regents' white and charcoal), a tenth of its text colour goes into the
+   fill; a brand fill only deepens a little. */
+.rg-dialog .rg-button:where(:not(.rg-button--secondary):not(.rg-button--quiet))::before {
+  background-color: color-mix(in srgb, currentColor 10%, var(--rg-p-accent));
+}
+/* The window that asks before an action (`Regent.Structure.confirm`): the question,
+   then Cancel and the button that goes ahead at the end of one row. */
+.rg-confirm { --rg-dialog-size: 26rem; }
+.rg-confirm__form { display: grid; gap: var(--space-3); margin: 0; }
+.rg-confirm__question {
+  margin: 0; font-size: var(--type-headline-size); line-height: var(--type-headline-line);
+  overflow-wrap: anywhere;
+}
+.rg-confirm__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
 .rg-panel:focus-within { z-index: var(--rg-layer-card); }
 .rg-panel__heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding: var(--rg-panel-padding); border-block-end: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
 .rg-panel__heading h3 { margin: 0; min-inline-size: 0; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; overflow-wrap: anywhere; }
@@ -192,7 +207,6 @@
 .rg-technical-figure__art > svg { display: block; inline-size: 100%; block-size: auto; max-inline-size: 100%; overflow: visible; }
 .rg-technical-figure svg :is(path, circle, ellipse, rect, line, polyline, polygon) { vector-effect: non-scaling-stroke; }
 .rg-technical-figure svg text { font-family: var(--font-family-ui); font-size: 12px; fill: currentColor; stroke: none; }
-.rg-technical-figure figcaption { font-family: var(--font-family-ui); font-size: .8125rem; text-align: start; justify-self: start; margin-block-start: var(--space-2); }
 @media (max-width: 74.99rem) {
   .rg-sheet { --rg-page-gutter: var(--space-3); --rg-rail-width: 9rem; --rg-track-gap: var(--space-3); --rg-panel-padding: var(--space-3); }
 }

@@ -138,14 +138,15 @@ defmodule Regent.AccountTest do
     assert html =~ ~r/<input[^>]*type="hidden"[^>]*name="agent_id"[^>]*value="agent-1"/
     assert html =~ ~r/<input[^>]*name="name"[^>]*value="Night Shift"/
     assert html =~ ~r/<input[^>]*name="name"[^>]*maxlength="80"/
-    assert html =~ "Only you see this name."
-    assert html =~ "Only you and the agent see it."
-    refute html =~ ~s(role="alert")
+    assert html =~ ~r/<input[^>]*name="name"[^>]*aria-invalid="false"/
+    assert html =~ ~r/id="d-name-errors"[^>]*aria-live="polite">\s*<\/div>/
 
     refused = detail.(%{assigns | error: "That name can't be used."})
-    assert refused =~ ~r/<span role="alert">That name can(&#39;|')t be used.<\/span>/
+
+    assert refused =~
+             ~r/id="d-name-errors"[^>]*aria-live="polite">\s*<p>That name can(&#39;|')t be used.<\/p>/
+
     assert refused =~ ~r/<input[^>]*name="name"[^>]*aria-invalid="true"/
-    refute refused =~ "Only you see this name."
   end
 
   test "an ended session asks the person to sign in again" do

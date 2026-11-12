@@ -294,6 +294,17 @@ belongs to the template's motion script, not this library: a press by pointer sp
 window up, a key press opens it at once, and reduced motion keeps it still. Sites copy
 that script from the template.
 
+A question before an action that can't be undone, such as deleting a note, is asked in
+one shared window, `Regent.Structure.confirm`, never the browser's own confirm box. A
+site renders it once in its root layout and imports `confirm.mjs`. A control asks by
+carrying `data-confirm`, its question, and `data-confirm-action`, the one or two words on
+the button that goes ahead (Delete, Unpair, Block). The window holds the question and two
+buttons, nothing else. Cancel takes focus first; Cancel or Escape hands focus back to the
+control. Every press of the button that goes ahead does what the original press would
+have done, once, and nothing blocks or merges repeat presses. That button keeps its fill
+against the window's own surface. It rises like every other window, and opens at once
+after a key press.
+
 ### Addresses and transaction hashes
 
 A contract address or transaction hash always shows its short form, then a copy icon and
@@ -357,7 +368,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.breadcrumb` | Where a deep page sits and the way back up: joined chips cut at two corners, each an icon and a name, the page showing last; a long path folds the levels between into a "…" menu, a narrow row shows each level above as its icon and first two letters, a level's chevron opens the pages beside it and the page showing opens a card of its facts | Awaiting consumer adoption |
 | `Regent.Primitives.last_read` | When figures read from the chain were last read ("Updated 23 Oct, 14:05 UTC") and an icon that asks for them to be read again; the icon turns while its press is on its way | Ash Template |
 | `Regent.Primitives.address` | Every ENS name, address and short address a page shows: the words, which open the full address on a click, tap or Enter, a copy icon for the full address and a diagonal arrow that opens it on Basescan (Etherscan with `chain="ethereum"`, Blockscout with `chain="robinhood"`, none with `chain="test"`; any other value raises), each a 44 px target on a touch screen (founder, 2026-10-19). With no `label` it shows the short form `0x1234..abcd`; `variant="full"` shows every character and `variant="compact"` drops the arrow beside a small control; `kind="id"` copies a long ID, such as a pool ID, with no arrow | Ash Template |
-| `Regent.Primitives.field` | Label, hint and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
+| `Regent.Primitives.field` | Label, optional tip, live limit and errors around an app-owned input | Regents, Autolaunch, Patchbay; Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.status` | Bordered state chip | Autolaunch, Techtree; Regents, Ash Template and Keyfleet (showcase) |
 | `Regent.Primitives.notice` | Info, success, warning or error message | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
 | `Regent.Primitives.empty_state` | Titled empty result with an optional action | Patchbay; Regents, Ash Template and Keyfleet (showcase) |
@@ -369,6 +380,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Structure.technical_figure` | Figure compartment for static art | Regents, Techtree; Ash Template and Keyfleet (showcase) |
 | `Regent.Structure.capability_card` | Feature card with heading, figure and caption bands | Regents, Autolaunch, Ash Template, Keyfleet |
 | `Regent.Structure.ratio_card` | Read-only basis-point allocation sheet | Regents |
+| `Regent.Structure.confirm` | The one window that asks before an action that can't be undone, worded by the control's `data-confirm` and `data-confirm-action` (with `confirm.mjs`) | Ash Template (showcase) |
 | `Regent.Blog.gallery` | Blog index | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.article` | Blog post with sticky contents | Regents, Autolaunch, Patchbay, Techtree |
 | `Regent.Blog.contents` | Table of contents inside `article` | Rendered by `Regent.Blog.article` |
@@ -442,9 +454,8 @@ label sits above the tiles and right-aligned optional badge. Its unique `id`
 and `title` are required strings. Integer `value_bps` is `0..10000` or `nil` (default):
 paired labels and the named `0..100` meter derive from the same basis points,
 trimmed to at most two decimals. Invalid inputs raise `ArgumentError`; `nil` shows
-em dashes and `No data` without a meter. Defaults are `eyebrow="Allocation"`,
-`label="Allocated"`, `remainder_label="Remaining"`, `footer_label="Details"` and
-`change={nil}`. Change text is caller-defined, including period; it is not calculated.
+em dashes and `No data` without a meter. Defaults are `label="Allocated"`,
+`remainder_label="Remaining"`, `footer_label="Details"` and `change={nil}`. Change text is caller-defined, including period; it is not calculated.
 Optional `:footer`/`:footer_badge` slots and `class`/global attributes provide content
 without implicit actions. Use `rg-ratio-card__tile` for static footer tiles.
 Orange notes mix 55% Tangerine with local ink on a 12% Tangerine/local-surface tint;
@@ -541,10 +552,10 @@ includes `account.css`.
   SIWA and how its harness keeps the key. Optional:
   `same_person_count`, `same_person` (`%{id, name}`), `notice`
   (`{:status | :alert, text}`), `name_error` (why a new name was refused, in a few
-  words, such as "That name can't be used."; it takes the place of the name's hint,
+  words, such as "That name can't be used."; it shows in the name field's error line,
   so nothing below moves), `target`, an `actions` slot for the product's
   buttons beside Done, such as Unpair, and a `picture` slot, after the facts, for
-  the product's control to choose or remove the picture the person gave the agent. The name's hint and tip say where it comes
+  the product's control to choose or remove the picture the person gave the agent. The name's tip says where it comes
   from and who sees it: the agent chose it when it paired, and only the person and
   the agent see it.
 
@@ -690,7 +701,15 @@ common button or disclosure.
 ### Few words on screen
 
 Design like a Coinbase deposit dialog (founder, 2026-10-06): the figures, the input, the
-choice and the button, and nothing else until someone asks. Too much text is a defect.
+choice and the button, and nothing else until someone asks. Make every screen as simple
+as Linear's website or Apple Notes (founder, 2026-11-02): simple purpose, simple design,
+simple code. If a screen needs a tagline or helper line to make sense, fix the layout
+instead: the order, the grouping, the control itself. Too much text is a defect.
+
+- **Never on screen:** a tagline or subtitle under a heading, a small label above one (a
+  kicker, eyebrow or breadcrumb that repeats the page or site name), a line under an
+  input saying what to type, and a caption under a page's picture. Shared components
+  carry no slot for these.
 
 - **What stays visible:** a short title or the figure that matters, labels of one to
   three words, the amount and what it costs or buys, the primary action, and anything
@@ -735,7 +754,8 @@ Check every state at desktop and phone width; the box below must not move.
 
 ### Fields
 
-`Regent.Primitives.field` puts the label above its input and keeps a line under it for
+`Regent.Primitives.field` puts the label above its input, with an optional `tip` slot
+beside the label for what a person rarely needs, and keeps a line under it for
 errors, empty until the field has one, so an error never moves the fields below it, and a
 screen reader says the error as it appears. A form checks a field when the person leaves
 it (`phx-debounce="blur"`), never while they type, and its errors say what to do ("Fill

@@ -48,13 +48,11 @@ defmodule Regent.Structure do
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
-  slot :caption
 
   def technical_figure(assigns) do
     ~H"""
     <figure class={["rg-technical-figure", @class]} {@rest}>
       <div class="rg-technical-figure__art">{render_slot(@inner_block)}</div>
-      <figcaption :if={@caption != []}>{render_slot(@caption)}</figcaption>
     </figure>
     """
   end
@@ -105,7 +103,6 @@ defmodule Regent.Structure do
   """
   attr :id, :string, required: true
   attr :title, :string, required: true
-  attr :eyebrow, :string, default: "Allocation"
   attr :value_bps, :integer, default: nil
   attr :label, :string, default: "Allocated"
   attr :remainder_label, :string, default: "Remaining"
@@ -124,8 +121,6 @@ defmodule Regent.Structure do
     ~H"""
     <article id={@id} class={["rg-ratio-card", @class]} aria-labelledby={"#{@id}-title"} {@rest}>
       <header class="rg-ratio-card__header">
-        <span class="rg-ratio-card__eyebrow">{@eyebrow}</span>
-        <span class="rg-ratio-card__slash" aria-hidden="true">/</span>
         <h3 id={"#{@id}-title"} class="rg-ratio-card__title">{@title}</h3>
         <span class="rg-ratio-card__header-badge">{@badge}</span>
       </header>
@@ -224,6 +219,41 @@ defmodule Regent.Structure do
     <dialog id={@id} class={["rg-dialog", @class]} {@rest}>
       <div class="rg-dialog__body">{render_slot(@inner_block)}</div>
     </dialog>
+    """
+  end
+
+  @doc """
+  The one window that asks before an action, in place of the browser's own confirm
+  box. Render it once in the root layout and import `confirm.mjs`. A control then asks
+  by carrying `data-confirm`, its question, and `data-confirm-action`, the one or two
+  words on the button that goes ahead, such as "Delete". Cancel takes focus first;
+  Cancel or Escape hands focus back to the control, and the button that goes ahead
+  presses the control again, this time without asking.
+  """
+  def confirm(assigns) do
+    ~H"""
+    <.dialog
+      id="rg-confirm"
+      class="rg-confirm"
+      role="alertdialog"
+      aria-labelledby="rg-confirm-question"
+    >
+      <form method="dialog" class="rg-confirm__form">
+        <p id="rg-confirm-question" class="rg-confirm__question"></p>
+        <div class="rg-confirm__actions">
+          <Regent.Primitives.button
+            type="submit"
+            variant="secondary"
+            value="cancel"
+            arrow={false}
+            autofocus
+          >
+            Cancel
+          </Regent.Primitives.button>
+          <Regent.Primitives.button type="submit" value="accept" data-confirm-accept></Regent.Primitives.button>
+        </div>
+      </form>
+    </.dialog>
     """
   end
 end

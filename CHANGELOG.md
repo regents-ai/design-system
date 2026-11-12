@@ -995,3 +995,31 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
   gains a Charts section with a stand-in for the kit's pointer rule.
 - Not built here: Liveline's per-frame smoothing, momentum arrows, order book and
   candlesticks, and flow diagrams beyond the existing technical figure.
+
+## 2026-11-12 — One window asks before an action that can't be undone
+
+- New `Regent.Structure.confirm` and `regent_ui/assets/js/confirm.mjs`: a press on a
+  control carrying `data-confirm` asks in the shared cut-corner window instead of the
+  browser's own confirm box. The window holds the control's question and two buttons:
+  Cancel, which takes focus first, and the button that goes ahead, worded by the
+  control's `data-confirm-action` (Delete, Unpair, Block). Cancel or Escape hands focus
+  back to the control. Every press of the button that goes ahead does what the original
+  press would have done, once, the moment it is pressed; nothing blocks or merges
+  repeat presses. The window carries `data-opened-by` (`key` or `pointer`) for the
+  motion kit. `mix regent_ui.assets` copies `confirm.mjs`.
+- A primary button inside any window keeps a visible fill against the window's own
+  surface (Regents' white and charcoal actions matched it).
+- Shared parts carry no taglines, helper text or small labels (founder, 2 Nov): the
+  ratio card loses `eyebrow`, the technical figure its `caption` slot, the blog
+  gallery its `site` attribute and tagline, the utility page its `context` label, the
+  account card its "Your account" label, and the blog's empty and Not found pages their
+  helper lines. Discussion's Solved sentence moves into a tip beside the heading
+  (`caption` attribute removed). The agent's name refusal now shows in the name field's
+  error line; its "Only you see this name." line is gone and its tip stays.
+  `Regent.Primitives.field` gains a `tip` slot beside the label. STYLE.md's "Few words
+  on screen" gains the rule.
+- Consumers: render `<Regent.Structure.confirm />` once in the root layout, import
+  `confirm.mjs` from `app.ts` before the LiveSocket connects and drop `import
+  "phoenix_html"` when it was there only for `data-confirm`, give every `data-confirm` a
+  `data-confirm-action`, and stop passing `eyebrow`, `site`, `context`, `caption` and the
+  technical figure's `<:caption>`.

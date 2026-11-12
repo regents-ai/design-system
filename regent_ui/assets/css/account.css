@@ -33,11 +33,6 @@
 
 .rg-account-identity p { margin: 0; }
 
-.rg-account-identity__kicker {
-  color: var(--color-fg-muted);
-  font-size: .875rem;
-}
-
 .rg-account-identity__who {
   display: flex;
   align-items: center;
@@ -549,15 +544,11 @@
   text-transform: uppercase;
 }
 
-/* The name's form: the field and Save on one line; its hint or the refusal in its
-   place keeps one line, so a refusal never moves the facts below. */
+/* The name's form: the field and Save on one line; a refusal takes the field's error
+   line, which is always there, so it never moves the facts below. */
 .rg-account__name { margin: 0 0 var(--space-3); }
 .rg-account__name-row { display: flex; align-items: center; gap: var(--space-2); }
 .rg-account__name-row input { flex: 1; min-width: 0; }
-.rg-account__name .rg-muted { display: flex; align-items: center; gap: 6px; }
-.rg-account__name .rg-muted > span:first-child {
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
 
 .rg-account__facts {
   display: grid;

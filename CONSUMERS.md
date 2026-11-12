@@ -191,6 +191,15 @@ Import `pill_select.mjs` (copied by `mix regent_ui.assets`) once from the site's
 to its summary, and on a press outside it in its own layer (its window, or else the
 page). A `select` pill needs nothing.
 
+Render `Regent.Structure.confirm` once in the root layout and import `confirm.mjs`
+(copied by `mix regent_ui.assets`) once from the site's `app.ts`, before the LiveSocket
+connects and in place of `phoenix_html`'s script: a press on any control with
+`data-confirm` (the question) and `data-confirm-action` (one or two words on the button
+that goes ahead, such as "Delete") then asks in that window, and the browser's own
+confirm box never shows. Every `data-confirm` gets a `data-confirm-action`. The window
+carries `data-opened-by="key"` or `"pointer"` while it is open, so the motion kit opens
+it at once after a key press.
+
 Import `tip.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`: a
 `Regent.Primitives.tip` then opens while a mouse rests on its "i" or figure and closes a
 moment after the mouse leaves that and its words; a click keeps it open. Touch, pen and

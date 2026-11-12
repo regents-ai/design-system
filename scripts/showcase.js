@@ -142,3 +142,12 @@ for (const chart of document.querySelectorAll("[data-chart]")) {
     show(Math.min(rows.length - 1, Math.max(0, at)));
   });
 }
+
+// Counts what goes through the confirm window: each Delete or Unpair that went ahead.
+const presses = document.querySelector("#confirm-presses");
+const count = () => { presses.value = String(Number(presses.value) + 1); };
+document.querySelector("#confirm-delete").addEventListener("click", count);
+document.querySelector("#confirm-form").addEventListener("submit", event => {
+  event.preventDefault();
+  count();
+});

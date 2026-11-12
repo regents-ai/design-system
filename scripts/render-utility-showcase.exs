@@ -5,10 +5,7 @@ defmodule UtilityPreview do
 
   def connection(assigns) do
     ~H"""
-    <Regent.Utility.page
-      title="This connection link no longer works"
-      context="Ash Template · Connected apps"
-    >
+    <Regent.Utility.page title="This connection link no longer works">
       <p>It expired or has already been used. Return to the app and start connecting again.</p>
       <:note>
         <p>No new access was granted.</p>
@@ -20,7 +17,6 @@ defmodule UtilityPreview do
   def account(assigns) do
     ~H"""
     <main class="rg-utility preview-account">
-      <p class="rg-utility__context">Ash Template · Account</p>
       <h1>Account</h1>
       <p class="preview-description">Manage your profile, agents and connected accounts.</p>
       <section class="rg-account" aria-labelledby="profile-heading">
@@ -43,7 +39,7 @@ defmodule UtilityPreview do
 
   def error(assigns) do
     ~H"""
-    <Regent.Utility.page title="We can’t find that page" context="Ash Template" id="error-page">
+    <Regent.Utility.page title="We can’t find that page" id="error-page">
       <p>Use the homepage or one of the links below to continue.</p>
       <:actions><a class="rg-button" href="/">Go to the homepage</a></:actions>
       <:note>

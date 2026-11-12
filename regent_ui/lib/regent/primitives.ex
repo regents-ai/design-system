@@ -658,7 +658,8 @@ defmodule Regent.Primitives do
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
-  slot :hint
+  slot :tip, doc: "a `tip/1` beside the label, for what a person rarely needs to read"
+  slot :hint, doc: "a live limit under the input, such as a count"
 
   @doc """
   Wrap an application-owned input. The slot receives label and description IDs.
@@ -676,7 +677,7 @@ defmodule Regent.Primitives do
 
     ~H"""
     <div class={["rg-field", @class]} {@rest}>
-      <label for={@id}>{@label}</label>
+      <div class="rg-field__label"><label for={@id}>{@label}</label>{render_slot(@tip)}</div>
       {render_slot(@inner_block, %{
         id: @id,
         described_by: @described_by,

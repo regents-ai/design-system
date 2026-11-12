@@ -89,7 +89,6 @@ defmodule Regent.StructureShowcase do
                 stroke="none"
               />
             </svg>
-            <:caption>Illustration / boundaries, surfaces, connections</:caption>
           </.technical_figure>
         </main>
       </.row>
@@ -593,8 +592,34 @@ defmodule Regent.StructureShowcase do
             </:side>
           </Regent.Points.layout>
         </section>
+        <section id="confirm" class="rg-inset">
+          <.section_bar>
+            <h2 class="rg-section-bar__label">Confirm</h2>
+          </.section_bar>
+          <div class="showcase-actions">
+            <.button
+              id="confirm-delete"
+              variant="secondary"
+              arrow={false}
+              data-confirm="Delete this note?"
+              data-confirm-action="Delete"
+            >
+              Delete
+            </.button>
+            <form id="confirm-form">
+              <.button type="submit" data-confirm="Unpair this agent?" data-confirm-action="Unpair">
+                Unpair
+              </.button>
+            </form>
+            <a id="confirm-link" href="#confirm-left" data-confirm="Leave this page?" data-confirm-action="Leave">
+              Leave
+            </a>
+            <output id="confirm-presses" class="rg-figure">0</output>
+          </div>
+        </section>
       </.row>
     </.frame>
+    <Regent.Structure.confirm />
     <dialog id="sample-dialog" aria-labelledby="dialog-title">
       <h2 id="dialog-title">A native dialog</h2>
       <p>Focus remains inside until this dialog closes.</p>
@@ -836,7 +861,8 @@ html = """
 <link rel="stylesheet" href="/showcase.css">
 <script src="/showcase.js" defer></script>
 <script src="/js/segmented.mjs" type="module"></script>
-<script src="/js/tip.mjs" type="module"></script></head>
+<script src="/js/tip.mjs" type="module"></script>
+<script src="/js/confirm.mjs" type="module"></script></head>
 <body>#{body}</body></html>
 """
 
@@ -851,7 +877,7 @@ File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "imag
 
 File.rm_rf!(Path.join(out, "js"))
 File.mkdir_p!(Path.join(out, "js"))
-for name <- ~w(segmented.mjs tip.mjs),
+for name <- ~w(segmented.mjs tip.mjs confirm.mjs),
     do: File.cp!(Path.join(root, "regent_ui/assets/js/" <> name), Path.join(out, "js/" <> name))
 
 for name <- ~w(showcase.css showcase.js),
