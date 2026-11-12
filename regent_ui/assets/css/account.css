@@ -428,7 +428,7 @@
   background: var(--color-bg);
 }
 .rg-account__stage[data-waiting] { border-style: dashed; }
-.rg-account__stage .rg-account__mark { inline-size: 3.5rem; block-size: 3.5rem; }
+.rg-account__stage .rg-account__mark { inline-size: 3rem; block-size: 3rem; }
 
 /* The steps, numbered 01 to 03 in a column of their own. */
 .rg-account__steps { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; counter-reset: rg-step; }
