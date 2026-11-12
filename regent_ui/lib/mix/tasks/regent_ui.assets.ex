@@ -7,7 +7,8 @@ defmodule Mix.Tasks.RegentUi.Assets do
   and `priv/static/images/regent-ui/`. The packaged CSS declares its fonts at
   `/fonts/regent-ui/<file>` and the components show pictures from
   `/images/regent-ui/<path>`, so the application must serve `priv/static/fonts` and
-  `priv/static/images`.
+  `priv/static/images`. It also copies `style-check.sh`, which the site runs from its
+  `platform/` directory as `sh assets/vendor/regent_ui/style-check.sh`.
   """
   use Mix.Task
 
@@ -36,6 +37,11 @@ defmodule Mix.Tasks.RegentUi.Assets do
         file <- Path.wildcard(Path.join(dependency, "assets/js/#{pattern}")) do
       File.cp!(file, Path.join(destination, Path.basename(file)))
     end
+
+    File.cp!(
+      Path.join(dependency, "scripts/style-check.sh"),
+      Path.join(destination, "style-check.sh")
+    )
 
     fonts = Path.join(File.cwd!(), "priv/static/fonts/regent-ui")
     File.mkdir_p!(fonts)

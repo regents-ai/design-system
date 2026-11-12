@@ -222,6 +222,13 @@ the footer label sits above the tiles and right badge. Orange-tinted notes use l
 in both themes. Forced colors retain a solid system-color fill and borders. No
 animation, data loading, authentication, wallet or product workflow is included.
 
+### Style check
+
+`regent_ui/scripts/style-check.sh` checks a site's own CSS, scripts and templates
+against the `STYLE.md` rules and prints `file:line` for each break; `mix regent_ui.assets`
+delivers it to every site (see "Style check" in `CONSUMERS.md`). Run it here over the
+package's own files with `sh scripts/style-check.sh` from `regent_ui/`.
+
 ### Package checks
 
 One command must pass before a change is proposed:

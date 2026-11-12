@@ -151,6 +151,24 @@ background images. The source SVGs stay in `site svg backgrounds/` for future sm
 illustration sections. Remove product-owned background mounts during deliberate consumer
 adoption.
 
+## Style check
+
+`mix regent_ui.assets` copies `style-check.sh` with the styles. A site runs it from its
+`platform/` directory, for instance from `make check`:
+
+```bash
+sh assets/vendor/regent_ui/style-check.sh
+```
+
+It reads the site's own CSS and scripts under `assets/` and its templates under `lib/`,
+skipping `assets/vendor/`, `node_modules` and anything the site's git ignores, and prints
+`file:line: rule: text` for each break of a `STYLE.md` rule: soft shadows (`flat`),
+stacking numbers outside an isolated artwork root (`stacking`), glass and blur (`glass`),
+weights above 400 (`weight`), radii other than 0, 50% or a pill's half height (`shape`),
+layout properties animated from scripts (`motion`), an `<svg>` that is neither hidden
+artwork nor a named logo (`icon`), "KeyFleet" (`name`) and page words that say how a
+page is built (`words`). It exits 1 when it finds any. It needs ripgrep, awk and perl.
+
 See [MOBILE.md](MOBILE.md) for the iPhone-oriented composition and acceptance contract.
 Coarse/no-hover shared buttons retain a 44px minimum hit box, and text-like `rg-field`
 controls have a 16px font floor without shrinking larger inherited text. Pointer-only

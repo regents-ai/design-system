@@ -729,6 +729,9 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--a
 There is no glass layer. Shared structure uses opaque semantic surfaces, no blur, and no
 animation dependency. The interaction-only shimmer is the restrained exception to
 undecorated panel skins.
+The regents.sh home's glass panel is the single approved one-off (Sean, 12 November
+2026): its line carries `/* style-check: allow glass — Sean 12 Nov 2026 */`, the only
+mark the style check accepts, and no other line may carry it.
 
 ## Artwork
 

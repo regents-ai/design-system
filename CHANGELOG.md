@@ -786,3 +786,23 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - `Regent.Account.agent_detail` no longer takes `spent` or `account_href`, and its
   "Spending" part is gone: the window answers what the agent may do and what it has done.
 - `STYLE.md` and the showcase drop every Credits example.
+
+
+## 2026-11-12 — A style check sites can run
+
+- New `regent_ui/scripts/style-check.sh`: prints `file:line: rule: text` for each break
+  of a `STYLE.md` rule in a site's own CSS, scripts and templates (soft shadows,
+  stacking numbers, glass and blur, weights above 400, radii, layout animated from
+  scripts, stray `<svg>`, "KeyFleet", page words that say how a page is built) and exits
+  1 when it finds any. Vendored copies and ignored files are skipped. A rule is now
+  checked by the build instead of remembered (November bonus pack, step 1).
+- `mix regent_ui.assets` copies it into `assets/vendor/regent_ui/` with the styles;
+  `CONSUMERS.md` says how a site calls it. No site runs it yet.
+- The regents.sh home glass panel is the one approved glass (Sean, 12 November 2026):
+  its line carries `style-check: allow glass — Sean 12 Nov 2026`. `STYLE.md`'s Glass
+  section says so.
+- Over this package's own files it reports 26 lines today: inset rules drawn with
+  `box-shadow` in the Account, Discussion and Points styles, the theme switch's laser
+  glow, its prism's rounded corners, the pill select's `999px` radius, and the negative
+  stacking numbers of the panel, figure, button and foil skins. They are left as they
+  are here.
