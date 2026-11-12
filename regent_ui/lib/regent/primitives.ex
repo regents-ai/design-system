@@ -302,7 +302,13 @@ defmodule Regent.Primitives do
   attr :rest, :global
   slot :inner_block, required: true
   slot :hint
-  @doc "Wrap an application-owned input. The slot receives label and description IDs."
+  @doc """
+  Wrap an application-owned input. The slot receives label and description IDs.
+
+  The line for errors under the input is always there, empty until the field has one,
+  so an error showing up never moves the fields below it, and a screen reader says it
+  as it appears.
+  """
   def field(assigns) do
     ids =
       if(assigns.errors == [], do: [], else: [assigns.id <> "-errors"]) ++
@@ -319,9 +325,9 @@ defmodule Regent.Primitives do
         aria_invalid: to_string(@errors != [])
       })}
       <div :if={@hint != []} id={@id <> "-hint"} class="rg-muted">{render_slot(@hint)}</div>
-      <ul :if={@errors != []} id={@id <> "-errors"} class="rg-field-errors">
-        <li :for={error <- @errors}>{error}</li>
-      </ul>
+      <div id={@id <> "-errors"} class="rg-field-errors" aria-live="polite">
+        <p :for={error <- @errors}>{error}</p>
+      </div>
     </div>
     """
   end

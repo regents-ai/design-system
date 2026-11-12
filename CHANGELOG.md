@@ -786,3 +786,17 @@ Sean dropped Regent Credits on 6 November 2026: no site shows, sells or spends t
 - `Regent.Account.agent_detail` no longer takes `spent` or `account_href`, and its
   "Spending" part is gone: the window answers what the agent may do and what it has done.
 - `STYLE.md` and the showcase drop every Credits example.
+
+## 2026-11-12 — Fields keep their error line and show every state
+
+- `Regent.Primitives.field` always renders its error line (`#<id>-errors`, now a `div`
+  of `p`s, `aria-live="polite"`), empty until the field has an error; it keeps one
+  label line of space, so an error showing up on blur never moves the fields below it.
+  `aria-describedby` names it only while it holds an error, as before.
+- `primitives.css`: a field to fix doubles its edge in the error colour (an inset line,
+  so its size holds) instead of a thicker edge in the text colour; errors drop their
+  bullet and use the label size. A disabled field rests on the inert gray of a disabled
+  action, and the fields of a LiveView form on its way (`phx-submit-loading`) dim their
+  words while its submit button shows its `phx-disable-with` words.
+- `STYLE.md` gains a Fields section saying so, with the rule to check a field when the
+  person leaves it and to word errors as what to do.
