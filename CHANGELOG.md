@@ -1269,3 +1269,11 @@ design system. using vgpu.sh".
   tiers and the bonuses already added still show, and no tier is marked held, as in
   `:closed`. A site sets it from `RegentPoints.Seasons.phase/1`: `:before` is `:closed`,
   `:ended` is `:ended`.
+
+## 2026-11-13 — A name or address sits on the text line beside it
+
+- `.rg-address` aligns to the baseline instead of the middle, so a name or wallet address
+  inside a sentence or a row of words no longer drops below them. Patchbay has run this
+  as a local rule since its v381 (Sean's decision 145 a, 13 Nov: take it into the shared
+  design system); a site carrying its own copy of the rule can delete it once it takes
+  this version.
