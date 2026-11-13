@@ -662,7 +662,10 @@ includes `account.css`.
   activity; two columns where the page gives Points 52rem or more (measured on the
   component, not the window, so a side panel never squeezes it). `total` takes
   `total`, `today`, `yesterday` and `rank` as strings or `nil`, `pending` (actions
-  still being checked) and one sentence in its inner block. `todo` takes `left` and `groups`; `board` takes
+  still being checked) and one sentence in its inner block; any other attribute
+  (`phx-hook`, `data-*`) lands on the element holding the figure, whose id is
+  `"<id>-figure"` and which carries `data-placeholder="true"` while it shows "…" or
+  "–", so a site can roll the figure alone and never from a placeholder. `todo` takes `left` and `groups`; `board` takes
   `rows`, the reader's own row below the list as `you`, and a `face` slot for the
   picture; `bonus` takes `tiers` and `periods`; `activity` takes `rows` and `more`.
 - Colour on the Points page marks three things only: the total and each action's
