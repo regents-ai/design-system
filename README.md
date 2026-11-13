@@ -67,8 +67,9 @@ node scripts/generate-tokens-json.mjs
 
 ## Design tokens
 
-The shared palette is four colors, defined in `design_system_tokens.css`. Patchbay and
-Techtree carry their own palettes in their brand blocks there.
+The shared palette is four colors and Cornflower, which only draws, all defined in
+`design_system_tokens.css`. Patchbay and Techtree carry their own palettes in their brand
+blocks there.
 
 | Token | Value | Used for |
 | --- | --- | --- |
@@ -76,6 +77,7 @@ Techtree carry their own palettes in their brand blocks there.
 | `--palette-charcoal` | `#161616` | Near-black ground |
 | `--palette-platinum` | `#E5E3D2` | Light ground, and text on dark |
 | `--palette-powder-blue` | `#AECACD` | Techtree's mark where other sites name it |
+| `--palette-cornflower` | `#4D79E4` | Lines and trails in pictures; never text, a button or a fill |
 
 Spacing, radius, and type scales are defined alongside them. `STYLE.md` explains how to
 apply them; the CSS file is what to read for exact values.

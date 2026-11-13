@@ -257,6 +257,73 @@ defmodule Regent.VisualContractTest do
     end
   end
 
+  # Cornflower draws the lines and trails in pictures, measured as the category colours
+  # are. Its two shades mix in oklab toward the ground: Charcoal in the dark theme, the
+  # page in the light one.
+  test "Cornflower reads on every Regents ground, stays apart from Powder Blue and the statuses, and its shades stay blue" do
+    selectors =
+      File.read!(Path.join(@repository_root, "design_system_tokens.json"))
+      |> Jason.decode!()
+      |> Map.fetch!("selectors")
+
+    tokens = fn brand, theme ->
+      [
+        ":root",
+        ~s(:root[data-brand="#{brand}"]),
+        ~s(:root[data-brand="#{brand}"][data-theme="#{theme}"])
+      ]
+      |> Enum.map(&Map.get(selectors, &1, %{}))
+      |> Enum.reduce(&Map.merge(&2, &1))
+    end
+
+    dark = tokens.("platform", "dark")
+    light = tokens.("platform", "light")
+    cornflower = resolve(dark, "--palette-cornflower")
+    charcoal = resolve(dark, "--palette-charcoal")
+    light_page = resolve(light, "--color-bg")
+
+    for ground <- [
+          resolve(dark, "--color-bg"),
+          charcoal,
+          light_page,
+          resolve(light, "--color-surface")
+        ] do
+      ratio = contrast(luminance(cornflower), luminance(ground))
+      assert ratio >= 3, "Cornflower on #{ground} is #{Float.round(ratio, 2)}:1"
+    end
+
+    powder_blue = resolve(dark, "--palette-powder-blue")
+    assert delta_e(cornflower, powder_blue, :normal) >= 15
+
+    for vision <- [:protan, :deutan] do
+      assert delta_e(cornflower, powder_blue, vision) >= 8, "Powder Blue under #{vision}"
+    end
+
+    for brand <- ~w(platform autolaunch patchbay techtree),
+        theme <- ~w(light dark),
+        status <- ~w(--color-error --color-success --color-warning --color-info) do
+      colour = resolve(tokens.(brand, theme), status)
+      assert delta_e(cornflower, colour, :normal) >= 15, "#{brand} in #{theme}: #{status}"
+    end
+
+    full = oklab(linear(cornflower))
+
+    for ground <- [charcoal, light_page] do
+      shades = for share <- [0.66, 0.4], do: mix(full, share, oklab(linear(ground)))
+
+      # Each shade keeps Cornflower's hue and enough colour not to read as grey (Powder
+      # Blue's chroma is 0.03).
+      for shade <- shades do
+        assert hue_gap(shade, full) <= 5, "toward #{ground}"
+        assert chroma(shade) >= 0.05, "toward #{ground}"
+      end
+
+      for {a, b} <- Enum.zip([full | shades], shades) do
+        assert distance(a, b) >= 10, "toward #{ground}"
+      end
+    end
+  end
+
   test "feature cards ripple the panel edge on interaction" do
     css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
 
@@ -404,12 +471,25 @@ defmodule Regent.VisualContractTest do
   end
 
   # How far apart two colours look, as OKLab distance ×100.
-  defp delta_e(a, b, vision) do
-    oklab(seen(a, vision))
-    |> Enum.zip_with(oklab(seen(b, vision)), &(&1 - &2))
+  defp delta_e(a, b, vision), do: distance(oklab(seen(a, vision)), oklab(seen(b, vision)))
+
+  defp distance(x, y) do
+    x
+    |> Enum.zip_with(y, &(&1 - &2))
     |> Enum.map(&(&1 * &1))
     |> Enum.sum()
     |> :math.sqrt()
     |> Kernel.*(100)
+  end
+
+  # color-mix(in oklab, x share, y): a straight line between the two.
+  defp mix(x, share, y), do: Enum.zip_with(x, y, &(share * &1 + (1 - share) * &2))
+
+  defp chroma([_l, a, b]), do: :math.sqrt(a * a + b * b)
+
+  # Degrees between two OKLab colours' hues, the short way round.
+  defp hue_gap([_, a1, b1], [_, a2, b2]) do
+    gap = (:math.atan2(b1, a1) - :math.atan2(b2, a2)) * 180 / :math.pi()
+    abs(:math.fmod(gap + 540, 360) - 180)
   end
 end

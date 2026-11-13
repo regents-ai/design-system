@@ -31,7 +31,7 @@ Patchbay, Techtree and Keyfleet. Keyfleet has one capital letter, never
 ### Four colors carry everything
 
 The whole system is four colors. Black is a contrast utility for text on Tangerine, not a fifth
-identity color.
+identity color, and Cornflower, the last row, only draws lines in pictures (see Cornflower below).
 
 | Name | Token | Value |
 | --- | --- | --- |
@@ -39,6 +39,7 @@ identity color.
 | Charcoal | `--palette-charcoal` | `#161616` |
 | Platinum | `--palette-platinum` | `#E5E3D2` |
 | Powder Blue | `--palette-powder-blue` | `#AECACD` |
+| Cornflower | `--palette-cornflower` | `#4D79E4` |
 
 The approved September 5 palettes use distinct light and dark surfaces. Dark is the
 default: until a person chooses on the site, pages are dark unless their device asks
@@ -69,6 +70,33 @@ future small illustration sections; do not use them as page backgrounds. Real la
 borders supply the page structure.
 Consumer-owned artwork and route wiring need deliberate migration in the owning app;
 changing this package does not claim those applications have been deployed or migrated.
+
+### Cornflower
+
+Cornflower, `#4D79E4` (oklch 60% 0.169 265), is a drawing colour: the lines and trails
+in a picture, such as the three large trails of Keyfleet's Worldline, the same in both
+themes (Sean, 12 November 2026). It is the strong blue of the trails in his reference
+picture. It is never text, never a button and never a page or panel fill; no brand's
+`--color-*` token points at it, and it marks no state. The visual contract test
+measures it:
+
+- On every Regents ground it clears 3:1: 4.85:1 on the dark page, 4.46:1 on Charcoal,
+  3.68:1 on the light page and 4.06:1 on the light panel. A 1.5px line shows the full
+  colour on a high-density screen or on a whole pixel row; across two rows of a standard
+  screen it shows three quarters of it, 2.6:1 to 3.1:1. A 3px line always shows it whole.
+- It is 27 from Powder Blue (OKLab ΔE ×100; 26 and 29 under simulated protanopia and
+  deuteranopia), and at least 21 from every theme's error, success, warning and info
+  colour.
+
+Fainter trails take two shades of it, mixed toward the ground at 66% and 40%. In the
+dark theme the ground is Charcoal, so the shades are
+`color-mix(in oklab, var(--palette-cornflower) 66%, var(--palette-charcoal))` and the
+same at 40%; in the light theme they mix toward the page colour, `#F6F4EA` on Regents.
+Mix in oklab, not oklch. A near-white or near-black ground keeps a faint hue, and in
+oklch the blend turns toward it wherever the browser counts that hue: toward Platinum
+the 40% shade comes out mint. In oklab the shades keep Cornflower's hue within 2°, and
+each is at least 10 from the next: 15 and 11 toward Charcoal, 14 and 11 toward the light
+page.
 
 ### Readable pairs only
 

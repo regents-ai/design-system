@@ -1245,3 +1245,19 @@ design system. using vgpu.sh".
 - `STYLE.md`, "Status stays independent of identity": the table listed light-theme
   values no token holds. It now shows the dark, light and Patchbay light values as
   `design_system_tokens.css` has them. Words only; no colour changed.
+
+## 2026-11-12 — Cornflower, a drawing colour
+
+- New swatch `--palette-cornflower`, `#4D79E4` (oklch 60% 0.169 265), the same in both
+  themes, for the lines and trails in pictures, first the three large trails of
+  Keyfleet's Worldline (Sean, 12 November 2026). It is never text, a button or a fill,
+  and no brand's `--color-*` token points at it, so nothing on any page changes until a
+  site draws with it.
+- The visual contract test measures it: at least 3:1 on the dark Regents page (4.85:1),
+  Charcoal (4.46:1), the light page (3.68:1) and the light panel (4.06:1); 27 from Powder
+  Blue (OKLab ΔE ×100) and at least 8 under simulated protanopia and deuteranopia; at
+  least 15 from every theme's status colours. Its two shades, mixed in oklab at 66% and
+  40% toward Charcoal in the dark theme and toward the page in the light one, keep its
+  hue within 5° and stay at least 10 apart.
+- `STYLE.md` gains "Cornflower" and the palette table a fifth row; the README's table
+  too.

@@ -30,7 +30,8 @@
 
 :root {
   /* The canonical product palette. Every branded ground, foreground, and action
-   * resolves to one of these four; black is a contrast utility, not a fifth color. */
+   * resolves to Tangerine Tango, Charcoal, Platinum or Powder Blue; black is a contrast
+   * utility, not a fifth color. */
   --palette-tangerine-tango: #FF5B19;
   --palette-charcoal: #161616;
   --utility-bg: #141516;
@@ -40,6 +41,9 @@
   --utility-rule: #393B3E;
   --palette-platinum: #E5E3D2;
   --palette-powder-blue: #AECACD;
+  /* Cornflower only draws: the lines and trails in a picture, in both themes. It is never
+   * text, a button, or a page or panel fill, and no --color-* token points at it. */
+  --palette-cornflower: #4D79E4;
 
   --product-formation: var(--palette-tangerine-tango);
   --product-autolaunch: var(--palette-tangerine-tango);
