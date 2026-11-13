@@ -201,7 +201,8 @@ the cells, using these marks:
   carries `aria-busy="true"`) and `data-cells-capacity` (`max`).
 - Each part is an `li` with `data-cells-key`, and in its `style` `--rg-cells-start` and
   `--rg-cells-share` (where it starts and how wide it is, as fractions of the capacity);
-  its colour is the computed `--rg-cells-color`. The part's `.rg-cells__run` is the
+  its colour is the computed `--rg-cells-color`, the theme's `--color-category-1` to
+  `-8` by its place, a ninth part taking the first again. The part's `.rg-cells__run` is the
   run's box in the bar: pointing at it, or at the row, lights the part, so the hook
   follows `pointerover` and `focusin` on `[data-cells-key]` to light it on the canvas.
 - `[data-cells-canvas]` sits in a `phx-update="ignore"` stage, `aria-hidden`, behind the

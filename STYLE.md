@@ -146,6 +146,26 @@ and `rg-support-panel` on secondary panels. Keep main surfaces/actions dominant;
 do not assign arbitrary colors per card. The showcase demonstrates these as the overview
 figure compartment, Capabilities band and secondary interface panel respectively.
 
+### Category colours
+
+Each brand and theme has eight colours that tell named parts apart, such as the parts
+of a Cells meter: `--color-category-1` to `--color-category-8`. The first is the chart
+colour. The other seven are a fixed order of clearly different hues that sit with the
+brand's palette, close in lightness and chroma; they are chosen in oklch and written in
+hex. The visual contract test measures them rather than trusting the eye:
+
+- Every colour after the first clears 3:1 on the page and on a panel. The first is the
+  chart colour as it is, so Tangerine stays below 3:1 on the light Regents page and on
+  the light Autolaunch page and panel.
+- Every pair is at least 15 apart (OKLab ΔE ×100), and neighbours in order, the eighth
+  beside the first included, at least 8 apart under simulated protanopia and
+  deuteranopia (Machado, Oliveira and Fernandes 2009, full severity).
+- None after the first comes within 15 of the theme's error, success, warning or info
+  colour.
+
+They mark which thing is which, always beside its name, never state. Past eight, show
+a table; a ninth colour is never made up.
+
 ### Capability honesty
 
 Status chips (`live`, `beta`, `preview`, `planned`) appear wherever a product is being
@@ -655,10 +675,11 @@ value against its limit is a progress bar.
   capacity, starting and ending on a cell edge, with a 1px edge in its colour; the rest
   of the capacity is dim cells. Corners are square; there is no shadow, blur or glow.
   A part worth nothing draws no run.
-- **Chart colours, in turn.** Parts take the chart's two series colours in order: the
-  chart colour, then the muted foreground, then the chart colour again. A chart takes
-  at most two series; the meter keeps going in turn, and each run's edge keeps two
-  neighbours of one colour apart. Status colours never carry a part.
+- **A colour per part.** Parts take the category colours by place, `--color-category-1`
+  to `-8`, so a one-part meter keeps the chart colour. A ninth part starts again at the
+  first, and each run's edge keeps the two apart; more than eight parts is the point to
+  use a table instead. The list names every part, so colour is never the only thing that
+  tells two apart, and status colours never carry a part.
 - **One line above the bar.** It holds the page's status, such as what is left.
   Pointing at a part, in the bar or the list, or focusing its row, lights that part,
   dims the others and puts its name, amount and note in that line; the line keeps its

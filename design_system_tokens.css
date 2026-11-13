@@ -97,6 +97,9 @@
    * the page to draw with: Regents' white and charcoal actions take Tangerine, and
    * Techtree's lime in light takes its green marks. */
   --color-chart-line: var(--color-accent);
+  /* Eight colours that tell named parts apart, such as a Cells meter's. The first is the
+   * chart colour; each theme sets the other seven, measured in the visual contract test. */
+  --color-category-1: var(--color-chart-line);
   --rg-rule-width: 1px;
 
   --shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-fg, oklch(22% 0 0)) 8%, transparent);
@@ -215,6 +218,13 @@
   --color-focus: #A33208;
   --color-link: #161616;
   --color-muted: var(--color-fg-muted);
+  --color-category-2: #1D8BAA;
+  --color-category-3: #9F762A;
+  --color-category-4: #862696;
+  --color-category-5: #D2458E;
+  --color-category-6: #8667EA;
+  --color-category-7: #008F06;
+  --color-category-8: #0351BE;
 }
 
 :root[data-brand="platform"][data-theme="dark"],
@@ -242,6 +252,13 @@
   --color-focus: #AECACD;
   --color-link: #E5E3D2;
   --color-muted: var(--color-fg-muted);
+  --color-category-2: #17A8B1;
+  --color-category-3: #B18703;
+  --color-category-4: #BD7AB0;
+  --color-category-5: #CF2B62;
+  --color-category-6: #8D4FD7;
+  --color-category-7: #15982F;
+  --color-category-8: #0077CB;
 }
 
 :root[data-brand="autolaunch"][data-theme="light"] {
@@ -265,6 +282,13 @@
   --color-focus: #A33208;
   --color-link: #161616;
   --color-muted: #B8B6A6;
+  --color-category-2: #1D8BAA;
+  --color-category-3: #9F762A;
+  --color-category-4: #862696;
+  --color-category-5: #D2458E;
+  --color-category-6: #8667EA;
+  --color-category-7: #008F06;
+  --color-category-8: #0351BE;
 }
 
 :root[data-brand="autolaunch"][data-theme="dark"],
@@ -289,6 +313,13 @@
   --color-focus: #AECACD;
   --color-link: #FF5B19;
   --color-muted: #A1A19A;
+  --color-category-2: #17A8B1;
+  --color-category-3: #B18703;
+  --color-category-4: #BD7AB0;
+  --color-category-5: #CF2B62;
+  --color-category-6: #8D4FD7;
+  --color-category-7: #15982F;
+  --color-category-8: #0077CB;
 }
 
 :root[data-brand="techtree"][data-theme="light"] {
@@ -323,6 +354,13 @@
   --color-chart-line: #238450;
   --support-panel-surface: #0F1B14;
   --support-panel-ink: #E8F0EA;
+  --color-category-2: #D357A8;
+  --color-category-3: #A78900;
+  --color-category-4: #83479A;
+  --color-category-5: #8675F2;
+  --color-category-6: #D94F2C;
+  --color-category-7: #0298C1;
+  --color-category-8: #045FC8;
 }
 
 :root[data-brand="techtree"][data-theme="dark"],
@@ -353,6 +391,13 @@
   --support-band-ink: #0D1611;
   --support-panel-surface: #142019;
   --support-panel-ink: #E4EEE6;
+  --color-category-2: #EC539D;
+  --color-category-3: #AA933B;
+  --color-category-4: #955C97;
+  --color-category-5: #9F75FE;
+  --color-category-6: #C44B04;
+  --color-category-7: #24A6BF;
+  --color-category-8: #2371D8;
 }
 
 html {
@@ -442,6 +487,13 @@ samp {
   --color-warning: #F5C16C;
   --color-accent-tint: #273853;
   --color-info: #AECACD;
+  --color-category-2: #F25189;
+  --color-category-3: #C24E18;
+  --color-category-4: #A473FF;
+  --color-category-5: #0F8F4F;
+  --color-category-6: #9B5E96;
+  --color-category-7: #0490D6;
+  --color-category-8: #AD9233;
 }
 
 :root[data-brand="patchbay"][data-theme="light"] {
@@ -465,6 +517,13 @@ samp {
   --color-warning: #6A3F00;
   --color-accent-tint: #E5EBFF;
   --color-info: #2C4E52;
+  --color-category-2: #D35B98;
+  --color-category-3: #C94300;
+  --color-category-4: #9671E9;
+  --color-category-5: #217F42;
+  --color-category-6: #8B3B93;
+  --color-category-7: #108AC1;
+  --color-category-8: #A48A09;
 }
 
 /* No choice made on the site: follow the device when it asks for light.
@@ -508,6 +567,13 @@ samp {
     --color-focus: #A33208;
     --color-link: #161616;
     --color-muted: var(--color-fg-muted);
+    --color-category-2: #1D8BAA;
+    --color-category-3: #9F762A;
+    --color-category-4: #862696;
+    --color-category-5: #D2458E;
+    --color-category-6: #8667EA;
+    --color-category-7: #008F06;
+    --color-category-8: #0351BE;
   }
 
   :root[data-brand="autolaunch"]:not([data-theme]) {
@@ -531,6 +597,13 @@ samp {
     --color-focus: #A33208;
     --color-link: #161616;
     --color-muted: #B8B6A6;
+    --color-category-2: #1D8BAA;
+    --color-category-3: #9F762A;
+    --color-category-4: #862696;
+    --color-category-5: #D2458E;
+    --color-category-6: #8667EA;
+    --color-category-7: #008F06;
+    --color-category-8: #0351BE;
   }
 
   :root[data-brand="techtree"]:not([data-theme]) {
@@ -565,6 +638,13 @@ samp {
     --color-chart-line: #238450;
     --support-panel-surface: #0F1B14;
     --support-panel-ink: #E8F0EA;
+    --color-category-2: #D357A8;
+    --color-category-3: #A78900;
+    --color-category-4: #83479A;
+    --color-category-5: #8675F2;
+    --color-category-6: #D94F2C;
+    --color-category-7: #0298C1;
+    --color-category-8: #045FC8;
   }
 
   :root[data-brand="patchbay"]:not([data-theme]) {
@@ -588,5 +668,12 @@ samp {
     --color-warning: #6A3F00;
     --color-accent-tint: #E5EBFF;
     --color-info: #2C4E52;
+    --color-category-2: #D35B98;
+    --color-category-3: #C94300;
+    --color-category-4: #9671E9;
+    --color-category-5: #217F42;
+    --color-category-6: #8B3B93;
+    --color-category-7: #108AC1;
+    --color-category-8: #A48A09;
   }
 }

@@ -209,6 +209,54 @@ defmodule Regent.VisualContractTest do
     end
   end
 
+  # Measured as the dataviz method measures a categorical palette: distance is OKLab
+  # ΔE ×100, at least 15 for full colour vision and 8 under Machado, Oliveira and
+  # Fernandes (2009) protanopia and deuteranopia at full severity.
+  test "in light and dark, the eight category colours read on the page and a panel and stay apart" do
+    selectors =
+      File.read!(Path.join(@repository_root, "design_system_tokens.json"))
+      |> Jason.decode!()
+      |> Map.fetch!("selectors")
+
+    for brand <- ~w(platform autolaunch patchbay techtree), theme <- ~w(light dark) do
+      tokens =
+        [
+          ":root",
+          ~s(:root[data-brand="#{brand}"]),
+          ~s(:root[data-brand="#{brand}"][data-theme="#{theme}"])
+        ]
+        |> Enum.map(&Map.get(selectors, &1, %{}))
+        |> Enum.reduce(&Map.merge(&2, &1))
+
+      site = "#{brand} in #{theme}"
+      [first | rest] = palette = for n <- 1..8, do: resolve(tokens, "--color-category-#{n}")
+
+      # The first is the chart colour, so a one-part meter looks as a chart does.
+      assert first == resolve(tokens, "--color-chart-line"), site
+
+      for colour <- rest, ground <- ~w(--color-bg --color-surface) do
+        ratio = contrast(luminance(colour), luminance(resolve(tokens, ground)))
+        assert ratio >= 3, "#{site}: #{colour} on #{ground} is #{Float.round(ratio, 2)}:1"
+      end
+
+      for {a, i} <- Enum.with_index(palette), {b, j} <- Enum.with_index(palette), i < j do
+        assert delta_e(a, b, :normal) >= 15, "#{site}: #{a} and #{b}"
+      end
+
+      # Neighbours in the bar, the eighth beside a ninth that starts again at the first.
+      for {a, b} <- Enum.zip(palette, rest ++ [first]), vision <- [:protan, :deutan] do
+        assert delta_e(a, b, vision) >= 8, "#{site}: #{a} and #{b} under #{vision}"
+      end
+
+      # A part is never taken for a status: an error, a success, a warning or a note.
+      for colour <- rest,
+          status <- ~w(--color-error --color-success --color-warning --color-info) do
+        assert delta_e(colour, resolve(tokens, status), :normal) >= 15,
+               "#{site}: #{colour} and #{status}"
+      end
+    end
+  end
+
   test "feature cards ripple the panel edge on interaction" do
     css = File.read!(Path.join(@package_root, "assets/css/structure.css"))
 
@@ -294,19 +342,74 @@ defmodule Regent.VisualContractTest do
     end
   end
 
+  # Linear-light sRGB channels of a #RRGGBB colour.
+  defp linear("#" <> hex) do
+    for <<pair::binary-size(2) <- hex>> do
+      channel = String.to_integer(pair, 16) / 255
+
+      if channel <= 0.04045,
+        do: channel / 12.92,
+        else: :math.pow((channel + 0.055) / 1.055, 2.4)
+    end
+  end
+
   # WCAG relative luminance of a #RRGGBB colour.
-  defp luminance("#" <> hex) do
-    [r, g, b] =
-      for <<pair::binary-size(2) <- hex>> do
-        channel = String.to_integer(pair, 16) / 255
-
-        if channel <= 0.04045,
-          do: channel / 12.92,
-          else: :math.pow((channel + 0.055) / 1.055, 2.4)
-      end
-
+  defp luminance(hex) do
+    [r, g, b] = linear(hex)
     0.2126 * r + 0.7152 * g + 0.0722 * b
   end
 
   defp contrast(a, b), do: (max(a, b) + 0.05) / (min(a, b) + 0.05)
+
+  @machado %{
+    protan: [
+      [0.152286, 1.052583, -0.204868],
+      [0.114503, 0.786281, 0.099216],
+      [-0.003882, -0.048116, 1.051998]
+    ],
+    deutan: [
+      [0.367322, 0.860646, -0.227968],
+      [0.280085, 0.672501, 0.047413],
+      [-0.011820, 0.042940, 0.968881]
+    ]
+  }
+
+  # A colour's linear channels as a reader with full colour vision, or with no
+  # long-wavelength (protan) or middle-wavelength (deutan) cones, sees them.
+  defp seen(hex, :normal), do: linear(hex)
+
+  defp seen(hex, vision) do
+    channels = linear(hex)
+
+    for row <- Map.fetch!(@machado, vision) do
+      row |> Enum.zip_with(channels, &*/2) |> Enum.sum() |> max(0.0) |> min(1.0)
+    end
+  end
+
+  defp oklab([r, g, b]) do
+    [l, m, s] =
+      for [x, y, z] <- [
+            [0.4122214708, 0.5363325363, 0.0514459929],
+            [0.2119034982, 0.6806995451, 0.1073969566],
+            [0.0883024619, 0.2817188376, 0.6299787005]
+          ],
+          do: :math.pow(x * r + y * g + z * b, 1 / 3)
+
+    for [x, y, z] <- [
+          [0.2104542553, 0.7936177850, -0.0040720468],
+          [1.9779984951, -2.4285922050, 0.4505937099],
+          [0.0259040371, 0.7827717662, -0.8086757660]
+        ],
+        do: x * l + y * m + z * s
+  end
+
+  # How far apart two colours look, as OKLab distance ×100.
+  defp delta_e(a, b, vision) do
+    oklab(seen(a, vision))
+    |> Enum.zip_with(oklab(seen(b, vision)), &(&1 - &2))
+    |> Enum.map(&(&1 * &1))
+    |> Enum.sum()
+    |> :math.sqrt()
+    |> Kernel.*(100)
+  end
 end

@@ -475,12 +475,12 @@ defmodule Regent.StructureShowcase do
                 <Regent.Cells.meter
                   id="cells-points"
                   label="Points today by source"
-                  used="64"
+                  used="82"
                   capacity="100 Points"
                   max={100}
                   parts={sample_cells_points()}
                 >
-                  <:status>36 left today</:status>
+                  <:status>18 left today</:status>
                   <:footer>
                     <p>Resets at 00:00 UTC</p>
                     <.button variant="secondary" id="cells-points-history" arrow={false}>History</.button>
@@ -553,12 +553,12 @@ defmodule Regent.StructureShowcase do
                   <Regent.Cells.meter
                     id="cells-narrow"
                     label="Points today by source"
-                    used="64"
+                    used="82"
                     capacity="100 Points"
                     max={100}
                     parts={sample_cells_points()}
                   >
-                    <:status>36 left today</:status>
+                    <:status>18 left today</:status>
                   </Regent.Cells.meter>
                 </div>
               </.panel>
@@ -784,6 +784,10 @@ defmodule Regent.StructureShowcase do
       %{key: "replies", name: "Replies", value: 12, amount: "12", icon: "message-square"},
       %{key: "referrals", name: "Referrals", value: 10, amount: "10", icon: "users",
         note: "2 people joined with your link"},
+      %{key: "autolaunch", name: "Autolaunch bids", value: 7, amount: "7", icon: "gavel"},
+      %{key: "keyfleet", name: "Keyfleet tasks", value: 6, amount: "6", icon: "key-round",
+        note: "2 tasks finished"},
+      %{key: "votes", name: "Votes", value: 5, amount: "5", icon: "vote"},
       %{key: "checkin", name: "Check-in", value: 4, amount: "4", icon: "calendar-check"}
     ]
   end

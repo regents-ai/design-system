@@ -2,9 +2,11 @@
    The bar is square cells, --rg-cells-cell wide with --rg-cells-gap between them, in
    --rg-cells-rows rows. Every edge lands on a whole cell: the bar is as many cells as
    fit, and each part's run starts and ends on the nearest cell edge, so cells never
-   split, blur or crawl as the page resizes. Parts take the chart colours in turn, the
-   chart colour then the muted foreground, and each run draws a 1px edge round its
-   cells, so two runs side by side never merge. The rest of the capacity is dim cells.
+   split, blur or crawl as the page resizes. Each part takes the category colour of its
+   place, --color-category-1 to -8, and a ninth starts again at the first. Each run
+   draws a 1px edge round its cells, so two runs side by side never merge, and the
+   parts are named in the list, so colour is never the only thing that tells them
+   apart. The rest of the capacity is dim cells.
    A site's hook may draw the moving picture on the canvas behind, which reaches
    --rg-cells-headroom above the bar for the sparks; once it marks the
    root data-cells-ready="true", the still cells give way to it. */
@@ -127,7 +129,6 @@
   list-style: none;
 }
 .rg-cells__part {
-  --rg-cells-color: var(--color-chart-line);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
@@ -136,7 +137,14 @@
   font-size: var(--type-label-size);
   line-height: var(--type-label-line);
 }
-.rg-cells__part:nth-child(even) { --rg-cells-color: var(--color-fg-muted); }
+.rg-cells__part:nth-child(8n + 1) { --rg-cells-color: var(--color-category-1); }
+.rg-cells__part:nth-child(8n + 2) { --rg-cells-color: var(--color-category-2); }
+.rg-cells__part:nth-child(8n + 3) { --rg-cells-color: var(--color-category-3); }
+.rg-cells__part:nth-child(8n + 4) { --rg-cells-color: var(--color-category-4); }
+.rg-cells__part:nth-child(8n + 5) { --rg-cells-color: var(--color-category-5); }
+.rg-cells__part:nth-child(8n + 6) { --rg-cells-color: var(--color-category-6); }
+.rg-cells__part:nth-child(8n + 7) { --rg-cells-color: var(--color-category-7); }
+.rg-cells__part:nth-child(8n) { --rg-cells-color: var(--color-category-8); }
 .rg-cells__part:focus-visible {
   outline: var(--rg-ring-width) solid var(--color-focus);
   outline-offset: var(--rg-ring-offset);
@@ -187,8 +195,7 @@
 @media (forced-colors: active) {
   .rg-cells :is(.rg-cells__track, .rg-cells__run, .rg-cells__mark--cell) { forced-color-adjust: none; }
   .rg-cells__track { background: GrayText; }
-  .rg-cells__part,
-  .rg-cells__part:nth-child(even) { --rg-cells-color: CanvasText; }
-  .rg-cells__part:is(:hover, :focus-visible) { --rg-cells-color: Highlight; }
+  .rg-cells .rg-cells__part { --rg-cells-color: CanvasText; }
+  .rg-cells .rg-cells__part:is(:hover, :focus-visible) { --rg-cells-color: Highlight; }
   .rg-cells__part:focus-visible { outline-color: Highlight; }
 }

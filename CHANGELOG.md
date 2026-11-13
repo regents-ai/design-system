@@ -1218,3 +1218,24 @@ design system. using vgpu.sh".
   chose this on 12 November 2026 after seeing the template's Enter App ring and
   Fractal still. Words only: the package draws no such gradient, and each site changes
   its own.
+
+## 2026-11-12 — A colour per Cells part
+
+- New tokens `--color-category-1` to `--color-category-8` in every brand and theme. The
+  first is the chart colour; the other seven are clearly different hues near the
+  brand's palette, close in lightness and chroma, chosen in oklch and written in hex.
+  Regents and Autolaunch share one set.
+- The visual contract test measures them: each after the first clears 3:1 on the page
+  and on a panel, every pair is at least 15 apart in OKLab ΔE ×100, neighbours in order
+  (the eighth beside the first too) at least 8 apart under simulated protanopia and
+  deuteranopia, and none after the first comes within 15 of a status colour. The first
+  stays the chart colour as it was, so Tangerine is still below 3:1 on the light Regents
+  page (2.82:1) and on the light Autolaunch page and panel (2.40:1 and 2.82:1).
+- `Regent.Cells.meter`: each part takes the category colour of its place, a ninth
+  starting again at the first, and the list's mark takes the same colour. The two-colour
+  alternation, the chart colour then the muted foreground, is gone. The edge, the dim
+  cells and forced colours are as before, and `--rg-cells-color` still carries the
+  part's colour to a site's hook.
+- `STYLE.md` gains "Category colours", and "Cells" says a colour per part, with a table
+  past eight. `CONSUMERS.md` says where `--rg-cells-color` comes from. The showcase's
+  Points meter has eight parts beside the fleet's nine.
