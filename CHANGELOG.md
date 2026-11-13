@@ -1239,3 +1239,9 @@ design system. using vgpu.sh".
 - `STYLE.md` gains "Category colours", and "Cells" says a colour per part, with a table
   past eight. `CONSUMERS.md` says where `--rg-cells-color` comes from. The showcase's
   Points meter has eight parts beside the fleet's nine.
+
+## 2026-11-12 — Status colour table matches the tokens
+
+- `STYLE.md`, "Status stays independent of identity": the table listed light-theme
+  values no token holds. It now shows the dark, light and Patchbay light values as
+  `design_system_tokens.css` has them. Words only; no colour changed.

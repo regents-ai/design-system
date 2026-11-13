@@ -90,15 +90,16 @@ Separators are hairlines mixed from the foreground, not solid borders:
 Status colors report state, never identity, so each set is chosen for readability on its product's
 ground rather than for brand voice.
 
-| Status | Regent / Platform | Autolaunch and Techtree |
-| --- | --- | --- |
-| Success | `#7ED8A9` | `#053022` |
-| Error | `#FF9B8F` | `#5A0B0B` |
-| Warning | `#F5C16C` | `#3D1B00` |
-| Info | `#AECACD` | `#072C38` |
+| Status | Dark theme | Light theme | Patchbay light |
+| --- | --- | --- | --- |
+| Success | `#7ED8A9` | `#145C3B` | `#124F33` |
+| Error | `#FF9B8F` | `#9C2525` | `#8A1F1F` |
+| Warning | `#F5C16C` | `#754600` | `#6A3F00` |
+| Info | `#AECACD` | `#365D62` | `#2C4E52` |
 
-Every one of these clears WCAG AA for normal text on its product's background, surface, and
-elevated surface.
+Techtree's info colour is its own: `#CFE2D2` in the dark theme and `#2E5E45` in the light one.
+`design_system_tokens.css` holds the values; this table is a copy for reading. Each must clear
+WCAG AA for normal text on its product's background, surface, and elevated surface.
 
 ### Product identities
 
