@@ -38,6 +38,16 @@ defmodule Regent.Points do
   attr :rank, :string, default: nil, doc: "the account's place, such as \"3\"; nil with no points"
   attr :pending, :integer, default: 0, doc: "actions still being checked"
   attr :state, :atom, default: :ready, values: @states
+
+  attr :rest, :global,
+    doc: """
+    attributes for the element whose text is the total itself, such as `phx-hook`
+    and `data-*`, so a site can move that figure alone; that element's id is
+    `"<id>-figure"`. While the total is loading or absent it shows "…" or "–",
+    carries `data-placeholder="true"` and has no `data-count`, so a count's roll
+    never starts from it.
+    """
+
   slot :inner_block, doc: "one sentence saying what Points are"
 
   @doc """
@@ -45,7 +55,11 @@ defmodule Regent.Points do
   and the account's place beside it.
   """
   def total(assigns) do
-    assigns = assign(assigns, :note, note(assigns.state, assigns.pending))
+    assigns =
+      assign(assigns,
+        note: note(assigns.state, assigns.pending),
+        placeholder: placeholder(assigns.total, assigns.state)
+      )
 
     ~H"""
     <section
@@ -66,7 +80,13 @@ defmodule Regent.Points do
       </header>
       <div class="rg-points-total__main">
         <p class="rg-points-total__figure">
-          <Regent.Primitives.figure value={figure(@total, @state)} />
+          <Primitives.figure :if={!@placeholder} id={"#{@id}-figure"} value={@total} {@rest} />
+          <span
+            :if={@placeholder}
+            id={"#{@id}-figure"}
+            data-placeholder="true"
+            {@rest}
+          >{@placeholder}</span>
         </p>
         <p :if={@inner_block != []} class="rg-points-total__about">{render_slot(@inner_block)}</p>
       </div>
@@ -313,12 +333,12 @@ defmodule Regent.Points do
   # Actions left come first; within each, the order given.
   defp sorted(items), do: Enum.sort_by(items, & &1.done)
 
-  defp figure(_value, :loading), do: "…"
-  defp figure(value, _state) when value in [nil, ""], do: "–"
-  defp figure(value, _state), do: value
+  # What stands in for a figure: "…" while it is read and "–" when there is none.
+  defp placeholder(_value, :loading), do: "…"
+  defp placeholder(value, _state) when value in [nil, ""], do: "–"
+  defp placeholder(_value, _state), do: nil
 
-  defp gain(value, state) when state == :loading or value in [nil, ""], do: figure(value, state)
-  defp gain(value, _state), do: "+" <> value
+  defp gain(value, state), do: placeholder(value, state) || "+" <> value
 
   defp note(:error, _pending), do: "Could not load. Try refreshing."
   defp note(:stale, _pending), do: "Last saved figures. Refresh failed."

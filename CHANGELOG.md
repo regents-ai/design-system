@@ -1277,3 +1277,16 @@ design system. using vgpu.sh".
   as a local rule since its v381 (Sean's decision 145 a, 13 Nov: take it into the shared
   design system); a site carrying its own copy of the rule can delete it once it takes
   this version.
+
+## 2026-11-13 — A site can move the Points total's figure alone
+
+- `Regent.Points.total` passes its global attributes (`phx-hook`, `data-*` and the
+  rest) to the element whose text is the total, which now has the id `"<id>-figure"`.
+  A site that rolls the total its own way puts its hook there instead of wrapping the
+  whole section, which broke the rule that makes the total span the row and could not
+  reach the figure alone.
+- While the total is loading or absent that element still shows "…" or "–", now with
+  `data-placeholder="true"`, and is no longer drawn by `Regent.Primitives.figure`: it
+  has no `data-count`, so a count's roll never starts from it. The figure primitive is
+  unchanged. A site that passes nothing sees the same page, to the pixel, and no site's
+  Points page runs a count roll over the total.

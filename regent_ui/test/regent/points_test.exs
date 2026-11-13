@@ -17,6 +17,69 @@ defmodule Regent.PointsTest do
     refute loading =~ "+0"
   end
 
+  # A site moves the total's figure alone, so what it passes reaches that element and
+  # nothing else on the page.
+  test "a site's attributes reach the total's figure and nothing else" do
+    assigns = %{
+      rows: [%{rank: 1, name: "Ada", wallet: nil, ens_name: nil, points: "1,240", you: true}]
+    }
+
+    html =
+      rendered_to_string(~H"""
+      <Regent.Points.layout>
+        <:total>
+          <Regent.Points.total
+            id="t"
+            total="1,240"
+            today="22"
+            yesterday="20"
+            rank="1"
+            phx-hook="Roll"
+            data-roll="up"
+          />
+        </:total>
+        <:main>
+          <p>Main</p>
+        </:main>
+        <:side><Regent.Points.board id="b" rows={@rows} /></:side>
+      </Regent.Points.layout>
+      """)
+
+    assert html =~
+             ~r{<span (?=[^>]*id="t-figure")(?=[^>]*phx-hook="Roll")(?=[^>]*data-roll="up")(?=[^>]*data-count)[^>]*>1,240</span>}
+
+    assert length(Regex.scan(~r/phx-hook=/, html)) == 1
+    assert length(Regex.scan(~r/data-roll=/, html)) == 1
+  end
+
+  # A count's roll never starts from "…" or "–": until the total is read, its figure
+  # says it stands in and is not a count, on the same element a site's hook is on.
+  test "the total's figure is a placeholder until the total is read" do
+    assigns = %{}
+
+    placeholders = [
+      {rendered_to_string(
+         ~H|<Regent.Points.total id="t" state={:loading} total="240" phx-hook="Roll" />|
+       ), "…"},
+      {rendered_to_string(~H|<Regent.Points.total id="t" phx-hook="Roll" />|), "–"},
+      {rendered_to_string(~H|<Regent.Points.total id="t" total="" phx-hook="Roll" />|), "–"}
+    ]
+
+    for {html, shown} <- placeholders do
+      assert html =~
+               ~r{<span (?=[^>]*id="t-figure")(?=[^>]*phx-hook="Roll")(?=[^>]*data-placeholder="true")[^>]*>#{shown}</span>}
+
+      refute html =~ "data-count"
+    end
+
+    read = rendered_to_string(~H|<Regent.Points.total id="t" total="240" phx-hook="Roll" />|)
+
+    assert read =~
+             ~r{<span (?=[^>]*id="t-figure")(?=[^>]*phx-hook="Roll")(?=[^>]*data-count)[^>]*>240</span>}
+
+    refute read =~ "data-placeholder"
+  end
+
   # The leaderboard has the same rule: a failed read shows no "No points yet".
   test "a leaderboard that could not be read is never shown as empty" do
     assigns = %{}
