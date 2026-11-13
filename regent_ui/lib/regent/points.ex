@@ -215,8 +215,9 @@ defmodule Regent.Points do
 
   attr :state, :atom,
     default: :ready,
-    values: [:closed | @states],
-    doc: "`:closed` before earning opens: the tiers show and nothing is counted"
+    values: [:closed, :ended | @states],
+    doc:
+      "`:closed` before earning opens and `:ended` after the last season: the tiers show and nothing is counted"
 
   attr :nfts, :integer, default: nil, doc: "the NFTs the account's wallets hold now"
   attr :percent, :integer, default: nil, doc: "the bonus that count earns"
@@ -249,6 +250,8 @@ defmodule Regent.Points do
         <%= case @state do %>
           <% :closed -> %>
             Counted once earning opens.
+          <% :ended -> %>
+            Points has ended.
           <% :loading -> %>
             Checking your NFTs…
           <% state when state in [:error, :stale] -> %>

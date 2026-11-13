@@ -121,7 +121,10 @@ defmodule Regent.AgentsTest do
       <Regent.Agents.fleet id="f" label="Fleet" agents={@agents} now={~U[2026-11-12 10:00:00Z]} />
       """)
 
-    assert html =~ ~r{<a class="rg-fleet__face" href="/agents/a1">\s*<span[^>]*rg-fleet__mark}
+    # The link's attributes come in no fixed order.
+    assert html =~
+             ~r{<a (?=[^>]*class="rg-fleet__face")(?=[^>]*href="/agents/a1")[^>]*>\s*<span[^>]*rg-fleet__mark}
+
     assert length(Regex.scan(~r/<a /, html)) == 1
     assert html =~ ~s(data-state="running")
   end

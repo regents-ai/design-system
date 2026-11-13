@@ -1261,3 +1261,11 @@ design system. using vgpu.sh".
   hue within 5° and stay at least 10 apart.
 - `STYLE.md` gains "Cornflower" and the palette table a fifth row; the README's table
   too.
+
+## 2026-11-13 — The Points Bonus card says when Points has ended
+
+- `Regent.Points.bonus` takes `state={:ended}`, for after the last season (Sean, 13 Nov:
+  Points runs three 30-day seasons and stops). The line reads "Points has ended."; the
+  tiers and the bonuses already added still show, and no tier is marked held, as in
+  `:closed`. A site sets it from `RegentPoints.Seasons.phase/1`: `:before` is `:closed`,
+  `:ended` is `:ended`.
