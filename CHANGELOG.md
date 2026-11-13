@@ -1290,3 +1290,12 @@ design system. using vgpu.sh".
   has no `data-count`, so a count's roll never starts from it. The figure primitive is
   unchanged. A site that passes nothing sees the same page, to the pixel, and no site's
   Points page runs a count roll over the total.
+
+## 2026-11-13 — Leaderboard: the "You" tag never runs into the points
+
+- `Regent.Points.board`: on a narrow row the name or wallet gives way first, ending in
+  an ellipsis, so the "You" tag and the copy icon keep their room beside the points.
+  A wallet's short form held its full width there, so at 390 px the reader's own row
+  put the tag over their points (seen on Patchbay). Checked at 320, 360 and 390 px with
+  a long name, a wallet, an ENS name and a seven-digit total, light and dark, mouse and
+  touch: no row overlaps. At 1280 px the page is unchanged to the pixel.

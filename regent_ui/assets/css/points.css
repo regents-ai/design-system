@@ -298,7 +298,9 @@
 .rg-points-board__face > * { inline-size: 100%; block-size: 100%; }
 .rg-points-board__face:empty { display: none; }
 
-/* A name keeps to one line, so a long one never makes its row taller. */
+/* A name keeps to one line, so a long one never makes its row taller. The name or
+   wallet gives way first, ending in an ellipsis, so the "You" tag and the copy icon
+   keep their room and never run into the points on a narrow row. */
 .rg-points-board__name {
   grid-column: 3;
   display: flex;
@@ -312,6 +314,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.rg-points-board__name .rg-address { flex: 0 1 auto; min-inline-size: 0; }
+.rg-points-board__name .rg-address .rg-address__label { flex: 0 1 auto; }
 
 .rg-points-board__tag {
   flex: none;
