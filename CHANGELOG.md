@@ -1322,3 +1322,22 @@ design system. using vgpu.sh".
   390 and 1280 px. Where three figures filled the line to within a fraction of a pixel
   (a three-digit Today beside a six-digit Yesterday at 360 px, a seven-digit Yesterday
   beside its name at 320 px) the last now moves to the next line.
+
+## 2026-11-14 — Leaderboard: a wallet stays readable on a phone
+
+- `Regent.Points.board`: at 320 px the reader's own row with a wallet and a
+  seven-digit total squeezed the wallet down to "0." or nothing. A leaderboard now
+  measures its own width: at 21.5rem or less it hides the pictures, and at 19.5rem or
+  less the room between a row's parts and at its ends drops to 4 px. The points and the
+  "You" tag never give way, and the copy icon keeps its room, so the wallet shows at
+  least its first four characters ("0x12…") on a row down to 251 px on a touch screen
+  and every row width checked with a mouse; Techtree's row at a 320 px window is 254 px.
+  On those narrow rows a rank wider than its square, such as 1234 below the list,
+  widens the square instead of reaching "You".
+- Checked at 320, 360, 390, 768, 1280 and 1600 px, light and dark, mouse and touch,
+  with names, wallets, an ENS name and totals of one to seven digits, and at every
+  leaderboard width from 240 to 1600 px in 4 px steps: no row has the name too small or
+  overlapping the points (before, 62 of 2,952 rows; across the widths, 1,214 rows at 600
+  widths, now 43 rows, all on rows under 252 px, or under 268 px on a site whose text is
+  18 px on a touch screen). The "You" tag never runs into the points (the 13 Nov check,
+  run again: 0 of 406 rows). At 390, 768, 1280 and 1600 px every row sits where it did.

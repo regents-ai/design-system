@@ -677,7 +677,10 @@ includes `account.css`.
 - Colour on the Points page marks three things only: the total and each action's
   points (the band pair), the reader's own row, tier and count left (the figure
   pair), and a finished action (success). A leaderboard name keeps to one line and
-  ends in an ellipsis. A person who chose no name shows as their wallet through
+  ends in an ellipsis. On a narrow leaderboard a row gives up the picture first, then
+  room between its parts, so a wallet still shows its first characters ("0x12…")
+  beside the "You" tag and a seven-digit total; the points and the tag never give way.
+  A person who chose no name shows as their wallet through
   `Regent.Primitives.address` (compact, with the copy icon), labelled with their ENS
   name when they have one: every wallet is public (Sean, 6 November 2026).
 - `history` requires `id` and `title`. `rows` defaults to `[]`, with each row shaped

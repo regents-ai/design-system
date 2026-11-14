@@ -352,6 +352,28 @@
 
 .rg-points-board__points { grid-column: 4; white-space: nowrap; }
 
+/* A narrow leaderboard gives up the picture first, then room between a row's parts, so
+   a wallet still shows its first characters beside the "You" tag and a seven-digit
+   total: down to a 254 px row with a mouse or a touch screen. The points and the tag
+   never give way, and a rank wider than its square widens the square instead of
+   running into the name. */
+.rg-points-board { container: rg-points-board / inline-size; }
+
+@container rg-points-board (max-width: 21.5rem) {
+  .rg-points-board li,
+  .rg-points-board__you { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .rg-points-board__rank { inline-size: auto; min-inline-size: 1.75rem; }
+  .rg-points-board__face { display: none; }
+  .rg-points-board__name { grid-column: 2; }
+  .rg-points-board__points { grid-column: 3; }
+}
+
+@container rg-points-board (max-width: 19.5rem) {
+  .rg-points-board li,
+  .rg-points-board__you { gap: 4px; padding-inline: 4px; }
+  .rg-points-board__name { gap: 4px; }
+}
+
 .rg-points-board li[data-you="true"],
 .rg-points-board__you {
   background: var(--support-figure-surface);
