@@ -69,12 +69,18 @@ document.querySelector("#figure-change").addEventListener("click", () => {
     figure.textContent = figure.textContent === one ? other : one;
   }
 });
+// A status word's text changes as a server patch changes it, in place, and
+// status_word.mjs swaps it.
+function changeWord(line, one, other) {
+  const text = line.querySelector(".rg-status-word__word").firstChild;
+  text.nodeValue = text.nodeValue === one ? other : one;
+}
 // A step finishes as a page's would after its read: the tick draws in and the word
 // swaps, and the line below stays where it is.
 document.querySelector("#waiting-change").addEventListener("click", () => {
   const tick = document.querySelector("#waiting-tick");
   tick.toggleAttribute("data-done");
-  for (const word of document.querySelectorAll("#waiting-word > span")) word.toggleAttribute("data-on");
+  changeWord(document.querySelector("#waiting-word"), "Waiting", "Done");
 });
 // The tabs stand in for a page's own links: a press marks the tab it lands on.
 for (const tab of document.querySelectorAll("#choice-tabs a")) {
@@ -98,9 +104,7 @@ document.querySelector("#activity-change").addEventListener("click", () => {
   const done = mark.dataset.state === "asks";
   mark.dataset.state = done ? "done" : "asks";
   mark.querySelector(".rg-tick").toggleAttribute("data-done", done);
-  for (const word of asks.querySelectorAll(".rg-status-word__word")) {
-    word.toggleAttribute("data-on", word.textContent.trim() === (done ? "Done" : "Waiting for you"));
-  }
+  changeWord(asks.querySelector(".rg-status-word"), "Waiting for you", "Done");
 });
 // A stand-in for the motion kit's chart hook, only to show its marks at work: the rule
 // snaps to the nearest point under the pointer or the arrow keys, and the figure above

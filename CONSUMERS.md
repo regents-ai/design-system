@@ -96,10 +96,27 @@ element itself, so a site that rolls the total brings its own hook for it.
 Something a page waits for sits in `Regent.Primitives.waiting` with the same size
 class as what it will show; the page passes `state` from its own read (`:loading`, then
 `:slow` once it has waited 10 seconds, `:error` on a failure, `:ready`) and its retry
-button in the `retry` slot. `Regent.Primitives.status_word` takes every word it can
-show and the current one; `Regent.Primitives.tick` takes `done`. The package moves all
-three in CSS, so the motion kit needs no hook or attribute for them; a list that lands
+button in the `retry` slot. `Regent.Primitives.tick` takes `done`. The package moves
+both in CSS, so the motion kit needs no hook or attribute for them; a list that lands
 inside a waiting box still takes the kit's `MotionList`.
+
+`Regent.Primitives.status_word` takes `id`, `word` (the word showing now) and `width`:
+how wide its line stays, in `ch`, which is the width of a figure and not a letter, so
+give what the widest word it can show needs ("Done" needs 5, "Waiting for you" 12; a
+word wider than `width` widens the line). The page holds only that word. Import
+`status_word.mjs` (copied by `mix regent_ui.assets`) once from the site's `app.ts`:
+when a patch changes the word, the new one rises in and the old one leaves from a copy
+in the component's `phx-update="ignore"` holder, aria-hidden and inert, removed when
+its transition ends. Without the module the word changes at once. Reduced motion swaps
+it at once either way, and a patch or reconnect that leaves the word as it was moves
+nothing.
+
+What a site changes when it takes this version (14 November 2026): every
+`status_word` call drops `words` and `current` and passes `id`, `word` and `width`
+(`<.status_word words={["Waiting", "Done"]} current={@word} />` becomes
+`<.status_word id="pairing-word" word={@word} width={7} />`), and `app.ts` imports
+`status_word.mjs`. A page using `Regent.Agents.activity` with `variant="line"` or
+`Regent.Agents.fleet` needs only the import.
 
 `Regent.Primitives.segmented` takes `id`, `label`, `name`, `options` (two to five
 `%{value, label}`) and the chosen `value`; `event` puts the page's `phx-click` on each
@@ -154,8 +171,9 @@ page's retry when the steps could not be read. `variant="line"` shows the latest
 started step on one line. `Regent.Agents.fleet` takes `id`, `label`, `now` and `agents`
 (`:loading`, `:unavailable` or `%{id, name, kind, href, steps}`; `href` `nil` for no
 page). Neither runs a timer: the page sends new steps and a new `now` when it has them.
-The package moves the status word, the tick and the running step's dash in CSS. The
-motion kit may use these marks:
+The package moves the tick and the running step's dash in CSS; the line's verb is a
+status word, swapped with `status_word.mjs` imported. The motion kit may use these
+marks:
 
 - `data-activity` marks the list of latest steps for the kit's `MotionList`; each row is
   an `li` with `data-step` (the step's id) and `data-state` (`queued`, `running`,

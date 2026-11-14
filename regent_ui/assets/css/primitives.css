@@ -495,21 +495,23 @@
 }
 .rg-waiting[data-state="ready"] { animation: rg-waiting-arrive var(--duration-base) var(--ease-out); }
 @keyframes rg-waiting-arrive { from { opacity: 0; } }
-/* A status word: every word it can show stacked in one cell, so the line keeps the
-   widest. The old word rises 4px out and fades; the new one rises 4px in. The two
-   moves add up: a word at rest sits 4px low (-4px of transform and 8px of translate),
-   leaves upward on its transform, and drops to its rest only once it is unseen. */
-.rg-status-word { display: inline-grid; }
+/* A status word: the word showing now, alone in the page, on a line kept at the
+   --rg-status-word-width the page passes (the ch its widest word needs), so nothing
+   beside it moves. When the word changes, status_word.mjs lays a copy of the old one
+   in the same cell, hidden from screen readers and inert: the copy rises 4px out and
+   fades in 140ms and is removed when that ends; the new word rises 4px in over 200ms,
+   from where data-arriving holds it for a moment. */
+.rg-status-word { display: inline-grid; min-inline-size: var(--rg-status-word-width); }
+.rg-status-word__gone { display: contents; }
+.rg-status-word__word, .rg-status-word__gone > * { grid-area: 1 / 1; white-space: nowrap; }
 .rg-status-word__word {
-  grid-area: 1 / 1; white-space: nowrap;
-  opacity: 0; visibility: hidden; transform: translateY(-4px); translate: 0 8px;
-  transition: opacity var(--duration-fast) var(--ease-in), transform var(--duration-fast) var(--ease-in),
-    translate 0s var(--duration-fast), visibility 0s var(--duration-fast);
+  transition: opacity var(--duration-base) var(--ease-out), translate var(--duration-base) var(--ease-out);
 }
-.rg-status-word__word[data-on] {
-  opacity: 1; visibility: visible; transform: none; translate: 0 0;
-  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out),
-    translate var(--duration-base) var(--ease-out);
+.rg-status-word__word[data-arriving] { opacity: 0; translate: 0 4px; transition: none; }
+.rg-status-word__gone > * {
+  opacity: 0; translate: 0 -4px;
+  transition: opacity var(--duration-fast) var(--ease-in), translate var(--duration-fast) var(--ease-in);
+  @starting-style { opacity: 1; translate: 0 0; }
 }
 /* A step's mark: a dashed ring while it waits, then a tick that draws in. */
 .rg-tick {
@@ -523,7 +525,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .rg-waiting[data-state="ready"] { animation: none; }
-  .rg-status-word__word, .rg-status-word__word[data-on], .rg-tick[data-done] { transition: none; }
+  .rg-status-word__word, .rg-status-word__gone > *, .rg-tick[data-done] { transition: none; }
 }
 @media (forced-colors: active) {
   .rg-waiting:not([data-state="ready"]) { outline-color: CanvasText; }

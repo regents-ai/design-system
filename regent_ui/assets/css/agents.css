@@ -136,8 +136,8 @@
   outline-offset: var(--rg-ring-offset);
 }
 
-/* One line: mark, verb, label, time. The verb keeps the width of its widest word, so
-   lines stacked in a list keep their labels in one column. */
+/* One line: mark, verb, label, time. The verb's line is as wide as its widest word
+   needs, so lines stacked in a list keep their labels in one column. */
 .rg-activity--line { display: flex; align-items: center; gap: var(--space-1); min-inline-size: 0; margin: 0; }
 .rg-activity--line .rg-activity__label { flex: 1 1 auto; }
 

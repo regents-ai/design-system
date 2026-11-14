@@ -298,7 +298,7 @@ defmodule Regent.StructureShowcase do
               <div class="rg-panel__body showcase-stack">
                 <p class="showcase-wait__step">
                   <.tick id="waiting-tick" />
-                  <.status_word id="waiting-word" words={["Waiting", "Done"]} current="Waiting" />
+                  <.status_word id="waiting-word" word="Waiting" width={7} />
                 </p>
                 <p id="waiting-below">Below</p>
                 <div class="showcase-actions">
@@ -1007,6 +1007,7 @@ html = """
 <link rel="stylesheet" href="/showcase.css">
 <script src="/showcase.js" defer></script>
 <script src="/js/segmented.mjs" type="module"></script>
+<script src="/js/status_word.mjs" type="module"></script>
 <script src="/js/tip.mjs" type="module"></script>
 <script src="/js/confirm.mjs" type="module"></script></head>
 <body>#{body}</body></html>
@@ -1023,7 +1024,7 @@ File.cp_r!(Path.join(root, "regent_ui/priv/static/images"), Path.join(out, "imag
 
 File.rm_rf!(Path.join(out, "js"))
 File.mkdir_p!(Path.join(out, "js"))
-for name <- ~w(segmented.mjs tip.mjs confirm.mjs),
+for name <- ~w(segmented.mjs status_word.mjs tip.mjs confirm.mjs),
     do: File.cp!(Path.join(root, "regent_ui/assets/js/" <> name), Path.join(out, "js/" <> name))
 
 for name <- ~w(showcase.css showcase.js),

@@ -1375,3 +1375,38 @@ design system. using vgpu.sh".
   four or more digits in the list now takes its real room, so on rows up to about
   390 px the wallet beside it can show less than "0x12…"; with up to three digits the
   wallet keeps "0x12…" exactly where it did.
+
+## 2026-11-14 — Status word: only the word showing is in the page
+
+- `Regent.Primitives.status_word` wrote every word it could show into the page and hid
+  the others with styles, so an agent turning the page into text read all of them
+  (Patchbay's report; Patchbay had stopped using the swap). It now takes `id`, `word`
+  and `width`, and the server renders only `word`. `words`, `current`, the stacked
+  words and their `data-on` mark are gone.
+- `width` keeps the line still: the `ch` the widest word needs, set on the line as
+  `--rg-status-word-width`. A ch is a figure's width, not a letter: in Geist Serif
+  "Done" needs 5 and "Waiting for you" 12.
+- New `regent_ui/assets/js/status_word.mjs`, copied by `mix regent_ui.assets`: when a
+  patch changes the word, it lays a copy of the old word in the component's
+  `phx-update="ignore"` holder, aria-hidden and inert, which rises out in 140ms and is
+  removed when its transition ends or is cancelled, and the new word rises in over
+  200ms. The motion stays in the package's CSS; reduced motion swaps at once and the
+  copy goes before it is drawn. A patch or reconnect that leaves the word as it was
+  changes nothing.
+- `Regent.Agents.activity`'s line passes its verb alone, 12ch wide. The showcase loads
+  the module and changes its words the way a patch does.
+- Checked in headless Chromium against a real LiveView page: before and after a swap
+  the line's text and Chrome's accessibility tree hold one word; during it the old word
+  is aria-hidden, inert and outside the tree, and lives 133ms; no neighbour or line below
+  moves by any fraction of a pixel and Chrome reports no layout shift; an unrelated
+  patch mid-swap, reconnects with and without a change, a burst of ten server changes
+  and ten presses at once each end on exactly one word; reduced motion never draws the
+  copy or animates the word.
+- A site taking this version changes each `status_word` call to `id`, `word` and
+  `width` and imports `status_word.mjs` once from `app.ts` (`CONSUMERS.md`).
+
+## 2026-11-14 — Points to-do: any title
+
+- `Regent.Points.todo`'s documentation said each group's title was "Once" or "Daily"
+  and that every group carried `limit`. It takes any heading (the template now passes
+  the site the actions belong to) and `limit` is optional. Docs only.

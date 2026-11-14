@@ -36,6 +36,8 @@ defmodule Regent.Agents do
     failed: "Stopped"
   }
   @shown 6
+  # The ch "Waiting for you", the widest verb, needs in Geist Serif.
+  @verb_width 12
 
   attr :id, :string, required: true
 
@@ -84,16 +86,17 @@ defmodule Regent.Agents do
 
   def activity(%{variant: "line"} = assigns) do
     steps = Enum.map(assigns.steps, &step/1)
-    assigns = assign(assigns, step: current(steps), verbs: Map.values(@verbs))
+    assigns = assign(assigns, step: current(steps), verb_width: @verb_width)
 
     ~H"""
     <p id={@id} class={["rg-activity rg-activity--line", @class]} {@rest}>
       <%= if @step do %>
         <.mark step={@step} />
         <Primitives.status_word
+          id={"#{@id}-verb"}
           class="rg-activity__verb"
-          words={@verbs}
-          current={@step.verb}
+          word={@step.verb}
+          width={@verb_width}
           data-state={@step.state}
         />
         <span class="rg-activity__label"><bdi>{@step.label}</bdi></span>

@@ -209,30 +209,35 @@ defmodule Regent.Primitives do
   defp waiting_words(:slow), do: "Still working"
   defp waiting_words(:error), do: "Couldn't be read"
 
-  attr :words, :list,
-    required: true,
-    doc: "every word it can show, such as [\"Waiting\", \"Done\"]; the line keeps the widest"
+  attr :id, :string, required: true
+  attr :word, :string, required: true, doc: "the word showing now, such as \"Done\""
 
-  attr :current, :string, required: true, doc: "the word showing now, one of `words`"
+  attr :width, :integer,
+    required: true,
+    doc:
+      "how wide the line stays, in `ch` (the width of a figure): what the widest word it can show needs. " <>
+        "A ch is not a letter: \"Done\" needs 5 and \"Waiting for you\" 12"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
   @doc """
-  A status word that changes while someone watches. The old word rises out and the new
-  one rises in, and the line keeps the width of its widest word, so nothing beside it
-  moves. Reduced motion swaps the words at once.
+  A status word that changes while someone watches. The page holds only the word
+  showing now, on a line that stays `width` wide, so nothing beside it moves. With
+  `status_word.mjs` imported, the new word rises in and the old one rises out from a
+  copy that screen readers never reach and that goes as soon as it has left. Reduced
+  motion swaps the word at once.
   """
   def status_word(assigns) do
-    if assigns.current not in assigns.words do
-      raise ArgumentError,
-            "status_word current #{inspect(assigns.current)} is not one of #{inspect(assigns.words)}"
-    end
-
     ~H"""
-    <span class={["rg-status-word", @class]} {@rest}>
-      <span :for={word <- @words} class="rg-status-word__word" data-on={word == @current}>
-        {word}
-      </span>
+    <span
+      id={@id}
+      class={["rg-status-word", @class]}
+      style={"--rg-status-word-width: #{@width}ch"}
+      {@rest}
+    >
+      <span class="rg-status-word__word">{@word}</span>
+      <span id={"#{@id}-gone"} class="rg-status-word__gone" phx-update="ignore"></span>
     </span>
     """
   end

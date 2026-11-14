@@ -114,7 +114,8 @@ defmodule Regent.Points do
   attr :groups, :list,
     required: true,
     doc: """
-    each `%{title: "Once" | "Daily", items: [item], limit: limit | nil}`. An item is
+    each `%{title, items: [item]}` with an optional `limit`. `title` is any heading
+    for its actions, such as the name of the site they belong to. An item is
     `%{id, label, points, done}` with optional `note` (a few words under the label),
     `count` (`%{done, of}`, drawn as a bar) and `href` (where the action is done).
     `points` is nil before earning opens. A limit is `%{label, used, of, value}`:

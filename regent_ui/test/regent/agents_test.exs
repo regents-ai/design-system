@@ -92,6 +92,26 @@ defmodule Regent.AgentsTest do
     assert line([step("1", :write, nil, nil)]) =~ ~s(data-state="queued")
   end
 
+  test "the line holds its own verb and no other" do
+    lines =
+      for kind <- [:read, :think, :tool, :write, :waiting_for_you, :done, :failed],
+          do: line([step("1", kind, 5, nil)])
+
+    verbs = Enum.map(lines, &verb/1)
+    assert length(Enum.uniq(verbs)) == length(lines)
+
+    for {html, verb} <- Enum.zip(lines, verbs) do
+      # The mark beside the verb may name the step's state, such as "Running".
+      words = String.replace(html, ~r/<span class="rg-activity__state">[^<]*<\/span>/, "")
+      assert Enum.filter(verbs, &String.contains?(words, &1)) == [verb]
+    end
+  end
+
+  defp verb(html) do
+    [_, verb] = Regex.run(~r/class="rg-status-word__word">([^<]+)</, html)
+    verb
+  end
+
   test "loading and failed reads hold a box at size; nothing is guessed" do
     assert full(:loading) =~ ~s(aria-busy="true")
     assert full(:unavailable) =~ ~s(role="alert")

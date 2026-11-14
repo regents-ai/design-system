@@ -34,6 +34,7 @@ defmodule Mix.Tasks.RegentUi.Assets do
           "holographic_card.*",
           "pill_select.mjs",
           "segmented.mjs",
+          "status_word.mjs",
           "tip.mjs"
         ],
         file <- Path.wildcard(Path.join(dependency, "assets/js/#{pattern}")) do

@@ -346,21 +346,19 @@ defmodule Regent.PrimitivesTest do
     end
   end
 
-  test "a status word shows only the current word and refuses one it cannot show" do
-    assigns = %{}
+  test "a status word puts only the word showing now in the page, on a line of its width" do
+    for word <- ["Waiting", "Done", "Waiting for you"] do
+      assigns = %{word: word}
 
-    html =
-      rendered_to_string(~H"""
-      <.status_word words={["Waiting", "Done"]} current="Done" />
-      """)
+      html =
+        rendered_to_string(~H"""
+        <.status_word id="step" word={@word} width={12} />
+        """)
 
-    assert [_on] = Regex.scan(~r/data-on/, html)
-    assert html =~ ~r/data-on[^>]*>\s*Done/
-
-    assert_raise ArgumentError, fn ->
-      rendered_to_string(~H"""
-      <.status_word words={["Waiting", "Done"]} current="Paired" />
-      """)
+      # What a screen reader, a copy or an HTML-to-text reader gets: the word, once.
+      assert html |> String.replace(~r/<[^>]*>/, "") |> String.trim() == word
+      assert length(String.split(html, word)) == 2
+      assert html =~ "--rg-status-word-width: 12ch"
     end
   end
 

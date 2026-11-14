@@ -453,7 +453,7 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Primitives.copy_icon` | The same copy as an icon alone, for the corner of the box it copies from; a tick once copied | Ash Template |
 | `Regent.Primitives.figure` | A figure that changes while someone watches, with equal-width digits, the width of its widest value kept and `data-count` for the motion kit's roll | Awaiting consumer adoption |
 | `Regent.Primitives.waiting` | A dashed box at the exact size of what it waits for, which then shows it: "Still working" and the page's retry once slow, "Couldn't be read" and the retry on a failure. No grey bars, shimmer or pulse | Awaiting consumer adoption |
-| `Regent.Primitives.status_word` | A status word that changes while someone watches ("Waiting" to "Done"), keeping the width of its widest word | Awaiting consumer adoption |
+| `Regent.Primitives.status_word` | A status word that changes while someone watches ("Waiting" to "Done"): only the word showing is in the page, on a line as wide as the page says its widest word needs | Awaiting consumer adoption |
 | `Regent.Primitives.tick` | A step's mark: a dashed ring while it waits, a tick that draws in once it is done | Ash Template, through `Regent.Account.pairing` |
 | `Regent.Primitives.segmented` | Two to five views of the same thing (1D / 1W / 1M, Mine / All): a cut frame of equal cells whose filled indicator slides to the chosen one; arrow keys, Home and End choose, and a choice never changes the height | Awaiting consumer adoption |
 | `Regent.Primitives.tabs` | Links between sibling sections of one page, each its own address, at most five; the page showing has a bar on the baseline that slides to the next | Patchbay; Ash Template (showcase); both through `Regent.Discussion.replies` |
@@ -938,9 +938,11 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
 - Something waiting is a dashed box at its final size (`Regent.Primitives.waiting`),
   never a shimmer skeleton; what lands fades in over 200ms in its place. A status word
   that changes leaves rising 4px and fading in 140ms on `--ease-in` and the new one rises
-  4px in over 200ms on `--ease-out`, on a line as wide as its widest word. A done step's
-  tick draws in over 280ms. All three are the package's own CSS; reduced motion shows
-  each at once.
+  4px in over 200ms on `--ease-out`, on a line as wide as its widest word needs. Only
+  the word showing is ever in the page: the leaving word is a copy that
+  `status_word.mjs` lays over it, aria-hidden and inert, and removes once it has left.
+  A done step's tick draws in over 280ms. The motion is the package's own CSS; reduced
+  motion shows each at once.
 - A segmented control's indicator and a tab's bar travel to the new choice on a
   press; a key press puts them there at once, and so does reduced motion. They move by
   transform alone and the words never move. The package slides the segmented indicator
