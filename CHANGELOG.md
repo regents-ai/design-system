@@ -1352,3 +1352,26 @@ design system. using vgpu.sh".
   `data-count` while it shows "…" or "–". It also says that `MotionCount` rolls the
   figures inside the element it sits on, so a site brings its own hook for the total.
   Docs only.
+
+## 2026-11-14 — Leaderboard: a long rank never runs into "You"
+
+- `Regent.Points.board`: on a board wider than 21.5rem a rank's square stayed 1.75rem
+  wide and longer digits spilled past it. The reader's own row below the list drew a
+  six-digit rank such as 123456 over "You" at every window from 377 to 1280 px, and a
+  rank of five digits or more in the list ran into the picture or the wallet. A rank too
+  long for its square now widens it at every width, as it already did on a narrow
+  board, so its digits never reach the picture, the name, "You" or the points. The row
+  below the list has no picture, so its rank takes that room first: a rank of up to
+  four digits leaves "You" where it was. Styles only; the markup is unchanged.
+- Checked with ranks of one to seven digits, plain as the component draws a number and
+  with thousands separators, in the list and below it, with and without pictures, at
+  16 and 18 px text, light and dark, mouse and touch, at every window from 320 to
+  1280 px and every board width from 240 to 1600 px in 4 px steps: before, 295,944 of
+  2,958,144 rows had a rank touching or over the picture, a wallet or "You", and
+  466,336 had digits outside their square; now none, and no row changes height. Boards
+  whose ranks have up to three digits are unchanged to the pixel at 390 and 1280 px,
+  with one exception no site shows, since a list holds ten rows: a list rank of 100 or
+  more with 18 px text was 0.3 px wider than its square, which now fits it. A rank of
+  four or more digits in the list now takes its real room, so on rows up to about
+  390 px the wallet beside it can show less than "0x12…"; with up to three digits the
+  wallet keeps "0x12…" exactly where it did.

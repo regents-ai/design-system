@@ -680,9 +680,12 @@ includes `account.css`.
   ends in an ellipsis. On a narrow leaderboard a row gives up the picture first, then
   room between its parts, so a wallet still shows its first characters ("0x12…")
   beside the "You" tag and a seven-digit total; the points and the tag never give way.
-  A person who chose no name shows as their wallet through
-  `Regent.Primitives.address` (compact, with the copy icon), labelled with their ENS
-  name when they have one: every wallet is public (Sean, 6 November 2026).
+  A rank too long for its square widens the square, so its digits never reach the
+  picture or the name; in the reader's own row below the list it first takes the
+  room of the picture that row lacks. A person who chose no name shows as their
+  wallet through `Regent.Primitives.address` (compact, with the copy icon), labelled
+  with their ENS name when they have one: every wallet is public (Sean, 6 November
+  2026).
 - `history` requires `id` and `title`. `rows` defaults to `[]`, with each row shaped
   `%{label: string, amount: string_or_nil, occurred_at: string, status: optional_string}`.
   Include units in `amount` and the timezone in `occurred_at`. Products supply the

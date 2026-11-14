@@ -293,11 +293,12 @@
   outline-offset: -1px;
 }
 
-/* Leaderboard. */
+/* Leaderboard. A rank too long for its square widens the square, so its digits never
+   reach the picture or the name beside it. */
 .rg-points-board li,
 .rg-points-board__you {
   display: grid;
-  grid-template-columns: 1.75rem auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   min-block-size: 3rem;
@@ -308,10 +309,16 @@
 .rg-points-board__rank {
   display: grid;
   place-items: center;
-  inline-size: 1.75rem;
+  min-inline-size: 1.75rem;
   block-size: 1.75rem;
   color: var(--color-fg-muted);
 }
+
+/* The reader's own row below the list has no picture, so its rank takes the picture's
+   room first: a rank of up to four digits leaves "You" where it was, and a longer one
+   moves it along. */
+.rg-points-board__you { grid-template-columns: 1.75rem auto minmax(0, 1fr) auto; }
+.rg-points-board__you .rg-points-board__rank { grid-column: 1 / 3; justify-self: start; }
 
 .rg-points-board li[data-top="true"] .rg-points-board__rank {
   background: var(--support-band-surface);
@@ -355,14 +362,13 @@
 /* A narrow leaderboard gives up the picture first, then room between a row's parts, so
    a wallet still shows its first characters beside the "You" tag and a seven-digit
    total: down to a 254 px row with a mouse or a touch screen. The points and the tag
-   never give way, and a rank wider than its square widens the square instead of
-   running into the name. */
+   never give way. */
 .rg-points-board { container: rg-points-board / inline-size; }
 
 @container rg-points-board (max-width: 21.5rem) {
   .rg-points-board li,
   .rg-points-board__you { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .rg-points-board__rank { inline-size: auto; min-inline-size: 1.75rem; }
+  .rg-points-board__you .rg-points-board__rank { grid-column: 1; }
   .rg-points-board__face { display: none; }
   .rg-points-board__name { grid-column: 2; }
   .rg-points-board__points { grid-column: 3; }
