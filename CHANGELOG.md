@@ -1299,3 +1299,26 @@ design system. using vgpu.sh".
   put the tag over their points (seen on Patchbay). Checked at 320, 360 and 390 px with
   a long name, a wallet, an ENS name and a seven-digit total, light and dark, mouse and
   touch: no row overlaps. At 1280 px the page is unchanged to the pixel.
+
+## 2026-11-14 — Points total: no figure runs into another or past the card
+
+- `Regent.Points.total`: on a wide page a total of six digits or more ran into Today
+  (seen at 1280 px), and on a phone a seven-digit Today pushed Rank off the card (seen
+  at 390 px). Today, yesterday and rank now move to a line under the others when the
+  card has no room left; on a wide page they move together under the total when it
+  leaves them no room. One-per-line on the narrowest cards, a figure too wide to sit
+  beside its name goes under it.
+- The total stays on one line and is never cut. Seven digits fit at full size; a longer
+  total steps its size down to the card's width, and its line keeps the full size's
+  height, so a total that grows a digit never moves what sits below it. The element
+  holding the total gives its count of digits and separators as the custom properties
+  `--rg-points-total-digits` and `--rg-points-total-marks`, from which the size is set.
+- Checked with totals of 1, 3, 5, 6, 7 and 9 digits, Today and Yesterday of 1 to 7
+  digits and ranks of 1 to 6 digits, loading and absent, at 320, 360, 390, 768, 1280
+  and 1600 px, light and dark, mouse and touch, and a cross-section of them at every
+  component width from 240 to 1600 px in 4 px steps: no figure overlaps another or
+  leaves the card, and no page scrolls sideways (before, 15,388 of 50,952 checks
+  failed and 16 of 24 pages scrolled sideways). The usual short figures are unchanged to the pixel at
+  390 and 1280 px. Where three figures filled the line to within a fraction of a pixel
+  (a three-digit Today beside a six-digit Yesterday at 360 px, a seven-digit Yesterday
+  beside its name at 320 px) the last now moves to the next line.

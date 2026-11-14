@@ -665,7 +665,13 @@ includes `account.css`.
   still being checked) and one sentence in its inner block; any other attribute
   (`phx-hook`, `data-*`) lands on the element holding the figure, whose id is
   `"<id>-figure"` and which carries `data-placeholder="true"` while it shows "…" or
-  "–", so a site can roll the figure alone and never from a placeholder. `todo` takes `left` and `groups`; `board` takes
+  "–", so a site can roll the figure alone and never from a placeholder. The total
+  stays on one line and is never cut: seven digits fit at full size, a longer total
+  steps its size down to the card's width, and the line keeps its height, so nothing
+  below moves. Today, yesterday and rank sit side by side and move to a line under the
+  others when the card has no room left, never past it; where the page is wide they sit
+  beside the total, or together under it when the total leaves them no room. `todo`
+  takes `left` and `groups`; `board` takes
   `rows`, the reader's own row below the list as `you`, and a `face` slot for the
   picture; `bonus` takes `tiers` and `periods`; `activity` takes `rows` and `more`.
 - Colour on the Points page marks three things only: the total and each action's

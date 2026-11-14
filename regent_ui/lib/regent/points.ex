@@ -79,7 +79,7 @@ defmodule Regent.Points do
         </p>
       </header>
       <div class="rg-points-total__main">
-        <p class="rg-points-total__figure">
+        <p class="rg-points-total__figure" style={figure_length(@placeholder || @total)}>
           <Primitives.figure :if={!@placeholder} id={"#{@id}-figure"} value={@total} {@rest} />
           <span
             :if={@placeholder}
@@ -339,6 +339,14 @@ defmodule Regent.Points do
   defp placeholder(_value, _state), do: nil
 
   defp gain(value, state), do: placeholder(value, state) || "+" <> value
+
+  # How many digits and separators the total shows, so a total too long for the
+  # panel's width steps its size down in CSS until it fits.
+  defp figure_length(text) do
+    digits = length(Regex.scan(~r/[0-9]/, text))
+
+    "--rg-points-total-digits: #{digits}; --rg-points-total-marks: #{String.length(text) - digits}"
+  end
 
   defp note(:error, _pending), do: "Could not load. Try refreshing."
   defp note(:stale, _pending), do: "Last saved figures. Refresh failed."

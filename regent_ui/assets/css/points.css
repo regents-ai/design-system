@@ -132,29 +132,45 @@
 
 .rg-points-total__main { display: grid; gap: var(--space-1); min-inline-size: 0; }
 
-/* One line always, sized from the panel's own width so six digits still fit. */
+/* One line always, sized from the panel's own width so seven digits fit. A longer
+   total steps down until it fits too: the page gives the figure's count of digits and
+   of separators, which in Geist Serif at this tracking are .57em and .19em wide. The
+   line keeps the full size's height, so a total that grows a digit never moves what
+   sits below it, and it is never cut. */
 .rg-points-total__figure {
   font-size: clamp(3rem, 22cqi, 7rem);
   line-height: .9;
-  letter-spacing: -.03em;
   white-space: nowrap;
+}
+.rg-points-total__figure > * {
+  font-size: min(1em, 100cqi / (var(--rg-points-total-digits) * .57 + var(--rg-points-total-marks) * .19));
+  letter-spacing: -.03em;
 }
 
 .rg-points-total__about { max-inline-size: 34rem; line-height: var(--type-body-line); }
 
-/* Today, yesterday and rank: each as wide as its words, the last taking the rest. */
+/* Today, yesterday and rank: each as wide as its words, the last taking the rest. One
+   with no room left on the line moves to a line under the others, never past the card.
+   The rule before each sits in the gap; the one before the first on a line falls
+   outside the list and is cut away. */
 .rg-points-total__days {
-  display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 25px;
   align-self: end;
   padding-block-start: var(--space-2);
   border-block-start: 1px solid var(--rg-points-rule);
+  overflow-x: clip;
 }
 
-.rg-points-total__days > div { display: grid; gap: 4px; min-inline-size: 0; padding-inline-end: 12px; }
+.rg-points-total__days > div { position: relative; display: grid; gap: 4px; min-inline-size: 0; }
+.rg-points-total__days > div:last-child { flex-grow: 1; }
 
-.rg-points-total__days > div + div {
-  padding-inline-start: 12px;
+.rg-points-total__days > div::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -13px;
   border-inline-start: 1px solid var(--rg-points-rule);
 }
 
@@ -165,37 +181,45 @@
   white-space: nowrap;
 }
 
-/* Too narrow for three side by side: one to a line, the figure at the end. */
+/* Too narrow for three side by side: one to a line, the figure at the end, or under
+   its name when the two do not fit on one line. */
 @container rg-points-total (max-width: 15.5rem) {
-  .rg-points-total__days { grid-template-columns: minmax(0, 1fr); padding-block-start: 0; }
+  .rg-points-total__days { flex-direction: column; gap: 0; padding-block-start: 0; }
   .rg-points-total__days > div {
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    padding: var(--space-1) 0;
+    justify-content: space-between;
+    padding-block: var(--space-1);
   }
-  .rg-points-total__days > div + div {
-    padding-inline-start: 0;
-    border-inline-start: 0;
-    border-block-start: 1px solid var(--rg-points-rule);
-  }
+  .rg-points-total__days > div::before { content: none; }
+  .rg-points-total__days > div + div { border-block-start: 1px solid var(--rg-points-rule); }
+  .rg-points-total__days dd { margin-inline-start: auto; }
 }
 
-/* Wide: the three figures sit beside the total. */
+/* Wide: the three figures sit beside the total, or together under it when the total
+   leaves them no room. */
 @container rg-points (min-width: 52rem) {
   .rg-points-total {
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     padding: var(--space-4);
   }
-  .rg-points-total > header { grid-column: 1 / -1; }
+  .rg-points-total > header { flex-basis: 100%; }
+  .rg-points-total__main { flex: 1 1 0; min-inline-size: min-content; }
   .rg-points-total__figure { font-size: clamp(4rem, 12cqi, 7rem); }
   .rg-points-total__days dd { font-size: 3rem; }
   .rg-points-total__days {
+    display: grid;
     grid-template-columns: repeat(3, minmax(8.5rem, auto));
+    gap: 0;
+    margin-inline-start: auto;
     padding-block-start: 0;
     border-block-start: 0;
   }
-  .rg-points-total__days > div { padding-inline: var(--space-2); }
-  .rg-points-total__days > div:first-child { border-inline-start: 1px solid var(--rg-points-rule); }
+  .rg-points-total__days > div { padding-inline: 13px var(--space-2); }
+  .rg-points-total__days > div:first-child { padding-inline-start: calc(var(--space-2) + 1px); }
+  .rg-points-total__days > div::before { inset-inline-start: 0; }
   .rg-points-total__days > div:last-child { padding-inline-end: 0; }
 }
 
