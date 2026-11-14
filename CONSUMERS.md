@@ -85,6 +85,14 @@ widest value it can take). It carries `data-count`, so a site rolls it with the
 template's `MotionCount` hook on the part of the page around it; the package ships no
 roll of its own. A column of numbers takes the `rg-figure` class on each cell.
 
+The Points total is the exception: wrapping its section breaks the rule that makes the
+total span the row. Pass `phx-hook` and `data-*` to `Regent.Points.total` instead; they
+land on the element holding the figure, whose id is `"<id>-figure"`, so the site's roll
+reaches the figure alone. While the total is loading or absent that element shows "…"
+or "–", carries `data-placeholder="true"` and has no `data-count`. The template's
+`MotionCount` rolls the `data-count` figures inside the element it sits on, not that
+element itself, so a site that rolls the total brings its own hook for it.
+
 Something a page waits for sits in `Regent.Primitives.waiting` with the same size
 class as what it will show; the page passes `state` from its own read (`:loading`, then
 `:slow` once it has waited 10 seconds, `:error` on a failure, `:ready`) and its retry

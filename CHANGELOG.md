@@ -1341,3 +1341,14 @@ design system. using vgpu.sh".
   widths, now 43 rows, all on rows under 252 px, or under 268 px on a site whose text is
   18 px on a touch screen). The "You" tag never runs into the points (the 13 Nov check,
   run again: 0 of 406 rows). At 390, 768, 1280 and 1600 px every row sits where it did.
+
+## 2026-11-14 — CONSUMERS: how a site rolls the Points total
+
+- `CONSUMERS.md` said only to roll a live figure with the template's `MotionCount` on
+  the part of the page around it, which for the Points total means wrapping its section
+  and breaking the row it spans. It now names the total as the exception: pass
+  `phx-hook` and `data-*` to `Regent.Points.total` and they land on the element holding
+  the figure, `"<id>-figure"`, which carries `data-placeholder="true"` and no
+  `data-count` while it shows "…" or "–". It also says that `MotionCount` rolls the
+  figures inside the element it sits on, so a site brings its own hook for the total.
+  Docs only.
