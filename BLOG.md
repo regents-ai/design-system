@@ -13,8 +13,16 @@ Each product names its page and its address: `gallery/1`, `article/1` and
 `not_found/1` take `name` and `path` (Regents: `name="Articles" path="/articles"`).
 The components link only to that address and use no other word for the page.
 
-- Gallery: generous heading, two image-led ruled columns on desktop, one on mobile.
-  No categories; order is supplied by the catalog, newest publication date first.
+- Gallery: one narrow reading column under a large heading, with an optional `intro`
+  slot for one short line under it. A plain list in the catalog's order, newest
+  publication date first: no pictures, authors, cards or categories. Each post is one
+  link holding its date, title and a summary cut to two lines. From 48rem the dates sit
+  left of a dotted rail that fades out below the list, each post's tick lit in the
+  site's accent beside its title; on phones the date sits above the title.
+- Load more: the first nine posts show. Each next nine sit in a native `details`
+  nested in the one before; its summary is the "Load more" control and hides once
+  open, so the list simply grows. It needs no script, and every post is in the page
+  for search engines and find-in-page.
 - Article: centered title, author/X/date, wide cover, readable prose, sticky left
   contents rail with active section on desktop and a native disclosure on mobile.
 - An article may supply `authors`, an ordered list of maps with `name` and `x`

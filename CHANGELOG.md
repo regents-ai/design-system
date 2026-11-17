@@ -1410,3 +1410,36 @@ design system. using vgpu.sh".
 - `Regent.Points.todo`'s documentation said each group's title was "Once" or "Daily"
   and that every group carried `limit`. It takes any heading (the template now passes
   the site the actions belong to) and `limit` is optional. Docs only.
+
+## 2026-11-16 — Blog list: one column and Load more
+
+- `Regent.Blog.gallery` is a plain list in one narrow reading column, in the format of
+  the traces.com blog index Sean chose: a large heading, an optional `intro` slot for one
+  short line under it, then every post as one link holding its date ("Nov 16, 2026"),
+  its title and a summary cut to two lines, 48px apart. No pictures, authors, cards or
+  borders around posts. The summary, and the date on a phone, turn to full ink on hover
+  and keyboard focus over 200ms; with reduced motion they change at once.
+- From 48rem the dates sit left of a thin dotted rail that fades out below the list,
+  sharing a baseline with the titles, and each post's tick is one dash of the rail lit
+  in the site's accent (the chart colour), level with its title. Every height in a post
+  is a multiple of 4px, so each tick lands on a dash. On a phone there is no rail and
+  the date sits above the title.
+- Load more needs no script: the first nine posts are one list, and each next nine sit
+  in a native `details` nested in the one before, whose summary is a quiet button that
+  hides once its group opens. Every post is in the page for search engines and
+  find-in-page.
+- Our type stays: dates are Geist Serif at 12px with equal-width figures
+  (`rg-figure`), titles 17px at weight 400.
+- The two-column picture grid is gone, with `rg-blog__grid`, `rg-blog__card*`,
+  `rg-blog__meta` and the gallery's `rg-blog__intro` header (`not_found` keeps its own).
+  `name`, `path` and the post data are unchanged; the list no longer reads a post's
+  `image`, `image_alt` or `author`. `article`, `contents` and `not_found` are unchanged.
+- A site taking this version changes nothing in its call; it may pass `<:intro>`. It
+  deletes its own styles or markup copied from the old grid, such as a hand-made empty
+  page using `rg-blog__empty`.
+- Checked in headless Chromium with 20 made-up posts (long titles, an unbroken word, an
+  empty summary, a change of year) at 1280, 768, 390 and 320 px, light and dark, and in
+  each product's colours at 1280 px: no page scrolls sideways, every post starts on the
+  rail's 4px beat, each tick sits on a dash and every date shares its title's baseline.
+  Opening Load more once shows 18 posts; a keyboard press on it leaves the next Tab on
+  the first new post.

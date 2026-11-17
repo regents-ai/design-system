@@ -6,45 +6,54 @@ defmodule Regent.Blog do
   """
   use Phoenix.Component
 
+  @page_size 9
+
   attr :posts, :list, required: true
   attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
   attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
+  slot :intro, doc: "One short line under the heading."
 
+  @doc """
+  The list of posts, newest first: the first nine, then each next nine behind a
+  "Load more" disclosure nested in the one before, so every post is in the page.
+  """
   def gallery(assigns) do
+    assigns = assign(assigns, :pages, Enum.chunk_every(assigns.posts, @page_size))
+
     ~H"""
     <section class="rg-blog rg-sheet rg-blog--gallery" data-regent-blog aria-labelledby="blog-title">
-      <header class="rg-blog__intro">
+      <div class="rg-blog__index">
         <h1 id="blog-title">{@name}</h1>
-      </header>
-      <ol :if={@posts != []} class="rg-blog__grid" role="list">
-        <li :for={post <- @posts}>
-          <article class="rg-blog__card">
-            <a href={"#{@path}/#{post.slug}"} class="rg-blog__card-link">
-              <img
-                src={post.image}
-                alt={post.image_alt}
-                width="1600"
-                height="900"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="rg-blog__card-copy">
-                <div class="rg-blog__meta">
-                  <span>{post.author}</span><time datetime={Date.to_iso8601(post.date)}>{date(
-                    post.date
-                  )}</time>
-                </div>
-                <h2>{post.title}</h2>
-                <p :if={post.description != ""}>{post.description}</p>
-              </div>
-            </a>
-          </article>
-        </li>
-      </ol>
-      <div :if={@posts == []} class="rg-blog__empty">
-        <h2>Nothing here yet</h2>
+        <p :if={@intro != []} class="rg-blog__lede">{render_slot(@intro)}</p>
+        <div :if={@pages != []} class="rg-blog__timeline">
+          <.entries pages={@pages} path={@path} />
+        </div>
+        <h2 :if={@pages == []} class="rg-blog__empty">Nothing here yet</h2>
       </div>
     </section>
+    """
+  end
+
+  attr :pages, :list, required: true
+  attr :path, :string, required: true
+
+  defp entries(%{pages: [page | later]} = assigns) do
+    assigns = assign(assigns, page: page, later: later)
+
+    ~H"""
+    <ol class="rg-blog__list" role="list">
+      <li :for={post <- @page} class="rg-blog__entry">
+        <a href={"#{@path}/#{post.slug}"}>
+          <time class="rg-figure" datetime={Date.to_iso8601(post.date)}>{short_date(post.date)}</time>
+          <h2>{post.title}</h2>
+          <p :if={post.description != ""}>{post.description}</p>
+        </a>
+      </li>
+    </ol>
+    <details :if={@later != []} class="rg-blog__more">
+      <summary class="rg-button rg-button--quiet">Load more</summary>
+      <.entries pages={@later} path={@path} />
+    </details>
     """
   end
 
@@ -129,6 +138,8 @@ defmodule Regent.Blog do
   end
 
   defp date(date), do: Calendar.strftime(date, "%B %-d, %Y")
+
+  defp short_date(date), do: Calendar.strftime(date, "%b %-d, %Y")
 
   defp authors(post) do
     case Map.get(post, :authors, []) do
