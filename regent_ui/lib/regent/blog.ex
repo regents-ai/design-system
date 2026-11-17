@@ -11,7 +11,6 @@ defmodule Regent.Blog do
   attr :posts, :list, required: true
   attr :name, :string, required: true, doc: "The page's name, such as \"Articles\"."
   attr :path, :string, required: true, doc: "The page's address, such as \"/articles\"."
-  slot :intro, doc: "One short line under the heading."
 
   @doc """
   The list of posts, newest first: the first nine, then each next nine behind a
@@ -24,7 +23,6 @@ defmodule Regent.Blog do
     <section class="rg-blog rg-sheet rg-blog--gallery" data-regent-blog aria-labelledby="blog-title">
       <div class="rg-blog__index">
         <h1 id="blog-title">{@name}</h1>
-        <p :if={@intro != []} class="rg-blog__lede">{render_slot(@intro)}</p>
         <div :if={@pages != []} class="rg-blog__timeline">
           <.entries pages={@pages} path={@path} />
         </div>

@@ -1413,9 +1413,8 @@ design system. using vgpu.sh".
 
 ## 2026-11-16 — Blog list: one column and Load more
 
-- `Regent.Blog.gallery` is a plain list in one narrow reading column, in the format of
-  the traces.com blog index Sean chose: a large heading, an optional `intro` slot for one
-  short line under it, then every post as one link holding its date ("Nov 16, 2026"),
+- `Regent.Blog.gallery` is a plain list in one narrow reading column: a large heading,
+  then every post as one link holding its date ("Nov 16, 2026"),
   its title and a summary cut to two lines, 48px apart. No pictures, authors, cards or
   borders around posts. The summary, and the date on a phone, turn to full ink on hover
   and keyboard focus over 200ms; with reduced motion they change at once.
@@ -1434,7 +1433,7 @@ design system. using vgpu.sh".
   `rg-blog__meta` and the gallery's `rg-blog__intro` header (`not_found` keeps its own).
   `name`, `path` and the post data are unchanged; the list no longer reads a post's
   `image`, `image_alt` or `author`. `article`, `contents` and `not_found` are unchanged.
-- A site taking this version changes nothing in its call; it may pass `<:intro>`. It
+- A site taking this version changes nothing in its call. It
   deletes its own styles or markup copied from the old grid, such as a hand-made empty
   page using `rg-blog__empty`.
 - Checked in headless Chromium with 20 made-up posts (long titles, an unbroken word, an

@@ -9,7 +9,6 @@
    and its tick lands on one of the rail's dashes. */
 .rg-blog__index { --rg-blog-measure: 40rem; --rg-blog-date: 5.5rem; --rg-blog-gap: 36px; --rg-blog-rail: 24px; max-inline-size: var(--rg-blog-measure); margin-inline: auto; padding: 48px 24px 96px; }
 .rg-blog__index > h1 { margin: 0; font-size: 36px; line-height: 40px; letter-spacing: -.035em; }
-.rg-blog__lede { margin: 8px 0 0; font-size: 13px; line-height: 20px; color: var(--rg-page-muted); text-wrap: balance; }
 .rg-blog__timeline { margin-block-start: 48px; }
 .rg-blog__list { list-style: none; margin: 0; padding: 0; }
 .rg-blog__entry { padding-block-end: 48px; }
