@@ -919,9 +919,7 @@ Signed in, the account's button at the top right of every page opens the account
 a sidepanel, do a upper right modal"). It is a menu on the Tip layer: a firm edge, the
 raised fill, no shadow, dropping in from under the button with its right edge on the
 button's. The page keeps its full width under it. On a phone it spans the screen less
-8 px each side. ash-template's shell is the reference; its browser walk measures it at
-1280, 2000, 390 and 320 wide (`platform/test/browser/account_menu.spec.ts`), and every
-site copies that check.
+8 px each side. ash-template's shell is the reference, at 1280, 2000, 390 and 320 wide.
 
 ## Motion
 

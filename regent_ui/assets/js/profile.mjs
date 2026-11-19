@@ -50,12 +50,11 @@ export function mountProfile(root, {openProfile, onSaved}) {
   return () => controller.abort();
 }
 
-// A person who has never saved a name has no profile yet: it is made from their
-// sign-in first. `profile` is one save's client, kept to one person by the
+// A profile is made when its person signs in, so someone with none yet is asked
+// to sign in again. `profile` is one save's client, kept to one person by the
 // product, and the name is saved to the profile just read.
 export async function saveName(profile, displayName, options = {}) {
-  let read = await profile("get", {}, options);
-  if (code(read) === "profile_not_created") read = await profile("sync", {}, options);
+  const read = await profile("get", {}, options);
   if (!read.ok) return {ok: false, message: refusal(read)};
   const result = await profile("update", {display_name: displayName},
     {...options, expectedProfileId: read.body.profile.profile_id});
@@ -72,9 +71,8 @@ function refusal(result) {
   switch (code(result)) {
     case "authentication_required":
     case "identity_changed":
+    case "profile_not_created":
       return "Sign in again to save your name.";
-    case "identity_evidence_conflict":
-      return "Your sign-in changed. Refresh and try again.";
     case "invalid_display_name":
       return "That name can't be used. Remove any hidden characters.";
     default:

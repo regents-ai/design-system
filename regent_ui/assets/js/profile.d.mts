@@ -1,4 +1,4 @@
-export type ProfileOperation = "get" | "sync" | "update";
+export type ProfileOperation = "get" | "update";
 export type ProfileInput = {display_name?: string; wallet_address?: string | null};
 export type ProfileResult = {
   ok: boolean;

@@ -1442,3 +1442,22 @@ design system. using vgpu.sh".
   rail's 4px beat, each tick sits on a dash and every date shares its title's baseline.
   Opening Load more once shows 18 posts; a keyboard press on it leaves the next Tab on
   the first new post.
+
+## 2026-11-17 — Name form: "Sign in again" for a person with no profile yet
+
+- `regent_ui/assets/js/profile.mjs`: a save answered `profile_not_created` now says
+  "Sign in again to save your name.", the sentence the form already uses for an ended
+  sign-in. Since the shared profile change of 14 November (elixir-utils `f2138718`) a
+  profile is made at sign-in, so a person who signed in before it has none until they
+  sign in again; the form used to answer that with a "sync" step the sites no longer
+  have, and then said only "Your name could not be saved. Try again."
+- Hard cutover: the sync step and the `"sync"` operation in `profile.d.mts` are gone,
+  and so is the wording for `identity_evidence_conflict`, an answer no site gives any
+  more. A site takes this commit only once its own 14 November profile change is live,
+  because the form no longer makes a profile itself.
+- Upstream row 4 (Keyfleet chief, 14 Nov); words agreed with the template chief.
+
+## 2026-11-19 — No tests
+
+- `regent_ui/test` is gone. `mix check` is the token mirror check, a strict compile, the
+  unused-lock check, the formatter and the style check; it runs in dev.
