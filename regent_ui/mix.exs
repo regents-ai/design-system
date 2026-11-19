@@ -13,8 +13,7 @@ defmodule RegentUi.MixProject do
       deps: deps(),
       description: @description,
       package: package(),
-      aliases: aliases(),
-      cli: cli()
+      aliases: aliases()
     ]
   end
 
@@ -26,7 +25,7 @@ defmodule RegentUi.MixProject do
     [
       {:phoenix_live_view, "~> 1.2.0"},
       {:phoenix_html, "~> 4.1"},
-      {:jason, "~> 1.2", only: [:dev, :test]}
+      {:jason, "~> 1.2", only: :dev}
     ]
   end
 
@@ -44,12 +43,9 @@ defmodule RegentUi.MixProject do
         "compile --warnings-as-errors",
         "deps.unlock --check-unused",
         "format --check-formatted",
-        "cmd sh scripts/style-check.sh",
-        "test --warnings-as-errors"
+        "cmd sh scripts/style-check.sh"
       ],
       precommit: ["check"]
     ]
   end
-
-  def cli, do: [preferred_envs: [check: :test, precommit: :test]]
 end

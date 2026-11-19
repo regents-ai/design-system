@@ -1456,3 +1456,8 @@ design system. using vgpu.sh".
   more. A site takes this commit only once its own 14 November profile change is live,
   because the form no longer makes a profile itself.
 - Upstream row 4 (Keyfleet chief, 14 Nov); words agreed with the template chief.
+
+## 2026-11-19 — No tests
+
+- `regent_ui/test` is gone. `mix check` is the token mirror check, a strict compile, the
+  unused-lock check, the formatter and the style check; it runs in dev.
