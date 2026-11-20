@@ -1,0 +1,207 @@
+/* The one site's bar (Regent.Site.bar): the crown, the current product opening the menu
+   of all eight, the product's own links, and Account. The crown, the product button and
+   Account keep their size and place on every product and at every width; a change of
+   product changes only the colours, the mark and the name. Opaque: no shadow, blur,
+   see-through fill or gradient. 4rem tall, 3.5rem at 48rem and below, its border and
+   the product's 2px line inside that height. */
+.rg-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--rg-layer-header);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto minmax(0, max-content) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-2);
+  block-size: 4rem;
+  padding-inline: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-body-size);
+  line-height: 1.5;
+}
+
+/* The product's line along the bar's foot, over its border. */
+.rg-bar::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  block-size: 2px;
+  background: var(--rg-product-line);
+  pointer-events: none;
+}
+
+/* The bar's own controls take the product's ring; Account's are the site's. */
+:is(.rg-bar__crown, .rg-bar__product, .rg-bar__item, .rg-bar__links a):focus-visible {
+  outline: var(--rg-ring-width) solid var(--color-focus);
+  outline-offset: var(--rg-ring-offset);
+}
+
+.rg-bar__crown {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  color: var(--color-fg);
+}
+.rg-bar__crown svg { inline-size: 1.6rem; block-size: 1.3rem; fill: currentColor; }
+
+/* The current product's mark and name. Its width is held, so every name fits the same box;
+   only a screen narrower than 22.5rem narrows it, and a long name there ends in an ellipsis. */
+.rg-bar__product {
+  grid-area: 1 / 2;
+  anchor-name: --rg-bar-product;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  inline-size: 11.5rem;
+  max-inline-size: 100%;
+  min-block-size: 2.75rem;
+  margin: 0;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.9375rem;
+  text-align: start;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .rg-bar__product:hover { border-color: var(--hairline-strong); }
+}
+.rg-bar__name { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-bar__chevron { color: var(--color-fg-muted); }
+
+/* A product's tile: its colour, its mark in the mark colour, never restyled. */
+.rg-bar__tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+}
+.rg-bar__tile svg { inline-size: 72%; block-size: 72%; fill: currentColor; }
+.rg-bar__tile[data-product="regents"] { background: var(--rg-tile-regents); color: var(--rg-tile-mark-regents); }
+.rg-bar__tile[data-product="techtree"] { background: var(--rg-tile-techtree); color: var(--rg-tile-mark-techtree); }
+.rg-bar__tile[data-product="keyfleet"] { background: var(--rg-tile-keyfleet); color: var(--rg-tile-mark-keyfleet); }
+.rg-bar__tile[data-product="autolaunch"] { background: var(--rg-tile-autolaunch); color: var(--rg-tile-mark-autolaunch); }
+.rg-bar__tile[data-product="patchbay"] { background: var(--rg-tile-patchbay); color: var(--rg-tile-mark-patchbay); }
+.rg-bar__tile[data-product="protocol"] { background: var(--rg-tile-protocol); color: var(--rg-tile-mark-protocol); }
+.rg-bar__tile[data-product="siwa"] { background: var(--rg-tile-siwa); color: var(--rg-tile-mark-siwa); }
+.rg-bar__tile[data-product="cloak"] { background: var(--rg-tile-cloak); color: var(--rg-tile-mark-cloak); }
+/* A tile that would sink into its ground keeps its square with a hairline: Protocol's
+   platinum in light, and Ink's charcoal Regents tile in dark. */
+.rg-bar__tile[data-product="protocol"] { outline: 1px solid light-dark(var(--hairline-strong), transparent); outline-offset: -1px; }
+:root[data-home="ink"] .rg-bar__tile[data-product="regents"] { outline: 1px solid light-dark(transparent, var(--hairline-strong)); outline-offset: -1px; }
+
+/* The menu of all eight: the browser's popover, hung under its button with left edges in
+   line. A tip, like the account menu: a firm edge, the raised fill, no shadow. A pointer
+   opens it with a short drop from the button; a key opens it at once, it closes at once,
+   and with reduced motion asked for it is simply there. A short screen scrolls it. */
+.rg-bar__menu {
+  position-anchor: --rg-bar-product;
+  position-area: block-end span-inline-end;
+  inset: auto;
+  box-sizing: border-box;
+  min-inline-size: 13rem;
+  max-block-size: calc(100% - var(--space-1) - env(safe-area-inset-bottom));
+  margin: var(--space-1) 0 0;
+  padding: var(--space-1) 0;
+  overflow: hidden auto;
+  border: 1px solid var(--hairline-strong);
+  background: var(--color-surface-elevated);
+  color: var(--color-fg);
+  font-family: var(--font-family-ui);
+  transform-origin: top left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rg-bar__menu:popover-open:not([data-instant]) {
+    transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+  }
+  @starting-style {
+    .rg-bar__menu:popover-open:not([data-instant]) { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  }
+}
+.rg-bar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 2.75rem;
+  padding: 0 var(--space-2);
+  color: var(--color-fg);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+.rg-bar__item:focus-visible { background: var(--hairline); }
+.rg-bar__menu .rg-bar__item:focus-visible { outline-offset: calc(-1 * var(--rg-ring-width)); }
+.rg-bar__item[aria-current]::after {
+  content: "";
+  margin-inline-start: auto;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  background: currentColor;
+}
+.rg-bar__rule { block-size: 1px; margin: var(--space-1) 0; background: var(--hairline); }
+
+/* The product's own links. From 48rem up only; a product that needs them on a phone puts
+   them in its page. A long set scrolls sideways inside its strip and never moves Account. */
+.rg-bar__links {
+  grid-area: 1 / 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  padding: calc(var(--rg-ring-width) + var(--rg-ring-offset));
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rg-bar__links a {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding-inline: var(--space-1);
+  color: var(--color-fg);
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  text-decoration: none;
+}
+@media (hover: hover) {
+  .rg-bar__item:hover { background: var(--hairline); }
+  .rg-bar__links a:hover { text-decoration: underline; text-underline-offset: 0.35em; }
+}
+.rg-bar__links a[aria-current] {
+  text-decoration: underline 2px var(--rg-product-line);
+  text-underline-offset: 0.35em;
+}
+
+/* Account: the site's own control. Its main button keeps the Regents plate, and the
+   plate's marks, on every product. */
+.rg-bar__account {
+  --color-button: var(--rg-plate);
+  --color-fg-on-button: var(--rg-fg-on-plate);
+  --color-button-mark: var(--palette-tangerine-tango);
+  --rg-button-border-color: var(--palette-tangerine-tango);
+  grid-area: 1 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 48rem) {
+  .rg-bar { column-gap: 6px; block-size: 3.5rem; padding-inline: var(--space-2); }
+  .rg-bar__crown svg { inline-size: 1.45rem; block-size: 1.2rem; }
+  .rg-bar__product { gap: 6px; inline-size: 9rem; padding-inline: var(--space-1) 6px; font-size: 0.875rem; }
+  .rg-bar__product .rg-bar__tile { inline-size: 1.25rem; block-size: 1.25rem; }
+  .rg-bar__links { display: none; }
+  .rg-bar__account .rg-button { min-block-size: 2.75rem; padding-inline: 12px; }
+}

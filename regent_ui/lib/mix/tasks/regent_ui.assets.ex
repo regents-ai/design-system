@@ -33,6 +33,7 @@ defmodule Mix.Tasks.RegentUi.Assets do
           "discussion.mjs",
           "holographic_card.*",
           "pill_select.mjs",
+          "product_menu.mjs",
           "segmented.mjs",
           "status_word.mjs",
           "tip.mjs"
