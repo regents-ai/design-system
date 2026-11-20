@@ -4,7 +4,9 @@
  *   data-brand: platform | autolaunch | patchbay | techtree
  *   data-theme: light | dark
  * With no data-theme the page is dark, or light when the device asks for light.
- * The light copies for that case sit in the last block of this file.
+ * The light copies for that case sit in the media block near the end of this file.
+ * A regents.sh page that wears the one-site bar also sets data-product and data-home;
+ * their blocks close the file.
  *
  * Keep this file in sync with design_system_tokens.json.
  */
@@ -680,4 +682,148 @@ samp {
     --color-category-7: #108AC1;
     --color-category-8: #A48A09;
   }
+}
+
+/* The one site: regents.sh pages that wear Regent.Site.bar. Such a page also sets
+ *   data-product: regents | techtree | keyfleet | autolaunch | patchbay | protocol | siwa | cloak
+ *   data-home: ink | tangerine | blue (the home colour; there is no default)
+ * beside the data-brand its product stands on (Regent.Site.brand/1). A page without them
+ * changes nothing above. The values follow the root's color-scheme through light-dark(),
+ * so the no-choice case needs no copy. */
+
+/* Each product's tile and the mark on it, the same in both themes. Regents' come with
+ * the home colour. Account's button keeps the Regents plate on every product. */
+:root {
+  --rg-tile-techtree: #2FA866;
+  --rg-tile-mark-techtree: #0F1B14;
+  --rg-tile-keyfleet: #FF5B19;
+  --rg-tile-mark-keyfleet: #161616;
+  --rg-tile-autolaunch: #FFB188;
+  --rg-tile-mark-autolaunch: #161616;
+  --rg-tile-patchbay: #9BB4FF;
+  --rg-tile-mark-patchbay: #142247;
+  --rg-tile-protocol: #E5E3D2;
+  --rg-tile-mark-protocol: #161616;
+  --rg-tile-siwa: #AECACD;
+  --rg-tile-mark-siwa: #161616;
+  --rg-tile-cloak: #A97BF0;
+  --rg-tile-mark-cloak: #161616;
+  --rg-plate: light-dark(#161616, #E5E3D2);
+  --rg-fg-on-plate: light-dark(#E5E3D2, #161616);
+}
+
+/* The home colour, three sets: the home page's small words and links (ink), large words,
+ * lines, pictures, and its slab and main button (fill, with the words on it); and the
+ * Regents look on every Regents page: its tile and mark, and its button pair. */
+:root[data-home="ink"] {
+  --rg-home-ink: light-dark(#161616, #E5E3D2);
+  --rg-home-large: light-dark(#161616, #E5E3D2);
+  --rg-home-line: light-dark(#161616, #E5E3D2);
+  --rg-home-picture: light-dark(#161616, #E5E3D2);
+  --rg-home-fill: #FF5B19;
+  --rg-home-on-fill: #161616;
+  --rg-tile-regents: #161616;
+  --rg-tile-mark-regents: #E5E3D2;
+  --rg-regents-button: light-dark(#161616, #E5E3D2);
+  --rg-regents-on-button: light-dark(#FFFFFF, #161616);
+}
+
+:root[data-home="tangerine"] {
+  --rg-home-ink: light-dark(#B33902, #FF5B19);
+  --rg-home-large: light-dark(#E24900, #FF5B19);
+  --rg-home-line: light-dark(#E24900, #FF5B19);
+  --rg-home-picture: #FF5B19;
+  --rg-home-fill: #FF5B19;
+  --rg-home-on-fill: #161616;
+  --rg-tile-regents: #FF5B19;
+  --rg-tile-mark-regents: #161616;
+  --rg-regents-button: light-dark(#B33902, #FF5B19);
+  --rg-regents-on-button: light-dark(#FFFFFF, #161616);
+}
+
+:root[data-home="blue"] {
+  --rg-home-ink: light-dark(#2750EE, #6B95FF);
+  --rg-home-large: #3361FF;
+  --rg-home-line: #3361FF;
+  --rg-home-picture: #3361FF;
+  --rg-home-fill: #3361FF;
+  --rg-home-on-fill: #FFFFFF;
+  --rg-tile-regents: #3361FF;
+  --rg-tile-mark-regents: #FFFFFF;
+  --rg-regents-button: light-dark(#2750EE, #3361FF);
+  --rg-regents-on-button: #FFFFFF;
+}
+
+/* A product's look reaches its links, focus ring, main buttons, what is chosen in a
+ * segmented control or tabs, and the bar's line; its data-brand gives the ground and
+ * surfaces. These blocks come after every brand block, so they win at equal weight.
+ * In dark a main button's hover marks take the words' colour, which its fill never hides. */
+:root[data-product][data-brand] {
+  --color-button-mark: var(--color-fg-on-button);
+  --color-chosen: var(--color-button);
+  --color-fg-on-chosen: var(--color-fg-on-button);
+}
+
+:root[data-product="regents"][data-brand] {
+  --rg-product-line: var(--rg-home-line);
+  --color-link: var(--rg-home-ink);
+  --color-focus: var(--rg-home-ink);
+  --color-button: var(--rg-regents-button);
+  --color-fg-on-button: var(--rg-regents-on-button);
+}
+
+:root[data-product="techtree"][data-brand] {
+  --rg-product-line: light-dark(#238450, #2FA866);
+  --color-link: light-dark(#1E6B45, #2FA866);
+  --color-focus: light-dark(#1E6B45, #2FA866);
+  --color-button: light-dark(#1E6B45, #2FA866);
+  --color-fg-on-button: light-dark(#FFFFFF, #0F1B14);
+}
+
+:root[data-product="keyfleet"][data-brand] {
+  --rg-product-line: light-dark(#E24900, #FF5B19);
+  --color-link: light-dark(#B33902, #FF5B19);
+  --color-focus: light-dark(#B33902, #FF5B19);
+  --color-button: light-dark(#B33902, #FF5B19);
+  --color-fg-on-button: light-dark(#FFFFFF, #161616);
+}
+
+:root[data-product="autolaunch"][data-brand] {
+  --rg-product-line: light-dark(#B56D46, #FFB188);
+  --color-link: light-dark(#965129, #FFB188);
+  --color-focus: light-dark(#965129, #FFB188);
+  --color-button: light-dark(#965129, #FFB188);
+  --color-fg-on-button: light-dark(#FFFFFF, #161616);
+}
+
+:root[data-product="patchbay"][data-brand] {
+  --rg-product-line: light-dark(#294EC3, #9BB4FF);
+  --color-link: light-dark(#294EC3, #9BB4FF);
+  --color-focus: light-dark(#294EC3, #9BB4FF);
+  --color-button: light-dark(#294EC3, #9BB4FF);
+  --color-fg-on-button: light-dark(#FFFFFF, #142247);
+}
+
+:root[data-product="protocol"][data-brand] {
+  --rg-product-line: light-dark(#161616, #E5E3D2);
+  --color-link: light-dark(#161616, #E5E3D2);
+  --color-focus: light-dark(#161616, #E5E3D2);
+  --color-button: light-dark(#161616, #E5E3D2);
+  --color-fg-on-button: light-dark(#E5E3D2, #161616);
+}
+
+:root[data-product="siwa"][data-brand] {
+  --rg-product-line: light-dark(#698386, #AECACD);
+  --color-link: light-dark(#4F686B, #AECACD);
+  --color-focus: light-dark(#4F686B, #AECACD);
+  --color-button: light-dark(#4F686B, #AECACD);
+  --color-fg-on-button: light-dark(#FFFFFF, #161616);
+}
+
+:root[data-product="cloak"][data-brand] {
+  --rg-product-line: light-dark(#9466D9, #A97BF0);
+  --color-link: light-dark(#794ABA, #A97BF0);
+  --color-focus: light-dark(#794ABA, #A97BF0);
+  --color-button: light-dark(#794ABA, #A97BF0);
+  --color-fg-on-button: light-dark(#FFFFFF, #161616);
 }
