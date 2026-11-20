@@ -1461,3 +1461,32 @@ design system. using vgpu.sh".
 
 - `regent_ui/test` is gone. `mix check` is the token mirror check, a strict compile, the
   unused-lock check, the formatter and the style check; it runs in dev.
+
+## 2026-11-19 — One site: the bar and the eight product looks
+
+- `Regent.Site` (`regent_ui/lib/regent/site.ex`): `products/0`, the one list of the eight
+  products regents.sh holds (Regents, Techtree, Keyfleet, Autolaunch, Patchbay, Protocol,
+  SIWA, Cloak), each with its name, address, brand and mark; `brand/1`; and `bar/1`, the
+  bar every regents.sh page wears: the crown home, the current product's mark and name
+  opening the menu of all eight, a `links` slot shown from 48rem up and the site's
+  `account` slot. 4rem tall, 3.5rem at 48rem and below; the crown, the product button and
+  Account keep their size and place on every product.
+- The menu is the browser's popover, hung under its button by anchor positioning, with a
+  200ms drop when a pointer opens it and none from a key or with reduced motion.
+  `regent_ui/assets/js/product_menu.mjs`, copied by `mix regent_ui.assets`, adds the
+  arrow keys, Home, End, Space and Tab. Styles in `regent_ui/assets/css/site.css`,
+  imported by `primitives.css`.
+- `design_system_tokens.css` gains blocks for a root that sets `data-product` and
+  `data-home`: each product's link, ring, main button, chosen and line colours over its
+  brand, the menu's tiles, the Regents plate for Account, and the home colour's three
+  sets (`ink`, `tangerine`, `blue`, no default). Additive only: a page without
+  `data-product` resolves every token exactly as before, checked in headless Chromium
+  for the four brands in light, dark and no choice.
+- `scripts/render-site-showcase.exs` renders a page per product, Regents once per home
+  colour, and pages with no links and with twelve, to `.showcase/site/`.
+- No site changes until it takes this version; only regents.sh is meant to. Adoption
+  steps are in `CONSUMERS.md`, One site.
+- Open: Tangerine `#FF5B19` reaches 2.82:1 on the light ground `#F6F4EA`, under 3:1, where
+  Ink and Tangerine use it as the light home fill and Tangerine as its light pictures.
+  The nearest passing Tangerine is `#F9550E` (3.01:1). The prototype's values stand until
+  a home colour is picked.

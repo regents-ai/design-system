@@ -35,8 +35,8 @@ The page's theme is `data-theme` on the root: `light` or `dark` once the person 
 chosen on the site, and no `data-theme` at all until they do. With no choice the page
 is dark, or light when their device asks for light (`prefers-color-scheme: light`);
 the tokens and shared CSS follow the device by themselves. A product's own CSS that
-changes with the theme covers the no-choice case the same way (see the last block of
-`design_system_tokens.css`), or uses `light-dark()`, which follows the root's
+changes with the theme covers the no-choice case the same way (see the media block near
+the end of `design_system_tokens.css`), or uses `light-dark()`, which follows the root's
 `color-scheme`.
 
 `Regent.ThemeToggle.button` owns the shared animated prism/laser theme icon used
@@ -334,6 +334,65 @@ Page background SVGs are no longer used; the package ships no background compone
 background images. The source SVGs stay in `site svg backgrounds/` for future smaller
 illustration sections. Remove product-owned background mounts during deliberate consumer
 adoption.
+
+## One site
+
+Every regents.sh page wears `Regent.Site.bar` and stands in its product's look
+(`STYLE.md`, One site). Only regents.sh takes it; no other site changes, and a page
+without `data-product` renders as before. The regents chief adopts it on the `one-site`
+branch:
+
+1. Move the pin to the design-system commit that carries it.
+2. Write three attributes on `<html>` in the root layout, all from the page's product id,
+   one of the ids in `Regent.Site.products/0`: `data-product={product}`,
+   `data-brand={Regent.Site.brand(product)}` and `data-home`. `data-home` is the home
+   colour, `ink`, `tangerine` or `blue`, and the layout always writes it: there is no
+   default set, and without it Regents has no colours. Which set visitors get is Sean's
+   later pick; until then the one-site branch may carry a preview control that flips
+   `data-home` on the root, and the tokens follow at once.
+3. Put the bar where the shell's header was. Its crown and product menu replace the
+   shell's crown link and its apps menu; delete those and their styles and scripts.
+   Whatever else the old header held is the chief's to place, in the links or in a page.
+
+   ```heex
+   <Regent.Site.bar id="site-bar" product={@product}>
+     <:links>
+       <a href={~p"/stake"} aria-current={@page == :stake && "page"}>Stake</a>
+     </:links>
+     <:account>
+       <%!-- signed out: the theme switch, then Sign in --%>
+       <%!-- signed in: the account's button, then Regent.Account.menu with its theme slot --%>
+     </:account>
+   </Regent.Site.bar>
+   ```
+
+4. Import `product_menu.mjs` (copied by `mix regent_ui.assets`) once from `app.ts`. The
+   browser's popover opens and closes the menu without it; the module moves focus into
+   the menu when it opens and adds the arrow keys, Home, End, Space and Tab. It listens on the
+   document, so it needs no hook and works on controller-rendered and LiveView pages.
+5. The links slot shows from 48rem up and is hidden below it; a product that needs links
+   on a phone puts them in its page. Mark the page showing with `aria-current="page"`. A
+   long set scrolls sideways in its own strip and never moves Account.
+6. The account slot is the site's own, as the header's account control was. Signed out
+   it holds the theme switch and Sign in; signed in, the account's button and
+   `Regent.Account.menu`, with the theme switch in the menu's `theme` slot. A main
+   `Regent.Primitives.button` in the slot wears the Regents plate on every product, and
+   44px on a phone; the slot sets both itself.
+7. The eight addresses are the regents chief's to confirm against the one-site router;
+   each is one line in `Regent.Site.products/0` (`regent_ui/lib/regent/site.ex`), so a
+   change is a design-system commit. Protocol is `/stake` and SIWA `/siwa`. At
+   `origin/one-site` `22ed48dc` every address has a route except `/siwa`.
+8. The root's attributes come from the root layout, which a LiveView navigation does not
+   redraw. A link from one product to another loads the page with a plain `href`, as the
+   bar's menu does, unless each product has its own live session.
+9. The home page's own CSS reads the home colour from `--rg-home-ink` (small words and
+   links), `--rg-home-large`, `--rg-home-line`, `--rg-home-picture`, `--rg-home-fill` and
+   `--rg-home-on-fill` (the slab and the main button on home, and the words on them),
+   never from a hex value.
+10. The bar is `position: sticky` at the top of whatever scrolls it, on
+    `--rg-layer-header`. Rebuild and look at a page of every product at 1440 and 390
+    wide, light and dark: the bar is 64px tall, 56px on a phone, and the crown, the
+    product button and Account sit in the same places on every product.
 
 ## Style check
 

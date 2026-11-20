@@ -153,6 +153,8 @@ Rules:
 - Formation renders inside the platform brand; use `--product-formation` for
   Formation-specific highlights rather than switching the page action color.
 - Status colors (success, error, warning, info) are for state only, never identity.
+- On regents.sh, which holds all eight products as one site, `data-product` lays each
+  product's own look over its brand; see One site.
 
 ### Supporting palette compartments
 
@@ -501,6 +503,8 @@ Ash Template and Keyfleet (each `platform/`).
 | `Regent.Account.history` | Read-only formatted Points activity; a row may carry one link, such as a payment's "View" | Awaiting consumer adoption |
 | `Regent.Profile.panel` | The Public Display Name form: the name people see for a signed-in person | Patchbay, Ash Template |
 | `Regent.ThemeToggle.button` | Prism/laser light-dark control that names the theme showing | All six apps |
+| `Regent.Site.bar` | The one site's bar: the crown home, the current product's mark and name opening the menu of all eight, the product's links from 48rem up, and the site's Account | Awaiting consumer adoption |
+| `Regent.Site.products`, `brand` | The one site's eight products in menu order, each with its name, address and mark, and the brand each stands on | Awaiting consumer adoption |
 | `Regent.HolographicCard.card` | Pointer-lit graphite foil card | Regents, Ash Template, Keyfleet |
 | `Regent.HolographicCard.foil` | The same foil as a panel face or a drawing's ink | Regents, Ash Template, Keyfleet |
 | `Regent.AgentMetadata.head` | Canonical, sharing and agent-discovery head tags | Regents, Autolaunch, Patchbay, Ash Template, Keyfleet |
@@ -839,7 +843,8 @@ where they are managed. Showing these sections never turns on earning Points.
 ## Product layouts and disclosure
 
 Each product chooses document scrolling, panels, rails and navigation to fit its users.
-There is no required universal shell or landing-page theme. Shared components do not own
+There is no required universal shell or landing-page theme, except on regents.sh, where
+every page wears the one site's bar (One site). Shared components do not own
 routes, authentication, persistence, wallet admission, or product workflows.
 
 Shared CSS reads only the shared `--color-*` semantic tokens; a product's own color names stay
@@ -921,6 +926,93 @@ raised fill, no shadow, dropping in from under the button with its right edge on
 button's. The page keeps its full width under it. On a phone it spans the screen less
 8 px each side. ash-template's shell is the reference, at 1280, 2000, 390 and 320 wide.
 
+## One site
+
+regents.sh holds eight products as one site: Regents, Techtree, Keyfleet, Autolaunch,
+Patchbay, Protocol, SIWA and Cloak (founder, 2026-11-19). Every page wears one bar,
+`Regent.Site.bar`, and stands in its product's look. The products' own sites keep theirs;
+a page without `data-product` renders exactly as it did before.
+
+### The bar
+
+- Left to right: the crown, which leads home; the current product's mark and name, which
+  opens the menu of all eight; the product's own links; Account.
+- 4rem tall, 3.5rem at 48rem and below, its border and the product's 2px line inside that
+  height. It sits on the page's ground and is opaque: no shadow, blur, see-through fill or
+  gradient.
+- The crown, the product button and Account keep their size and place on every product,
+  whatever the links: a change of product changes only colours, the mark and the name.
+  The product button is 11.5rem wide, 9rem on a phone, so every name fits one box. Only a
+  screen too narrow for all three narrows it (below about 356px with the theme switch and
+  Sign in); there a long name ends in an ellipsis.
+- The links show from 48rem up and are hidden below it; a product that needs links on a
+  phone puts them in its page. A long set scrolls sideways in its own strip and never
+  moves Account. The page showing (`aria-current="page"`) is underlined in the product's
+  line colour.
+- Account is the site's own: signed out, the theme switch and Sign in; signed in, the
+  account's button, which opens `Regent.Account.menu` with the theme switch inside it.
+  Sign in and the account's button keep the Regents plate on every product: Charcoal
+  with Platinum words in light, Platinum with Charcoal words in dark.
+- The menu is a tip, like the account menu: the browser's popover, hung 8px under the
+  product button with its left edge on the button's, a firm edge and the raised fill. It
+  lists Regents, Techtree, Keyfleet, Autolaunch and Patchbay, a rule, then Protocol, SIWA
+  and Cloak, each row 44px with its mark; the product showing carries a small square.
+  Down and Up move and wrap, Home and End go to the first and last, Escape or a press
+  outside closes it and gives focus back to the button, and Tab closes it and carries on.
+  Down or Up on the closed button opens it on the first or last product.
+
+### Product looks
+
+`data-brand` gives a page its ground, surfaces, words and borders. `data-product` lays
+the product's look over them: links, the focus ring, main buttons, what is chosen in a
+segmented control or tabs, and the bar's line (`--color-link`, `--color-focus`,
+`--color-button` with `--color-fg-on-button`, `--color-chosen` with
+`--color-fg-on-chosen`, and `--rg-product-line`). In dark a main button's hover marks
+take its words' colour. Status colours, the ground and Account never change with the
+product. `design_system_tokens.css` holds the values; this table is a copy for reading
+(light / dark).
+
+| Product | Address | Brand | Links, ring and buttons | Line | Tile and mark |
+| --- | --- | --- | --- | --- | --- |
+| Regents | `/` | `platform` | The home colour (below) | The home colour | The home colour |
+| Techtree | `/techtree` | `techtree` | `#1E6B45` / `#2FA866` | `#238450` / `#2FA866` | `#2FA866`, `#0F1B14` |
+| Keyfleet | `/keyfleet` | `platform` | `#B33902` / `#FF5B19` | `#E24900` / `#FF5B19` | `#FF5B19`, `#161616` |
+| Autolaunch | `/autolaunch` | `autolaunch` | `#965129` / `#FFB188` | `#B56D46` / `#FFB188` | `#FFB188`, `#161616` |
+| Patchbay | `/patchbay` | `patchbay` | `#294EC3` / `#9BB4FF` | `#294EC3` / `#9BB4FF` | `#9BB4FF`, `#142247` |
+| Protocol | `/stake` | `platform` | `#161616` / `#E5E3D2` | `#161616` / `#E5E3D2` | `#E5E3D2`, `#161616` |
+| SIWA | `/siwa` | `platform` | `#4F686B` / `#AECACD` | `#698386` / `#AECACD` | `#AECACD`, `#161616` |
+| Cloak | `/cloak` | `platform` | `#794ABA` / `#A97BF0` | `#9466D9` / `#A97BF0` | `#A97BF0`, `#161616` |
+
+A main button's words are white in light, and in dark Charcoal, Techtree's `#0F1B14` or
+Patchbay's `#142247`; Protocol's are Platinum in light. A light Protocol tile and Ink's
+dark Regents tile keep a hairline so they do not sink into the ground.
+
+These looks belong to regents.sh; the products' own sites keep their tokens. On
+regents.sh Techtree is green (lime on its own site), Autolaunch peach (Tangerine),
+Keyfleet Tangerine (the plate on keyfleet.ai) and Regents the home colour (the plate).
+Protocol wears today's Regents plate, and Techtree's tile is green where
+`--product-techtree` is Powder Blue. Patchbay is the same on both.
+
+### Home colour
+
+The home colour has three sets, chosen by `data-home` on the root: `ink`, `tangerine` or
+`blue`. The regents.sh layout always writes it; there is no default set. Which set
+visitors get is the founder's later pick; until then the one-site branch may carry a
+preview control that flips it. A set colours the home page through `--rg-home-*` and the
+Regents look on every Regents page: its links, ring and line, its main button, and its
+tile.
+
+| Set | Small words and links (`ink`) | Large words, lines (`large`, `line`) | Pictures | Slab and main button on home (`fill`, words) | Regents button (fill, words) | Regents tile |
+| --- | --- | --- | --- | --- | --- | --- |
+| Ink | `#161616` / `#E5E3D2` | the same as `ink` | the same as `ink` | `#FF5B19`, `#161616` | `#161616` / `#E5E3D2`, `#FFFFFF` / `#161616` | `#161616`, `#E5E3D2` |
+| Tangerine | `#B33902` / `#FF5B19` | `#E24900` / `#FF5B19` | `#FF5B19` | `#FF5B19`, `#161616` | `#B33902` / `#FF5B19`, `#FFFFFF` / `#161616` | `#FF5B19`, `#161616` |
+| Blue | `#2750EE` / `#6B95FF` | `#3361FF` | `#3361FF` | `#3361FF`, `#FFFFFF` | `#2750EE` / `#3361FF`, `#FFFFFF` | `#3361FF`, `#FFFFFF` |
+
+Open: Tangerine `#FF5B19` is 2.82:1 on the light ground `#F6F4EA`, short of the 3:1 a fill
+or a picture needs, so Ink's and Tangerine's light home fill and Tangerine's light
+pictures miss it. The nearest Tangerine that passes is `#F9550E` (3.01:1, Charcoal words
+on it 5.46:1). The values stay as the prototype has them until the founder picks a set.
+
 ## Motion
 
 General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--ease-in` (leaving only), `--active-scale`.
@@ -965,6 +1057,10 @@ General tokens: `--duration-fast|base|slow`, `--ease-out`, `--ease-in-out`, `--e
   the crumbs that went in 140ms, and the old page showing turns to a plain level; its
   menus and card grow from the button that opened them. Without the kit the new path
   simply shows.
+- The one site's product menu drops in from its button when a pointer opens it: 4px and
+  98% to rest, with its opacity, over 200ms on `--ease-out`. A key opens it at once, it
+  always closes at once, and with reduced motion it is simply there. The package's own
+  CSS moves it.
 - Content is visible by default. Scroll reveals hide elements only after script takes over,
   so a page without JS is fully readable.
 - OS `prefers-reduced-motion` wins: remove movement, swap layout immediately, and allow only a
@@ -1043,6 +1139,14 @@ Use its long-label toggle, expanded errors, disabled state, native select/dialog
 options for desktop, 320px reflow, 200% text, keyboard, reduced-motion and forced-colors review.
 Do not treat this as completed adoption in every product. Verify a bounded consumer after
 the shared visual direction is accepted, before rolling pinned revisions to the other apps.
+
+The one site's bar has its own pages. From `regent_ui/`, run
+`mix run ../scripts/render-site-showcase.exs`, then from the repository root run
+`uv run python -m http.server 8767 --bind 127.0.0.1 --directory .showcase/site` and open
+`http://127.0.0.1:8767/`. There is a page for each product, Regents once for each home
+colour, and two more Regents pages in Blue, one with no links and one with twelve. Each
+shows the bar over sample words, a link, both buttons and a segmented choice in that
+look; the switch in the bar flips the theme.
 
 ## Utility screens
 
