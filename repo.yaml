@@ -22,6 +22,8 @@ code_map:
     owns: regent_ui
   - path: scripts/render-structure-showcase.exs
     owns: structural_showcase
+  - path: scripts/render-site-showcase.exs
+    owns: site_showcase
 shared_api:
   catalog: "STYLE.md, section Shared compositions: every public regent_ui component, its purpose and its consumers"
   blog_authors: "Regent.Blog.article accepts optional post.authors: ordered maps with name and HTTPS X profile x. Absent or empty uses legacy author/author_x."
@@ -31,3 +33,5 @@ acceptance_commands:
     command: mix check
   - cwd: design-system/regent_ui
     command: mix run ../scripts/render-structure-showcase.exs
+  - cwd: design-system/regent_ui
+    command: mix run ../scripts/render-site-showcase.exs

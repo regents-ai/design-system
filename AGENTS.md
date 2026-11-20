@@ -23,7 +23,8 @@ Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
   regenerates the JSON mirror, the packaged CSS and the packaged fonts. Never hand-edit generated
   copies or a consumer's `assets/vendor/regent_ui/`.
 - `regent_ui/lib/regent/` owns shared presentation: `Primitives`, `Structure`, `Blog`, `Profile`,
-  `ThemeToggle`, `HolographicCard` and `AgentMetadata`. The Shared compositions table in
+  `ThemeToggle`, `HolographicCard`, `AgentMetadata` and `Site` (the one site's bar and product
+  list). The Shared compositions table in
   `STYLE.md` lists every public component and which apps use it. `regent_ui/assets/css/` owns
   their styles and `regent_ui/assets/js/` their browser modules. A defect in a shared control is
   fixed here once, not in per-product overrides.
@@ -54,6 +55,7 @@ Ash Template and Keyfleet platforms and the `elixir-utils/erc8004` components.
 node scripts/generate-tokens-json.mjs --check
 cd regent_ui && mix check
 mix run ../scripts/render-structure-showcase.exs   # from regent_ui/, renders .showcase/
+mix run ../scripts/render-site-showcase.exs        # from regent_ui/, renders .showcase/site/
 ```
 
 A passing package check is not consumer acceptance: rebuild each affected platform with
